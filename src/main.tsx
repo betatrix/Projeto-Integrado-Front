@@ -1,19 +1,27 @@
 import React from 'react'
-import GlobalStyle from './styles/globalStyles'
 import ReactDOM from 'react-dom/client'
-import App from './app'
+import Dashboard from './containers/Admin Dashboard'
+import GlobalStyle from './styles/globalStyles'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <GlobalStyle />
-    < App />
+    <Dashboard />
   </React.StrictMode>,
 )
 
 
+// import React from 'react'
+// import GlobalStyle from './styles/globalStyles'
+// import ReactDOM from 'react-dom/client'
+// import App from './app'
 
-
-
+// ReactDOM.createRoot(document.getElementById('root')!).render(
+//   <React.StrictMode>
+//     <GlobalStyle />
+//     < App />
+//   </React.StrictMode>,
+// )
 
 
 // import React from 'react'
