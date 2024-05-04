@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Box, Checkbox, Typography, Table, TableHead, TableCell, TableBody, Button, Modal, IconButton, Grid, TableRow, TextField } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import BackButton from "../../components/Back Page Button";
 
 interface Institution {
     id: number;
@@ -10,7 +11,7 @@ interface Institution {
     sigla: string;
     notaMEC: number;
     site: string;
-    rua: string;
+    logradouro: string;
     numero: number;
     cidade: string;
     estado: string;
@@ -89,6 +90,8 @@ const InstitutionManagement: React.FC = () => {
     return (
         <Box sx={{ marginTop: '20px'}}>
 
+        <BackButton></BackButton> 
+
         <Typography variant="h5" sx={{ marginBottom: 2, textAlign: "center" }}>
             Gerenciamento de Instituições
         </Typography>
@@ -98,7 +101,7 @@ const InstitutionManagement: React.FC = () => {
         <TextField
             label="Pesquisar instituição"
             variant="outlined"
-            sx={{width: 900}}
+            sx={{width: "70%"}}
             onChange={(e) => setSearchValue(e.target.value)}
         />
 
@@ -214,7 +217,7 @@ const InstitutionManagement: React.FC = () => {
                             Endereço
                         </Typography>
 
-                        <Typography>Rua: {selectedDetailInstitution.rua}</Typography>
+                        <Typography>Rua: {selectedDetailInstitution.logradouro}</Typography>
                         <Typography>Número: {selectedDetailInstitution.numero}</Typography>
                         <Typography>Cidade: {selectedDetailInstitution.cidade}</Typography>
                         <Typography>Estado: {selectedDetailInstitution.estado}</Typography>
