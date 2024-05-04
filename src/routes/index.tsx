@@ -9,6 +9,7 @@ export const AppRoutes = () =>{
             <Routes>
                 <Route path="/cadastro" element={<CadastroInstituicao/>}/>
                 <Route path="/cursos" element={<Course/>}/>
+                <Route path="/geren-instituicao"/>
                 <Route path="/pagina-inicial" element={<Dashboard/>}/>
                 <Route path="*" element={<Navigate to="/pagina-inicial" replace />} />
             </Routes>
