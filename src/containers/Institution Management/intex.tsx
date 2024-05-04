@@ -74,14 +74,17 @@ const InstitutionManagement: React.FC = () => {
     };
     
     // search API datas
+    const [searchValue, setSearchValue] = useState<string>('');
+
     useEffect(() => {
         const searchInstitution = async () => {
-        const response = await fetch('http://localhost:8080/instituicao');
-        const data = await response.json();
-        setInstitutions(data);
+            const response = await fetch(`http://localhost:8080/instituicao?nome=${searchValue}`);
+            const data = await response.json();
+            setInstitutions(data);
         };
         searchInstitution();
-    }, []);
+    }, [searchValue]);
+    
 
     return (
         <Box sx={{ marginTop: '20px'}}>
@@ -92,7 +95,12 @@ const InstitutionManagement: React.FC = () => {
 
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 5, paddingLeft:5, paddingRight:5 }}> 
 
-            <TextField label="Pesquisar instituição" variant="outlined" sx={{width: 900}} />
+        <TextField
+            label="Pesquisar instituição"
+            variant="outlined"
+            sx={{width: 900}}
+            onChange={(e) => setSearchValue(e.target.value)}
+        />
 
             <Button variant="contained" color="primary">Cadastrar instituição</Button>
 
@@ -129,38 +137,36 @@ const InstitutionManagement: React.FC = () => {
 
             {institutions.map((institution) => (
 
-                
+                searchValue.trim() === '' || institution.nome.toLowerCase().includes(searchValue.toLowerCase()) ? (
 
-                <TableRow key={institution.id} onClick={() => handleDetailModalOpen(institution)}>
+                    <TableRow key={institution.id} onClick={() => handleDetailModalOpen(institution)}>
 
-                    <TableCell align="left">
+                        <TableCell align="left">
+                            <Checkbox
+                                onClick={(e) => e.stopPropagation()}
+                                checked={selectedInstitutions.includes(institution.id)}
+                                onChange={() => handleCheckboxChange(institution.id)}
+                            />
+                        </TableCell>
 
-                    <Checkbox
-                        onClick={(e) => e.stopPropagation()}
-                        checked={selectedInstitutions.includes(institution.id)}
-                        onChange={() => handleCheckboxChange(institution.id)}
-                    />
+                        <TableCell>{institution.id}</TableCell>
+                        <TableCell>{institution.nome}</TableCell>
+                        <TableCell>{institution.ativo ? "Inativa" : "Ativa"}</TableCell>
 
-                    </TableCell>
+                        <TableCell align="right">
 
-                    <TableCell>{institution.id}</TableCell>
-                    <TableCell>{institution.nome}</TableCell>
-                    <TableCell>{institution.ativo ? "Inativa" : "Ativa"}</TableCell>
+                            <IconButton>
+                                <EditIcon onClick={(e) => { e.stopPropagation(); }}/>
+                            </IconButton>
 
-                    <TableCell align="right">
+                            <IconButton onClick={(e) => { e.stopPropagation(); handleDeleteModalOpen(institution); }}>
+                                <DeleteIcon />
+                            </IconButton>
 
-                    <IconButton >
-                            <EditIcon  onClick={(e) => { e.stopPropagation(); }}/>
-                        </IconButton>
+                        </TableCell>
 
-                        <IconButton  onClick={(e) => { e.stopPropagation(); handleDeleteModalOpen(institution); }}>
-                            <DeleteIcon />
-                        </IconButton>
-
-                    </TableCell>
-
-                </TableRow>
-
+                    </TableRow>
+                ) : null
             ))}
 
             </TableBody>
