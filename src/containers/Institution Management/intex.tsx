@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Checkbox, Typography, Table, TableHead, TableCell, TableBody, Button, Modal, IconButton, Grid, TableRow } from '@mui/material';
+import { Box, Checkbox, Typography, Table, TableHead, TableCell, TableBody, Button, Modal, IconButton, Grid, TableRow, TextField } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
@@ -46,6 +46,32 @@ const InstitutionManagement: React.FC = () => {
         setInstitutionToDelete(null);
         setDeleteModalOpen(false);
     };
+
+    // to delete multiple institutions
+    const [selectedInstitutions, setSelectedInstitutions] = useState<number[]>([]);
+    const [deleteMultipleModalOpen, setDeleteMultipleModalOpen] = useState(false);
+    const [institutionsToDeleteMultiple, setInstitutionsToDeleteMultiple] = useState<Institution[]>([]);
+
+    const handleCheckboxChange = (id: number) => {
+        if (selectedInstitutions.includes(id)) {
+            setSelectedInstitutions(selectedInstitutions.filter(instId => instId !== id));
+        } else {
+            setSelectedInstitutions([...selectedInstitutions, id]);
+        }
+    };
+
+    const isDeleteButtonDisabled = selectedInstitutions.length <= 1
+
+    const handleDeleteMultipleModalOpen = () => {
+        const selectedInstitutionsToDelete = institutions.filter(inst => selectedInstitutions.includes(inst.id));
+        setInstitutionsToDeleteMultiple(selectedInstitutionsToDelete);
+        setDeleteMultipleModalOpen(true);
+    };
+
+    const handleDeleteMultipleModalClose = () => {
+        setInstitutionsToDeleteMultiple([]);
+        setDeleteMultipleModalOpen(false);
+    };
     
     // search API datas
     useEffect(() => {
@@ -63,6 +89,23 @@ const InstitutionManagement: React.FC = () => {
         <Typography variant="h5" sx={{ marginBottom: 2, textAlign: "center" }}>
             Gerenciamento de Instituições
         </Typography>
+
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 5, paddingLeft:5, paddingRight:5 }}> 
+
+            <TextField label="Pesquisar instituição" variant="outlined" sx={{width: 900}} />
+
+            <Button variant="contained" color="primary">Cadastrar instituição</Button>
+
+            <Button
+                variant="contained"
+                color="secondary"
+                disabled={isDeleteButtonDisabled}
+                onClick={handleDeleteMultipleModalOpen}
+            >
+                Excluir instituição
+            </Button>
+
+        </Box>
 
         <Box sx={{ paddingTop: 10, paddingLeft: 5, paddingRight: 5}}>
             
@@ -91,7 +134,13 @@ const InstitutionManagement: React.FC = () => {
                 <TableRow key={institution.id} onClick={() => handleDetailModalOpen(institution)}>
 
                     <TableCell align="left">
-                        <Checkbox onClick={(e) => e.stopPropagation()} />
+
+                    <Checkbox
+                        onClick={(e) => e.stopPropagation()}
+                        checked={selectedInstitutions.includes(institution.id)}
+                        onChange={() => handleCheckboxChange(institution.id)}
+                    />
+
                     </TableCell>
 
                     <TableCell>{institution.id}</TableCell>
@@ -220,6 +269,52 @@ const InstitutionManagement: React.FC = () => {
 
             </Box>
 
+        </Modal>
+
+        {/* delete modal for multiples institutions */}
+        <Modal
+            open={deleteMultipleModalOpen}
+            onClose={handleDeleteMultipleModalClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+        >
+            <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', bgcolor: 'background.paper', boxShadow: 24, p: 4, maxWidth: 400, width: '90%' }}>
+                <Typography id="modal-modal-title" variant="h6" component="h2">
+                    Confirmar exclusão de múltiplas instituições
+                </Typography>
+
+                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                    Tem certeza que deseja excluir as seguintes instituições?
+                </Typography>
+
+                {institutionsToDeleteMultiple.map(inst => (
+                    <Typography key={inst.id}>{inst.nome}</Typography>
+                ))}
+
+                <Button onClick={async () => {
+                    try {
+                        await Promise.all(institutionsToDeleteMultiple.map(async (inst) => {
+                            const response = await fetch(`http://localhost:8080/instituicao/${inst.id}`, {
+                                method: 'DELETE',
+                            });
+
+                            if (response.ok) {
+                                console.log(`Instituição ${inst.nome} excluída com sucesso`);
+                            } else {
+                                console.error(`Falha ao excluir instituição ${inst.nome}`);
+                            }
+                        }));
+                        
+                        setInstitutions(institutions.filter(inst => !selectedInstitutions.includes(inst.id)));
+                    } catch (error) {
+                        console.error('Erro ao excluir instituições:', error);
+                    } finally {
+                        handleDeleteMultipleModalClose();
+                    }
+                }}>Sim</Button>
+
+                <Button onClick={handleDeleteMultipleModalClose}>Não</Button>
+            </Box>
         </Modal>
 
         </Box>
