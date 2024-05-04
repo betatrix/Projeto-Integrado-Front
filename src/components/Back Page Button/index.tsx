@@ -4,7 +4,7 @@ import { BackPageButton } from './style'; // importando o titulo estilizado para
 function BackButton() {
     return (
         <div>
-            <BackPageButton>Dashboard do Administrador</BackPageButton>
+            <BackPageButton>Voltar</BackPageButton>
         </div>
     );
 }
