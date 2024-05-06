@@ -1,4 +1,4 @@
-//institutitonTypes.ts na pasta types
+
 export type Endereco = {
     logradouro: string;
     numero: string;

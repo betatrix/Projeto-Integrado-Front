@@ -1,5 +1,3 @@
-
-//institutionService.ts na pasta service
 import { InstituicaoForm } from '../types/institutionTypes';
 import { cadastrarEntidade } from './apiService';
 

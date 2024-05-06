@@ -6,5 +6,5 @@ export const buscarPoliticas = async () => {
 };
 
 export const buscarpoliticaPorId = async (id: number) => {
-    return await buscarEntidadePorId('politica', id);
-  };
+  return await buscarEntidadePorId('politica', id);
+};

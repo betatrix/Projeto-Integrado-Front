@@ -1,4 +1,3 @@
-//courseTypes.ts na pasta Type
 
 export type CourseForm = {
     descricao: string;

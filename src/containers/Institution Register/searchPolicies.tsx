@@ -17,20 +17,29 @@ export const BuscaPoliticas = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(false);
 
+
+
     useEffect(() => {
+
         const institutionId = location.state?.institutionId;
+
         if (institutionId) {
+            console.log("Institution ID found:", institutionId);
             setSelectedInstitutionId(institutionId);
         } else {
-            navigate('/cadastro');
+            console.log(institutionId)
+            console.log('No institution ID, navigating to /cadastro');
+            //navigate('/cadastro');
         }
 
         const fetchPolicies = async () => {
             setLoading(true);
             try {
+                console.log("Fetching policies");
                 const fetchedPolicies = await buscarPoliticas();
                 setPolicies(fetchedPolicies);
                 setFilteredPolicies(fetchedPolicies);
+                console.log("Policies fetched");
             } catch (error) {
                 console.error('Failed to fetch policies:', error);
             }
@@ -38,6 +47,10 @@ export const BuscaPoliticas = () => {
         };
         fetchPolicies();
     }, [location.state, navigate]);
+
+
+
+
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
@@ -89,15 +102,15 @@ export const BuscaPoliticas = () => {
             console.error('Erro ao cadastrar políticas na instituição:', error);
         }
     };
-    
+
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, maxWidth: 800, margin: 'auto', mt: 4 }}>
-            <Typography variant="h4" sx={{ mb: 2 }}>Pesquisar Políticas</Typography>
-            
+            <Typography variant='h4' sx={{ mb: 2 }}>Pesquisar Políticas</Typography>
+
             <TextField
-                label="Pesquisar Política"
-                variant="outlined"
+                label='Pesquisar Política'
+                variant='outlined'
                 value={searchTerm}
                 onChange={handleSearchChange}
                 fullWidth
@@ -112,14 +125,14 @@ export const BuscaPoliticas = () => {
                             />
                             <ListItemText
                                 primary={policy.descricao}
-                                secondary={`ID: ${policy.id}`}
+                                // secondary={`ID: ${policy.id}`}
                             />
                         </ListItem>
                     ))}
                 </List>
             )}
-            <Button variant="outlined" onClick={() => navigate('/cadastro')} sx={{ mt: 2, mr: 1 }}>Voltar</Button>
-            <Button variant="contained" onClick={handleSubmitPolicies} sx={{ mt: 2 }}>Avançar</Button>
+            <Button variant='outlined' onClick={() => navigate('/cadastro')} sx={{ mt: 2, mr: 1 }}>Voltar</Button>
+            <Button variant='contained' onClick={handleSubmitPolicies} sx={{ mt: 2 }}>Avançar</Button>
         </Box>
     );
 };

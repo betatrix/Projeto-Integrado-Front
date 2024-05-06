@@ -5,7 +5,7 @@ export const Dashboard = () =>{
         <div>
             <p>Dashboard</p>
             <Link to={"/cadastro"}>Cadastro de Instituição</Link>
-
+            
         </div>
         
     )
