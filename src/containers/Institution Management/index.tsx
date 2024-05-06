@@ -3,6 +3,7 @@ import { Box, Checkbox, Typography, Table, TableHead, TableCell, TableBody, Butt
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import BackButton from "../../components/Back Page Button";
+import { Link } from 'react-router-dom';
 
 interface Institution {
     id: number;
@@ -105,7 +106,9 @@ const InstitutionManagement: React.FC = () => {
             onChange={(e) => setSearchValue(e.target.value)}
         />
 
-            <Button variant="contained" color="primary">Cadastrar instituição</Button>
+            <Link to="/cadastro">            
+                <Button variant="contained" color="primary">Cadastrar instituição</Button>
+            </Link>
 
             <Button
                 variant="contained"
@@ -113,7 +116,7 @@ const InstitutionManagement: React.FC = () => {
                 disabled={isDeleteButtonDisabled}
                 onClick={handleDeleteMultipleModalOpen}
             >
-                Excluir instituição
+                Excluir instituições
             </Button>
 
         </Box>
