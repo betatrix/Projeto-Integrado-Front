@@ -1,8 +1,10 @@
 // estilização de componentes da página de dashboard do admin
 import styled from 'styled-components';
 
-export const Title = styled.h1 `
-    color: white;
-    background-color: black;
-    text-align: center;
+export const LoginContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  margin-top: 50px;
 `;
