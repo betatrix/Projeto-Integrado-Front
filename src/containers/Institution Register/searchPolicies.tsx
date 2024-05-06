@@ -1,56 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import { Box, TextField, List, ListItem, ListItemText, Checkbox, Button, Typography, CircularProgress } from '@mui/material';
-
+import { useInstitution } from '../../context/institutionContext';
 import { buscarPoliticas } from '../../services/policiesService';
 import { PolicesInstitutionForm } from '../../types/policiesTypes';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { cadastrarPoliticasInstituicao } from '../../services/policiesInstitutionService';
 
-export const BuscaPoliticas = () => {
-
+export const BuscaPoliticas: React.FC = () => {
+    const { institutionId } = useInstitution();
     const navigate = useNavigate();
-    const location = useLocation();
-    const [selectedInstitutionId, setSelectedInstitutionId] = useState<number | null>(null);
     const [selectedPolicies, setSelectedPolicies] = useState<{ [key: number]: boolean }>({});
     const [policies, setPolicies] = useState<PolicesInstitutionForm[]>([]);
     const [filteredPolicies, setFilteredPolicies] = useState<PolicesInstitutionForm[]>([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(false);
 
-
-
     useEffect(() => {
-
-        const institutionId = location.state?.institutionId;
-
-        if (institutionId) {
-            console.log("Institution ID found:", institutionId);
-            setSelectedInstitutionId(institutionId);
+        if (!institutionId) {
+            console.log('No institution ID, navigating to /cadastro-instituicao');
+            navigate('/cadastro');
         } else {
-            console.log(institutionId)
-            console.log('No institution ID, navigating to /cadastro');
-            //navigate('/cadastro');
+            const fetchPolicies = async () => {
+                setLoading(true);
+                try {
+                    const fetchedPolicies = await buscarPoliticas(); // Pode precisar adicionar institutionId como parâmetro dependendo da API
+                    setPolicies(fetchedPolicies);
+                    setFilteredPolicies(fetchedPolicies);
+                } catch (error) {
+                    console.error('Failed to fetch policies:', error);
+                }
+                setLoading(false);
+            };
+            fetchPolicies();
         }
-
-        const fetchPolicies = async () => {
-            setLoading(true);
-            try {
-                console.log("Fetching policies");
-                const fetchedPolicies = await buscarPoliticas();
-                setPolicies(fetchedPolicies);
-                setFilteredPolicies(fetchedPolicies);
-                console.log("Policies fetched");
-            } catch (error) {
-                console.error('Failed to fetch policies:', error);
-            }
-            setLoading(false);
-        };
-        fetchPolicies();
-    }, [location.state, navigate]);
-
-
-
-
+    }, [institutionId, navigate]);
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
@@ -65,49 +48,31 @@ export const BuscaPoliticas = () => {
         }));
     };
 
-    // const handleSubmitPolicies = async () => {
-    //     if (!selectedInstitutionId) {
-    //         alert('Instituição não identificada.');
-    //         return;
-    //     }
-    //     try {
-    //         const selectedPolicyIds = Object.keys(selectedPolicies).filter(politicaId => selectedPolicies [politicaId]);
-    //         const requests = selectedPolicyIds.map(politicaId =>
-    //             cadastrarPoliticasInstituicao(selectedInstitutionId, Number(politicaId))
-    //         );
-    //         const responses = await Promise.all(requests);
-    //         console.log(responses);
-    //         alert('Políticas cadastradas com sucesso na Instituição!');
-    //         navigate('/politicas'); // Tela de Sucesso
-    //     } catch (error) {
-    //         console.error('Erro ao cadastrar políticas na instituição:', error);
-    //     }
-    // };
-
     const handleSubmitPolicies = async () => {
-        if (!selectedInstitutionId) {
+        if (!institutionId) {
             alert('Instituição não identificada.');
             return;
         }
         try {
-            //const selectedPolicyIds = Object.keys(selectedPolicies).filter(policyId => selectedPolicies[policyId]);
-            const requests = Object.entries(selectedPolicies).map(([politicaId]) =>
-                cadastrarPoliticasInstituicao(selectedInstitutionId, Number(politicaId))
-            );
-            const responses = await Promise.all(requests);
-            console.log(responses);
-            alert('Políticas cadastradas com sucesso na Instituição!');
-            navigate('/politicas'); // Tela de Sucesso
+            const selectedPolicyIds = Object.entries(selectedPolicies)
+                .filter(([_, isSelected]) => isSelected)
+                .map(([id, _]) => id);
+
+           
+             const responses = await Promise.all(selectedPolicyIds.map(policyId =>
+                cadastrarPoliticasInstituicao(institutionId, Number(policyId))));
+
+            console.log('Políticas cadastradas com sucesso na Instituição!');
+            alert('Políticas cadastradas com sucesso na Instituição');
+            navigate('/pagina-inicial'); 
         } catch (error) {
             console.error('Erro ao cadastrar políticas na instituição:', error);
         }
     };
 
-
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, maxWidth: 800, margin: 'auto', mt: 4 }}>
             <Typography variant='h4' sx={{ mb: 2 }}>Pesquisar Políticas</Typography>
-
             <TextField
                 label='Pesquisar Política'
                 variant='outlined'
@@ -125,14 +90,15 @@ export const BuscaPoliticas = () => {
                             />
                             <ListItemText
                                 primary={policy.descricao}
-                                // secondary={`ID: ${policy.id}`}
                             />
                         </ListItem>
                     ))}
                 </List>
             )}
-            <Button variant='outlined' onClick={() => navigate('/cadastro')} sx={{ mt: 2, mr: 1 }}>Voltar</Button>
+            <Button variant='outlined' onClick={() => navigate('/cursos')} sx={{ mt: 2, mr: 1 }}>Voltar</Button>
             <Button variant='contained' onClick={handleSubmitPolicies} sx={{ mt: 2 }}>Avançar</Button>
         </Box>
     );
 };
+
+export default BuscaPoliticas;

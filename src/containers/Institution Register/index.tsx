@@ -1,14 +1,18 @@
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-mui';
-import { Button, Box, Typography, } from '@mui/material';
+import { Button, Box, Typography } from '@mui/material';
 import axios from 'axios';
 import * as Yup from 'yup';
-import { InstituicaoForm } from '../../types/institutionTypes';
+import { useInstitution } from '../../context/institutionContext';
 import { useNavigate } from 'react-router-dom';
 import { cadastrarInstituicao } from '../../services/institutionService';
 
-interface FormValues extends InstituicaoForm {
+interface FormValues {
+  nome: string;
+  site: string;
+  notaMec: number | null;
+  sigla: string;
   endereco: {
     logradouro: string;
     numero: string;
@@ -20,10 +24,10 @@ interface FormValues extends InstituicaoForm {
   };
 }
 
-export const CadastroInstituicao = () => {
-
+export const CadastroInstituicao: React.FC = () => {
   const navigate = useNavigate();
-  const handleNavigateBack = () => navigate('/pagina-inicial');
+  const { setInstitutionId } = useInstitution(); 
+
   const initialValues: FormValues = {
     nome: '',
     site: '',
@@ -67,10 +71,7 @@ export const CadastroInstituicao = () => {
     }),
   });
 
-  const handleCepChange = async (
-    event: React.ChangeEvent<HTMLInputElement>,
-    setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void
-  ) => {
+  const handleCepChange = async (event: React.ChangeEvent<HTMLInputElement>, setFieldValue: (field: string, value: any) => void) => {
     const cep = event.target.value.replace(/\D/g, '');
     setFieldValue('endereco.cep', cep);
 
@@ -92,47 +93,44 @@ export const CadastroInstituicao = () => {
     try {
       const response = await cadastrarInstituicao(values);
       console.log('Instituição cadastrada com sucesso:', response);
+      setInstitutionId(response.id); 
       navigate('/cursos', { state: { institutionId: response.id } });
     } catch (error) {
       console.error('Erro ao cadastrar instituição:', error);
     }
     setSubmitting(false);
   };
+
   return (
-
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, maxWidth: 400, margin: 'auto' }}>
-
       <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
         {({ setFieldValue, isSubmitting }) => (
           <Form>
-            <Typography variant='h6' sx={{ textAlign: 'left' }}>Dados Gerais</Typography>
-            <Field component={TextField} name='nome' label='Nome da Instituição' variant='outlined' fullWidth required />
-            <Field component={TextField} name='site' label='Site' variant='outlined' fullWidth required />
-            <Field component={TextField} name='notaMec' type='number' label='Nota MEC' variant='outlined' inputProps={{ min: 0, max: 5 }} fullWidth required />
-            <Field component={TextField} name='sigla' label='Sigla' variant='outlined' fullWidth required />
-            <Typography variant='h6' sx={{ textAlign: 'left' }}>Endereço</Typography>
-            <Field component={TextField} name='endereco.cep' label='CEP' variant='outlined' fullWidth required onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleCepChange(event, setFieldValue)} />
-            <Field component={TextField} name='endereco.logradouro' label='Logradouro' variant='outlined' fullWidth required />
-            <Field component={TextField} name='endereco.numero' label='Número' variant='outlined' fullWidth required />
-            <Field component={TextField} name='endereco.complemento' label='Complemento' variant='outlined' fullWidth />
-            <Field component={TextField} name='endereco.bairro' label='Bairro' variant='outlined' fullWidth required />
-            <Field component={TextField} name='endereco.cidade' label='Cidade' variant='outlined' fullWidth required />
-            <Field component={TextField} name='endereco.estado' label='Estado' variant='outlined' fullWidth required />
-            <Button type='button' variant='outlined' onClick={handleNavigateBack} sx={{ mt: 2, mr: 1 }}>
-              Voltar
-            </Button>
-            <Button type='submit' disabled={isSubmitting} variant='contained' sx={{ mt: 2 }}>
-              Avançar
-            </Button>
-          </Form>
+          <Typography variant='h6' sx={{ textAlign: 'left' }}>Dados Gerais</Typography>
+          <Field component={TextField} name='nome' label='Nome da Instituição' variant='outlined' fullWidth required />
+          <Field component={TextField} name='site' label='Site' variant='outlined' fullWidth required />
+          <Field component={TextField} name='notaMec' type='number' label='Nota MEC' variant='outlined' inputProps={{ min: 1, max: 5 }} fullWidth required />
+          <Field component={TextField} name='sigla' label='Sigla' variant='outlined' fullWidth required />
+          <Typography variant='h6' sx={{ textAlign: 'left' }}>Endereço</Typography>
+          <Field component={TextField} name='endereco.cep' label='CEP' variant='outlined' fullWidth required onChange={(event) => handleCepChange(event, setFieldValue)} />
+          <Field component={TextField} name='endereco.logradouro' label='Logradouro' variant='outlined' fullWidth required />
+          <Field component={TextField} name='endereco.numero' label='Número' variant='outlined' fullWidth required />
+          <Field component={TextField} name='endereco.complemento' label='Complemento' variant='outlined' fullWidth />
+          <Field component={TextField} name='endereco.bairro' label='Bairro' variant='outlined' fullWidth required />
+          <Field component={TextField} name='endereco.cidade' label='Cidade' variant='outlined' fullWidth required />
+          <Field component={TextField} name='endereco.estado' label='Estado' variant='outlined' fullWidth required />
+          <Button type='button' variant='outlined' onClick={() => navigate('/pagina-inicial')} sx={{ mt: 2, mr: 1 }}>
+            Voltar
+          </Button>
+          <Button type='submit' disabled={isSubmitting} variant='contained' sx={{ mt: 2 }}>
+            Avançar
+          </Button>
+        </Form>   
         )}
       </Formik>
     </Box>
   );
 };
 
-
-
-
-
+export default CadastroInstituicao;
 

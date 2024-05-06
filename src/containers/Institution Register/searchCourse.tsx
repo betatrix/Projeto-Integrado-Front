@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Box, TextField, List, ListItem, ListItemText, Checkbox, Button, Typography, CircularProgress, Input } from '@mui/material';
+import { useInstitution } from '../../context/institutionContext';
 import { buscarCursos } from '../../services/courseService';
-import { CourseForm } from '../../types/courseTypes';
-import { useNavigate, useLocation } from 'react-router-dom';
 import { cadastrarCursoInstituicao } from '../../services/courseInstitutionService';
+import { CourseForm } from '../../types/courseTypes';
+import { useNavigate } from 'react-router-dom';
 
-
-export const BuscaCurso = () => {
+export const BuscaCurso: React.FC = () => {
+    const { institutionId } = useInstitution(); 
     const navigate = useNavigate();
-    const location = useLocation();
-    const [selectedInstitutionId, setSelectedInstitutionId] = useState<number | null>(null);
     const [selectedCourses, setSelectedCourses] = useState<{ [key: number]: { notaMec: number, isSelected: boolean } }>({});
     const [courses, setCourses] = useState<CourseForm[]>([]);
     const [filteredCourses, setFilteredCourses] = useState<CourseForm[]>([]);
@@ -17,26 +16,23 @@ export const BuscaCurso = () => {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        const institutionId = location.state?.institutionId;
-        if (institutionId) {
-            setSelectedInstitutionId(institutionId);
+        if (!institutionId) {
+            navigate('/cadastro'); 
         } else {
-            navigate('/cadastro');
+            const fetchCourses = async () => {
+                setLoading(true);
+                try {
+                    const fetchedCourses = await buscarCursos();
+                    setCourses(fetchedCourses);
+                    setFilteredCourses(fetchedCourses);
+                } catch (error) {
+                    console.error('Failed to fetch courses:', error);
+                }
+                setLoading(false);
+            };
+            fetchCourses();
         }
-
-        const fetchCourses = async () => {
-            setLoading(true);
-            try {
-                const fetchedCourses = await buscarCursos();
-                setCourses(fetchedCourses);
-                setFilteredCourses(fetchedCourses);
-            } catch (error) {
-                console.error('Failed to fetch courses:', error);
-            }
-            setLoading(false);
-        };
-        fetchCourses();
-    }, [location.state, navigate]);
+    }, [institutionId, navigate]);
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
@@ -45,17 +41,13 @@ export const BuscaCurso = () => {
     };
 
     const handleCourseSelection = (courseId: number, notaMec: number, isSelected: boolean) => {
-
         setSelectedCourses(prev => ({
             ...prev,
             [courseId]: { notaMec, isSelected }
         }));
-        console.log(selectedCourses);
     };
 
-
     const handleNotaMecChange = (courseId: number, notaMec: number) => {
-
         setSelectedCourses(prev => ({
             ...prev,
             [courseId]: { ...prev[courseId], notaMec }
@@ -64,40 +56,37 @@ export const BuscaCurso = () => {
 
 
     const handleSubmitCourses = async () => {
-        if (!selectedInstitutionId) {
+        if (!institutionId) {
             alert('Instituição não identificada.');
             return;
         }
         try {
-
             const selectedEntries = Object.entries(selectedCourses)
-                .filter(([cursoId, c]) => c.isSelected);
-
-
-            const requests = selectedEntries.map(([cursoId, { notaMec }]) =>
-                cadastrarCursoInstituicao(selectedInstitutionId, notaMec, Number(cursoId))
-            );
-
-
-            const responses = await Promise.all(requests);
-            console.log(responses);
-            // alert('Cursos cadastrados com sucesso na Instituição!');
-            console.log(navigate);
-            navigate('/politicas');
-            console.log(navigate('/politicas'));
+                .filter(([_, c]) => c.isSelected)
+                .map(([id, { notaMec }]) => ({
+                    courseId: Number(id),
+                    notaMec
+                }));
+             
+            const responses = await Promise.all(selectedEntries.map(({ notaMec, courseId }) =>
+                cadastrarCursoInstituicao(institutionId, notaMec, courseId)
+            
+           
+            ));
+            console.log('Cursos cadastrados com sucesso:', responses);
+            alert('Cursos cadastrados com sucesso na Instituição');
+            navigate('/politicas', { state: { institutionId } });
         } catch (error) {
             console.error('Erro ao cadastrar cursos na instituição:', error);
         }
     };
 
-
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, maxWidth: 800, margin: 'auto', mt: 4 }}>
             <Typography variant="h4" sx={{ mb: 2 }}>Pesquisar Cursos</Typography>
-
             <TextField
-                label="Pesquisar Curso"
-                variant="outlined"
+                label='Pesquisar Curso'
+                variant='outlined'
                 value={searchTerm}
                 onChange={handleSearchChange}
                 fullWidth
@@ -107,23 +96,19 @@ export const BuscaCurso = () => {
                     {filteredCourses.map((course) => (
                         <ListItem key={course.id} divider>
                             <Checkbox
-                                // checked={!!selectedCourses[course.id]}
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleCourseSelection(
+                                checked={selectedCourses[course.id]?.isSelected || false}
+                                onChange={(e) => handleCourseSelection(
                                     course.id, selectedCourses[course.id]?.notaMec || 0, e.target.checked)
                                 }
-
-
                             />
                             <ListItemText
                                 primary={course.descricao}
-                            //   secondary={`ID: ${course.id} - Ativo: ${course.ativo ? 'Sim' : 'Não'}`}
                             />
                             {selectedCourses[course.id]?.isSelected && (
-
                                 <Input
                                     value={selectedCourses[course.id]?.notaMec || ''}
                                     onChange={(e) => handleNotaMecChange(course.id, Number(e.target.value))}
-                                    type="number"
+                                    type='number'
                                     inputProps={{ min: 0, max: 5 }}
                                     style={{ width: '50px', marginLeft: '10px' }}
                                 />
@@ -132,13 +117,13 @@ export const BuscaCurso = () => {
                     ))}
                 </List>
             )}
-            <Button variant="outlined" onClick={() => navigate('/cadastro')} sx={{ mt: 2, mr: 1 }}>Voltar</Button>
-            <Button variant="contained" onClick={handleSubmitCourses} sx={{ mt: 2 }}>Avançar</Button>
+            <Button variant='outlined' onClick={() => navigate('/cadastro')} sx={{ mt: 2, mr: 1 }}>Voltar</Button>
+            <Button variant='contained' onClick={handleSubmitCourses} sx={{ mt: 2 }}>Avançar</Button>
         </Box>
     );
-
-
 };
+
+export default BuscaCurso;
 
 
 
