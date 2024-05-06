@@ -1,3 +1,4 @@
+//institutitonTypes.ts na pasta types
 export type Endereco = {
     logradouro: string;
     numero: string;
@@ -14,4 +15,5 @@ export type Endereco = {
     notaMec: number | null;
     sigla: string;
     endereco: Endereco;
+    
   };
