@@ -2,11 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Box, Checkbox, Typography, Table, TableHead, TableCell, TableBody, Button, Modal, IconButton, Grid, TableRow } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-<<<<<<< HEAD:src/containers/Institution Management/intex.tsx
-=======
-import BackButton from "../../components/Back Page Button";
-import { Link } from 'react-router-dom';
->>>>>>> 2e73377 (feat(institution): add institution management to routes):src/containers/Institution Management/index.tsx
 
 interface Institution {
     id: number;
@@ -69,33 +64,6 @@ const InstitutionManagement: React.FC = () => {
             Gerenciamento de Instituições
         </Typography>
 
-<<<<<<< HEAD:src/containers/Institution Management/intex.tsx
-=======
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 5, paddingLeft:5, paddingRight:5 }}> 
-
-        <TextField
-            label="Pesquisar instituição"
-            variant="outlined"
-            sx={{width: "70%"}}
-            onChange={(e) => setSearchValue(e.target.value)}
-        />
-
-            <Link to="/cadastro">            
-                <Button variant="contained" color="primary">Cadastrar instituição</Button>
-            </Link>
-
-            <Button
-                variant="contained"
-                color="secondary"
-                disabled={isDeleteButtonDisabled}
-                onClick={handleDeleteMultipleModalOpen}
-            >
-                Excluir instituições
-            </Button>
-
-        </Box>
-
->>>>>>> 2e73377 (feat(institution): add institution management to routes):src/containers/Institution Management/index.tsx
         <Box sx={{ paddingTop: 10, paddingLeft: 5, paddingRight: 5}}>
             
         <Table>
