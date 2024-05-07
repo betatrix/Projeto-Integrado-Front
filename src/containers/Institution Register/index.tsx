@@ -32,7 +32,7 @@ interface FormValues {
 
 export const CadastroInstituicao: React.FC = () => {
   const navigate = useNavigate();
-  const { setInstitutionId } = useInstitution(); 
+  const { setInstitutionId } = useInstitution();
   const steps = [
     'Cadastrar Dados da Instituição',
     'Adicionar Cursos na Instituição',
@@ -104,7 +104,7 @@ export const CadastroInstituicao: React.FC = () => {
     try {
       const response = await cadastrarInstituicao(values);
       console.log('Instituição cadastrada com sucesso:', response);
-      setInstitutionId(response.id); 
+      setInstitutionId(response.id);
       navigate('/cursos', { state: { institutionId: response.id } });
     } catch (error) {
       console.error('Erro ao cadastrar instituição:', error);
@@ -113,110 +113,110 @@ export const CadastroInstituicao: React.FC = () => {
   };
   return (
     <>
-    <AdminHeader/>
-    <Box>
-    <Box  sx={{ marginTop: '20px' }}>
-                    
-    <Box sx={{ width: '100%' }}>
-      <Stepper activeStep={0} alternativeLabel>
-          {steps.map((label) => (
-            <Step key={label}>
-              <StepLabel>{label}</StepLabel>
-            </Step>
-          ))}
-      </Stepper>
-    </Box>
-                  
-    <Box sx={{ marginTop: '20px', marginBottom: '40px' }} >
-      <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
-        {({ setFieldValue, isSubmitting }) => (
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, maxWidth: 600,  margin: 'auto' }}>
-            <Form>
+      <AdminHeader />
+      <Box>
+        <Box sx={{ marginTop: '20px' }}>
 
-              <Box sx={{ display: 'flex', justifyContent: 'flex-start', mt: 2 }}>
-                <Button 
-                  type='button' 
-                  variant='outlined' 
-                  onClick={() => navigate('/pagina-inicial')} 
-                  sx={{mr: 1, p:1 }} >
-                  Voltar
-                </Button>
+          <Box sx={{ width: '100%' }}>
+            <Stepper activeStep={0} alternativeLabel>
+              {steps.map((label) => (
+                <Step key={label}>
+                  <StepLabel>{label}</StepLabel>
+                </Step>
+              ))}
+            </Stepper>
+          </Box>
+
+          <Box sx={{ marginTop: '20px', marginBottom: '40px' }} >
+            <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
+              {({ setFieldValue, isSubmitting }) => (
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, maxWidth: 600, margin: 'auto' }}>
+                  <Form>
+
+                    <Box sx={{ display: 'flex', justifyContent: 'flex-start', mt: 2 }}>
+                      <Button
+                        type='button'
+                        variant='outlined'
+                        onClick={() => navigate('/pagina-inicial')}
+                        sx={{ mr: 1, p: 1 }} >
+                        Voltar
+                      </Button>
+                    </Box>
+
+                    <Box sx={{ '& .MuiTextField-root': { m: 1 } }}>
+                      <Paper sx={{ marginTop: '30px', marginBottom: '30px' }}>
+                        <Grid container spacing={2} sx={{ maxWidth: 500, paddingLeft: '60px', paddingTop: '20px', paddingBottom: '30px' }}>
+                          <Typography variant='h6' sx={{ textAlign: 'left' }}>Dados Gerais</Typography>
+                          <Grid item xs={12} >
+                            <Field component={TextField} name='nome' label='Nome da Instituição' variant='standard' size='small' fullWidth required />
+                            <Field component={TextField} name='site' label='Site' variant='standard' size='small' fullWidth required />
+                          </Grid>
+                          <Grid item xs={6}>
+                            <Field component={TextField} name='sigla' label='Sigla' variant='standard' size='small' fullWidth required />
+
+                          </Grid>
+                          <Grid item xs={6}>
+
+                            <Field component={TextField} name='notaMec' type='number' label='Nota MEC' variant='standard' inputProps={{ min: 1, max: 5 }} size='small' fullWidth required />
+                          </Grid>
+                        </Grid>
+                      </Paper>
+                    </Box>
+                    <Box sx={{ '& .MuiTextField-root': { m: 1 }, }}>
+                      <Paper sx={{ marginTop: '20px' }}>
+                        <Grid container spacing={2} sx={{ maxWidth: 500, paddingLeft: '60px', paddingTop: '20px', paddingBottom: '30px' }} >
+                          <Typography variant='h6' sx={{ textAlign: 'left' }}>Endereço</Typography>
+                          <Grid item xs={12}>
+                            <Field component={TextField} name='endereco.logradouro' label='Logradouro' variant='standard' fullWidth size='small' required />
+                          </Grid>
+
+                          <Grid item xs={6} >
+                            <Field component={TextField} name='endereco.cep' label='CEP' variant='standard' fullWidth size='small' required onChange={(event) => handleCepChange(event, setFieldValue)} />
+                          </Grid>
+
+                          <Grid item xs={6} >
+                            <Field component={TextField} name='endereco.numero' label='Número' variant='standard' fullWidth size='small' required />
+                          </Grid>
+                          <Grid item xs={12}>
+                            <Field component={TextField} name='endereco.complemento' label='Complemento' variant='standard' fullWidth size='small' />
+                          </Grid>
+
+
+                          <Grid item xs={12}>
+                            <Field component={TextField} name='endereco.bairro' label='Bairro' variant='standard' fullWidth size='small' required />
+                          </Grid>
+
+                          <Grid item xs={6} >
+                            <Field component={TextField} name='endereco.cidade' label='Cidade' variant='standard' fullWidth size='small' required />
+                          </Grid>
+
+                          <Grid item xs={6}>
+                            <Field component={TextField} name='endereco.estado' label='Estado' variant='standard' fullWidth size='small' required />
+                          </Grid>
+                        </Grid>
+                      </Paper>
+                    </Box>
+                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
+                      <Button
+                        type='submit'
+                        disabled={isSubmitting}
+                        variant='contained'
+                        sx={{ p: 1 }}>
+                        Avançar
+                      </Button>
+                    </Box>
+
+                  </Form>
                 </Box>
-
-              <Box sx={{ '& .MuiTextField-root': { m: 1 }}}>
-                <Paper sx={{marginTop: '30px', marginBottom: '30px'}}>
-                  <Grid container spacing={2} sx={{maxWidth: 500, paddingLeft: '60px', paddingTop: '20px', paddingBottom: '30px'}}>
-                    <Typography variant='h6' sx={{ textAlign: 'left' }}>Dados Gerais</Typography> 
-                    <Grid item xs={12} > 
-                        <Field component={TextField} name='nome' label='Nome da Instituição' variant='standard' size='small'  fullWidth required />
-                        <Field component={TextField} name='site' label='Site' variant='standard' size='small' fullWidth  required />
-                    </Grid>
-                    <Grid item xs={6}> 
-                        <Field component={TextField} name='sigla' label='Sigla' variant='standard' size='small' fullWidth required />
-                        
-                    </Grid>
-                    <Grid item xs={6}> 
-                       
-                        <Field component={TextField} name='notaMec' type='number' label='Nota MEC' variant='standard' inputProps={{ min: 1, max: 5 }} size='small' fullWidth required />
-                    </Grid>
-                  </Grid>
-                </Paper>
-              </Box>
-              <Box sx={{'& .MuiTextField-root': { m: 1 },}}>
-                  <Paper sx={{marginTop: '20px'}}>
-                      <Grid container spacing={2} sx={{maxWidth: 500, paddingLeft: '60px', paddingTop: '20px', paddingBottom: '30px' }} >
-                                <Typography variant='h6' sx={{ textAlign: 'left' }}>Endereço</Typography>
-                                <Grid item xs={12}>
-                                    <Field component={TextField} name='endereco.logradouro' label='Logradouro' variant='standard'  fullWidth size='small' required />    
-                                </Grid>
-
-                                <Grid item xs={6} >
-                                    <Field component={TextField} name='endereco.cep' label='CEP' variant='standard' fullWidth size='small' required onChange={(event) => handleCepChange(event, setFieldValue)} />
-                                </Grid>
-
-                                <Grid item xs={6} > 
-                                    <Field component={TextField} name='endereco.numero' label='Número' variant='standard' fullWidth size='small' required />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <Field component={TextField} name='endereco.complemento' label='Complemento' variant='standard' fullWidth size='small' />          
-                                </Grid>
-
-
-                                <Grid item xs={12}>
-                                    <Field component={TextField} name='endereco.bairro' label='Bairro' variant='standard' fullWidth size='small' required />
-                                </Grid>
-
-                                <Grid item xs={6} >
-                                    <Field component={TextField} name='endereco.cidade' label='Cidade' variant='standard' fullWidth size='small' required />
-                                </Grid>
-
-                                <Grid item xs={6}>
-                                    <Field component={TextField} name='endereco.estado' label='Estado' variant='standard' fullWidth size='small' required />
-                                </Grid>    
-                      </Grid>
-                  </Paper>
-              </Box> 
-              <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
-              <Button 
-                type='submit' 
-                disabled={isSubmitting} 
-                variant='contained' 
-                sx={{ p: 1 }}>
-                Avançar
-              </Button>
-            </Box>
-              
-          </Form>   
+              )}
+            </Formik>
+          </Box>
         </Box>
-        )}
-      </Formik>
-    </Box>
-    </Box>
-    </Box>
-    <Footer />
-      </>
+      </Box>
+      <Footer />
+    </>
   );
-  
+
 };
 
 export default CadastroInstituicao;

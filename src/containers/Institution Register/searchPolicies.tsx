@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, TextField, List, ListItem, ListItemText, Checkbox, Button, Typography, CircularProgress, Stepper, StepLabel } from '@mui/material';
+import { Box, TextField, List, ListItem, ListItemText, Checkbox, Button, Typography, CircularProgress, Stepper, StepLabel, Grid } from '@mui/material';
 import { useInstitution } from '../../context/institutionContext';
 import { buscarPoliticas } from '../../services/policiesService';
 import { PolicesInstitutionForm } from '../../types/policiesTypes';
@@ -69,14 +69,18 @@ export const BuscaPoliticas: React.FC = () => {
             const selectedPolicyIds = Object.entries(selectedPolicies)
                 .filter(([_, isSelected]) => isSelected)
                 .map(([id, _]) => id);
+             
 
-           
-             const responses = await Promise.all(selectedPolicyIds.map(policyId =>
-                cadastrarPoliticasInstituicao(institutionId, Number(policyId))));
-
-            console.log('Políticas cadastradas com sucesso na Instituição!');
-            alert('Políticas cadastradas com sucesso na Instituição');
-            navigate('/pagina-inicial'); 
+                if(selectedPolicyIds?.length > 0){
+                    const responses = await Promise.all(selectedPolicyIds.map(policyId =>
+                        cadastrarPoliticasInstituicao(institutionId, Number(policyId))));
+                        alert('Políticas cadastradas com sucesso na Instituição');
+                        navigate('/pagina-inicial'); 
+                } else{
+                    alert('Nenhuma política selecionada!');
+                    navigate('/pagina-inicial'); 
+                }
+          
         } catch (error) {
             console.error('Erro ao cadastrar políticas na instituição:', error);
         }
@@ -85,6 +89,7 @@ export const BuscaPoliticas: React.FC = () => {
     return (
         <>
         <AdminHeader/>
+        <Box sx={{ marginTop: '20px', marginBottom: '40px' }} >
         <Box sx={{ width: '100%' }}>
         <Stepper activeStep={2} alternativeLabel>
             {steps.map((label) => (
@@ -93,12 +98,13 @@ export const BuscaPoliticas: React.FC = () => {
                 </Step>
             ))}
         </Stepper>
-        </Box>
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, maxWidth: 800, margin: 'auto', mt: 4 }}>
-            <Typography variant='h4' sx={{ mb: 2 }}>Pesquisar Políticas</Typography>
+        </Box >
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, maxWidth: 600, margin: 'auto', mt: 4 }}>
+                
+            <Typography variant='h4' sx={{ mb: 2 }}>Políticas da Instituição</Typography>
             <TextField
                 label='Pesquisar Política'
-                variant='outlined'
+                variant='standard'
                 value={searchTerm}
                 onChange={handleSearchChange}
                 fullWidth
@@ -118,8 +124,20 @@ export const BuscaPoliticas: React.FC = () => {
                     ))}
                 </List>
             )}
-            <Button variant='outlined' onClick={() => navigate('/cursos')} sx={{ mt: 2, mr: 1 }}>Voltar</Button>
-            <Button variant='contained' onClick={handleSubmitPolicies} sx={{ mt: 2 }}>Avançar</Button>
+
+                    <Grid container spacing={2} justifyContent='space-between'>
+                    
+                        <Grid item xs={6} display="flex" justifyContent="flex-start">
+                        <Button variant='outlined' onClick={() => navigate('/cursos')} sx={{ mt: 2, mr: 1 }}>Voltar</Button>
+                        </Grid>
+                        
+                        <Grid item xs={6} display="flex" justifyContent="flex-end">
+                        <Button variant='contained' onClick={handleSubmitPolicies} sx={{ mt: 2 }}>Avançar</Button>
+                        </Grid>
+                    </Grid>
+            
+           
+        </Box>
         </Box>
         <Footer/>
         </>
