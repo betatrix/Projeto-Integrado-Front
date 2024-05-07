@@ -18,6 +18,9 @@ interface Institution {
     endereco: Endereco;
 }
 
+//environment variable
+const apiUrl = import.meta.env.VITE_API_URL;
+
 const InstitutionManagement: React.FC = () => {
     // to detail
     const [institutions, setInstitutions] = useState<Institution[]>([]);
@@ -26,7 +29,7 @@ const InstitutionManagement: React.FC = () => {
 
     const handleDetailModalOpen = async (institution: Institution) => {
         try {
-            const response = await fetch(`http://localhost:8080/instituicao/${institution.id}`);
+            const response = await fetch(`${apiUrl}/${institution.id}`);
             const data = await response.json();
             setSelectedDetailInstitutionWithAddress(data);
             setDetailModalOpen(true);
@@ -85,7 +88,7 @@ const InstitutionManagement: React.FC = () => {
 
     useEffect(() => {
         const searchInstitution = async () => {
-            const response = await fetch(`http://localhost:8080/instituicao/ativos?nome=${searchValue}`);
+            const response = await fetch(`${apiUrl}?nome=${searchValue}`);
             const data = await response.json();
             setInstitutions(data);
         };
@@ -154,6 +157,7 @@ const InstitutionManagement: React.FC = () => {
                 {institutions.map((institution) => (
 
                     searchValue.trim() === '' || institution.nome.toLowerCase().includes(searchValue.toLowerCase()) ? (
+                        console.log('Valor de ativo:', institution.ativo),
 
                         <TableRow key={institution.id} onClick={() => handleDetailModalOpen(institution)}>
 
@@ -167,7 +171,7 @@ const InstitutionManagement: React.FC = () => {
 
                             <TableCell>{institution.id}</TableCell>
                             <TableCell>{institution.nome}</TableCell>
-                            <TableCell>{institution.ativo ? "Inativa" : "Ativa"}</TableCell>
+                            <TableCell>{institution.ativo ? "Ativo" : "Inativo"}</TableCell>
 
                             <TableCell align="right">
 
@@ -204,7 +208,7 @@ const InstitutionManagement: React.FC = () => {
 
                 <Grid container spacing={3}>
 
-                    <Typography variant="h5" gutterBottom sx={{ marginTop: 2, textAlign: "center" }}>
+                    <Typography variant="h5" gutterBottom sx={{ marginTop: 2, textAlign: "center", paddingLeft: 2 }}>
                         {selectedDetailInstitutionWithAddress.nome}
                     </Typography>
 
@@ -216,7 +220,7 @@ const InstitutionManagement: React.FC = () => {
 
                         <Typography>ID: {selectedDetailInstitutionWithAddress.id}</Typography>
                         <Typography>Nome: {selectedDetailInstitutionWithAddress.nome}</Typography>
-                        <Typography>Ativo: {selectedDetailInstitutionWithAddress.ativo ? "Não" : "Sim"}</Typography>
+                        <Typography>Ativo: {selectedDetailInstitutionWithAddress.ativo ? "Sim" : "Não"}</Typography>
                         <Typography>Sigla: {selectedDetailInstitutionWithAddress.sigla}</Typography>
                         <Typography>Site: {selectedDetailInstitutionWithAddress.site || "Não disponível"}</Typography>
                         <Typography>Nota MEC: {selectedDetailInstitutionWithAddress.notaMec || "Não disponível"}</Typography>
@@ -266,7 +270,7 @@ const InstitutionManagement: React.FC = () => {
 
                     if (institutionToDelete) {
                         try {
-                            const response = await fetch(`http://localhost:8080/instituicao/${institutionToDelete.id}`, {
+                            const response = await fetch(`${apiUrl}/${institutionToDelete.id}`, {
                                 method: 'DELETE',
                             });
 
@@ -315,7 +319,7 @@ const InstitutionManagement: React.FC = () => {
                     <Button onClick={async () => {
                         try {
                             await Promise.all(institutionsToDeleteMultiple.map(async (inst) => {
-                                const response = await fetch(`http://localhost:8080/instituicao/${inst.id}`, {
+                                const response = await fetch(`${apiUrl}/${inst.id}`, {
                                     method: 'DELETE',
                                 });
 
