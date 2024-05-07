@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Box, TextField, List, ListItem, ListItemText, Checkbox, Button, Typography, CircularProgress, Input } from '@mui/material';
+import { Box, TextField, List, ListItem, ListItemText, Checkbox, Button, Typography, CircularProgress, Input, InputLabel, FormControl, FormHelperText } from '@mui/material';
 import { useInstitution } from '../../context/institutionContext';
 import { buscarCursos } from '../../services/courseService';
 import { cadastrarCursoInstituicao } from '../../services/courseInstitutionService';
 import { CourseForm } from '../../types/courseTypes';
 import { useNavigate } from 'react-router-dom';
+import AdminHeader from '../../components/AdminHeader';
+import Footer from '../../components/AdminFooter';
 
 export const BuscaCurso: React.FC = () => {
     const { institutionId } = useInstitution(); 
@@ -82,6 +84,8 @@ export const BuscaCurso: React.FC = () => {
     };
 
     return (
+        <>
+        <AdminHeader/>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, maxWidth: 800, margin: 'auto', mt: 4 }}>
             <Typography variant="h4" sx={{ mb: 2 }}>Pesquisar Cursos</Typography>
             <TextField
@@ -105,13 +109,18 @@ export const BuscaCurso: React.FC = () => {
                                 primary={course.descricao}
                             />
                             {selectedCourses[course.id]?.isSelected && (
+                                <FormControl style={{ marginLeft: '10px', minWidth: '120px' }}>
+                                <InputLabel htmlFor={`notaMec-${course.id}`}>Nota MEC</InputLabel>
                                 <Input
-                                    value={selectedCourses[course.id]?.notaMec || ''}
-                                    onChange={(e) => handleNotaMecChange(course.id, Number(e.target.value))}
-                                    type='number'
-                                    inputProps={{ min: 0, max: 5 }}
-                                    style={{ width: '50px', marginLeft: '10px' }}
+                                  id={`notaMec-${course.id}`}
+                                  value={selectedCourses[course.id]?.notaMec || ''}
+                                  onChange={(e) => handleNotaMecChange(course.id, Number(e.target.value))}
+                                  type='number'
+                                  inputProps={{ min: 0, max: 5 }}
                                 />
+                                <FormHelperText>Insira a nota de 1 a 5</FormHelperText>
+                              </FormControl>
+                                
                             )}
                         </ListItem>
                     ))}
@@ -120,6 +129,8 @@ export const BuscaCurso: React.FC = () => {
             <Button variant='outlined' onClick={() => navigate('/cadastro')} sx={{ mt: 2, mr: 1 }}>Voltar</Button>
             <Button variant='contained' onClick={handleSubmitCourses} sx={{ mt: 2 }}>Avançar</Button>
         </Box>
+        <Footer/>
+        </>
     );
 };
 

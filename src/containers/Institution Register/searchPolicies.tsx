@@ -5,6 +5,10 @@ import { buscarPoliticas } from '../../services/policiesService';
 import { PolicesInstitutionForm } from '../../types/policiesTypes';
 import { useNavigate } from 'react-router-dom';
 import { cadastrarPoliticasInstituicao } from '../../services/policiesInstitutionService';
+import AdminHeader from '../../components/AdminHeader';
+import Footer from '../../components/AdminFooter';
+
+
 
 export const BuscaPoliticas: React.FC = () => {
     const { institutionId } = useInstitution();
@@ -71,6 +75,8 @@ export const BuscaPoliticas: React.FC = () => {
     };
 
     return (
+        <>
+        <AdminHeader/>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, maxWidth: 800, margin: 'auto', mt: 4 }}>
             <Typography variant='h4' sx={{ mb: 2 }}>Pesquisar Políticas</Typography>
             <TextField
@@ -98,6 +104,8 @@ export const BuscaPoliticas: React.FC = () => {
             <Button variant='outlined' onClick={() => navigate('/cursos')} sx={{ mt: 2, mr: 1 }}>Voltar</Button>
             <Button variant='contained' onClick={handleSubmitPolicies} sx={{ mt: 2 }}>Avançar</Button>
         </Box>
+        <Footer/>
+        </>
     );
 };
 

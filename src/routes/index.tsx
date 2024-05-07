@@ -1,12 +1,14 @@
 import { BrowserRouter as Router, Route, Routes, Navigate} from 'react-router-dom';
-import { Dashboard } from '../containers/Admin Dashboard/index';
+import  Dashboard  from '../containers/Admin Dashboard/index';
+
 import { CadastroInstituicao } from '../containers/Institution Register/index';
 import { BuscaCurso } from '../containers/Institution Register/searchCourse';
 import { BuscaPoliticas } from '../containers/Institution Register/searchPolicies';
 import { InstitutionProvider } from '../context/institutionContext';
+import  InstitutionManagement  from '../containers/Institution Management/index';
 
 
-
+InstitutionManagement
 export const AppRoutes: React.FC = () => {
     return (
         <Router>
@@ -15,7 +17,8 @@ export const AppRoutes: React.FC = () => {
                 <Route path='/cadastro' element={<CadastroInstituicao />} />
                 <Route path='/cursos' element={<BuscaCurso />} />
                 <Route path='/politicas' element={<BuscaPoliticas />} />
-                <Route path='/' element={<Dashboard />} />
+                <Route path='/gerenciamento-instituicao' element={<InstitutionManagement/>}/>
+                <Route path='/pagina-inicial' element={<Dashboard />} />
                 <Route path='*' element={<Navigate to='/pagina-inicial' replace />} /> 
             </Routes>
         </InstitutionProvider>
