@@ -13,7 +13,7 @@ interface Institution {
     nome: string;
     ativo: boolean;
     sigla: string;
-    notaMEC: number;
+    notaMec: number;
     site: string;
     endereco: Endereco;
 }
@@ -219,7 +219,7 @@ const InstitutionManagement: React.FC = () => {
                         <Typography>Ativo: {selectedDetailInstitutionWithAddress.ativo ? "Não" : "Sim"}</Typography>
                         <Typography>Sigla: {selectedDetailInstitutionWithAddress.sigla}</Typography>
                         <Typography>Site: {selectedDetailInstitutionWithAddress.site || "Não disponível"}</Typography>
-                        <Typography>Nota MEC: {selectedDetailInstitutionWithAddress.notaMEC || "Não disponível"}</Typography>
+                        <Typography>Nota MEC: {selectedDetailInstitutionWithAddress.notaMec || "Não disponível"}</Typography>
 
                     </Grid>
 
