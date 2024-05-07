@@ -114,17 +114,18 @@ export const CadastroInstituicao: React.FC = () => {
   return (
     <>
     <AdminHeader/>
+    <Box>
     <Box  sx={{ marginTop: '20px' }}>
                     
-                        <Box sx={{ width: '100%' }}>
-                          <Stepper activeStep={1} alternativeLabel>
-                            {steps.map((label) => (
-                              <Step key={label}>
-                                <StepLabel>{label}</StepLabel>
-                              </Step>
-                            ))}
-                          </Stepper>
-                        </Box>
+    <Box sx={{ width: '100%' }}>
+      <Stepper activeStep={0} alternativeLabel>
+          {steps.map((label) => (
+            <Step key={label}>
+              <StepLabel>{label}</StepLabel>
+            </Step>
+          ))}
+      </Stepper>
+    </Box>
                   
     <Box sx={{ marginTop: '20px', marginBottom: '40px' }} >
       <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
@@ -209,6 +210,7 @@ export const CadastroInstituicao: React.FC = () => {
         </Box>
         )}
       </Formik>
+    </Box>
     </Box>
     </Box>
     <Footer />

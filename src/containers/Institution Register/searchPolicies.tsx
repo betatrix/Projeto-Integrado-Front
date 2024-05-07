@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, TextField, List, ListItem, ListItemText, Checkbox, Button, Typography, CircularProgress } from '@mui/material';
+import { Box, TextField, List, ListItem, ListItemText, Checkbox, Button, Typography, CircularProgress, Stepper, StepLabel } from '@mui/material';
 import { useInstitution } from '../../context/institutionContext';
 import { buscarPoliticas } from '../../services/policiesService';
 import { PolicesInstitutionForm } from '../../types/policiesTypes';
@@ -7,12 +7,20 @@ import { useNavigate } from 'react-router-dom';
 import { cadastrarPoliticasInstituicao } from '../../services/policiesInstitutionService';
 import AdminHeader from '../../components/AdminHeader';
 import Footer from '../../components/AdminFooter';
+import Step from '@mui/material/Step';
 
 
 
 export const BuscaPoliticas: React.FC = () => {
     const { institutionId } = useInstitution();
     const navigate = useNavigate();
+    const steps = [
+        'Cadastrar Dados da Instituição',
+        'Adicionar Cursos na Instituição',
+        'Adicionar Políticas Afirmativas na Instituição',
+      ];
+
+
     const [selectedPolicies, setSelectedPolicies] = useState<{ [key: number]: boolean }>({});
     const [policies, setPolicies] = useState<PolicesInstitutionForm[]>([]);
     const [filteredPolicies, setFilteredPolicies] = useState<PolicesInstitutionForm[]>([]);
@@ -77,6 +85,15 @@ export const BuscaPoliticas: React.FC = () => {
     return (
         <>
         <AdminHeader/>
+        <Box sx={{ width: '100%' }}>
+        <Stepper activeStep={2} alternativeLabel>
+            {steps.map((label) => (
+                <Step key={label}>
+                <StepLabel>{label}</StepLabel>
+                </Step>
+            ))}
+        </Stepper>
+        </Box>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, maxWidth: 800, margin: 'auto', mt: 4 }}>
             <Typography variant='h4' sx={{ mb: 2 }}>Pesquisar Políticas</Typography>
             <TextField
