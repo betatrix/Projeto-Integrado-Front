@@ -6,6 +6,7 @@ import BackButton from "../../components/Back Page Button";
 import { Link } from 'react-router-dom';
 import AdminHeader from '../../components/AdminHeader';
 import Footer from '../../components/AdminFooter';
+import { Endereco } from "../../types/institutionTypes";
 
 interface Institution {
     id: number;
@@ -14,27 +15,29 @@ interface Institution {
     sigla: string;
     notaMEC: number;
     site: string;
-    logradouro: string;
-    numero: number;
-    cidade: string;
-    estado: string;
-    cep: string;
+    endereco: Endereco;
 }
 
 const InstitutionManagement: React.FC = () => {
     // to detail
     const [institutions, setInstitutions] = useState<Institution[]>([]);
     const [detailModalOpen, setDetailModalOpen] = useState(false);
-    const [selectedDetailInstitution, setSelectedDetailInstitution] = useState<Institution | null>(null);
+    const [selectedDetailInstitutionWithAddress, setSelectedDetailInstitutionWithAddress] = useState<Institution | null>(null);
 
-    const handleDetailModalOpen = (institution: Institution) => {
-        setSelectedDetailInstitution(institution);
-        setDetailModalOpen(true);
+    const handleDetailModalOpen = async (institution: Institution) => {
+        try {
+            const response = await fetch(`http://localhost:8080/instituicao/${institution.id}`);
+            const data = await response.json();
+            setSelectedDetailInstitutionWithAddress(data);
+            setDetailModalOpen(true);
+        } catch (error) {
+            console.error('Erro ao obter detalhes da instituição:', error);
+        }
     };
     
     const handleDetailModalClose = () => {
         setDetailModalOpen(false);
-        setSelectedDetailInstitution(null);
+        setSelectedDetailInstitutionWithAddress(null);
     };
 
     // to delete
@@ -196,46 +199,45 @@ const InstitutionManagement: React.FC = () => {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', bgcolor: 'background.paper', boxShadow: 24, p: 4, width: '80%', maxWidth: 620 }}>
-                {selectedDetailInstitution && (
-                    console.log(selectedDetailInstitution),
+                <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', bgcolor: 'background.paper', boxShadow: 24, p: 4, width: '80%', maxWidth: 600 }}>
+                {selectedDetailInstitutionWithAddress && (
 
-                    <Grid container spacing={3}>
+                <Grid container spacing={3}>
 
-                        <Typography variant="h5" gutterBottom sx={{ marginTop: 2,  textAlign: "center" }}>
-                            {selectedDetailInstitution.nome}
+                    <Typography variant="h5" gutterBottom sx={{ marginTop: 2, textAlign: "center" }}>
+                        {selectedDetailInstitutionWithAddress.nome}
+                    </Typography>
+
+                    <Grid item xs={6}>
+
+                        <Typography variant="h6" gutterBottom>
+                            Dados Gerais
                         </Typography>
 
-                        <Grid item xs={6}>
+                        <Typography>ID: {selectedDetailInstitutionWithAddress.id}</Typography>
+                        <Typography>Nome: {selectedDetailInstitutionWithAddress.nome}</Typography>
+                        <Typography>Ativo: {selectedDetailInstitutionWithAddress.ativo ? "Não" : "Sim"}</Typography>
+                        <Typography>Sigla: {selectedDetailInstitutionWithAddress.sigla}</Typography>
+                        <Typography>Site: {selectedDetailInstitutionWithAddress.site || "Não disponível"}</Typography>
+                        <Typography>Nota MEC: {selectedDetailInstitutionWithAddress.notaMEC || "Não disponível"}</Typography>
 
-                            <Typography variant="h6" gutterBottom>
-                                Dados Gerais
-                            </Typography>
-
-                            <Typography>ID: {selectedDetailInstitution.id}</Typography>
-                            <Typography>Nome: {selectedDetailInstitution.nome}</Typography>
-                            <Typography>Ativo: {selectedDetailInstitution.ativo ? "Não" : "Sim"}</Typography>
-                            <Typography>Sigla: {selectedDetailInstitution.sigla}</Typography>
-                            <Typography>Site: {selectedDetailInstitution.site || "Não disponível"}</Typography>
-                            <Typography>Nota MEC: {selectedDetailInstitution.notaMEC || "Não disponível"}</Typography>
-
-                        </Grid>
-
-                        <Grid item xs={6}>
-
-                            <Typography variant="h6" gutterBottom>
-                                Endereço
-                            </Typography>
-
-                            <Typography>Rua: {selectedDetailInstitution.logradouro}</Typography>
-                            <Typography>Número: {selectedDetailInstitution.numero}</Typography>
-                            <Typography>Cidade: {selectedDetailInstitution.cidade}</Typography>
-                            <Typography>Estado: {selectedDetailInstitution.estado}</Typography>
-                            <Typography>CEP: {selectedDetailInstitution.cep}</Typography>
-
-                        </Grid>
                     </Grid>
-                )}
+
+                    <Grid item xs={6}>
+
+                        <Typography variant="h6" gutterBottom>
+                            Endereço
+                        </Typography>
+
+                        <Typography>Rua: {selectedDetailInstitutionWithAddress.endereco.logradouro}</Typography>
+                        <Typography>Número: {selectedDetailInstitutionWithAddress.endereco.numero}</Typography>
+                        <Typography>Cidade: {selectedDetailInstitutionWithAddress.endereco.cidade}</Typography>
+                        <Typography>Estado: {selectedDetailInstitutionWithAddress.endereco.estado}</Typography>
+                        <Typography>CEP: {selectedDetailInstitutionWithAddress.endereco.cep}</Typography>
+
+                    </Grid>
+                </Grid>
+            )}
                     
                 </Box>            
                 
