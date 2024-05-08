@@ -106,7 +106,7 @@ const InstitutionManagement: React.FC = () => {
                 <BackButton></BackButton>
             </Link> 
 
-            <Typography variant="h5" sx={{ marginBottom: 2, textAlign: "center" }}>
+            <Typography variant="h5" sx={{ marginBottom: 2, textAlign: "center"}}>
                 Gerenciamento de Instituições
             </Typography>
 
