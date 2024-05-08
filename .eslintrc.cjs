@@ -17,5 +17,9 @@ module.exports = {
     'indent': ['error', 4],
     'quotes': ['error', 'single'],
     'semi': ['error', 'always'],
+    'no-multi-spaces': ['error'],
+    'no-trailing-spaces': ['error'], 
+    'no-multiple-empty-lines': ['error', { max: 1 }],
+    'max-len': ['error', { 'code': 180 }],
   },
 }

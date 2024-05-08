@@ -1,5 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Checkbox, Typography, Table, TableHead, TableCell, TableBody, Button, Modal, IconButton, Grid, TableRow, TextField } from '@mui/material';
+import {
+    Box,
+    Checkbox,
+    Typography,
+    Table,
+    TableHead,
+    TableCell,
+    TableBody,
+    Button,
+    Modal,
+    IconButton,
+    Grid,
+    TableRow,
+    TextField
+} from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import BackButton from '../../components/Back Page Button';
@@ -37,10 +51,24 @@ const InstitutionManagement: React.FC = () => {
             console.error('Erro ao obter detalhes da instituição:', error);
         }
     };
-    
+
     const handleDetailModalClose = () => {
         setDetailModalOpen(false);
         setSelectedDetailInstitutionWithAddress(null);
+    };
+
+    // to update
+    const [editModalOpen, setEditModalOpen] = useState(false);
+    const [selectedEditInstitution, setSelectedEditInstitution] = useState<Institution | null>(null);
+
+    const handleEditModalOpen = (institution: Institution) => {
+        setSelectedEditInstitution(institution);
+        setEditModalOpen(true);
+    };
+
+    const handleEditModalClose = () => {
+        setSelectedEditInstitution(null);
+        setEditModalOpen(false);
     };
 
     // to delete
@@ -82,7 +110,7 @@ const InstitutionManagement: React.FC = () => {
         setInstitutionsToDeleteMultiple([]);
         setDeleteMultipleModalOpen(false);
     };
-    
+
     // search API datas
     const [searchValue, setSearchValue] = useState<string>('');
 
@@ -94,7 +122,6 @@ const InstitutionManagement: React.FC = () => {
         };
         searchInstitution();
     }, [searchValue]);
-    
 
     return (
         <>
@@ -104,13 +131,13 @@ const InstitutionManagement: React.FC = () => {
 
                 <Link to="/pagina-inicial">
                     <BackButton></BackButton>
-                </Link> 
+                </Link>
 
                 <Typography variant="h5" sx={{ marginBottom: 2, textAlign: 'center'}}>
                 Gerenciamento de Instituições
                 </Typography>
 
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 5, paddingLeft:5, paddingRight:5 }}> 
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 5, paddingLeft:5, paddingRight:5 }}>
 
                     <TextField
                         label="Pesquisar instituição"
@@ -119,7 +146,7 @@ const InstitutionManagement: React.FC = () => {
                         onChange={(e) => setSearchValue(e.target.value)}
                     />
 
-                    <Link to="/cadastro">            
+                    <Link to="/cadastro">
                         <Button variant="contained" color="primary">Cadastrar instituição</Button>
                     </Link>
 
@@ -135,7 +162,7 @@ const InstitutionManagement: React.FC = () => {
                 </Box>
 
                 <Box sx={{ paddingTop: 10, paddingLeft: 5, paddingRight: 5}}>
-                
+
                     <Table>
 
                         <TableHead>
@@ -148,7 +175,7 @@ const InstitutionManagement: React.FC = () => {
                                 <TableCell>Ativo</TableCell>
                                 <TableCell align="right"></TableCell>
 
-                            </TableRow>                
+                            </TableRow>
 
                         </TableHead>
 
@@ -176,7 +203,7 @@ const InstitutionManagement: React.FC = () => {
                                         <TableCell align="right">
 
                                             <IconButton>
-                                                <EditIcon onClick={(e) => { e.stopPropagation(); }}/>
+                                                <EditIcon onClick={(e) => { e.stopPropagation(); handleEditModalOpen(institution);}}/>
                                             </IconButton>
 
                                             <IconButton onClick={(e) => { e.stopPropagation(); handleDeleteModalOpen(institution); }}>
@@ -195,158 +222,265 @@ const InstitutionManagement: React.FC = () => {
 
                 </Box>
 
+            </Box>
 
-                {/*details modal*/}
-                <Modal
-                    open={detailModalOpen}
-                    onClose={handleDetailModalClose}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-                >
-                    <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', bgcolor: 'background.paper', boxShadow: 24, p: 4, width: '80%', maxWidth: 600 }}>
-                        {selectedDetailInstitutionWithAddress && (
+            {/*details modal*/}
+            <Modal
+                open={detailModalOpen}
+                onClose={handleDetailModalClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+                    bgcolor: 'background.paper', boxShadow: 24, p: 4, width: '80%', maxWidth: 600 }}>
+                    {selectedDetailInstitutionWithAddress && (
 
-                            <Grid container spacing={3}>
+                        <Grid container spacing={3}>
 
-                                <Typography variant="h5" gutterBottom sx={{ marginTop: 2, textAlign: 'center', paddingLeft: 2 }}>
-                                    {selectedDetailInstitutionWithAddress.nome}
+                            <Typography variant="h5" gutterBottom sx={{ marginTop: 2, textAlign: 'center', paddingLeft: 2 }}>
+                                {selectedDetailInstitutionWithAddress.nome}
+                            </Typography>
+
+                            <Grid item xs={6}>
+
+                                <Typography variant="h6" gutterBottom>
+                            Dados Gerais
                                 </Typography>
 
-                                <Grid item xs={6}>
+                                <Typography>ID: {selectedDetailInstitutionWithAddress.id}</Typography>
+                                <Typography>Nome: {selectedDetailInstitutionWithAddress.nome}</Typography>
+                                <Typography>Ativo: {selectedDetailInstitutionWithAddress.ativo ? 'Sim' : 'Não'}</Typography>
+                                <Typography>Sigla: {selectedDetailInstitutionWithAddress.sigla}</Typography>
+                                <Typography>Site: {selectedDetailInstitutionWithAddress.site || 'Não disponível'}</Typography>
+                                <Typography>Nota MEC: {selectedDetailInstitutionWithAddress.notaMec || 'Não disponível'}</Typography>
 
-                                    <Typography variant="h6" gutterBottom>
-                            Dados Gerais
-                                    </Typography>
+                            </Grid>
 
-                                    <Typography>ID: {selectedDetailInstitutionWithAddress.id}</Typography>
-                                    <Typography>Nome: {selectedDetailInstitutionWithAddress.nome}</Typography>
-                                    <Typography>Ativo: {selectedDetailInstitutionWithAddress.ativo ? 'Sim' : 'Não'}</Typography>
-                                    <Typography>Sigla: {selectedDetailInstitutionWithAddress.sigla}</Typography>
-                                    <Typography>Site: {selectedDetailInstitutionWithAddress.site || 'Não disponível'}</Typography>
-                                    <Typography>Nota MEC: {selectedDetailInstitutionWithAddress.notaMec || 'Não disponível'}</Typography>
+                            <Grid item xs={6}>
 
-                                </Grid>
-
-                                <Grid item xs={6}>
-
-                                    <Typography variant="h6" gutterBottom>
+                                <Typography variant="h6" gutterBottom>
                             Endereço
-                                    </Typography>
+                                </Typography>
 
-                                    <Typography>Rua: {selectedDetailInstitutionWithAddress.endereco.logradouro}</Typography>
-                                    <Typography>Número: {selectedDetailInstitutionWithAddress.endereco.numero}</Typography>
-                                    <Typography>Cidade: {selectedDetailInstitutionWithAddress.endereco.cidade}</Typography>
-                                    <Typography>Estado: {selectedDetailInstitutionWithAddress.endereco.estado}</Typography>
-                                    <Typography>CEP: {selectedDetailInstitutionWithAddress.endereco.cep}</Typography>
+                                <Typography>Rua: {selectedDetailInstitutionWithAddress.endereco.logradouro}</Typography>
+                                <Typography>Número: {selectedDetailInstitutionWithAddress.endereco.numero}</Typography>
+                                <Typography>Cidade: {selectedDetailInstitutionWithAddress.endereco.cidade}</Typography>
+                                <Typography>Estado: {selectedDetailInstitutionWithAddress.endereco.estado}</Typography>
+                                <Typography>CEP: {selectedDetailInstitutionWithAddress.endereco.cep}</Typography>
 
+                            </Grid>
+                        </Grid>
+                    )}
+
+                </Box>
+
+            </Modal>
+
+            {/* Edit modal */}
+            <Modal
+                open={editModalOpen}
+                onClose={handleEditModalClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    bgcolor: 'background.paper',
+                    boxShadow: 24,
+                    p: 4,
+                    width: '80%',
+                    maxWidth: 620
+                }}>
+                    {selectedEditInstitution && (
+                        <Grid container spacing={3} direction="column" alignItems="center">
+                            <Grid item>
+                                <Typography variant="h5" gutterBottom sx={{ marginTop: 2, textAlign: 'center' }}>
+                                    Editar Instituição
+                                </Typography>
+                            </Grid>
+                            <Grid item>
+                                <TextField
+                                    label="Nome"
+                                    value={selectedEditInstitution.nome}
+                                    onChange={(e) => setSelectedEditInstitution({ ...selectedEditInstitution, nome: e.target.value })}
+                                    sx={{ marginRight: '10px' }}
+                                />
+
+                                <TextField
+                                    label="Sigla"
+                                    value={selectedEditInstitution.sigla}
+                                    onChange={(e) => setSelectedEditInstitution({ ...selectedEditInstitution, sigla: e.target.value })}
+                                />
+                            </Grid>
+                            <Grid item>
+                                <TextField
+                                    label="Site"
+                                    value={selectedEditInstitution.site}
+                                    onChange={(e) => setSelectedEditInstitution({ ...selectedEditInstitution, site: e.target.value })}
+                                    sx={{ marginRight: '10px' }}
+                                />
+
+                                <TextField
+                                    label="Nota do MEC"
+                                    value={selectedEditInstitution.notaMec}
+                                    onChange={(e) => setSelectedEditInstitution({ ...selectedEditInstitution, notaMec: e.target.value })}
+                                />
+                            </Grid>
+                            <Grid item>
+                                <TextField
+                                    label="Site"
+                                    value={selectedEditInstitution.site}
+                                    onChange={(e) => setSelectedEditInstitution({ ...selectedEditInstitution, site: e.target.value })}
+                                    sx={{ marginRight: '10px' }}
+                                />
+                            </Grid>
+                            <Grid item container justifyContent="center" spacing={2}>
+                                <Grid item>
+                                    <Button variant="contained" onClick={handleEditModalClose}>Cancelar</Button>
+                                </Grid>
+                                <Grid item>
+                                    <Button variant="contained" color="primary" onClick={async () => {
+                                        if (selectedEditInstitution) {
+                                            try {
+                                                const response = await fetch(
+                                                    'https://projeto-integrado-back-production-86da.up.railway.app/instituicao', {
+                                                        method: 'PUT',
+                                                        headers: {
+                                                            'Content-Type': 'application/json'
+                                                        },
+                                                        body: JSON.stringify(selectedEditInstitution)
+                                                    });
+
+                                                if (response.ok) {
+                                                    console.log(`Instituição ${selectedEditInstitution.nome} atualizada com sucesso`);
+                                                    try {
+                                                        const updatedInstitutions = institutions.map(inst => {
+                                                            if (inst.id === selectedEditInstitution.id) {
+                                                                return selectedEditInstitution;
+                                                            }
+                                                            return inst;
+                                                        });
+
+                                                        setInstitutions(updatedInstitutions);
+                                                    } catch (error) {
+                                                        console.error('Erro ao atualizar lista de instituições após atualização:', error);
+                                                    }
+                                                } else {
+                                                    console.error('Falha ao atualizar instituição');
+                                                }
+
+                                            } catch (error) {
+                                                console.error('Erro ao atualizar instituição:', error);
+                                            } finally {
+                                                handleEditModalClose();
+                                            }
+                                        }
+                                    }}>Salvar</Button>
                                 </Grid>
                             </Grid>
-                        )}
-                    
-                    </Box>            
-                
-                </Modal>
+                        </Grid>
+                    )}
+                </Box>
+            </Modal>
 
+            {/* delete modal */}
+            <Modal
+                open={deleteModalOpen}
+                onClose={handleDeleteModalClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+                    bgcolor: 'background.paper', boxShadow: 24, p: 4, maxWidth: 400, width: '90%' }}>
 
-
-                {/* delete modal */}
-                <Modal
-                    open={deleteModalOpen}
-                    onClose={handleDeleteModalClose}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-                >
-                    <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', bgcolor: 'background.paper', boxShadow: 24, p: 4, maxWidth: 400, width: '90%' }}>
-                
-                        <Typography id="modal-modal-title" variant="h6" component="h2">
+                    <Typography id="modal-modal-title" variant="h6" component="h2">
                         Confirmar exclusão
-                        </Typography>
+                    </Typography>
 
-                        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                         Tem certeza que deseja excluir a instituição {institutionToDelete?.nome}?
-                        </Typography>
+                    </Typography>
 
-                        <Button onClick={async () => {
-
-                            if (institutionToDelete) {
-                                try {
-                                    const response = await fetch(`${apiUrl}/instituicao/${institutionToDelete.id}`, {
-                                        method: 'DELETE',
-                                    });
-
-                                    if (response.ok) {
-                                        console.log(`Instituição ${institutionToDelete.nome} excluída com sucesso`);
-                                
-                                        setInstitutions(institutions.filter(institution => institution.id !== institutionToDelete.id));
-                                    } else {
-                                        console.error('Falha ao excluir instituição');
-                                    }
-
-                                } catch (error) {
-                                    console.error('Erro ao excluir instituição:', error);
-                                } finally {
-                                    handleDeleteModalClose();
-                                }
-                            }
-                        }}>Sim</Button>
-
-                        <Button onClick={handleDeleteModalClose}>Não</Button>
-
-                    </Box>
-
-                </Modal>
-
-                {/* delete modal for multiples institutions */}
-                <Modal
-                    open={deleteMultipleModalOpen}
-                    onClose={handleDeleteMultipleModalClose}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-                >
-                    <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', bgcolor: 'background.paper', boxShadow: 24, p: 4, maxWidth: 400, width: '90%' }}>
-                        <Typography id="modal-modal-title" variant="h6" component="h2">
-                        Confirmar exclusão de múltiplas instituições
-                        </Typography>
-
-                        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        Tem certeza que deseja excluir as seguintes instituições?
-                        </Typography>
-
-                        {institutionsToDeleteMultiple.map(inst => (
-                            <Typography key={inst.id}>{inst.nome}</Typography>
-                        ))}
-
-                        <Button onClick={async () => {
+                    <Button onClick={async () => {
+                        if (institutionToDelete) {
                             try {
-                                await Promise.all(institutionsToDeleteMultiple.map(async (inst) => {
-                                    const response = await fetch(`${apiUrl}/instituicao/${inst.id}`, {
-                                        method: 'DELETE',
-                                    });
+                                const response = await fetch(`${apiUrl}/instituicao/${institutionToDelete.id}`, {
+                                    method: 'DELETE',
+                                });
 
-                                    if (response.ok) {
-                                        console.log(`Instituição ${inst.nome} excluída com sucesso`);
-                                    } else {
-                                        console.error(`Falha ao excluir instituição ${inst.nome}`);
-                                    }
-                                }));
-                            
-                                setInstitutions(institutions.filter(inst => !selectedInstitutions.includes(inst.id)));
+                                if (response.ok) {
+                                    console.log(`Instituição ${institutionToDelete.nome} excluída com sucesso`);
+                                    setInstitutions(institutions.filter(institution => institution.id !== institutionToDelete.id));
+                                } else {
+                                    console.error('Falha ao excluir instituição');
+                                }
                             } catch (error) {
-                                console.error('Erro ao excluir instituições:', error);
+                                console.error('Erro ao excluir instituição:', error);
                             } finally {
-                                handleDeleteMultipleModalClose();
+                                handleDeleteModalClose();
                             }
-                        }}>Sim</Button>
+                        }
+                    }}>Sim</Button>
 
-                        <Button onClick={handleDeleteMultipleModalClose}>Não</Button>
-                    </Box>
-                </Modal>
+                    <Button onClick={handleDeleteModalClose}>Não</Button>
 
-            </Box>
+                </Box>
+
+            </Modal>
+
+            {/* delete modal for multiples institutions */}
+            <Modal
+                open={deleteMultipleModalOpen}
+                onClose={handleDeleteMultipleModalClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+                    bgcolor: 'background.paper', boxShadow: 24, p: 4, maxWidth: 400, width: '90%' }}>
+                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                        Confirmar exclusão de múltiplas instituições
+                    </Typography>
+
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        Tem certeza que deseja excluir as seguintes instituições?
+                    </Typography>
+
+                    {institutionsToDeleteMultiple.map(inst => (
+                        <Typography key={inst.id}>{inst.nome}</Typography>
+                    ))}
+
+                    <Button onClick={async () => {
+                        try {
+                            await Promise.all(institutionsToDeleteMultiple.map(async (inst) => {
+                                const response = await fetch(`${apiUrl}/instituicao/${inst.id}`, {
+                                    method: 'DELETE',
+                                });
+
+                                if (response.ok) {
+                                    console.log(`Instituição ${inst.nome} excluída com sucesso`);
+                                } else {
+                                    console.error(`Falha ao excluir instituição ${inst.nome}`);
+                                }
+                            }));
+
+                            setInstitutions(institutions.filter(inst => !selectedInstitutions.includes(inst.id)));
+                        } catch (error) {
+                            console.error('Erro ao excluir instituições:', error);
+                        } finally {
+                            handleDeleteMultipleModalClose();
+                        }
+                    }}>Sim</Button>
+
+                    <Button onClick={handleDeleteMultipleModalClose}>Não</Button>
+                </Box>
+            </Modal>
 
             <Footer />
         </>
-        
+
     );
 };
 
