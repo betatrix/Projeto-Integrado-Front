@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Subtitle, SquareDisplay, SquareButton, TextButton } from './styles';
 import { Grid, Box } from '@mui/material';
 import AdminHeader from '../../components/AdminHeader';
