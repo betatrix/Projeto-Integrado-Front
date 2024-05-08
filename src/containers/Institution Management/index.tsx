@@ -322,12 +322,6 @@ const InstitutionManagement: React.FC = () => {
                                     onChange={(e) => setSelectedEditInstitution({ ...selectedEditInstitution, site: e.target.value })}
                                     sx={{ marginRight: '10px' }}
                                 />
-
-                                <TextField
-                                    label="Nota do MEC"
-                                    value={selectedEditInstitution.notaMec}
-                                    onChange={(e) => setSelectedEditInstitution({ ...selectedEditInstitution, notaMec: e.target.value })}
-                                />
                             </Grid>
                             <Grid item>
                                 <TextField
