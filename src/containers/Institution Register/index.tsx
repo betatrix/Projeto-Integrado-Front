@@ -1,8 +1,7 @@
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
-
 import { TextField } from 'formik-mui';
-import { Button, Box, Typography, Grid, TextField as MuiTextField, Paper, Stepper, StepLabel } from '@mui/material';
+import { Button, Box, Typography, Grid, Paper, Stepper, StepLabel } from '@mui/material';
 import Step from '@mui/material/Step';
 import axios from 'axios';
 import * as Yup from 'yup';
@@ -11,7 +10,6 @@ import { useNavigate } from 'react-router-dom';
 import { cadastrarInstituicao } from '../../services/institutionService';
 import AdminHeader from '../../components/AdminHeader';
 import Footer from '../../components/AdminFooter';
-//import { StyledForm } from './styles';
 
 
 interface FormValues {
@@ -160,8 +158,17 @@ export const CadastroInstituicao: React.FC = () => {
                                                         <Field component={TextField} name='endereco.logradouro' label='Logradouro' variant='standard' fullWidth size='small' required />
                                                     </Grid>
 
-                                                    <Grid item xs={6} >
-                                                        <Field component={TextField} name='endereco.cep' label='CEP' variant='standard' fullWidth size='small' required onChange={(event) => handleCepChange(event, setFieldValue)} />
+                                                    <Grid item xs={6}>
+                                                        <Field
+                                                            component={TextField}
+                                                            name='endereco.cep'
+                                                            label='CEP'
+                                                            variant='standard'
+                                                            fullWidth
+                                                            size='small'
+                                                            required
+                                                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleCepChange(event, setFieldValue)}
+                                                        />
                                                     </Grid>
 
                                                     <Grid item xs={6} >

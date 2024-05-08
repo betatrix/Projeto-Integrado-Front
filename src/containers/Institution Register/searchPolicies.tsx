@@ -71,14 +71,16 @@ export const BuscaPoliticas: React.FC = () => {
                 .map(([id, _]) => id);
              
 
-                if(selectedPolicyIds?.length > 0){
-                    const responses = await Promise.all(selectedPolicyIds.map(policyId =>
-                        cadastrarPoliticasInstituicao(institutionId, Number(policyId))));
-                        alert('Políticas cadastradas com sucesso na Instituição'); 
-                        navigate('/pagina-inicial'); 
-                } else{
-                    alert('Selecione uma política!');
+                const responses = await Promise.all(selectedPolicyIds.map(policyId =>
+                    cadastrarPoliticasInstituicao(institutionId, Number(policyId))));
                     
+                console.log('Respostas:', responses);
+                
+                if (responses?.length > 0) {
+                    alert('Políticas cadastradas com sucesso na Instituição');
+                    navigate('/pagina-inicial');
+                } else {
+                    alert('Erro ao cadastrar políticas!');
                 }
           
         } catch (error) {
