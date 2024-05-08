@@ -1,14 +1,3 @@
-// import styled from 'styled-components';
-
-// export const StyledForm = styled.form`
-//   display: flex;
-//   flex-direction: column;
-//   gap: 300px; // Note que 'gap' em styled-components precisa ser especificado com unidades, como 'px'
-//   max-width: 400px;
-//   margin: auto;
-// `;
-
-
 import styled from 'styled-components';
 import { TextField as MuiTextField } from '@mui/material';
 

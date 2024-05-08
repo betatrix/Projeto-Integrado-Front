@@ -1,27 +1,8 @@
-// import {Link} from 'react-router-dom';
-
-// export const Dashboard = () =>{
-//     return(
-//         <div>
-//             <p>Dashboard</p>
-//             <Link to={"/cadastro"}>Cadastro de Instituição</Link>
-            
-//         </div>
-        
-//     )
-// }
-
-
-
-
 import { Subtitle, SquareDisplay, SquareButton, TextButton } from './styles';
 import { Grid, Box } from '@mui/material';
 import AdminHeader from '../../components/AdminHeader';
 import Footer from '../../components/AdminFooter';
-
-// const MyIcon = () => (
-//     <img src='../assets/icon-school.svg' alt="Ícone Escola" style={{ width: '24px', height: '24px' }} />
-// );
+import { Link } from 'react-router-dom';
 
 const MyIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" 
@@ -34,7 +15,10 @@ const Dashboard = () => {
     return (
         <>
             <AdminHeader />
-            <Box sx={{ marginTop: '20px' }}>
+            <Box>
+                
+            </Box>
+            <Box sx={{ marginTop: '20px'}}>
                 <Grid container justifyContent="center">
                     <Subtitle>
                         Quantidades Cadastradas
@@ -74,12 +58,17 @@ const Dashboard = () => {
                     </Subtitle>
                     <Grid container spacing={2} justifyContent="center">
                         <Grid item>
+                            <Link to="/gerenciamento-instituicao">
+
                             <SquareButton href="/cadastro">
                                 <TextButton>
                                     Instituições
                                 </TextButton>
                                 <MyIcon />
                             </SquareButton>
+                            
+                            </Link>
+                            
                         </Grid>
                         <Grid item>
                             <SquareButton href="/cursos">

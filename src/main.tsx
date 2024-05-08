@@ -4,16 +4,11 @@ import ReactDOM from 'react-dom/client';
 import App from './app';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <GlobalStyle />
-    < App />
-  </React.StrictMode>,
-)
-
-
-
-
-
+    <React.StrictMode>
+        <GlobalStyle />
+        < App />
+    </React.StrictMode>,
+);
 
 
 // import React from 'react'

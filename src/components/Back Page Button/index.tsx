@@ -1,12 +1,12 @@
-import { BackPageButton } from "./style" // importando o titulo estilizado para o componente
+import { BackPageButton } from './style'; // importando o titulo estilizado para o componente
 
 // componente base dessa página
 function BackButton() {
     return (
         <div>
-            <BackPageButton>Dashboard do Administrador</BackPageButton>
+            <BackPageButton>Voltar</BackPageButton>
         </div>
-    )
+    );
 }
 
-export default BackButton
+export default BackButton;

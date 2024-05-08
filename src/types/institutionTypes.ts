@@ -9,7 +9,7 @@ export type Endereco = {
     cep: string;
   };
   
-  export type InstituicaoForm = {
+export type InstituicaoForm = {
     nome: string;
     site: string;
     notaMec: number | null;
