@@ -322,13 +322,16 @@ const InstitutionManagement: React.FC = () => {
                                     onChange={(e) => setSelectedEditInstitution({ ...selectedEditInstitution, site: e.target.value })}
                                     sx={{ marginRight: '10px' }}
                                 />
-                            </Grid>
-                            <Grid item>
                                 <TextField
-                                    label="Site"
-                                    value={selectedEditInstitution.site}
-                                    onChange={(e) => setSelectedEditInstitution({ ...selectedEditInstitution, site: e.target.value })}
-                                    sx={{ marginRight: '10px' }}
+                                    label="Nota do MEC"
+                                    type="number"
+                                    value={selectedEditInstitution.notaMec || ''}
+                                    onChange={(e) => {
+                                        const parsedValue = parseInt(e.target.value, 10);
+                                        if (!isNaN(parsedValue) && parsedValue <= 5) {
+                                            setSelectedEditInstitution({ ...selectedEditInstitution, notaMec: parsedValue });
+                                        }
+                                    }}
                                 />
                             </Grid>
                             <Grid item container justifyContent="center" spacing={2}>
