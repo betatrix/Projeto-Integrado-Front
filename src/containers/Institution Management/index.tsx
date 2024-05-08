@@ -29,7 +29,7 @@ const InstitutionManagement: React.FC = () => {
 
     const handleDetailModalOpen = async (institution: Institution) => {
         try {
-            const response = await fetch(`${apiUrl}/${institution.id}`);
+            const response = await fetch(`${apiUrl}/instituicao/${institution.id}`);
             const data = await response.json();
             setSelectedDetailInstitutionWithAddress(data);
             setDetailModalOpen(true);
@@ -88,7 +88,7 @@ const InstitutionManagement: React.FC = () => {
 
     useEffect(() => {
         const searchInstitution = async () => {
-            const response = await fetch(`${apiUrl}?nome=${searchValue}`);
+            const response = await fetch(`${apiUrl}/instituicao?nome=${searchValue}`);
             const data = await response.json();
             setInstitutions(data);
         };
@@ -270,7 +270,7 @@ const InstitutionManagement: React.FC = () => {
 
                             if (institutionToDelete) {
                                 try {
-                                    const response = await fetch(`${apiUrl}/${institutionToDelete.id}`, {
+                                    const response = await fetch(`${apiUrl}/instituicao/${institutionToDelete.id}`, {
                                         method: 'DELETE',
                                     });
 
@@ -319,7 +319,7 @@ const InstitutionManagement: React.FC = () => {
                         <Button onClick={async () => {
                             try {
                                 await Promise.all(institutionsToDeleteMultiple.map(async (inst) => {
-                                    const response = await fetch(`${apiUrl}/${inst.id}`, {
+                                    const response = await fetch(`${apiUrl}/instituicao/${inst.id}`, {
                                         method: 'DELETE',
                                     });
 
