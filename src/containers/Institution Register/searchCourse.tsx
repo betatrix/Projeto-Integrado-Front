@@ -10,6 +10,7 @@ import AdminHeader from '../../components/AdminHeader';
 import Footer from '../../components/AdminFooter';
 
 
+
 export const BuscaCurso: React.FC = () => {
     const { institutionId } = useInstitution(); 
     const navigate = useNavigate();
@@ -84,13 +85,14 @@ export const BuscaCurso: React.FC = () => {
                 
                
                 ));
+                navigate('/politicas', { state: { institutionId } });
                 console.log('Cursos cadastrados com sucesso:', responses);
                 alert('Cursos cadastrados com sucesso na Instituição');
                 
              } else{
-                alert('Nenhum curso selecionado!');
+                alert('Selecione um curso para continuar!');
              }
-            navigate('/politicas', { state: { institutionId } });
+            
         } catch (error) {
             console.error('Erro ao cadastrar cursos na instituição:', error);
         }
@@ -153,14 +155,14 @@ export const BuscaCurso: React.FC = () => {
                         </List>
                     )}
 
-                <Grid container spacing={2} justifyContent='space-between'>
+                    <Grid container spacing={2} justifyContent='space-between'>
                     
                     <Grid item xs={6} display="flex" justifyContent="flex-start">
-                        <Button variant='outlined' onClick={() => navigate('/cadastro')} sx={{ mr: 1 }} >Voltar</Button>
+                        <Button variant='outlined' onClick={() => navigate('/cadastro')} >Voltar</Button>
                     </Grid>
                     
                     <Grid item xs={6} display="flex" justifyContent="flex-end">
-                        <Button variant='contained' onClick={handleSubmitCourses} sx={{  mr: 1 }} >Avançar</Button>
+                        <Button variant='contained' onClick={handleSubmitCourses} >Avançar</Button>
                     </Grid>
                     </Grid>
                 </Box>

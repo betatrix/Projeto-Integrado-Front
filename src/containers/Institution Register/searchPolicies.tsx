@@ -74,11 +74,11 @@ export const BuscaPoliticas: React.FC = () => {
                 if(selectedPolicyIds?.length > 0){
                     const responses = await Promise.all(selectedPolicyIds.map(policyId =>
                         cadastrarPoliticasInstituicao(institutionId, Number(policyId))));
-                        alert('Políticas cadastradas com sucesso na Instituição');
+                        alert('Políticas cadastradas com sucesso na Instituição'); 
                         navigate('/pagina-inicial'); 
                 } else{
-                    alert('Nenhuma política selecionada!');
-                    navigate('/pagina-inicial'); 
+                    alert('Selecione uma política!');
+                    
                 }
           
         } catch (error) {

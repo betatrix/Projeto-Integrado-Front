@@ -1,7 +1,7 @@
 import { buscarEntidades, buscarEntidadePorId } from './apiService';
 
 export const buscarCursos = async () => {
-  const response = await buscarEntidades('curso');
+  const response = await buscarEntidades('curso/ativos');
   return response;
 };
 

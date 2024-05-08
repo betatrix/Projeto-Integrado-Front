@@ -1,7 +1,7 @@
 import { buscarEntidades, buscarEntidadePorId } from './apiService';
 
 export const buscarPoliticas = async () => {
-  const response = await buscarEntidades('politica');
+  const response = await buscarEntidades('politica/ativos');
   return response;
 };
 

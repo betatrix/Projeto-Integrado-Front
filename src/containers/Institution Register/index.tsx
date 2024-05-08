@@ -133,16 +133,6 @@ export const CadastroInstituicao: React.FC = () => {
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, maxWidth: 600, margin: 'auto' }}>
                   <Form>
 
-                    <Box sx={{ display: 'flex', justifyContent: 'flex-start', mt: 2 }}>
-                      <Button
-                        type='button'
-                        variant='outlined'
-                        onClick={() => navigate('/pagina-inicial')}
-                        sx={{ mr: 1, p: 1 }} >
-                        Voltar
-                      </Button>
-                    </Box>
-
                     <Box sx={{ '& .MuiTextField-root': { m: 1 } }}>
                       <Paper sx={{ marginTop: '30px', marginBottom: '30px' }}>
                         <Grid container spacing={2} sx={{ maxWidth: 500, paddingLeft: '60px', paddingTop: '20px', paddingBottom: '30px' }}>
@@ -163,7 +153,7 @@ export const CadastroInstituicao: React.FC = () => {
                       </Paper>
                     </Box>
                     <Box sx={{ '& .MuiTextField-root': { m: 1 }, }}>
-                      <Paper sx={{ marginTop: '20px' }}>
+                      <Paper sx={{ marginTop: '20px', marginBottom: '20px' }}>
                         <Grid container spacing={2} sx={{ maxWidth: 500, paddingLeft: '60px', paddingTop: '20px', paddingBottom: '30px' }} >
                           <Typography variant='h6' sx={{ textAlign: 'left' }}>Endereço</Typography>
                           <Grid item xs={12}>
@@ -195,17 +185,32 @@ export const CadastroInstituicao: React.FC = () => {
                           </Grid>
                         </Grid>
                       </Paper>
+                      <Grid container spacing={2} justifyContent='space-between'>
+                    
+                    <Grid item xs={6} display="flex" justifyContent="flex-start">
+                    <Button
+                          type='button'
+                          variant='outlined'
+                          onClick={() => navigate('/pagina-inicial')}
+                         
+                          >
+                          Voltar
+                        </Button>
+                    </Grid>
+                    
+                    <Grid item xs={6} display="flex" justifyContent="flex-end">
+                    <Button
+                          type='submit'
+                          disabled={isSubmitting}
+                          variant='contained'
+                          
+                          >
+                          Avançar
+                        </Button>
+                    </Grid>
+                    </Grid>
                     </Box>
-                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
-                      <Button
-                        type='submit'
-                        disabled={isSubmitting}
-                        variant='contained'
-                        sx={{ p: 1 }}>
-                        Avançar
-                      </Button>
-                    </Box>
-
+                    
                   </Form>
                 </Box>
               )}
