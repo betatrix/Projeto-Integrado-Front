@@ -1,43 +1,47 @@
 import React from 'react';
 import { TextField, Button, Typography } from '@mui/material';
-import { LoginContainer } from '../Login/styles'
-import { Link } from 'react-router-dom';
-import loginImage from '../../assets/welcome-login.svg'
+import { LoginContainer, Image, LoginWrapper } from '../Login/styles';
+import loginImage from '../../assets/welcome-login.svg';
+import InitialHeader from '../../components/InitialHeader';
+import Footer from '../../components/AdminFooter';
 
 const Login: React.FC = () => {
   return (
+    <>
+      <InitialHeader />
 
-    <LoginContainer>
+      <LoginWrapper>
+        <div style={{ display: 'flex', flex: 1 }}>
+          <Image src={loginImage} style={{ objectFit: 'cover', width: '100%', height: '100%' }} />
+        </div>
+        <LoginContainer>
 
-      <Typography variant="h4">Login</Typography>
+          <Typography variant="h4">Login</Typography>
 
-      <TextField
-        label="Email"
-        variant="outlined"
-        type="email"
-        placeholder="Digite seu email"
-      />
+          <TextField
+            label="Email"
+            variant="outlined"
+            type="email"
+            placeholder="Digite seu email"
+          />
+          
+          <TextField
 
-      <TextField
-        label="Senha"
-        variant="outlined"
-        type="password"
-        placeholder="Digite sua senha"
-      />
-
-      <Link to="/dasboard">
-
-        <Button variant="contained" color="primary">
+            label="Senha"
+            variant="outlined"
+            type="password"
+            placeholder="Digite sua senha"
+          />
+          <Button variant="contained" color="primary">
             Entrar
-        </Button>
-
-      </Link>
-
-      <Typography variant="body2" color="textSecondary">
-        Esqueci minha senha
-      </Typography>
-      
-    </LoginContainer>
+          </Button>
+          <Typography variant="body2" color="textSecondary">
+            Esqueci minha senha
+          </Typography>
+        </LoginContainer>
+      </LoginWrapper>
+      <Footer />
+    </>
   );
 };
 
