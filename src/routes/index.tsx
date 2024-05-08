@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Route, Routes, Navigate} from 'react-router-dom';
-import  Dashboard  from '../containers/Admin Dashboard/index';
+import  Dashboard  from '../containers/AdminDashboard/index';
 
 import { CadastroInstituicao } from '../containers/Institution Register/index';
 import { BuscaCurso } from '../containers/Institution Register/searchCourse';
