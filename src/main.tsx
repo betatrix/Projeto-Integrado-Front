@@ -2,6 +2,7 @@ import React from 'react';
 import GlobalStyle from './styles/globalStyles';
 import ReactDOM from 'react-dom/client';
 import App from './app';
+import './i18n';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
@@ -9,7 +10,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         < App />
     </React.StrictMode>,
 );
-
 
 // import React from 'react'
 // import ReactDOM from 'react-dom/client'
