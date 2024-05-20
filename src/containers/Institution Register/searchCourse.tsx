@@ -8,28 +8,28 @@ import { CourseForm } from '../../types/courseTypes';
 import { useNavigate } from 'react-router-dom';
 import AdminHeader from '../../components/AdminHeader';
 import Footer from '../../components/AdminFooter';
+import * as yup from 'yup';
 
-
+const notaMecSchema = yup.number().nullable().typeError('A nota deve ser um número').min(1, 'Nota mínima 1').max(5, 'Nota máxima 5').required('A nota é obrigatória');
 
 export const BuscaCurso: React.FC = () => {
-    const { institutionId } = useInstitution(); 
+    const { institutionId } = useInstitution();
     const navigate = useNavigate();
     const steps = [
         'Cadastrar Dados da Instituição',
         'Adicionar Cursos na Instituição',
         'Adicionar Políticas Afirmativas na Instituição',
     ];
-
-
     const [selectedCourses, setSelectedCourses] = useState<{ [key: number]: { notaMec: number, isSelected: boolean } }>({});
     const [courses, setCourses] = useState<CourseForm[]>([]);
     const [filteredCourses, setFilteredCourses] = useState<CourseForm[]>([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(false);
+    const [validationErrors, setValidationErrors] = useState<{ [key: number]: string }>({});
 
     useEffect(() => {
         if (!institutionId) {
-            navigate('/cadastro'); 
+            navigate('/cadastro');
         } else {
             const fetchCourses = async () => {
                 setLoading(true);
@@ -59,13 +59,18 @@ export const BuscaCurso: React.FC = () => {
         }));
     };
 
-    const handleNotaMecChange = (courseId: number, notaMec: number) => {
-        setSelectedCourses(prev => ({
-            ...prev,
-            [courseId]: { ...prev[courseId], notaMec }
-        }));
+    const handleNotaMecChange = async (courseId: number, notaMec: number) => {
+        try {
+            await notaMecSchema.validate(notaMec);
+            setValidationErrors(prev => ({ ...prev, [courseId]: '' }));
+            setSelectedCourses(prev => ({
+                ...prev,
+                [courseId]: { ...prev[courseId], notaMec }
+            }));
+        } catch (error) {
+            setValidationErrors(prev => ({ ...prev, [courseId]: '' }));
+        }
     };
-
 
     const handleSubmitCourses = async () => {
         if (!institutionId) {
@@ -74,34 +79,33 @@ export const BuscaCurso: React.FC = () => {
         }
         try {
             const selectedEntries = Object.entries(selectedCourses)
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 .filter(([_, c]) => c.isSelected)
                 .map(([id, { notaMec }]) => ({
                     courseId: Number(id),
                     notaMec
                 }));
-            if (selectedEntries?.length > 0) {
+            if (selectedEntries.length > 0) {
+                for (const { notaMec, courseId } of selectedEntries) {
+                    await notaMecSchema.validate(notaMec);
+                }
                 const responses = await Promise.all(selectedEntries.map(({ notaMec, courseId }) =>
                     cadastrarCursoInstituicao(institutionId, notaMec, courseId)
-                
-               
                 ));
                 navigate('/politicas', { state: { institutionId } });
                 console.log('Cursos cadastrados com sucesso:', responses);
                 alert('Cursos cadastrados com sucesso na Instituição');
-                
-            } else{
+            } else {
                 alert('Selecione um curso para continuar!');
             }
-            
         } catch (error) {
             console.error('Erro ao cadastrar cursos na instituição:', error);
+            alert('Erro na validação das notas MEC.');
         }
     };
 
     return (
         <>
-            <AdminHeader/>
+            <AdminHeader />
             <Box sx={{ marginTop: '20px' }}>
                 <Box sx={{ width: '100%' }}>
                     <Stepper activeStep={1} alternativeLabel>
@@ -113,9 +117,7 @@ export const BuscaCurso: React.FC = () => {
                     </Stepper>
                 </Box>
                 <Box>
-                
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, maxWidth: 600, margin: 'auto', mt: 4, marginBottom: '40px' }}>
-                
                         <Typography variant="h4" sx={{ mb: 2 }}>Cursos da Instituição</Typography>
                         <TextField
                             label='Pesquisar Curso'
@@ -138,7 +140,7 @@ export const BuscaCurso: React.FC = () => {
                                             primary={course.descricao}
                                         />
                                         {selectedCourses[course.id]?.isSelected && (
-                                            <FormControl style={{ marginLeft: '10px', minWidth: '120px' }}>
+                                            <FormControl style={{ marginLeft: '10px', minWidth: '120px' }} error={!!validationErrors[course.id]}>
                                                 <InputLabel htmlFor={`notaMec-${course.id}`}>Nota MEC</InputLabel>
                                                 <Input
                                                     id={`notaMec-${course.id}`}
@@ -147,21 +149,17 @@ export const BuscaCurso: React.FC = () => {
                                                     type='number'
                                                     inputProps={{ min: 1, max: 5 }}
                                                 />
-                                                <FormHelperText>Nota de 1 a 5</FormHelperText>
+                                                <FormHelperText>{validationErrors[course.id] || 'Nota de 1 a 5'}</FormHelperText>
                                             </FormControl>
-                                        
                                         )}
                                     </ListItem>
                                 ))}
                             </List>
                         )}
-
                         <Grid container spacing={2} justifyContent='space-between'>
-                    
                             <Grid item xs={6} display="flex" justifyContent="flex-start">
                                 <Button variant='outlined' onClick={() => navigate('/cadastro')} >Voltar</Button>
                             </Grid>
-                    
                             <Grid item xs={6} display="flex" justifyContent="flex-end">
                                 <Button variant='contained' onClick={handleSubmitCourses} >Avançar</Button>
                             </Grid>
@@ -169,14 +167,9 @@ export const BuscaCurso: React.FC = () => {
                     </Box>
                 </Box>
             </Box>
-            <Footer/>
+            <Footer />
         </>
     );
 };
 
 export default BuscaCurso;
-
-
-
-
-

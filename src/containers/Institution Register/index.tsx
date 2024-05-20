@@ -12,19 +12,19 @@ import AdminHeader from '../../components/AdminHeader';
 import Footer from '../../components/AdminFooter';
 
 interface FormValues {
-  nome: string;
-  site: string;
-  notaMec: number | null;
-  sigla: string;
-  endereco: {
-    logradouro: string;
-    numero: string;
-    complemento: string;
-    bairro: string;
-    cidade: string;
-    estado: string;
-    cep: string;
-  };
+    nome: string;
+    site: string;
+    notaMec: number | null;
+    sigla: string;
+    endereco: {
+        logradouro: string;
+        numero: string;
+        complemento: string;
+        bairro: string;
+        cidade: string;
+        estado: string;
+        cep: string;
+    };
 }
 
 export const CadastroInstituicao: React.FC = () => {
@@ -82,7 +82,6 @@ export const CadastroInstituicao: React.FC = () => {
     const handleCepChange = async (event: React.ChangeEvent<HTMLInputElement>, setFieldValue: (field: string, value: any) => void) => {
         const cep = event.target.value.replace(/\D/g, '');
         setFieldValue('endereco.cep', cep);
-
         if (cep.length === 8) {
             try {
                 const response = await axios.get(`https://viacep.com.br/ws/${cep}/json/`);
@@ -113,7 +112,6 @@ export const CadastroInstituicao: React.FC = () => {
             <AdminHeader />
             <Box>
                 <Box sx={{ marginTop: '20px' }}>
-
                     <Box sx={{ width: '100%' }}>
                         <Stepper activeStep={0} alternativeLabel>
                             {steps.map((label) => (
@@ -123,13 +121,11 @@ export const CadastroInstituicao: React.FC = () => {
                             ))}
                         </Stepper>
                     </Box>
-
                     <Box sx={{ marginTop: '20px', marginBottom: '40px' }} >
                         <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
                             {({ setFieldValue, isSubmitting }) => (
                                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, maxWidth: 600, margin: 'auto' }}>
                                     <Form>
-
                                         <Box sx={{ '& .MuiTextField-root': { m: 1 } }}>
                                             <Paper sx={{ marginTop: '30px', marginBottom: '30px' }}>
                                                 <Grid container spacing={2} sx={{ maxWidth: 500, paddingLeft: '60px', paddingTop: '20px', paddingBottom: '30px' }}>
@@ -140,10 +136,8 @@ export const CadastroInstituicao: React.FC = () => {
                                                     </Grid>
                                                     <Grid item xs={6}>
                                                         <Field component={TextField} name='sigla' label='Sigla' variant='standard' size='small' fullWidth required />
-
                                                     </Grid>
                                                     <Grid item xs={6}>
-
                                                         <Field component={TextField} name='notaMec' type='number' label='Nota MEC' variant='standard' inputProps={{ min: 1, max: 5 }} size='small' fullWidth required />
                                                     </Grid>
                                                 </Grid>
@@ -156,66 +150,36 @@ export const CadastroInstituicao: React.FC = () => {
                                                     <Grid item xs={12}>
                                                         <Field component={TextField} name='endereco.logradouro' label='Logradouro' variant='standard' fullWidth size='small' required />
                                                     </Grid>
-
                                                     <Grid item xs={6}>
-                                                        <Field
-                                                            component={TextField}
-                                                            name='endereco.cep'
-                                                            label='CEP'
-                                                            variant='standard'
-                                                            fullWidth
-                                                            size='small'
-                                                            required
-                                                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleCepChange(event, setFieldValue)}
-                                                        />
+                                                        <Field component={TextField} name='endereco.cep' label='CEP' variant='standard' fullWidth size='small' required
+                                                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleCepChange(event, setFieldValue)} />
                                                     </Grid>
-
                                                     <Grid item xs={6} >
                                                         <Field component={TextField} name='endereco.numero' label='Número' variant='standard' fullWidth size='small' required />
                                                     </Grid>
                                                     <Grid item xs={12}>
                                                         <Field component={TextField} name='endereco.complemento' label='Complemento' variant='standard' fullWidth size='small' />
                                                     </Grid>
-
                                                     <Grid item xs={12}>
                                                         <Field component={TextField} name='endereco.bairro' label='Bairro' variant='standard' fullWidth size='small' required />
                                                     </Grid>
-
                                                     <Grid item xs={6} >
                                                         <Field component={TextField} name='endereco.cidade' label='Cidade' variant='standard' fullWidth size='small' required />
                                                     </Grid>
-
                                                     <Grid item xs={6}>
                                                         <Field component={TextField} name='endereco.estado' label='Estado' variant='standard' fullWidth size='small' required />
                                                     </Grid>
                                                 </Grid>
                                             </Paper>
                                             <Grid container spacing={2} justifyContent='space-between'>
-
                                                 <Grid item xs={6} display="flex" justifyContent="flex-start">
-                                                    <Button
-                                                        type='button'
-                                                        variant='outlined'
-                                                        onClick={() => navigate('/pagina-inicial')}
-
-                                                    >
-                          Voltar
-                                                    </Button>
+                                                    <Button type='button' variant='outlined' onClick={() => navigate('/pagina-inicial')}> Voltar</Button>
                                                 </Grid>
-
                                                 <Grid item xs={6} display="flex" justifyContent="flex-end">
-                                                    <Button
-                                                        type='submit'
-                                                        disabled={isSubmitting}
-                                                        variant='contained'
-
-                                                    >
-                          Avançar
-                                                    </Button>
+                                                    <Button type='submit' disabled={isSubmitting} variant='contained'> Avançar</Button>
                                                 </Grid>
                                             </Grid>
                                         </Box>
-
                                     </Form>
                                 </Box>
                             )}
@@ -226,7 +190,6 @@ export const CadastroInstituicao: React.FC = () => {
             <Footer />
         </>
     );
-
 };
 
 export default CadastroInstituicao;

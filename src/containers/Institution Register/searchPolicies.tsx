@@ -9,8 +9,6 @@ import AdminHeader from '../../components/AdminHeader';
 import Footer from '../../components/AdminFooter';
 import Step from '@mui/material/Step';
 
-
-
 export const BuscaPoliticas: React.FC = () => {
     const { institutionId } = useInstitution();
     const navigate = useNavigate();
@@ -18,8 +16,7 @@ export const BuscaPoliticas: React.FC = () => {
         'Cadastrar Dados da Instituição',
         'Adicionar Cursos na Instituição',
         'Adicionar Políticas Afirmativas na Instituição',
-      ];
-
+    ];
 
     const [selectedPolicies, setSelectedPolicies] = useState<{ [key: number]: boolean }>({});
     const [policies, setPolicies] = useState<PolicesInstitutionForm[]>([]);
@@ -69,79 +66,70 @@ export const BuscaPoliticas: React.FC = () => {
             const selectedPolicyIds = Object.entries(selectedPolicies)
                 .filter(([_, isSelected]) => isSelected)
                 .map(([id, _]) => id);
-             
+            const responses = await Promise.all(selectedPolicyIds.map(policyId =>
+                cadastrarPoliticasInstituicao(institutionId, Number(policyId))));
+            console.log('Respostas:', responses);
 
-                const responses = await Promise.all(selectedPolicyIds.map(policyId =>
-                    cadastrarPoliticasInstituicao(institutionId, Number(policyId))));
-                    
-                console.log('Respostas:', responses);
-                
-                if (responses?.length > 0) {
-                    alert('Políticas cadastradas com sucesso na Instituição');
-                    navigate('/pagina-inicial');
-                } else {
-                    alert('Erro ao cadastrar políticas!');
-                }
-          
+            if (responses?.length > 0) {
+                alert('Políticas cadastradas com sucesso na Instituição');
+                navigate('/pagina-inicial');
+            } else {
+                alert('Erro ao cadastrar políticas!');
+            }
+
         } catch (error) {
             console.error('Erro ao cadastrar políticas na instituição:', error);
         }
     };
-
     return (
         <>
-        <AdminHeader/>
-        <Box sx={{ marginTop: '20px', marginBottom: '40px' }} >
-        <Box sx={{ width: '100%' }}>
-        <Stepper activeStep={2} alternativeLabel>
-            {steps.map((label) => (
-                <Step key={label}>
-                <StepLabel>{label}</StepLabel>
-                </Step>
-            ))}
-        </Stepper>
-        </Box >
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, maxWidth: 600, margin: 'auto', mt: 4 }}>
-                
-            <Typography variant='h4' sx={{ mb: 2 }}>Políticas da Instituição</Typography>
-            <TextField
-                label='Pesquisar Política'
-                variant='standard'
-                value={searchTerm}
-                onChange={handleSearchChange}
-                fullWidth
-            />
-            {loading ? <CircularProgress /> : (
-                <List>
-                    {filteredPolicies.map((policy) => (
-                        <ListItem key={policy.id} divider>
-                            <Checkbox
-                                checked={!!selectedPolicies[policy.id]}
-                                onChange={() => handlePolicySelection(policy.id)}
-                            />
-                            <ListItemText
-                                primary={policy.descricao}
-                            />
-                        </ListItem>
-                    ))}
-                </List>
-            )}
+            <AdminHeader />
+            <Box sx={{ marginTop: '20px', marginBottom: '40px' }} >
+                <Box sx={{ width: '100%' }}>
+                    <Stepper activeStep={2} alternativeLabel>
+                        {steps.map((label) => (
+                            <Step key={label}>
+                                <StepLabel>{label}</StepLabel>
+                            </Step>
+                        ))}
+                    </Stepper>
+                </Box >
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, maxWidth: 600, margin: 'auto', mt: 4 }}>
 
+                    <Typography variant='h4' sx={{ mb: 2 }}>Políticas da Instituição</Typography>
+                    <TextField
+                        label='Pesquisar Política'
+                        variant='standard'
+                        value={searchTerm}
+                        onChange={handleSearchChange}
+                        fullWidth
+                    />
+                    {loading ? <CircularProgress /> : (
+                        <List>
+                            {filteredPolicies.map((policy) => (
+                                <ListItem key={policy.id} divider>
+                                    <Checkbox
+                                        checked={!!selectedPolicies[policy.id]}
+                                        onChange={() => handlePolicySelection(policy.id)}
+                                    />
+                                    <ListItemText
+                                        primary={policy.descricao}
+                                    />
+                                </ListItem>
+                            ))}
+                        </List>
+                    )}
                     <Grid container spacing={2} justifyContent='space-between'>
-                    
                         <Grid item xs={6} display="flex" justifyContent="flex-start">
-                        <Button variant='outlined' onClick={() => navigate('/cursos')} sx={{ mt: 2, mr: 1 }}>Voltar</Button>
+                            <Button variant='outlined' onClick={() => navigate('/cursos')} sx={{ mt: 2, mr: 1 }}>Voltar</Button>
                         </Grid>
-                        
                         <Grid item xs={6} display="flex" justifyContent="flex-end">
-                        <Button variant='contained' onClick={handleSubmitPolicies} sx={{ mt: 2 }}>Avançar</Button>
+                            <Button variant='contained' onClick={handleSubmitPolicies} sx={{ mt: 2 }}>Avançar</Button>
                         </Grid>
                     </Grid>
-            
-           
-        </Box>
-        </Box>
-        <Footer/>
+                </Box>
+            </Box>
+            <Footer />
         </>
     );
 };
