@@ -8,6 +8,7 @@ interface InstitutionContextType {
 
 const InstitutionContext = createContext<InstitutionContextType | undefined>(undefined);
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useInstitution = (): InstitutionContextType => {
     const context = useContext(InstitutionContext);
     if (context === undefined) {

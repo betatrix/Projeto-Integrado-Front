@@ -8,6 +8,6 @@ export type CourseForm = {
     ativo: string;
   };
 
-  export type Area = {
+export type Area = {
     descricao: string;
   };

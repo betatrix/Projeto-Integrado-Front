@@ -14,4 +14,4 @@ export const BackPageButton = styled.button `
         background-color: #a9a9a9;
         transition: 0.3s all;
     }
-`
+`;

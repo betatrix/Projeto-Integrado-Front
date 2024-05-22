@@ -4,17 +4,13 @@ import {
     Container,
     Toolbar,
     Box,
-    IconButton,
     Typography,
     Tooltip,
-    Avatar,
     Menu,
     MenuItem,
     Button,
 } from '@mui/material';
-import { Link } from 'react-router-dom';
-
-const settings = ['Account', 'Dashboard', 'Logout'];
+import {useNavigate } from 'react-router-dom';
 
 const styles = {
     logo: {
@@ -25,15 +21,12 @@ const styles = {
         color: 'inherit',
         textDecoration: 'none',
     },
-    avatarButton: {
-        p: 0,
+    LoginText: {
+        mr: 2,
+        color: 'white',
     },
     menu: {
         mt: '45px',
-    },
-    welcomeText: {
-        mr: 2,
-        color: 'white',
     },
     linkButton: {
         color: 'white',
@@ -42,8 +35,9 @@ const styles = {
     },
 };
 
-function AdminHeader() {
+function InitialPageHeader() {
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+    const navigate = useNavigate();
 
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElUser(event.currentTarget);
@@ -51,6 +45,15 @@ function AdminHeader() {
 
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
+    };
+
+    const handleAdminLogin = () => {
+        setAnchorElUser(null);
+        navigate('/admin');
+    };
+    const handleStudentLogin = () => {
+        setAnchorElUser(null);
+        navigate('/estudante');
     };
 
     return (
@@ -62,23 +65,16 @@ function AdminHeader() {
                             variant="h5"
                             noWrap
                             component="a"
-                            href="#app-bar-with-responsive-menu"
+                            href="/pagina-inicial"
                             sx={styles.logo}
                         >
                             VOCCO
                         </Typography>
                     </Box>
-                    <Box>
-                        <Link to="/pagina-inicial" style={styles.linkButton}>
-                            <Button color="inherit">Home</Button>
-                        </Link>
-                    </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Typography sx={styles.welcomeText}>Bem vindo de volta, fulano!</Typography>
-                        <Tooltip title="Open settings">
-                            <IconButton onClick={handleOpenUserMenu} sx={styles.avatarButton}>
-                                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                            </IconButton>
+                        <Tooltip title="Login">
+                            <Button type='button' variant='outlined' onClick={handleOpenUserMenu} sx={styles.LoginText}> Entrar
+                            </Button>
                         </Tooltip>
                         <Menu
                             sx={styles.menu}
@@ -92,11 +88,12 @@ function AdminHeader() {
                             open={Boolean(anchorElUser)}
                             onClose={handleCloseUserMenu}
                         >
-                            {settings.map((setting) => (
-                                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                    <Typography textAlign="center">{setting}</Typography>
-                                </MenuItem>
-                            ))}
+                            <MenuItem onClick={handleStudentLogin}>
+                                <Typography textAlign="center">Estudante</Typography>
+                            </MenuItem>
+                            <MenuItem onClick={handleAdminLogin}>
+                                <Typography textAlign="center">Administrador</Typography>
+                            </MenuItem>
                         </Menu>
                     </Box>
                 </Toolbar>
@@ -105,4 +102,4 @@ function AdminHeader() {
     );
 }
 
-export default AdminHeader;
+export default InitialPageHeader;

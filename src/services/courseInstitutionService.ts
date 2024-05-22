@@ -6,8 +6,8 @@ export const cadastrarCursoInstituicao = async (instituicaoId: number, notaMec: 
         instituicaoId,
         notaMec,
         cursoId
-    })
-    console.log(response)
+    });
+    console.log(response);
     return response;
 
-}
+};

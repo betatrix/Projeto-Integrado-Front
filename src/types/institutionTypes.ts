@@ -8,12 +8,12 @@ export type Endereco = {
     estado: string;
     cep: string;
   };
-  
+
 export type InstituicaoForm = {
     nome: string;
     site: string;
     notaMec: number | null;
     sigla: string;
     endereco: Endereco;
-    
+
   };

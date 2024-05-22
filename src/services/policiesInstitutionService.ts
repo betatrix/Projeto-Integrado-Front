@@ -4,8 +4,8 @@ export const cadastrarPoliticasInstituicao = async (instituicaoId: number, polit
     const response = await cadastrarEntidade('politicaInstituicao', {
         instituicaoId,
         politicaId
-    })
-    console.log(response)
+    });
+    console.log(response);
     return response;
 
-}
+};

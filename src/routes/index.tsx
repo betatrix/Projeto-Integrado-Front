@@ -6,6 +6,8 @@ import { BuscaCurso } from '../containers/Institution Register/searchCourse';
 import { BuscaPoliticas } from '../containers/Institution Register/searchPolicies';
 import { InstitutionProvider } from '../context/institutionContext';
 import InstitutionManagement from '../containers/Institution Management/index';
+import HomePage from '../containers/HomePage';
+import DashboardStudent from '../containers/StudentDashboard';
 
 export const AppRoutes: React.FC = () => {
     return (
@@ -16,7 +18,9 @@ export const AppRoutes: React.FC = () => {
                     <Route path='/cursos' element={<BuscaCurso />} />
                     <Route path='/politicas' element={<BuscaPoliticas />} />
                     <Route path='/gerenciamento-instituicao' element={<InstitutionManagement/>}/>
-                    <Route path='/pagina-inicial' element={<Dashboard />} />
+                    <Route path='/estudante' element={<DashboardStudent />} />
+                    <Route path='/admin' element={<Dashboard />} />
+                    <Route path='/pagina-inicial' element={<HomePage />} />
                     <Route path='*' element={<Navigate to='/pagina-inicial' replace />} />
                 </Routes>
             </InstitutionProvider>

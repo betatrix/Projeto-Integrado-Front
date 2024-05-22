@@ -79,6 +79,7 @@ export const CadastroInstituicao: React.FC = () => {
         }),
     });
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleCepChange = async (event: React.ChangeEvent<HTMLInputElement>, setFieldValue: (field: string, value: any) => void) => {
         const cep = event.target.value.replace(/\D/g, '');
         setFieldValue('endereco.cep', cep);
@@ -138,7 +139,8 @@ export const CadastroInstituicao: React.FC = () => {
                                                         <Field component={TextField} name='sigla' label='Sigla' variant='standard' size='small' fullWidth required />
                                                     </Grid>
                                                     <Grid item xs={6}>
-                                                        <Field component={TextField} name='notaMec' type='number' label='Nota MEC' variant='standard' inputProps={{ min: 1, max: 5 }} size='small' fullWidth required />
+                                                        <Field component={TextField} name='notaMec'
+                                                            type='number' label='Nota MEC' variant='standard' inputProps={{ min: 1, max: 5 }} size='small' fullWidth required />
                                                     </Grid>
                                                 </Grid>
                                             </Paper>
@@ -148,7 +150,14 @@ export const CadastroInstituicao: React.FC = () => {
                                                 <Grid container spacing={2} sx={{ maxWidth: 500, paddingLeft: '60px', paddingTop: '20px', paddingBottom: '30px' }} >
                                                     <Typography variant='h6' sx={{ textAlign: 'left' }}>Endereço</Typography>
                                                     <Grid item xs={12}>
-                                                        <Field component={TextField} name='endereco.logradouro' label='Logradouro' variant='standard' fullWidth size='small' required />
+                                                        <Field
+                                                            component={TextField}
+                                                            name='endereco.logradouro'
+                                                            label='Logradouro'
+                                                            variant='standard'
+                                                            fullWidth size='small'
+                                                            required
+                                                        />
                                                     </Grid>
                                                     <Grid item xs={6}>
                                                         <Field component={TextField} name='endereco.cep' label='CEP' variant='standard' fullWidth size='small' required
@@ -173,7 +182,7 @@ export const CadastroInstituicao: React.FC = () => {
                                             </Paper>
                                             <Grid container spacing={2} justifyContent='space-between'>
                                                 <Grid item xs={6} display="flex" justifyContent="flex-start">
-                                                    <Button type='button' variant='outlined' onClick={() => navigate('/pagina-inicial')}> Voltar</Button>
+                                                    <Button type='button' variant='outlined' onClick={() => navigate('/admin')}> Voltar</Button>
                                                 </Grid>
                                                 <Grid item xs={6} display="flex" justifyContent="flex-end">
                                                     <Button type='submit' disabled={isSubmitting} variant='contained'> Avançar</Button>

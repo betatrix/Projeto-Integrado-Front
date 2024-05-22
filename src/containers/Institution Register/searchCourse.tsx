@@ -1,5 +1,24 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from 'react';
-import { Box, TextField, List, ListItem, ListItemText, Checkbox, Button, Typography, CircularProgress, Input, InputLabel, FormControl, FormHelperText, Stepper, StepLabel, Grid } from '@mui/material';
+import {
+    Box,
+    TextField,
+    List,
+    ListItem,
+    ListItemText,
+    Checkbox,
+    Button,
+    Typography,
+    CircularProgress,
+    Input,
+    InputLabel,
+    FormControl,
+    FormHelperText,
+    Stepper,
+    StepLabel,
+    Grid,
+} from '@mui/material';
+
 import { useInstitution } from '../../context/institutionContext';
 import { buscarCursos } from '../../services/courseService';
 import { cadastrarCursoInstituicao } from '../../services/courseInstitutionService';
