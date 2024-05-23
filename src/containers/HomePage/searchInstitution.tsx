@@ -2,20 +2,16 @@ import React, { useState, useEffect } from 'react';
 import {
     Box,
     Typography,
-    Table,
-    TableHead,
-    TableCell,
-    TableBody,
-    TableRow,
+    List,
+    ListItem,
+    ListItemText,
     TextField,
     Modal,
     Grid,
-    Button,
 } from '@mui/material';
 import InitialPageHeader from '../../components/HomeHeader/';
 import Footer from '../../components/AdminFooter';
 import { Endereco } from '../../types/institutionTypes';
-import { Link } from 'react-router-dom';
 
 interface Institution {
     id: number;
@@ -72,38 +68,26 @@ const InstitutionList: React.FC = () => {
     return (
         <>
             <InitialPageHeader />
-            <Box sx={{ marginTop: '20px', marginBottom: '60px', display: 'flex', flexDirection: 'column', gap: 2, maxWidth: 600, margin: 'auto', mt: 4 }}>
-                <Box sx={{ marginTop: '20px'}}>
-                    <Link to="/pagina-inicial">
-                        <Button variant="contained">Voltar</Button>
-                    </Link>
-                </Box>
+            <Box sx={{marginBottom: '60px', display: 'flex', flexDirection: 'column', gap: 2, maxWidth: 700, margin: 'auto', mt: 4 }}>
                 <Typography variant="h5" sx={{ marginBottom: 2, textAlign: 'center' }}>
                     Lista de Instituições
                 </Typography>
-                <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 5 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                     <TextField
-                        label="Pesquisar instituição"
-                        variant="outlined"
-                        sx={{ width: '70%' }}
+                        label="Pesquisar Instituição"
+                        variant='standard'
+                        sx={{ width: '100%' }}
                         onChange={(e) => setSearchValue(e.target.value)}
                     />
                 </Box>
-                <Box sx={{ paddingTop: 10 }}>
-                    <Table>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Nome</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {filteredInstitutions.map((institution) => (
-                                <TableRow key={institution.id} onClick={() => handleDetailModalOpen(institution)} style={{ cursor: 'pointer' }}>
-                                    <TableCell>{institution.nome}</TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
+                <Box sx={{ paddingTop: 1 }}>
+                    <List>
+                        {filteredInstitutions.map((institution) => (
+                            <ListItem key={institution.id} button onClick={() => handleDetailModalOpen(institution)}>
+                                <ListItemText primary={institution.nome} />
+                            </ListItem>
+                        ))}
+                    </List>
                 </Box>
             </Box>
 

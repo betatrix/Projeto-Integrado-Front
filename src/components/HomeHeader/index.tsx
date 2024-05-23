@@ -10,7 +10,8 @@ import {
     MenuItem,
     Button,
 } from '@mui/material';
-import {useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const styles = {
     logo: {
@@ -70,6 +71,17 @@ function InitialPageHeader() {
                         >
                             VOCCO
                         </Typography>
+                        <Box sx={{marginLeft: '800px' }}>
+                            <Link to="/pagina-inicial" style={styles.linkButton}>
+                                <Button color="inherit">Home</Button>
+                            </Link>
+                            <Link to="/teste" style={styles.linkButton}>
+                                <Button color="inherit">Teste Vocacional</Button>
+                            </Link>
+                            <Link to="/sobre" style={styles.linkButton}>
+                                <Button color="inherit">Sobre</Button>
+                            </Link>
+                        </Box>
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <Tooltip title="Login">
