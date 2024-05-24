@@ -105,7 +105,7 @@ const Dashboard = () => {
                             </Link>
                         </Grid>
                         <Grid item>
-                            <Link to="/cursos" style={{ textDecoration: 'none' }}>
+                            <Link to="/gerenciamento-curso" style={{ textDecoration: 'none' }}>
                                 <SquareButton>
                                     <TextButton>
                                     Cursos

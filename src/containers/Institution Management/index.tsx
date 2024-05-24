@@ -129,7 +129,7 @@ const InstitutionManagement: React.FC = () => {
 
             <Box sx={{ marginTop: '20px', marginBottom: '60px'}}>
 
-                <Link to="/pagina-inicial">
+                <Link to='/admin'>
                     <BackButton></BackButton>
                 </Link>
 
