@@ -1,18 +1,11 @@
 import styled, { createGlobalStyle } from 'styled-components';
 import { Box, FilledInput, Button, InputLabel, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { ErrorMessage } from 'formik';
 
 export const Global = createGlobalStyle`
   body {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
     font-family: 'Roboto', sans-serif;
-    
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    height: 100vh;
   }
 `;
 
@@ -32,42 +25,33 @@ export const BackButton = styled(Button)`
 export const LoginContainer = styled(Box)`
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
-  margin-left: 7vi;
-  margin-right: 15vi;
-  max-width: 70vh;
-  z-index: 1;
+  min-height: 100vh;
+  padding: 20px;
+  background-color: #f5f5f5;
 `;
 
 export const FormContainer = styled.form`
   display: grid;
-`;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  width: 100%;
+  max-width: 700px;
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 
-export const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: #ffffff;
-`;
-
-export const RightPanel = styled.div`
-  flex: 1;
-  height: 100%;
-  width: 100vh;
-  background: #101840;
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 export const Header = styled(Typography)`
   &.MuiTypography-root {
     font-weight: 700;
-  }
-`;
-
-export const Paragraph = styled(Typography)`
-  &.MuiTypography-root {
-    font-weight: 400;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
   }
 `;
 
@@ -75,8 +59,7 @@ export const SubText = styled(Typography)`
   &.MuiTypography-root {
     color: #474d66;
     text-decoration: none;
-    text-align: right;
-    margin-top: 5px;
+    text-align: left;
   }
 `;
 
@@ -95,26 +78,29 @@ export const CustomField = styled(FilledInput)`
   &.MuiFilledInput-root {
     background-color: #E6E6E6;
     border-radius: 10px;
-    margin-bottom: 5px;
 
     &:hover {
-      background-color: #edeff5; /* Cor de fundo ao passar o mouse */
+      background-color: #edeff5;
     }
 
     &.Mui-focused {
-      background-color: #edeff5; /* Cor de fundo ao focar */
+      background-color: #edeff5;
     }
 
     &::before {
-      border-bottom: none; /* Remove a borda inferior antes do foco */
+      border-bottom: none;
     }
 
     &:hover::before {
-      border-bottom: none !important; /* Remove a borda inferior ao passar o mouse */
+      border-bottom: none !important; 
     }
 
     &::after {
-      border-bottom: none; /* Remove a borda inferior ao focar */
+      border-bottom: none; 
+    }
+
+    &.Mui-error {
+      background-color: #F9DADA; 
     }
   }
 `;
@@ -133,8 +119,8 @@ export const CustomButton = styled(Button)`
   &.MuiButton-root {
     background: linear-gradient(90deg, rgba(53,51,205,1) 0%, rgba(16,24,64,1) 100%);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-top: 5px;
+    margin-bottom: 2px;
     border-radius: 10px;
     height: 55px;
 
@@ -159,7 +145,8 @@ export const CustomButton = styled(Button)`
   }
 `;
 
-export const Image = styled.img`
-  max-width: 600vh;
-  margin-top: 8vh;
+export const MessageError = styled(ErrorMessage)`
+  color: red;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
 `;
