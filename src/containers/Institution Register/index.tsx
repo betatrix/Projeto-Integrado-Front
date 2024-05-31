@@ -79,7 +79,9 @@ export const CadastroInstituicao: React.FC = () => {
         }),
     });
 
-    const handleCepChange = async (event: React.ChangeEvent<HTMLInputElement>, setFieldValue: (field: string, value: any) => void) => {
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const handleCepChange = async (event: React.ChangeEvent<HTMLInputElement>, setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void) => {
         const cep = event.target.value.replace(/\D/g, '');
         setFieldValue('endereco.cep', cep);
 
