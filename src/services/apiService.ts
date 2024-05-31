@@ -38,3 +38,9 @@ export const excluirEntidade = async (entidade: string, id: number) => {
     const response = await axios.delete(`${API_URL}/${entidade}/${id}`);
     return response.data;
 };
+
+// Cadastrar estudante
+export const cadastrarEstudante = async (entidade: string, data: object) => {
+    const response = await axios.post(`${API_URL}/${entidade}/cadastro`, data);
+    return response.data;
+};
