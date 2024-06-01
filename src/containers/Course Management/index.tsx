@@ -11,34 +11,40 @@ import {
     Modal,
     Button,
     Grid,
+    MenuItem,
+    Select,
+    FormControl,
+    InputLabel,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AdminHeader from '../../components/AdminHeader';
 import Footer from '../../components/AdminFooter';
 import {
-    buscarCursos,
+    buscarCursosListaCompleta,
     editarCurso,
+    buscarAreas,
     excluirCurso,
 } from '../../services/courseService';
-import { CourseForm } from '../../types/courseTypes';
-import BackButton from '../../components/Back Page Button';
-import { Link } from 'react-router-dom';
+import { CourseForm, Area } from '../../types/courseTypes';
 
 const CourseList: React.FC = () => {
     const [courses, setCourses] = useState<CourseForm[]>([]);
     const [filteredCourses, setFilteredCourses] = useState<CourseForm[]>([]);
+    const [areas, setAreas] = useState<Area[]>([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(false);
     const [editModalOpen, setEditModalOpen] = useState(false);
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-    const [selectedCourse, setSelectedCourse] = useState<CourseForm | null>(null);
+    const [selectedCourse, setSelectedCourse] = useState<CourseForm | null>(
+        null
+    );
 
     useEffect(() => {
         const fetchCourses = async () => {
             setLoading(true);
             try {
-                const fetchedCourses = await buscarCursos();
+                const fetchedCourses = await buscarCursosListaCompleta();
                 setCourses(fetchedCourses);
                 setFilteredCourses(fetchedCourses);
             } catch (error) {
@@ -47,18 +53,31 @@ const CourseList: React.FC = () => {
             setLoading(false);
         };
         fetchCourses();
+
+        const fetchAreas = async () => {
+            try {
+                const fetchedAreas = await buscarAreas();
+                setAreas(fetchedAreas);
+            } catch (error) {
+                console.error('Erro ao buscar áreas:', error);
+            }
+        };
+        fetchAreas();
     }, []);
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
         const filtered = courses.filter((course) =>
-            course.descricao.toLowerCase().includes(event.target.value.toLowerCase())
+            course?.descricao?.toLowerCase().includes(event.target.value.toLowerCase())
         );
         setFilteredCourses(filtered);
     };
 
     const handleEditModalOpen = (course: CourseForm) => {
-        setSelectedCourse(course);
+        setSelectedCourse({
+            ...course,
+            areaId: course.area ? course.area.id : 0,
+        });
         setEditModalOpen(true);
     };
 
@@ -68,7 +87,10 @@ const CourseList: React.FC = () => {
     };
 
     const handleDeleteModalOpen = (course: CourseForm) => {
-        setSelectedCourse(course);
+        setSelectedCourse({
+            ...course,
+            areaId: course.area ? course.area.id : 0,
+        });
         setDeleteModalOpen(true);
     };
 
@@ -79,16 +101,23 @@ const CourseList: React.FC = () => {
 
     const handleUpdateCourse = async () => {
         if (selectedCourse) {
+            const updatedArea = areas.find(area => area.id === selectedCourse.areaId) || selectedCourse.area;
+
+            const updatedCourse: CourseForm = {
+                ...selectedCourse,
+                area: updatedArea,
+            };
+
             try {
-                await editarCurso(selectedCourse.id, selectedCourse);
+                await editarCurso(updatedCourse);
                 setCourses(
                     courses.map((course) =>
-                        course.id === selectedCourse.id ? selectedCourse : course
+                        course.id === updatedCourse.id ? updatedCourse : course
                     )
                 );
                 setFilteredCourses(
-                    courses.map((course) =>
-                        course.id === selectedCourse.id ? selectedCourse : course
+                    filteredCourses.map((course) =>
+                        course.id === updatedCourse.id ? updatedCourse : course
                     )
                 );
                 handleEditModalClose();
@@ -102,10 +131,12 @@ const CourseList: React.FC = () => {
         if (selectedCourse) {
             try {
                 await excluirCurso(selectedCourse.id);
-                setCourses(courses.filter((course) => course.id !== selectedCourse.id));
-                setFilteredCourses(
-                    courses.filter((course) => course.id !== selectedCourse.id)
-                );
+                setCourses(courses.map((c) =>
+                    c.id === selectedCourse.id ? { ...c, ativo: false } : c
+                ));
+                setFilteredCourses(courses.map((c) =>
+                    c.id === selectedCourse.id ? { ...c, ativo: false } : c
+                ));
                 handleDeleteModalClose();
             } catch (error) {
                 console.error('Erro ao excluir curso:', error);
@@ -128,10 +159,6 @@ const CourseList: React.FC = () => {
                     mt: 4,
                 }}
             >
-
-                <Link to='/admin'>
-                    <BackButton></BackButton>
-                </Link>
                 <Typography variant="h4" sx={{ mb: 2, textAlign: 'center' }}>
                     Lista de Cursos
                 </Typography>
@@ -152,6 +179,9 @@ const CourseList: React.FC = () => {
                             {filteredCourses.map((course) => (
                                 <ListItem key={course.id} divider>
                                     <ListItemText primary={course.descricao} />
+                                    <ListItemText
+                                        primary={course.ativo ? 'Ativo' : 'Não Ativo'}
+                                    />
                                     <IconButton onClick={() => handleEditModalOpen(course)}>
                                         <EditIcon />
                                     </IconButton>
@@ -242,18 +272,27 @@ const CourseList: React.FC = () => {
                                     fullWidth
                                 />
                             </Grid>
-                            <Grid item>
-                                <TextField
-                                    label="Área"
-                                    value={selectedCourse.area?.descricao}
-                                    onChange={(e) =>
-                                        setSelectedCourse({
-                                            ...selectedCourse,
-                                            area: { descricao: e.target.value },
-                                        })
-                                    }
-                                    fullWidth
-                                />
+                            <Grid item sx={{ width: '43%' }} alignItems="center">
+                                <FormControl fullWidth>
+                                    <InputLabel id="area-label">Área</InputLabel>
+                                    <Select
+                                        labelId="area-label"
+                                        value={selectedCourse.areaId}
+                                        label="Área"
+                                        onChange={(e) =>
+                                            setSelectedCourse({
+                                                ...selectedCourse,
+                                                areaId: e.target.value as number,
+                                            })
+                                        }
+                                    >
+                                        {areas.map((area) => (
+                                            <MenuItem key={area.id} value={area.id}>
+                                                {area.descricao}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
                             </Grid>
                             <Grid item container justifyContent="center" spacing={2}>
                                 <Grid item>
@@ -281,7 +320,6 @@ const CourseList: React.FC = () => {
                 open={deleteModalOpen}
                 onClose={handleDeleteModalClose}
                 aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
             >
                 <Box
                     sx={{
@@ -302,8 +340,27 @@ const CourseList: React.FC = () => {
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                         Tem certeza que deseja excluir o curso {selectedCourse?.descricao}?
                     </Typography>
-                    <Button onClick={handleDeleteCourse}>Sim</Button>
-                    <Button onClick={handleDeleteModalClose}>Não</Button>
+                    <Grid
+                        container
+                        spacing={2}
+                        justifyContent="space-between"
+                        sx={{ mt: 2 }}
+                    >
+                        <Grid item>
+                            <Button variant="outlined" onClick={handleDeleteModalClose}>
+                                Não
+                            </Button>
+                        </Grid>
+                        <Grid item>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={handleDeleteCourse}
+                            >
+                                Sim
+                            </Button>
+                        </Grid>
+                    </Grid>
                 </Box>
             </Modal>
         </>

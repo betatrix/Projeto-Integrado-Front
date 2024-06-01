@@ -22,12 +22,17 @@ export const atualizarEntidade = async (entidade: string, id: number, data: obje
     return response.data;
 };
 
-export const substituirEntidade = async (entidade: string, id: number, data: object) => {
-    const response = await axios.put(`${API_URL}/${entidade}/${id}`, data);
+export const substituirEntidade = async (entidade: string, data: object) => {
+    const response = await axios.put(`${API_URL}/${entidade}`, data);
     return response.data;
 };
 
 export const excluirEntidade = async (entidade: string, id: number) => {
     const response = await axios.delete(`${API_URL}/${entidade}/${id}`);
+    return response.data;
+};
+
+export const buscarCursosPorInstituicao = async (instituicaoId: number) => {
+    const response = await axios.get(`${API_URL}/cursoInstituicao/instituicao/${instituicaoId}`);
     return response.data;
 };

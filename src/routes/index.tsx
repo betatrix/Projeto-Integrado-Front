@@ -11,6 +11,7 @@ import StudentDashboard from '../containers/StudentDashboard';
 import InstitutionList from '../containers/HomePage/searchInstitution';
 import About from '../containers/HomePage/about';
 import CourseList from '../containers/Course Management';
+import DataStudent from '../containers/StudentDashboard/perfilStudent';
 
 export const AppRoutes: React.FC = () => {
     return (
@@ -23,6 +24,7 @@ export const AppRoutes: React.FC = () => {
                     <Route path='/gerenciamento-instituicao' element={<InstitutionManagement/>}/>
                     <Route path='/gerenciamento-curso' element={<CourseList/>}/>
                     <Route path='/instituicao' element={<InstitutionList/>}/>
+                    <Route path='/perfil' element={<DataStudent/>}/>
                     <Route path='/estudante' element={<StudentDashboard />} />
                     <Route path='/sobre' element={<About />} />
                     <Route path='/admin' element={<Dashboard />} />

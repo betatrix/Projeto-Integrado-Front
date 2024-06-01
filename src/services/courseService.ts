@@ -1,7 +1,13 @@
-import { buscarEntidades, buscarEntidadePorId, excluirEntidade, atualizarEntidade } from './apiService';
+import { CourseForm } from '../types/courseTypes';
+import { buscarEntidades, buscarEntidadePorId, excluirEntidade, substituirEntidade } from './apiService';
 
 export const buscarCursos = async () => {
     const response = await buscarEntidades('curso/ativos');
+    return response;
+};
+
+export const buscarCursosListaCompleta = async () => {
+    const response = await buscarEntidades('curso');
     return response;
 };
 
@@ -13,7 +19,11 @@ export const excluirCurso = async (id:number) => {
     return await excluirEntidade('curso', id);
 };
 
-export const editarCurso = async (id: number, data: object) => {
-    return await atualizarEntidade('curso', id, data);
+export const editarCurso = async (courseData: CourseForm) => {
+    return await substituirEntidade('curso', courseData);
 };
 
+export const buscarAreas = async () => {
+    const response = await buscarEntidades('area');
+    return response;
+};

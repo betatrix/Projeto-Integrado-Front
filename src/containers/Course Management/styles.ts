@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { FormControl } from '@mui/material';
 
 export const Subtitle = styled.h1`
     font-size: 25px;
@@ -49,4 +50,8 @@ export const SquareButton = styled.a`
     &:hover ${TextButton} {
         color: #3E3E40;
     }
+`;
+
+export const StyledFormControl = styled(FormControl)`
+    width: 100%;
 `;

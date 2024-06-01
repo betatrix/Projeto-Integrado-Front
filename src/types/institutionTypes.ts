@@ -12,6 +12,7 @@ export type Endereco = {
 export type InstituicaoForm = {
     nome: string;
     site: string;
+    formaIngresso: string;
     notaMec: number | null;
     sigla: string;
     endereco: Endereco;

@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-mui';
@@ -14,6 +15,7 @@ import Footer from '../../components/AdminFooter';
 interface FormValues {
     nome: string;
     site: string;
+    formaIngresso: string;
     notaMec: number | null;
     sigla: string;
     endereco: {
@@ -39,6 +41,7 @@ export const CadastroInstituicao: React.FC = () => {
     const initialValues: FormValues = {
         nome: '',
         site: '',
+        formaIngresso: '',
         notaMec: null,
         sigla: '',
         endereco: {
@@ -57,6 +60,7 @@ export const CadastroInstituicao: React.FC = () => {
         site: Yup.string()
             .required('O site é obrigatório')
             .matches(/\./, 'O site deve conter pelo menos um ponto'),
+        formaIngresso: Yup.string().required('Forma de Ingresso é obrigatória'),
         notaMec: Yup.number()
             .nullable()
             .typeError('A nota MEC deve ser um número')
@@ -96,17 +100,20 @@ export const CadastroInstituicao: React.FC = () => {
             }
         }
     };
-
     const handleSubmit = async (values: FormValues, { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }) => {
         try {
             const response = await cadastrarInstituicao(values);
+            console.log(values);
             console.log('Instituição cadastrada com sucesso:', response);
             setInstitutionId(response.id);
             navigate('/cursos', { state: { institutionId: response.id } });
         } catch (error) {
+            console.log(values);
             console.error('Erro ao cadastrar instituição:', error);
         }
+        console.log(values);
         setSubmitting(false);
+        console.log(values);
     };
     return (
         <>
@@ -122,70 +129,232 @@ export const CadastroInstituicao: React.FC = () => {
                             ))}
                         </Stepper>
                     </Box>
-                    <Box sx={{ marginTop: '20px', marginBottom: '40px' }} >
-                        <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
+                    <Box sx={{ marginTop: '20px', marginBottom: '40px' }}>
+                        <Formik
+                            initialValues={initialValues}
+                            validationSchema={validationSchema}
+                            onSubmit={handleSubmit}
+                        >
                             {({ setFieldValue, isSubmitting }) => (
-                                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, maxWidth: 600, margin: 'auto' }}>
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        gap: 2,
+                                        maxWidth: 600,
+                                        margin: 'auto',
+                                    }}
+                                >
                                     <Form>
                                         <Box sx={{ '& .MuiTextField-root': { m: 1 } }}>
                                             <Paper sx={{ marginTop: '30px', marginBottom: '30px' }}>
-                                                <Grid container spacing={2} sx={{ maxWidth: 500, paddingLeft: '60px', paddingTop: '20px', paddingBottom: '30px' }}>
-                                                    <Typography variant='h6' sx={{ textAlign: 'left' }}>Dados Gerais</Typography>
-                                                    <Grid item xs={12} >
-                                                        <Field component={TextField} name='nome' label='Nome da Instituição' variant='standard' size='small' fullWidth required />
-                                                        <Field component={TextField} name='site' label='Site' variant='standard' size='small' fullWidth required />
-                                                    </Grid>
-                                                    <Grid item xs={6}>
-                                                        <Field component={TextField} name='sigla' label='Sigla' variant='standard' size='small' fullWidth required />
-                                                    </Grid>
-                                                    <Grid item xs={6}>
-                                                        <Field component={TextField} name='notaMec'
-                                                            type='number' label='Nota MEC' variant='standard' inputProps={{ min: 1, max: 5 }} size='small' fullWidth required />
-                                                    </Grid>
-                                                </Grid>
-                                            </Paper>
-                                        </Box>
-                                        <Box sx={{ '& .MuiTextField-root': { m: 1 }, }}>
-                                            <Paper sx={{ marginTop: '20px', marginBottom: '20px' }}>
-                                                <Grid container spacing={2} sx={{ maxWidth: 500, paddingLeft: '60px', paddingTop: '20px', paddingBottom: '30px' }} >
-                                                    <Typography variant='h6' sx={{ textAlign: 'left' }}>Endereço</Typography>
+                                                <Grid
+                                                    container
+                                                    spacing={2}
+                                                    sx={{
+                                                        maxWidth: 500,
+                                                        paddingLeft: '60px',
+                                                        paddingTop: '20px',
+                                                        paddingBottom: '30px',
+                                                    }}
+                                                >
+                                                    <Typography variant="h6" sx={{ textAlign: 'left' }}>
+                                                        Dados Gerais
+                                                    </Typography>
                                                     <Grid item xs={12}>
                                                         <Field
                                                             component={TextField}
-                                                            name='endereco.logradouro'
-                                                            label='Logradouro'
-                                                            variant='standard'
-                                                            fullWidth size='small'
+                                                            name="nome"
+                                                            label="Nome da Instituição"
+                                                            variant="standard"
+                                                            size="small"
+                                                            fullWidth
+                                                            required
+                                                        />
+                                                    </Grid>
+                                                    <Grid item xs={12}>
+                                                        <Field
+                                                            component={TextField}
+                                                            name="site"
+                                                            label="Site"
+                                                            variant="standard"
+                                                            size="small"
+                                                            fullWidth
+                                                            required
+                                                        />
+                                                    </Grid>
+                                                    <Grid item xs={12}>
+                                                        <Field
+                                                            component={TextField}
+                                                            name="formaIngresso"
+                                                            label="Forma de Ingresso "
+                                                            variant="standard"
+                                                            size="small"
+                                                            fullWidth
                                                             required
                                                         />
                                                     </Grid>
                                                     <Grid item xs={6}>
-                                                        <Field component={TextField} name='endereco.cep' label='CEP' variant='standard' fullWidth size='small' required
-                                                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleCepChange(event, setFieldValue)} />
-                                                    </Grid>
-                                                    <Grid item xs={6} >
-                                                        <Field component={TextField} name='endereco.numero' label='Número' variant='standard' fullWidth size='small' required />
-                                                    </Grid>
-                                                    <Grid item xs={12}>
-                                                        <Field component={TextField} name='endereco.complemento' label='Complemento' variant='standard' fullWidth size='small' />
-                                                    </Grid>
-                                                    <Grid item xs={12}>
-                                                        <Field component={TextField} name='endereco.bairro' label='Bairro' variant='standard' fullWidth size='small' required />
-                                                    </Grid>
-                                                    <Grid item xs={6} >
-                                                        <Field component={TextField} name='endereco.cidade' label='Cidade' variant='standard' fullWidth size='small' required />
+                                                        <Field
+                                                            component={TextField}
+                                                            name="sigla"
+                                                            label="Sigla"
+                                                            variant="standard"
+                                                            size="small"
+                                                            fullWidth
+                                                            required
+                                                        />
                                                     </Grid>
                                                     <Grid item xs={6}>
-                                                        <Field component={TextField} name='endereco.estado' label='Estado' variant='standard' fullWidth size='small' required />
+                                                        <Field
+                                                            component={TextField}
+                                                            name="notaMec"
+                                                            type="number"
+                                                            label="Nota MEC"
+                                                            variant="standard"
+                                                            inputProps={{ min: 1, max: 5 }}
+                                                            size="small"
+                                                            fullWidth
+                                                            required
+                                                        />
                                                     </Grid>
                                                 </Grid>
                                             </Paper>
-                                            <Grid container spacing={2} justifyContent='space-between'>
-                                                <Grid item xs={6} display="flex" justifyContent="flex-start">
-                                                    <Button type='button' variant='outlined' onClick={() => navigate('/admin')}> Voltar</Button>
+                                        </Box>
+                                        <Box sx={{ '& .MuiTextField-root': { m: 1 } }}>
+                                            <Paper sx={{ marginTop: '20px', marginBottom: '20px' }}>
+                                                <Grid
+                                                    container
+                                                    spacing={2}
+                                                    sx={{
+                                                        maxWidth: 500,
+                                                        paddingLeft: '60px',
+                                                        paddingTop: '20px',
+                                                        paddingBottom: '30px',
+                                                    }}
+                                                >
+                                                    <Grid item xs={12}>
+                                                        <Typography
+                                                            variant="h6"
+                                                            sx={{ textAlign: 'left' }}
+                                                        >
+                                                            Endereço
+                                                        </Typography>
+                                                    </Grid>
+                                                    <Grid item xs={6}>
+                                                        <Field
+                                                            component={TextField}
+                                                            name="endereco.cep"
+                                                            label="CEP"
+                                                            variant="standard"
+                                                            fullWidth
+                                                            size="small"
+                                                            required
+                                                            onChange={(
+                                                                event: React.ChangeEvent<HTMLInputElement>
+                                                            ) => handleCepChange(event, setFieldValue)}
+                                                        />
+                                                    </Grid>
+                                                    <Grid item xs={6}>
+                                                        <Field
+                                                            component={TextField}
+                                                            name="endereco.numero"
+                                                            label="Número"
+                                                            variant="standard"
+                                                            fullWidth
+                                                            size="small"
+                                                            required
+                                                        />
+                                                    </Grid>
+
+                                                    <Grid item xs={12}>
+                                                        <Field
+                                                            component={TextField}
+                                                            name="endereco.logradouro"
+                                                            label="Logradouro"
+                                                            variant="standard"
+                                                            fullWidth
+                                                            size="small"
+                                                            required
+                                                        />
+                                                    </Grid>
+                                                    <Grid item xs={12}>
+                                                        <Field
+                                                            component={TextField}
+                                                            name="endereco.complemento"
+                                                            label="Complemento"
+                                                            variant="standard"
+                                                            fullWidth
+                                                            size="small"
+                                                        />
+                                                    </Grid>
+                                                    <Grid item xs={12}>
+                                                        <Field
+                                                            component={TextField}
+                                                            name="endereco.bairro"
+                                                            label="Bairro"
+                                                            variant="standard"
+                                                            fullWidth
+                                                            size="small"
+                                                            required
+                                                        />
+                                                    </Grid>
+                                                    <Grid item xs={6}>
+                                                        <Field
+                                                            component={TextField}
+                                                            name="endereco.cidade"
+                                                            label="Cidade"
+                                                            variant="standard"
+                                                            fullWidth
+                                                            size="small"
+                                                            required
+                                                        />
+                                                    </Grid>
+                                                    <Grid item xs={6}>
+                                                        <Field
+                                                            component={TextField}
+                                                            name="endereco.estado"
+                                                            label="Estado"
+                                                            variant="standard"
+                                                            fullWidth
+                                                            size="small"
+                                                            required
+                                                        />
+                                                    </Grid>
                                                 </Grid>
-                                                <Grid item xs={6} display="flex" justifyContent="flex-end">
-                                                    <Button type='submit' disabled={isSubmitting} variant='contained'> Avançar</Button>
+                                            </Paper>
+                                            <Grid
+                                                container
+                                                spacing={2}
+                                                justifyContent="space-between"
+                                            >
+                                                <Grid
+                                                    item
+                                                    xs={6}
+                                                    display="flex"
+                                                    justifyContent="flex-start"
+                                                >
+                                                    <Button
+                                                        type="button"
+                                                        variant="outlined"
+                                                        onClick={() => navigate('/admin')}
+                                                    >
+                                                        Voltar
+                                                    </Button>
+                                                </Grid>
+                                                <Grid
+                                                    item
+                                                    xs={6}
+                                                    display="flex"
+                                                    justifyContent="flex-end"
+                                                >
+                                                    <Button
+                                                        type="submit"
+                                                        disabled={isSubmitting}
+                                                        variant="contained"
+                                                    >
+                                                        Avançar
+                                                    </Button>
                                                 </Grid>
                                             </Grid>
                                         </Box>

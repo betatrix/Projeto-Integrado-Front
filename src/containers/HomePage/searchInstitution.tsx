@@ -12,7 +12,12 @@ import {
 import InitialPageHeader from '../../components/HomeHeader/';
 import Footer from '../../components/AdminFooter';
 import { Endereco } from '../../types/institutionTypes';
+import { buscarEntidades, buscarEntidadePorId, buscarCursosPorInstituicao } from '../../services/apiService';
 
+interface Curso {
+    id: number;
+    descricao: string;
+}
 interface Institution {
     id: number;
     nome: string;
@@ -21,10 +26,8 @@ interface Institution {
     notaMec: number;
     site: string;
     endereco: Endereco;
+    cursos: Curso[];
 }
-
-// Environment variable
-const apiUrl = import.meta.env.VITE_API_URL;
 
 const InstitutionList: React.FC = () => {
     const [institutions, setInstitutions] = useState<Institution[]>([]);
@@ -35,8 +38,7 @@ const InstitutionList: React.FC = () => {
     useEffect(() => {
         const fetchInstitutions = async () => {
             try {
-                const response = await fetch(`${apiUrl}/instituicao`);
-                const data = await response.json();
+                const data = await buscarEntidades('instituicao');
                 setInstitutions(data);
             } catch (error) {
                 console.error('Erro ao buscar instituições:', error);
@@ -51,9 +53,9 @@ const InstitutionList: React.FC = () => {
 
     const handleDetailModalOpen = async (institution: Institution) => {
         try {
-            const response = await fetch(`${apiUrl}/instituicao/${institution.id}`);
-            const data = await response.json();
-            setSelectedInstitution(data);
+            const institutionDetails = await buscarEntidadePorId('instituicao', institution.id);
+            const institutionCourses = await buscarCursosPorInstituicao(institution.id);
+            setSelectedInstitution({ ...institutionDetails, cursos: institutionCourses });
             setDetailModalOpen(true);
         } catch (error) {
             console.error('Erro ao obter detalhes da instituição:', error);
@@ -68,7 +70,7 @@ const InstitutionList: React.FC = () => {
     return (
         <>
             <InitialPageHeader />
-            <Box sx={{marginBottom: '60px', display: 'flex', flexDirection: 'column', gap: 2, maxWidth: 700, margin: 'auto', mt: 4 }}>
+            <Box sx={{ marginBottom: '60px', display: 'flex', flexDirection: 'column', gap: 2, maxWidth: 700, margin: 'auto', mt: 4 }}>
                 <Typography variant="h5" sx={{ marginBottom: 2, textAlign: 'center' }}>
                     Lista de Instituições
                 </Typography>
@@ -125,6 +127,24 @@ const InstitutionList: React.FC = () => {
                                 <Typography>Cidade: {selectedInstitution.endereco.cidade}</Typography>
                                 <Typography>Estado: {selectedInstitution.endereco.estado}</Typography>
                                 <Typography>CEP: {selectedInstitution.endereco.cep}</Typography>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Typography variant="h6" gutterBottom>
+                                    Cursos
+                                </Typography>
+                                <List>
+                                    {selectedInstitution.cursos?.length > 0 ? (
+                                        selectedInstitution.cursos.map((curso) => (
+                                            <ListItem key={curso.id}>
+                                                <ListItemText primary={curso.descricao} />
+                                            </ListItem>
+                                        ))
+                                    ) : (
+                                        <Typography variant="body1" color="textSecondary">
+                                            Não há cursos cadastrados na instituição.
+                                        </Typography>
+                                    )}
+                                </List>
                             </Grid>
                         </Grid>
                     )}

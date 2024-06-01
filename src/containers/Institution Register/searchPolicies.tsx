@@ -1,6 +1,20 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from 'react';
-import { Box, TextField, List, ListItem, ListItemText, Checkbox, Button, Typography, CircularProgress, Stepper, StepLabel, Grid } from '@mui/material';
+import {
+    Box,
+    TextField,
+    List,
+    ListItem,
+    ListItemText,
+    Checkbox,
+    Button,
+    Typography,
+    CircularProgress,
+    Stepper,
+    StepLabel,
+    Grid,
+    Modal
+} from '@mui/material';
 import { useInstitution } from '../../context/institutionContext';
 import { buscarPoliticas } from '../../services/policiesService';
 import { PolicesInstitutionForm } from '../../types/policiesTypes';
@@ -24,6 +38,7 @@ export const BuscaPoliticas: React.FC = () => {
     const [filteredPolicies, setFilteredPolicies] = useState<PolicesInstitutionForm[]>([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(false);
+    const [confirmModalOpen, setConfirmModalOpen] = useState(false);
 
     useEffect(() => {
         if (!institutionId) {
@@ -58,7 +73,20 @@ export const BuscaPoliticas: React.FC = () => {
         }));
     };
 
-    const handleSubmitPolicies = async () => {
+    const handleOpenConfirmModal = () => {
+        const hasSelectedPolicy = Object.values(selectedPolicies).some(isSelected => isSelected);
+        if (hasSelectedPolicy) {
+            setConfirmModalOpen(true);
+        } else {
+            alert('Selecione uma política para continuar!');
+        }
+    };
+
+    const handleCloseConfirmModal = () => {
+        setConfirmModalOpen(false);
+    };
+
+    const handleConfirmPolicies = async () => {
         if (!institutionId) {
             alert('Instituição não identificada.');
             return;
@@ -72,7 +100,7 @@ export const BuscaPoliticas: React.FC = () => {
             console.log('Respostas:', responses);
 
             if (responses?.length > 0) {
-                alert('Políticas cadastradas com sucesso na Instituição');
+                // alert('Políticas cadastradas com sucesso na Instituição');
                 navigate('/pagina-inicial');
             } else {
                 alert('Erro ao cadastrar políticas!');
@@ -81,7 +109,9 @@ export const BuscaPoliticas: React.FC = () => {
         } catch (error) {
             console.error('Erro ao cadastrar políticas na instituição:', error);
         }
+        setConfirmModalOpen(false);
     };
+
     return (
         <>
             <AdminHeader />
@@ -125,11 +155,40 @@ export const BuscaPoliticas: React.FC = () => {
                             <Button variant='outlined' onClick={() => navigate('/cursos')} sx={{ mt: 2, mr: 1 }}>Voltar</Button>
                         </Grid>
                         <Grid item xs={6} display="flex" justifyContent="flex-end">
-                            <Button variant='contained' onClick={handleSubmitPolicies} sx={{ mt: 2 }}>Avançar</Button>
+                            <Button variant='contained' onClick={handleOpenConfirmModal} sx={{ mt: 2 }}>Avançar</Button>
                         </Grid>
                     </Grid>
                 </Box>
             </Box>
+
+            {/* Confirm Modal */}
+            <Modal
+                open={confirmModalOpen}
+                onClose={handleCloseConfirmModal}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={{
+                    position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+                    bgcolor: 'background.paper', boxShadow: 24, p: 4, width: '80%', maxWidth: 400
+                }}>
+                    <Typography variant="h6" gutterBottom>
+                        Confirmação
+                    </Typography>
+                    <Typography variant="body1" gutterBottom>
+                        Você está prestes a adicionar as políticas selecionadas à instituição. Deseja continuar?
+                    </Typography>
+                    <Grid container spacing={2} justifyContent='space-between'>
+                        <Grid item xs={6} display="flex" justifyContent="flex-start">
+                            <Button variant='outlined' onClick={handleCloseConfirmModal}>Cancelar</Button>
+                        </Grid>
+                        <Grid item xs={6} display="flex" justifyContent="flex-end">
+                            <Button variant='contained' onClick={handleConfirmPolicies}>Confirmar</Button>
+                        </Grid>
+                    </Grid>
+                </Box>
+            </Modal>
+
             <Footer />
         </>
     );
