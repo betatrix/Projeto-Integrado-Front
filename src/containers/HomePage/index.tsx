@@ -24,7 +24,7 @@ const HomePage = () => {
                         <Box sx={{ mt: '20px', ml:'60px' }}>
                             <Grid container spacing={2} justifyContent="center">
                                 <Grid item>
-                                    <Link to="/testes" style={{ textDecoration: 'none' }}>
+                                    <Link to="/teste-vocacional" style={{ textDecoration: 'none' }}>
                                         <Button
                                             variant="contained"
                                             size="large"
