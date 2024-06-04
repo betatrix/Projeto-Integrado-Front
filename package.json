@@ -18,8 +18,12 @@
     "axios": "^1.6.8",
     "formik": "^2.4.6",
     "formik-mui": "^5.0.0-alpha.0",
+    "i18next": "^23.11.4",
+    "i18next-browser-languagedetector": "^8.0.0",
+    "i18next-http-backend": "^2.5.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-i18next": "^14.1.1",
     "react-router-dom": "^6.23.0",
     "styled-components": "^6.1.8",
     "yup": "^1.4.0"
