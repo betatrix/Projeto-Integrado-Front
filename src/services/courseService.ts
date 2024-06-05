@@ -1,5 +1,5 @@
 import { CourseForm } from '../types/courseTypes';
-import { buscarEntidades, buscarEntidadePorId, excluirEntidade, substituirEntidade } from './apiService';
+import { buscarEntidades, buscarEntidadePorId, excluirEntidade, substituirEntidade, cadastrarEntidade } from './apiService';
 
 export const buscarCursos = async () => {
     const response = await buscarEntidades('curso/ativos');
@@ -21,6 +21,10 @@ export const excluirCurso = async (id:number) => {
 
 export const editarCurso = async (courseData: CourseForm) => {
     return await substituirEntidade('curso', courseData);
+};
+
+export const cadastrarCurso = async (courseData: CourseForm) => {
+    return await cadastrarEntidade('curso', courseData);
 };
 
 export const buscarAreas = async () => {

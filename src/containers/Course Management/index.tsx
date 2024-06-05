@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import {
     Box,
-    TextField,
-    List,
-    ListItem,
-    ListItemText,
     Typography,
+    TextField,
     CircularProgress,
     IconButton,
     Modal,
@@ -15,6 +12,11 @@ import {
     Select,
     FormControl,
     InputLabel,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableRow,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -27,6 +29,8 @@ import {
     excluirCurso,
 } from '../../services/courseService';
 import { CourseForm, Area } from '../../types/courseTypes';
+import { Link } from 'react-router-dom';
+import BackButton from '../../components/Back Page Button';
 
 const CourseList: React.FC = () => {
     const [courses, setCourses] = useState<CourseForm[]>([]);
@@ -36,9 +40,7 @@ const CourseList: React.FC = () => {
     const [loading, setLoading] = useState(false);
     const [editModalOpen, setEditModalOpen] = useState(false);
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-    const [selectedCourse, setSelectedCourse] = useState<CourseForm | null>(
-        null
-    );
+    const [selectedCourse, setSelectedCourse] = useState<CourseForm | null>(null);
 
     useEffect(() => {
         const fetchCourses = async () => {
@@ -151,46 +153,55 @@ const CourseList: React.FC = () => {
                 sx={{
                     marginTop: '20px',
                     marginBottom: '60px',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: 2,
-                    maxWidth: 600,
-                    margin: 'auto',
-                    mt: 4,
                 }}
             >
-                <Typography variant="h4" sx={{ mb: 2, textAlign: 'center' }}>
-                    Lista de Cursos
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 5, paddingLeft: 20, paddingRight: 5 }}>
+                    <Link to='/admin'>
+                        <BackButton></BackButton>
+                    </Link>
+                </Box>
+                <Typography variant="h5" sx={{ marginBottom: 2, textAlign: 'center' }}>
+                    Gerenciamento de Cursos
                 </Typography>
-                <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 5 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 5, paddingLeft: 20, paddingRight: 5 }}>
                     <TextField
-                        label="Pesquisar curso"
+                        label="Pesquisar cursos"
                         variant="outlined"
                         sx={{ width: '70%' }}
                         value={searchTerm}
                         onChange={handleSearchChange}
                     />
                 </Box>
-                <Box sx={{ paddingTop: 10 }}>
+                <Box sx={{ paddingTop: 10, paddingLeft: 20, paddingRight: 20 }}>
                     {loading ? (
                         <CircularProgress />
                     ) : (
-                        <List>
-                            {filteredCourses.map((course) => (
-                                <ListItem key={course.id} divider>
-                                    <ListItemText primary={course.descricao} />
-                                    <ListItemText
-                                        primary={course.ativo ? 'Ativo' : 'Não Ativo'}
-                                    />
-                                    <IconButton onClick={() => handleEditModalOpen(course)}>
-                                        <EditIcon />
-                                    </IconButton>
-                                    <IconButton onClick={() => handleDeleteModalOpen(course)}>
-                                        <DeleteIcon />
-                                    </IconButton>
-                                </ListItem>
-                            ))}
-                        </List>
+                        <TableContainer >
+                            <Table>
+                                <TableRow>
+                                    <TableCell>Cursos</TableCell>
+                                    <TableCell>Status</TableCell>
+                                    <TableCell align="right">Ações</TableCell>
+                                </TableRow>
+
+                                <TableBody>
+                                    {filteredCourses.map((course) => (
+                                        <TableRow key={course.id}>
+                                            <TableCell>{course.descricao}</TableCell>
+                                            <TableCell>{course.ativo ? 'Ativo' : 'Não Ativo'}</TableCell>
+                                            <TableCell align="right">
+                                                <IconButton onClick={() => handleEditModalOpen(course)}>
+                                                    <EditIcon />
+                                                </IconButton>
+                                                <IconButton onClick={() => handleDeleteModalOpen(course)}>
+                                                    <DeleteIcon />
+                                                </IconButton>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
                     )}
                 </Box>
             </Box>

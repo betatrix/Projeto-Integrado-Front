@@ -132,7 +132,7 @@ const InstitutionList: React.FC = () => {
                                 <Typography variant="h6" gutterBottom>
                                     Cursos
                                 </Typography>
-                                <List>
+                                <List dense>
                                     {selectedInstitution.cursos?.length > 0 ? (
                                         selectedInstitution.cursos.map((curso) => (
                                             <ListItem key={curso.id}>
@@ -141,7 +141,7 @@ const InstitutionList: React.FC = () => {
                                         ))
                                     ) : (
                                         <Typography variant="body1" color="textSecondary">
-                                            Não há cursos cadastrados na instituição.
+                                            Não há cursos na instituição.
                                         </Typography>
                                     )}
                                 </List>

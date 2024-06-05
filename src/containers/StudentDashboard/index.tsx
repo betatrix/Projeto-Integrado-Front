@@ -1,7 +1,7 @@
 //import React from 'react';
 import { Subtitle, SquareButton, TextButton } from './styles';
 import { Grid, Box } from '@mui/material';
-import AdminHeader from '../../components/AdminHeader';
+import StudentHeader from '../../components/StudentHeader';
 import Footer from '../../components/AdminFooter';
 import { Link } from 'react-router-dom';
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
@@ -10,7 +10,7 @@ import AssignmentTurnedInRoundedIcon from '@mui/icons-material/AssignmentTurnedI
 const StudentDashboard = () => {
     return (
         <>
-            <AdminHeader />
+            <StudentHeader />
             <Box sx={{ marginTop: '40px' }}>
                 <Grid container justifyContent="center">
                     <Subtitle>
