@@ -9,6 +9,8 @@
     box-shadow: #101840;
     width: 100vh;
     font-weight: 800;
+    color: rgba(132, 130, 240, 0.1);
+    
     text-decoration: none;
     text-align: right;
     box-sizing: content-box;

@@ -20,7 +20,7 @@ export const AppRoutes = () =>{
                 <Route path="/new-password" element={<NewPassword/>}/>
                 <Route path="/register" element={<Register/>}/>
                 <Route path="/pagina-inicial" element={<Dashboard/>}/>
-                <Route path="*" element={<Navigate to="/pagina-inicial" replace />} />
+                <Route path="*" element={<Navigate to="/login" replace />} />
             </Routes>
         </BrowserRouter>
     );
