@@ -37,3 +37,9 @@ export const cadastrarEstudante = async (entidade: string, data: object) => {
     const response = await axios.post(`${API_URL}/${entidade}/cadastro`, data);
     return response.data;
 };
+
+// Enviar email para recuperação de senha
+export const recuperarSenha = async (email: string) => {
+    const response = await axios.post(`${API_URL}/auth/esqueceuSenha?email=${encodeURIComponent(email)}`);
+    return response.data;
+};
