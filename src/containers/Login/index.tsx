@@ -6,7 +6,6 @@ import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
 import CircularProgress from '@mui/material/CircularProgress';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import loginImage from '../../assets/welcome-login.svg';
 import { 
     Global,
     LoginContainer, 
@@ -20,8 +19,7 @@ import {
     CustomLink, 
     Container, 
     RightPanel, 
-    BackButton, 
-    Image 
+    BackButton
 } from './styles';
 
 const Login: React.FC = () => {
@@ -61,7 +59,7 @@ const Login: React.FC = () => {
                         </FormControl>
 
                         <SubText variant="body2" color="textSecondary">
-                            <CustomLink to={'/recover-password'}>Esqueceu sua senha?</CustomLink>
+                            <CustomLink to={'/recuperar-senha'}>Esqueceu sua senha?</CustomLink>
                         </SubText>
 
                         <FormControl variant="filled">
@@ -94,7 +92,7 @@ const Login: React.FC = () => {
                         Não possuí uma conta?<CustomLink to={'/register'}> Cadastre-se!</CustomLink>
                     </SubText>
                 </LoginContainer>
-                <RightPanel><Image src={loginImage} /></RightPanel>
+                <RightPanel></RightPanel>
             </Container> 
         </>
     );
