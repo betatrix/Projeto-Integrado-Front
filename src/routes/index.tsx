@@ -7,6 +7,7 @@ import Login from '../containers/Login/index';
 import Register from '../containers/Register/index';
 import NewPassword from '../containers/New Password';
 import RecoverPassword from '../containers/Recover Password';
+import SucessPassword from '../containers/SucessPassword';
 
 export const AppRoutes = () =>{
     return(
@@ -18,6 +19,7 @@ export const AppRoutes = () =>{
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/recover-password" element={<RecoverPassword/>}/>
                 <Route path="/new-password" element={<NewPassword/>}/>
+                <Route path="/success-change-password" element={<SucessPassword/>}/>
                 <Route path="/register" element={<Register/>}/>
                 <Route path="/pagina-inicial" element={<Dashboard/>}/>
                 <Route path="*" element={<Navigate to="/login" replace />} />

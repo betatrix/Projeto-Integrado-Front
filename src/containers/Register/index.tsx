@@ -20,7 +20,7 @@ import {
     SubText,
     CustomLink,
     BackButton,
-    MessageError
+    MessageError,
 } from './styles';
 
 const nivelEducacao = [
@@ -47,10 +47,22 @@ const validationSchema = Yup.object().shape({
     confirmarSenha: Yup.string().required('Confirmação de senha é obrigatória')
         .oneOf([Yup.ref('senha'), ''], 'As senhas precisam ser iguais'),
     dataNascimento: Yup.date().required('Data de nascimento é obrigatória')
-        .max(new Date(), 'Não é possível incluir uma data futura'),
-    celular: Yup.string().required('Celular é obrigatório'),
+        .max(new Date(new Date().setFullYear(new Date().getFullYear() - 14)), 'Você deve ter pelo menos 14 anos.'),
+    celular: Yup.string().required('Celular é obrigatório')
+        .max(15, 'O celular deve ter no máximo 15 caracteres!'),
     nivelEscolar: Yup.string().required('Nível de escolaridade é obrigatório'),
 });
+
+const formatarCelular = (value: string) => {
+    const cleaned = value.replace(/\D/g, '');
+    const match = cleaned.match(/^(\d{2})(\d{5})(\d{4})$/);
+
+    if (match) {
+        return `(${match[1]}) ${match[2]}-${match[3]}`;
+    }
+
+    return value;
+};
 
 export const StudentRegister = () => {
     const navigate = useNavigate();
@@ -121,18 +133,22 @@ export const StudentRegister = () => {
                                 />
                                 <MessageError name="dataNascimento" component="div" />
                             </FormControl>
-
                             <FormControl variant="filled">
                                 <CustomInputLabel htmlFor="celular">Celular</CustomInputLabel>
-                                <Field as={CustomField} 
-                                    id="celular" 
-                                    name="celular" 
-                                    type="tel" 
-                                    error={touched.celular && Boolean(errors.celular)} 
+                                <Field
+                                    as={CustomField}
+                                    id="celular"
+                                    name="celular"
+                                    type="tel"
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                        const formattedValue = formatarCelular(e.target.value);
+                                        setFieldValue('celular', formattedValue);
+                                    }}
+                                    error={touched.celular && Boolean(errors.celular)}
+                                    fullWidth
                                 />
                                 <MessageError name="celular" component="div" />
                             </FormControl>
-
                             <FormControl variant="filled" style={{ gridColumn: 'span 2' }}>
                                 <Autocomplete
                                     disablePortal
