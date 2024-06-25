@@ -48,5 +48,11 @@ export const cadastrarEstudante = async (entidade: string, data: object) => {
 // Enviar email para recuperação de senha
 export const recuperarSenha = async (email: string) => {
     const response = await axios.post(`${API_URL}/auth/esqueceuSenha?email=${encodeURIComponent(email)}`);
-    return response.data;
+    return response.data, response.status;
+};
+
+// Redefinir senha do estudante
+export const redefinirSenha = async (token: string, senha:string) => {
+    const response = await axios.post(`${API_URL}/auth/redefinirSenha?token=${encodeURIComponent(token)}&novaSenha=${encodeURIComponent(senha)}`);
+    return response.data, response.status;
 };

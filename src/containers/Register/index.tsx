@@ -9,6 +9,7 @@ import { cadastroEstudante } from '../../services/studentService';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Formik, Form, Field } from 'formik';
+import InputMask from 'react-input-mask';
 import {
     Global,
     LoginContainer,
@@ -20,7 +21,7 @@ import {
     SubText,
     CustomLink,
     BackButton,
-    MessageError
+    MessageError,
 } from './styles';
 
 const nivelEducacao = [
@@ -47,7 +48,7 @@ const validationSchema = Yup.object().shape({
     confirmarSenha: Yup.string().required('Confirmação de senha é obrigatória')
         .oneOf([Yup.ref('senha'), ''], 'As senhas precisam ser iguais'),
     dataNascimento: Yup.date().required('Data de nascimento é obrigatória')
-        .max(new Date(), 'Não é possível incluir uma data futura'),
+        .max(new Date(new Date().setFullYear(new Date().getFullYear() - 14)), 'Você deve ter pelo menos 14 anos.'),
     celular: Yup.string().required('Celular é obrigatório'),
     nivelEscolar: Yup.string().required('Nível de escolaridade é obrigatório'),
 });
@@ -124,12 +125,25 @@ export const StudentRegister = () => {
 
                             <FormControl variant="filled">
                                 <CustomInputLabel htmlFor="celular">Celular</CustomInputLabel>
-                                <Field as={CustomField} 
-                                    id="celular" 
-                                    name="celular" 
-                                    type="tel" 
-                                    error={touched.celular && Boolean(errors.celular)} 
-                                />
+                                <Field name="celular">
+                                    {({ field }) => (
+                                        <InputMask
+                                            {...field}
+                                            mask="(99) 99999-9999"
+                                            alwaysShowMask={false}
+                                            onChange={(e) => setFieldValue('celular', e.target.value)}
+                                        >
+                                            {() => (
+                                                <CustomField 
+                                                    id="celular"
+                                                    type="tel"
+                                                    error={touched.celular && Boolean(errors.celular)}
+                                                    fullWidth
+                                                />
+                                            )}
+                                        </InputMask>
+                                    )}
+                                </Field>
                                 <MessageError name="celular" component="div" />
                             </FormControl>
 

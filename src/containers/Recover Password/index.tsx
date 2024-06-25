@@ -49,10 +49,12 @@ const RecoverPassword: React.FC = () => {
 
             const response = await recuperacaoSenha(email);
 
-            if (response.status === 200) {
+            if (response === 200) {
                 setShowSuccessMessage(true);
+                console.log('Sucesso ao enviar email:', response);
             } else {
                 setShowErrorMessage(true);
+                console.error(response);
             }
 
         } catch (error) {
