@@ -175,8 +175,3 @@ export const BuscaCurso: React.FC = () => {
 };
 
 export default BuscaCurso;
-
-
-
-
-

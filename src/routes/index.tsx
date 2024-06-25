@@ -5,23 +5,28 @@ import { BuscaCurso } from '../containers/Institution Register/searchCourse';
 import InstitutionManagement from '../containers/Institution Management/index';
 import Login from '../containers/Login/index';
 import Register from '../containers/Register/index';
-import NewPassword from '../containers/New Password';
-import RecoverPassword from '../containers/Recover Password';
+import NovaSenha from '../containers/New Password';
+import RecuperarSenha from '../containers/Recover Password';
+import SucessPassword from '../containers/SucessPassword';
+import { InstitutionProvider } from '../context/institutionContext';
 
 export const AppRoutes = () =>{
     return(
         <BrowserRouter>
-            <Routes>
-                <Route path="/cadastro" element={<CadastroInstituicao/>}/>
-                <Route path="/cursos" element={<BuscaCurso/>}/>
-                <Route path="/gerenciamento-instituicao" element={<InstitutionManagement/>}/>
-                <Route path="/login" element={<Login/>}/>
-                <Route path="/recover-password" element={<RecoverPassword/>}/>
-                <Route path="/new-password" element={<NewPassword/>}/>
-                <Route path="/register" element={<Register/>}/>
-                <Route path="/pagina-inicial" element={<Dashboard/>}/>
-                <Route path="*" element={<Navigate to="/login" replace />} />
-            </Routes>
+            <InstitutionProvider>
+                <Routes>
+                    <Route path="/cadastro" element={<CadastroInstituicao/>}/>
+                    <Route path="/cursos" element={<BuscaCurso/>}/>
+                    <Route path="/gerenciamento-instituicao" element={<InstitutionManagement/>}/>
+                    <Route path="/login" element={<Login/>}/>
+                    <Route path="/recuperar-senha" element={<RecuperarSenha/>}/>
+                    <Route path="/nova-senha" element={<NovaSenha/>}/>
+                    <Route path="/success-change-password" element={<SucessPassword/>}/>
+                    <Route path="/register" element={<Register/>}/>
+                    <Route path="/pagina-inicial" element={<Dashboard/>}/>
+                    <Route path="*" element={<Navigate to="/login" replace />} />
+                </Routes>
+            </InstitutionProvider>
         </BrowserRouter>
     );
 };
