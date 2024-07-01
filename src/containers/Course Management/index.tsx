@@ -188,7 +188,7 @@ const CourseList: React.FC = () => {
                                     {filteredCourses.map((course) => (
                                         <TableRow key={course.id}>
                                             <TableCell>{course.descricao}</TableCell>
-                                            <TableCell>{course.ativo ? 'Ativo' : 'Não Ativo'}</TableCell>
+                                            <TableCell>{course.ativo ? 'Ativo' : 'Inativo'}</TableCell>
                                             <TableCell align="right">
                                                 <IconButton onClick={() => handleEditModalOpen(course)}>
                                                     <EditIcon />

@@ -9,7 +9,7 @@ import {
     Modal,
     Grid,
 } from '@mui/material';
-import InitialPageHeader from '../../components/HomeHeader/';
+import InitialPageHeader from '../../components/HomeHeader';
 import Footer from '../../components/AdminFooter';
 import { Endereco } from '../../types/institutionTypes';
 import { buscarEntidades, buscarEntidadePorId, buscarCursosPorInstituicao } from '../../services/apiService';

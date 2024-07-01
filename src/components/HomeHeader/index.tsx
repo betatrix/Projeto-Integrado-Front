@@ -10,8 +10,9 @@ import {
     MenuItem,
     Button,
 } from '@mui/material';
+//import { Link } from 'react-router-dom';
+import { Link as ScrollLink } from 'react-scroll';
 import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
 
 const styles = {
     logo: {
@@ -33,6 +34,7 @@ const styles = {
         color: 'white',
         textDecoration: 'none',
         marginRight: '20px',
+        cursor: 'pointer', // Adicione o cursor de ponteiro para links
     },
 };
 
@@ -58,7 +60,7 @@ function InitialPageHeader() {
     };
 
     return (
-        <AppBar position="static" style={{ backgroundColor: '#1b1f27' }}>
+        <AppBar position="fixed" style={{ backgroundColor: '#1b1f27' }}>
             <Container maxWidth="xl">
                 <Toolbar sx={{ justifyContent: 'space-between' }}>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -71,16 +73,19 @@ function InitialPageHeader() {
                         >
                             VOCCO
                         </Typography>
-                        <Box sx={{marginLeft: '800px' }}>
-                            <Link to="/pagina-inicial" style={styles.linkButton}>
+                        <Box sx={{ marginLeft: '800px' }}>
+                            <ScrollLink to="home" smooth={true} duration={500} style={styles.linkButton}>
                                 <Button color="inherit">Home</Button>
-                            </Link>
-                            <Link to="/teste" style={styles.linkButton}>
-                                <Button color="inherit">Teste Vocacional</Button>
-                            </Link>
-                            <Link to="/sobre" style={styles.linkButton}>
+                            </ScrollLink>
+                            <ScrollLink to="about" smooth={true} duration={500} style={styles.linkButton}>
                                 <Button color="inherit">Sobre</Button>
-                            </Link>
+                            </ScrollLink>
+                            <ScrollLink to="faq" smooth={true} duration={500} style={styles.linkButton}>
+                                <Button color="inherit">FAQ</Button>
+                            </ScrollLink>
+                            <ScrollLink to="testInformation" smooth={true} duration={500} style={styles.linkButton}>
+                                <Button color="inherit">Informações</Button>
+                            </ScrollLink>
                         </Box>
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>

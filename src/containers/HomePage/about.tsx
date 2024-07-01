@@ -1,47 +1,45 @@
-import { Box, Paper } from '@mui/material';
-import InitialPageHeader from '../../components/HomeHeader';
-import Footer from '../../components/AdminFooter';
-import about from '../../assets/img/about.png';
+import { Box, Grid, Typography } from '@mui/material';
+import React from 'react';
+import {
+    aboutBoxStyles,
+    gridItemImageStyles,
+    imageStyles,
+    gridItemTextStyles,
+    typographyTitleStyles,
+    dividerBoxStyles,
+    typographyBodyStyles,
+    typographySmallBodyStyles,
+    typographyAboutTitleStyles,
+    gridAboutContainerStyles
+} from './styles';
+import backgroundIcone from '../../assets/img/backgroundIcone.png';
 
-const About = () => {
+export const About: React.FC = () => {
     return (
         <>
-            <InitialPageHeader />
-            <Box
-                sx={{
-                    height: 'calc(100vh - 128px)',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    backgroundColor: '#caddf',
-                    overflow: 'hidden',
-                    padding: { xs: 2, md: 4 }
-                }}
-            >
-                <Paper
-                    sx={{
-                        padding: { xs: 2, md: 4 },
-                        // height:'98%',
-                        width: '100%',
-                        maxWidth: '90%',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        boxShadow: 3
-                    }}
-                >
-                    <img
-                        src={about}
-                        alt="Imagem representativa"
-                        style={{
-                            width: '100%',
-                            height: 'auto',
-                            maxWidth: '80%'
-                        }}
-                    />
-                </Paper>
+            <Box sx={aboutBoxStyles}>
+                <Grid container spacing={4} alignItems="center" justifyContent="center" sx={gridAboutContainerStyles}>
+                    <Grid item xs={12} md={6} sx={gridItemImageStyles}>
+                        <img src={backgroundIcone} alt="Ícone de fundo" style={imageStyles} />
+                    </Grid>
+                    <Grid item xs={12} md={6} sx={gridItemTextStyles}>
+                        <Typography variant="h3" sx={typographyTitleStyles}>
+                            Sobre nós
+                            <Box sx={dividerBoxStyles} />
+                        </Typography>
+                        <Typography variant="body1" sx={typographyBodyStyles}>
+                            Nós somos a <b>VOCCO</b>, uma plataforma destinada a orientar alunos do ensino médio da rede pública de educação no Brasil,
+                             auxiliando-os na escolha consciente de suas futuras carreiras profissionais.
+                        </Typography>
+                        <Typography variant="h4" sx={typographyAboutTitleStyles}>
+                            Nome Vocco
+                        </Typography>
+                        <Typography variant="body1" sx={typographySmallBodyStyles}>
+                            Nosso nome deriva da palavra vocação em Latim.
+                        </Typography>
+                    </Grid>
+                </Grid>
             </Box>
-            <Footer />
         </>
     );
 };

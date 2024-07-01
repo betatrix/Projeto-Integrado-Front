@@ -8,10 +8,11 @@ import { InstitutionProvider } from '../context/institutionContext';
 import InstitutionManagement from '../containers/Institution Management/index';
 import HomePage from '../containers/HomePage';
 import StudentDashboard from '../containers/StudentDashboard';
-import InstitutionList from '../containers/HomePage/searchInstitution';
+import InstitutionList from '../containers/StudentDashboard/searchInstitution';
 import About from '../containers/HomePage/about';
 import CourseList from '../containers/Course Management';
 import DataStudent from '../containers/StudentDashboard/perfilStudent';
+import VocacionalTest from '../containers/Vocacional Test';
 
 export const AppRoutes: React.FC = () => {
     return (
@@ -28,6 +29,7 @@ export const AppRoutes: React.FC = () => {
                     <Route path='/estudante' element={<StudentDashboard />} />
                     <Route path='/sobre' element={<About />} />
                     <Route path='/admin' element={<Dashboard />} />
+                    <Route path='/teste-vocacional' element={<VocacionalTest/>}/>
                     <Route path='/pagina-inicial' element={<HomePage />} />
                     <Route path='*' element={<Navigate to='/pagina-inicial' replace />} />
                 </Routes>

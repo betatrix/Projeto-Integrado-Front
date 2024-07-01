@@ -36,3 +36,8 @@ export const buscarCursosPorInstituicao = async (instituicaoId: number) => {
     const response = await axios.get(`${API_URL}/cursoInstituicao/instituicao/${instituicaoId}`);
     return response.data;
 };
+
+export const contarTeste = async(estudanteId: number) => {
+    const response = await axios.get(`${API_URL}/estudanteTeste/teste/${estudanteId}`);
+    return response.data;
+};
