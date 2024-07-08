@@ -37,6 +37,7 @@ const Login: React.FC = () => {
         await new Promise((resolve) => setTimeout(resolve, 2000));
         setLoading(false);
     };
+
     return (
         <>
             <Global />
@@ -45,7 +46,7 @@ const Login: React.FC = () => {
             </style>
             <Container>
                 <BackButton startIcon={<ArrowBackIcon />}>
-                    <CustomLink to={'/pagina-inicial'}>Página inicial</CustomLink>
+                    <CustomLink to={'/login'}>Página inicial</CustomLink>
                 </BackButton>
                 <LoginContainer>
                     <Header variant="h4">Acesse o Vocco!</Header>

@@ -9,7 +9,6 @@ import { cadastroEstudante } from '../../services/studentService';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Formik, Form, Field } from 'formik';
-import InputMask from 'react-input-mask';
 import {
     Global,
     LoginContainer,
@@ -49,9 +48,21 @@ const validationSchema = Yup.object().shape({
         .oneOf([Yup.ref('senha'), ''], 'As senhas precisam ser iguais'),
     dataNascimento: Yup.date().required('Data de nascimento é obrigatória')
         .max(new Date(new Date().setFullYear(new Date().getFullYear() - 14)), 'Você deve ter pelo menos 14 anos.'),
-    celular: Yup.string().required('Celular é obrigatório'),
+    celular: Yup.string().required('Celular é obrigatório')
+        .max(15, 'O celular deve ter no máximo 15 caracteres!'),
     nivelEscolar: Yup.string().required('Nível de escolaridade é obrigatório'),
 });
+
+const formatarCelular = (value: string) => {
+    const cleaned = value.replace(/\D/g, '');
+    const match = cleaned.match(/^(\d{2})(\d{5})(\d{4})$/);
+
+    if (match) {
+        return `(${match[1]}) ${match[2]}-${match[3]}`;
+    }
+
+    return value;
+};
 
 export const StudentRegister = () => {
     const navigate = useNavigate();
@@ -82,7 +93,7 @@ export const StudentRegister = () => {
                 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
             </style>
             <BackButton startIcon={<ArrowBackIcon />}>
-                <CustomLink to={'/pagina-inicial'}>Página inicial</CustomLink>
+                <CustomLink to={'/login'}>Página inicial</CustomLink>
             </BackButton>
             <LoginContainer>
                 <Header variant="h4">É novo? Cadastre-se aqui.</Header>
@@ -122,31 +133,22 @@ export const StudentRegister = () => {
                                 />
                                 <MessageError name="dataNascimento" component="div" />
                             </FormControl>
-
                             <FormControl variant="filled">
                                 <CustomInputLabel htmlFor="celular">Celular</CustomInputLabel>
-                                <Field name="celular">
-                                    {({ field }) => (
-                                        <InputMask
-                                            {...field}
-                                            mask="(99) 99999-9999"
-                                            alwaysShowMask={false}
-                                            onChange={(e) => setFieldValue('celular', e.target.value)}
-                                        >
-                                            {() => (
-                                                <CustomField
-                                                    id="celular"
-                                                    type="tel"
-                                                    error={touched.celular && Boolean(errors.celular)}
-                                                    fullWidth
-                                                />
-                                            )}
-                                        </InputMask>
-                                    )}
-                                </Field>
+                                <Field
+                                    as={CustomField}
+                                    id="celular"
+                                    name="celular"
+                                    type="tel"
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                        const formattedValue = formatarCelular(e.target.value);
+                                        setFieldValue('celular', formattedValue);
+                                    }}
+                                    error={touched.celular && Boolean(errors.celular)}
+                                    fullWidth
+                                />
                                 <MessageError name="celular" component="div" />
                             </FormControl>
-
                             <FormControl variant="filled" style={{ gridColumn: 'span 2' }}>
                                 <Autocomplete
                                     disablePortal

@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { Grid, Box, Typography, Card, CardContent, Paper } from '@mui/material';
 import { Link } from 'react-router-dom';
-//import AssignmentTurnedInRoundedIcon from '@mui/icons-material/AssignmentTurnedInRounded';
 import StudentHeader from '../../components/StudentHeader';
 import AnnouncementBar from './announcement';
 import { SquareButton, TextButton, CardContentBox, TestButton } from './styles';
-// import { Subtitle, SquareButton, TextButton, CardContentBox, TestButton } from './styles';
 import VideogameAssetIcon from '@mui/icons-material/VideogameAsset';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import InsightsIcon from '@mui/icons-material/Insights';
 import StudentFooter from '../../components/StudentFooter';
-import { contarTeste } from '../../services/apiService';
+import { contarTeste, buscarTestesDeEstudante } from '../../services/apiService'; // Importar as funções necessárias
 
 const StudentDashboard: React.FC = () => {
     const [showAnnouncement, setShowAnnouncement] = useState(true);
-    const [testCount, setTestCount] = useState(0); // Simulating test count
-    // const [testCount, setTestCount] = useState(0); // Simulating test count
+    const [testCount, setTestCount] = useState(0);
+    const [testHistory, setTestHistory] = useState<{ date: string, result: string }[]>([]); // State para histórico de testes
 
     useEffect(() => {
         // Função para buscar a contagem de testes
@@ -28,17 +26,29 @@ const StudentDashboard: React.FC = () => {
             }
         };
 
+        // Função para buscar o histórico de testes do estudante
+        const fetchTestHistory = async () => {
+            try {
+                const estudanteId = 1; // Substitua pelo ID real do estudante
+                const tests = await buscarTestesDeEstudante(estudanteId);
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                const formattedTests = tests.map((test: any) => ({
+                    date: test.data,
+                    result: test.teste, // Ajuste conforme necessário para obter parte do resultado
+                }));
+                setTestHistory(formattedTests);
+            } catch (error) {
+                console.error('Erro ao buscar histórico de testes:', error);
+            }
+        };
+
         fetchTestCount(); // Chamar a função ao carregar o componente
+        fetchTestHistory(); // Chamar a função ao carregar o componente
     }, []);
 
     const handleCloseAnnouncement = () => {
         setShowAnnouncement(false);
     };
-
-    const testHistory = [
-        { date: '2023-06-10', result: 'Carreira X' },
-        { date: '2023-07-15', result: 'Carreira Y' },
-    ]; // Simulating test history
 
     return (
         <>
@@ -51,7 +61,6 @@ const StudentDashboard: React.FC = () => {
             )}
             <Box sx={{ marginTop: '40px', padding: '20px' }}>
                 <Grid container justifyContent="center">
-                    {/* <Subtitle>Ferramentas para Estudantes</Subtitle> */}
                     <Grid container spacing={2} justifyContent="center">
                         <Grid item>
                             <Paper>
@@ -75,7 +84,7 @@ const StudentDashboard: React.FC = () => {
                                                 {testHistory.length > 0 ? (
                                                     testHistory.map((test, index) => (
                                                         <Typography key={index} variant="body2" color="text.secondary">
-                                                            {test.date}: {test.result}
+                                                            {test.date}: {test.result.substring(0, 30)}...
                                                         </Typography>
                                                     ))
                                                 ) : (
@@ -97,9 +106,7 @@ const StudentDashboard: React.FC = () => {
                             Realize um Teste Vocacional
                         </TestButton>
                     </Link>
-
                 </Box>
-
                 <StudentFooter />
             </Box>
         </>

@@ -1,108 +1,8 @@
+import { Box, IconButton, TextField } from '@mui/material';
 import styled, { keyframes } from 'styled-components';
-// import { Box, IconButton } from '@mui/material';
-// import CloseIcon from '@mui/icons-material/Close';
 import { Button } from '@mui/material';
 
-// export const Subtitle = styled.h1`
-//     font-size: 25px;
-//     margin-bottom: 20px;
-// `;
-
-// export const TextButton = styled.p`
-//     font-size: 20px;
-//     color: black;
-//     margin: 0px;
-//     text-align: center;
-// `;
-
-export const SquareDisplay = styled.p`
-    width: 180px;
-    height: 100px;
-    border-radius: 50px;
-    text-decoration: none;
-    background-color: #DFDFE6; 
-    font-size: 16px;
-    color: #3E3E40;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-`;
-
-// export const SquareButton = styled.a`
-//     width: 300px;
-//     height: 200px;
-//     border-radius: 10px;
-//     padding: 20px;
-//     text-decoration: none;
-//     border: 2px solid #BABABF;
-//     background-color: transparent;
-//     font-size: 16px;
-//     display: flex;
-//     flex-direction: column;
-//     align-items: center;
-//     justify-content: center;
-//     cursor: pointer;
-
-//     &:hover {
-//         background-color: #f0f0f0;
-//         transition: 0.5s;
-//     }
-
-//     &:hover ${TextButton} {
-//         color: #3E3E40;
-//     }
-// `;
-
-export const slide = keyframes`
-    0% {
-        transform: translateX(100%);
-    }
-    100% {
-        transform: translateX(-100%);
-    }
-`;
-
-// const AnnouncementBarContainer = styled(Box)`
-//     width: 100%;
-//     background-color: #ff9800;
-//     color: #fff;
-//     text-align: center;
-//     padding: 10px 0;
-//     position: relative;
-//     display: flex;
-//     justify-content: center;
-//     align-items: center;
-//     overflow: hidden;
-// `;
-
-// const SlidingImage = styled.div`
-//     display: inline-block;
-//     white-space: nowrap;
-//     will-change: transform;
-//     animation: ${slide} 10s linear infinite;
-// `;
-
-// const StyledImage = styled.img`
-//     max-width: none;
-//     max-height: 150px;
-//     width: auto;
-//     height: auto;
-//     display: block;
-// `;
-
-// const CloseButton = styled(IconButton)`
-//     position: absolute;
-//     right: 10px;
-// `;
-
-export const Subtitle = styled.h1`
-    font-size: 2rem;
-    text-align: center;
-    margin-bottom: 20px;
-    color: #1b1f27;
-`;
-
+//Style Index
 export const SquareButton = styled(Button)`
     width: 250px;
     height: 250px;
@@ -134,13 +34,113 @@ export const CardContentBox = styled.div`
 `;
 
 export const TestButton = styled(Button)`
-    background-color: #5479f7;
+    background: linear-gradient(90deg, #040410, #302EB7);
     border-radius: 20px;
-    padding: 20px 40px;
-    font-size: 18px;
+    padding: 15px 50px;
+    font-size: 1.2rem;
     font-weight: bold;
+    color: white;
+    text-transform: none;
 
     &:hover {
-        background-color: #415bc4;
+        background: linear-gradient(90deg, #302EB7, #040410);
     }
+`;
+//Style Announcement
+const slide = keyframes`
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+`;
+
+export const AnnouncementBarContainer = styled(Box)`
+    width: 100%;
+    background-color: #ff9800;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+`;
+
+export const SlidingImage = styled.div`
+    display: inline-block;
+    white-space: nowrap;
+    will-change: transform;
+    animation: ${slide} 10s linear infinite;
+`;
+
+export const StyledImage = styled.img`
+    max-width: none;
+    max-height: 70px;
+    width: auto;
+    height: auto;
+    display: block;
+`;
+
+export const CloseButton = styled(IconButton)`
+    position: absolute;
+    right: 300px;
+    bottom: 25px; 
+`;
+
+//Style SearchInstitution
+
+export const StyledBox = styled(Box)`
+    margin-bottom: 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 700px;
+    margin: auto;
+    margin-top: 32px;
+`;
+
+export const StyledTypography = styled(Box)`
+    margin-bottom: 16px;
+    text-align: center;
+`;
+
+export const SearchBox = styled(Box)`
+    display: flex;
+    justify-content: center;
+`;
+
+export const StyledTextField = styled(TextField)`
+    width: 100%;
+`;
+
+export const ListBox = styled(Box)`
+    padding-top: 8px;
+`;
+
+export const StyledModal = styled(Box)`
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    box-shadow: 24px;
+    padding: 32px;
+    width: 80%;
+    max-width: 600px;
+`;
+
+export const DetailTypography = styled(Box)`
+    margin-top: 16px;
+    text-align: center;
+    padding-left: 16px;
+`;
+
+export const GridContainer = styled(Box)`
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 `;

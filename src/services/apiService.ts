@@ -36,6 +36,13 @@ export const buscarCursosPorInstituicao = async (instituicaoId: number) => {
     const response = await axios.get(`${API_URL}/cursoInstituicao/instituicao/${instituicaoId}`);
     return response.data;
 };
+
+// Função para buscar a lista de testes de um estudante
+export const buscarTestesDeEstudante = async (estudanteId: number) => {
+    const response = await axios.get(`${API_URL}/estudanteTeste/teste/${estudanteId}`);
+    return response.data;
+};
+
 //contar quantos testes o estudante fez
 export const contarTeste = async() => {
     const response = await axios.get(`${API_URL}/estudanteTeste/contagem`);

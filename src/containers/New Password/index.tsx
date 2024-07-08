@@ -5,17 +5,17 @@ import FormControl from '@mui/material/FormControl';
 import CircularProgress from '@mui/material/CircularProgress';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { redefinicaoSenha } from '../../services/studentService';
-import { 
+import {
     Global,
-    LoginContainer, 
+    LoginContainer,
     CustomField,
-    CustomButton, 
-    CustomInputLabel, 
-    Header, 
+    CustomButton,
+    CustomInputLabel,
+    Header,
     FormContainer,
-    CustomLink, 
+    CustomLink,
     Container,
-    RightPanel, 
+    RightPanel,
     BackButton,
 } from './styles';
 import { Alert, Snackbar } from '@mui/material';
@@ -109,8 +109,8 @@ const RecoverPassword: React.FC = () => {
                     <FormContainer onSubmit={formik.handleSubmit}>
                         <FormControl variant="filled" error={formik.touched.password && Boolean(formik.errors.password)}>
                             <CustomInputLabel htmlFor="password">Digite sua nova senha!</CustomInputLabel>
-                            <CustomField 
-                                id="password" 
+                            <CustomField
+                                id="password"
                                 type="password"
                                 value={formik.values.password}
                                 onChange={formik.handleChange}
@@ -123,8 +123,8 @@ const RecoverPassword: React.FC = () => {
 
                         <FormControl variant="filled" error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}>
                             <CustomInputLabel htmlFor="confirmPassword">Confirme sua senha</CustomInputLabel>
-                            <CustomField 
-                                id="confirmPassword" 
+                            <CustomField
+                                id="confirmPassword"
                                 type="password"
                                 value={formik.values.confirmPassword}
                                 onChange={formik.handleChange}
@@ -148,7 +148,7 @@ const RecoverPassword: React.FC = () => {
                             horizontal: 'right',
                         }}
                         open={showSuccessMessage}
-                        autoHideDuration={6000} 
+                        autoHideDuration={6000}
                         onClose={handleCloseSuccessMessage}
                     >
                         <Alert onClose={handleCloseSuccessMessage} severity="success" sx={{ width: '100%' }}>
@@ -162,7 +162,7 @@ const RecoverPassword: React.FC = () => {
                             horizontal: 'right',
                         }}
                         open={showErrorMessage}
-                        autoHideDuration={6000} 
+                        autoHideDuration={6000}
                         onClose={handleCloseErrorMessage}
                     >
                         <Alert onClose={handleCloseErrorMessage} severity="error" sx={{ width: '100%' }}>
@@ -170,7 +170,7 @@ const RecoverPassword: React.FC = () => {
                         </Alert>
                     </Snackbar>
                 </LoginContainer>
-            </Container> 
+            </Container>
         </>
     );
 };
