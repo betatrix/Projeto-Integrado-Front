@@ -2,7 +2,10 @@ import React from 'react';
 import GlobalStyle from './styles/globalStyles';
 import ReactDOM from 'react-dom/client';
 import App from './app';
-import './i18n';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+//import { i18n } from 'i18next';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+//import i18n from './lib/i18n';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
@@ -39,4 +42,4 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 //     const newLanguage = currentLanguage === 'en' ? 'pt' : 'en'
 //     changeLanguage(newLanguage);
 //     setCurrentLanguage(newLanguage);
-// }
+// };

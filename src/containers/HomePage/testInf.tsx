@@ -1,6 +1,5 @@
 import { Box, Card, CardMedia, Grid, IconButton, Typography } from '@mui/material';
 import React, { useState } from 'react';
-import { TestInfoContent, TestInfoTitle, dividerBoxTestInfStyles, testInfBoxStyles } from './styles';
 import Realista from '../../assets/img/Realista.png';
 import Investigativo from '../../assets/img/Investigativo.png';
 import Artistico from '../../assets/img/Artistico.png';
@@ -8,6 +7,16 @@ import Social from '../../assets/img/Social.png';
 import Empreendedor from '../../assets/img/Empreendedor.png';
 import Convencional from '../../assets/img/Convencional.png';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
+import {
+    BoxCardHollandStyles,
+    BoxTitleAndDividerBoxStyles,
+    CardStyle,
+    GridItemText,
+    TestInfoContent,
+    TestInfoTitle,
+    dividerBoxTestInfStyles,
+    testInfBoxStyles,
+} from './styles';
 
 const data = [
     {
@@ -22,7 +31,7 @@ const data = [
     },
     {
         src: Artistico,
-        title: 'Artístico (I)',
+        title: 'Artístico (A)',
         description: 'Criativos e expressivos. Áreas: Artes, música, design.',
     },
     {
@@ -58,64 +67,50 @@ export const TestInformation: React.FC = () => {
 
     return (
         <Box sx={testInfBoxStyles}>
-            <Grid container justifyContent="center">
-                <Grid item xs={12} sm={10} md={8}>
-                    <Box sx={TestInfoTitle}>
-                        <Typography variant="h4">Teoria de John Holland</Typography>
+            <Grid container spacing={4} alignItems="center" justifyContent="center">
+                <Grid item xs={12} md={6} sx={GridItemText}>
+                    <Box sx={BoxTitleAndDividerBoxStyles}>
+                        <Typography sx={TestInfoTitle} variant='h3' >Teoria de John Holland</Typography>
+                        <Box sx={dividerBoxTestInfStyles} />
                     </Box>
-                    <Box sx={dividerBoxTestInfStyles} />
-                    <Box mt={2} sx={TestInfoContent}>
-                        <Typography variant="body1">
-                            Nosso teste vocacional é fundamentado nos estudos do psicólogo John L. Holland, que desenvolveu a Teoria dos
-                            Tipos Vocacionais. <br />Esta teoria identifica seis tipos principais de personalidade e ambientes de trabalho,
-                            conhecidos pela sigla RIASEC. <br /> Ao responder ao nosso teste, suas características pessoais são comparadas com os
-                            tipos RIASEC para identificar carreiras e <br /> áreas de estudo que correspondem ao seu perfil, aumentando as
-                            chances de satisfação e sucesso profissional. Veja abaixo os tipos de personalidades da Teoria de Holland, depois faça
-                            nosso teste e descubra a sua:
-                        </Typography>
-                        <Typography variant="h6" mt={2}>
-                            Os Seis Tipos de Holland
-                        </Typography>
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                gap: 1,
-                                py: 1,
-                                overflow: 'auto',
-                                width: '100%',
-                                scrollSnapType: 'x mandatory',
-                                '& > *': {
-                                    scrollSnapAlign: 'center',
-                                },
-                                '::-webkit-scrollbar': { display: 'none' },
-                            }}
-                        >
-                            {visibleData.map((item) => (
-                                <Card key={item.title} variant="outlined" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: 300, minWidth: 300 }}>
-                                    <CardMedia
-                                        component="img"
-                                        height="300"
-                                        image={item.src}
-                                        alt={item.title}
-                                    />
-                                    <Box sx={{ whiteSpace: 'collapse', mx: 1, textAlign: 'center' }}>
-                                        <Typography variant="h6">{item.title}</Typography>
-                                        <Typography variant="body2">{item.description}</Typography>
-                                    </Box>
-                                </Card>
-                            ))}
-                        </Box>
-                        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-                            {Array.from({ length: Math.ceil(data.length / itemsToShow) }).map((_, i) => (
-                                <IconButton
-                                    key={i}
-                                    onClick={() => handleIndicatorClick(i * itemsToShow)}
-                                    color={i * itemsToShow === index ? 'primary' : 'default'}
-                                >
-                                    <FiberManualRecordIcon />
-                                </IconButton>
-                            ))}
-                        </Box>
+                    <Typography variant="body1" sx={TestInfoContent}>
+                        Nosso teste vocacional é fundamentado nos estudos do psicólogo John L. Holland, que desenvolveu a Teoria dos
+                        Tipos Vocacionais. Esta teoria identifica seis tipos principais de personalidade e ambientes de trabalho,
+                        conhecidos pela sigla RIASEC. Ao responder nosso  teste, suas características pessoais são comparadas com os
+                        tipos RIASEC para identificar carreiras e áreas de estudo que correspondem  ao seu perfil, aumentando as
+                        chances de satisfação e sucesso profissional.
+                    </Typography>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                    <Typography variant="h4" mt={20} sx={{ textAlign: 'center' }}>
+                        Os Seis Tipos Vocacionais
+                    </Typography>
+                    <Box sx={BoxCardHollandStyles}>
+                        {visibleData.map((item) => (
+                            <Card key={item.title} variant="outlined" sx={CardStyle}>
+                                <CardMedia
+                                    component="img"
+                                    height="300"
+                                    image={item.src}
+                                    alt={item.title}
+                                />
+                                <Box sx={{ whiteSpace: 'collapse', mx: 1, textAlign: 'center' }}>
+                                    <Typography variant="h6">{item.title}</Typography>
+                                    <Typography variant="body2">{item.description}</Typography>
+                                </Box>
+                            </Card>
+                        ))}
+                    </Box>
+                    <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+                        {Array.from({ length: Math.ceil(data.length / itemsToShow) }).map((_, i) => (
+                            <IconButton
+                                key={i}
+                                onClick={() => handleIndicatorClick(i * itemsToShow)}
+                                color={i * itemsToShow === index ? 'primary' : 'default'}
+                            >
+                                <FiberManualRecordIcon />
+                            </IconButton>
+                        ))}
                     </Box>
                 </Grid>
             </Grid>

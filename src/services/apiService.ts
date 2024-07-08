@@ -36,8 +36,26 @@ export const buscarCursosPorInstituicao = async (instituicaoId: number) => {
     const response = await axios.get(`${API_URL}/cursoInstituicao/instituicao/${instituicaoId}`);
     return response.data;
 };
-
-export const contarTeste = async(estudanteId: number) => {
-    const response = await axios.get(`${API_URL}/estudanteTeste/teste/${estudanteId}`);
+//contar quantos testes o estudante fez
+export const contarTeste = async() => {
+    const response = await axios.get(`${API_URL}/estudanteTeste/contagem`);
     return response.data;
+};
+
+// Cadastrar estudante
+export const cadastrarEstudante = async (entidade: string, data: object) => {
+    const response = await axios.post(`${API_URL}/${entidade}/cadastro`, data);
+    return response.data;
+};
+
+// Enviar email para recuperação de senha
+export const recuperarSenha = async (email: string) => {
+    const response = await axios.post(`${API_URL}/auth/esqueceuSenha?email=${encodeURIComponent(email)}`);
+    return response.data, response.status;
+};
+
+// Redefinir senha do estudante
+export const redefinirSenha = async (token: string, senha:string) => {
+    const response = await axios.post(`${API_URL}/auth/redefinirSenha?token=${encodeURIComponent(token)}&novaSenha=${encodeURIComponent(senha)}`);
+    return response.data, response.status;
 };

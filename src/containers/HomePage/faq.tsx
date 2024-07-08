@@ -1,4 +1,4 @@
-import { Box, Collapse, Grid, List, ListItemButton, ListItemIcon, ListItemText, ListSubheader } from '@mui/material';
+import { Box, Collapse, Grid, List, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
 import { ExpandLess, ExpandMore, StarBorder } from '@mui/icons-material';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 import * as React from 'react';
@@ -7,9 +7,10 @@ import {
     gridContainerStyles,
     innerBoxStyles,
     listStyles,
-    listSubheaderStyles,
     listItemIconStyles,
     listItemTextStyles,
+    dividerBoxTestFaqStyles,
+    FaqTitle,
 } from './styles';
 
 export const Faq: React.FC = () => {
@@ -24,23 +25,18 @@ export const Faq: React.FC = () => {
     return (
         <>
             <Box sx={faqBoxStyles}>
-                <Grid container spacing={4} alignItems="center" justifyContent="center" sx={gridContainerStyles}>
+                <Grid alignItems="colum" justifyContent="flex-start" sx={gridContainerStyles}>
+                    <Typography variant="h3" sx={FaqTitle}>
+                        FAQ - Perguntas Frequentes
+                    </Typography>
+                    <Box sx={dividerBoxTestFaqStyles} />
                     <Box sx={innerBoxStyles}>
-                        <List
-                            sx={listStyles}
-                            component="nav"
-                            aria-labelledby="nested-list-subheader"
-                            subheader={
-                                <ListSubheader component="div" id="nested-list-subheader" sx={listSubheaderStyles}>
-                                    FAQ - Perguntas Frequentes
-                                </ListSubheader>
-                            }
-                        >
+                        <List sx={listStyles}>
                             <ListItemButton onClick={() => handleClick('item1')}>
                                 <ListItemIcon sx={listItemIconStyles}>
                                     <QuestionAnswerIcon />
                                 </ListItemIcon>
-                                <ListItemText primary='O que é um teste vocacional?' sx={listItemTextStyles}/>
+                                <ListItemText primaryTypographyProps={{ fontSize: '1.5rem'}} primary='O que é um teste vocacional?'/>
                                 {openItems['item1'] ? <ExpandLess /> : <ExpandMore />}
                             </ListItemButton>
                             <Collapse in={openItems['item1']} timeout="auto" unmountOnExit>
@@ -49,8 +45,8 @@ export const Faq: React.FC = () => {
                                         <ListItemIcon>
                                             <StarBorder />
                                         </ListItemIcon>
-                                        <ListItemText primary='Um teste vocacional é uma ferramenta que ajuda a identificar suas aptidões, interesses e habilidades,
-                                     sugerindo possíveis carreiras e áreas de estudo que se alinham com seu perfil.' />
+                                        <ListItemText primaryTypographyProps={{ fontSize: '1.3rem'}} primary='Um teste vocacional é uma ferramenta que ajuda a
+                                        identificar suas aptidões, interesses e habilidades, sugerindo possíveis carreiras e áreas de estudo que se alinham com seu perfil.' />
                                     </ListItemButton>
                                 </List>
                             </Collapse>
@@ -59,7 +55,7 @@ export const Faq: React.FC = () => {
                                 <ListItemIcon sx={listItemIconStyles}>
                                     <QuestionAnswerIcon />
                                 </ListItemIcon>
-                                <ListItemText primary='Como funciona o teste vocacional?' sx={listItemTextStyles}/>
+                                <ListItemText primaryTypographyProps={{ fontSize: '1.5rem'}} primary='Como funciona o teste vocacional?' />
                                 {openItems['item2'] ? <ExpandLess /> : <ExpandMore />}
                             </ListItemButton>
                             <Collapse in={openItems['item2']} timeout="auto" unmountOnExit>
@@ -68,8 +64,9 @@ export const Faq: React.FC = () => {
                                         <ListItemIcon>
                                             <StarBorder />
                                         </ListItemIcon>
-                                        <ListItemText primary='O teste consiste em uma série de perguntas sobre seus interesses, habilidades e preferências.
-                                     Com base nas suas respostas, ele gera um relatório com sugestões de carreiras e cursos adequados para você.' />
+                                        <ListItemText primaryTypographyProps={{ fontSize: '1.3rem'}} primary='O teste consiste em uma série de perguntas sobre seus
+                                        interesses, habilidades e preferências. Com base nas suas respostas, ele gera um relatório com sugestões de carreiras e cursos
+                                        adequados para você.' />
                                     </ListItemButton>
                                 </List>
                             </Collapse>
@@ -78,7 +75,7 @@ export const Faq: React.FC = () => {
                                 <ListItemIcon sx={listItemIconStyles}>
                                     <QuestionAnswerIcon />
                                 </ListItemIcon>
-                                <ListItemText primary='Como posso entrar em contato com uma universidade específica?' sx={listItemTextStyles}/>
+                                <ListItemText primaryTypographyProps={{ fontSize: '1.5rem'}} primary='Como posso entrar em contato com uma universidade específica?' />
                                 {openItems['item3'] ? <ExpandLess /> : <ExpandMore />}
                             </ListItemButton>
                             <Collapse in={openItems['item3']} timeout="auto" unmountOnExit>
@@ -87,8 +84,8 @@ export const Faq: React.FC = () => {
                                         <ListItemIcon>
                                             <StarBorder />
                                         </ListItemIcon>
-                                        <ListItemText primary='Cada página de universidade inclui detalhes de contato, como endereço, telefone e e-mail.
-                                    Você também pode encontrar links para os sites oficiais das universidades.' />
+                                        <ListItemText primaryTypographyProps={{ fontSize: '1.3rem'}} primary='Cada página de universidade inclui detalhes de contato,
+                                        como endereço, telefone e e-mail. Você também pode encontrar links para os sites oficiais das universidades.' />
                                     </ListItemButton>
                                 </List>
                             </Collapse>
@@ -97,7 +94,7 @@ export const Faq: React.FC = () => {
                                 <ListItemIcon sx={listItemIconStyles}>
                                     <QuestionAnswerIcon />
                                 </ListItemIcon>
-                                <ListItemText primary='Como criar uma conta no site?' sx={listItemTextStyles}/>
+                                <ListItemText primaryTypographyProps={{ fontSize: '1.5rem'}} primary='Como criar uma conta no site?' sx={listItemTextStyles} />
                                 {openItems['item4'] ? <ExpandLess /> : <ExpandMore />}
                             </ListItemButton>
                             <Collapse in={openItems['item4']} timeout="auto" unmountOnExit>
@@ -106,8 +103,8 @@ export const Faq: React.FC = () => {
                                         <ListItemIcon>
                                             <StarBorder />
                                         </ListItemIcon>
-                                        <ListItemText primary='Clique no botão "Cadastre-se" no centro da primeira página e preencha o formulário com suas
-                                    informações pessoais.' />
+                                        <ListItemText primaryTypographyProps={{ fontSize: '1.3rem'}} primary='Clique no botão "Cadastre-se" no centro da primeira
+                                         página e preencha o formulário com suas informações pessoais.' />
                                     </ListItemButton>
                                 </List>
                             </Collapse>
@@ -116,7 +113,8 @@ export const Faq: React.FC = () => {
                                 <ListItemIcon sx={listItemIconStyles}>
                                     <QuestionAnswerIcon />
                                 </ListItemIcon>
-                                <ListItemText primary='Como posso salvar minhas pesquisas e resultados de testes?' sx={listItemTextStyles}/>
+                                <ListItemText primaryTypographyProps={{ fontSize: '1.5rem'}}
+                                    primary='Como posso salvar minhas pesquisas e resultados de testes?' />
                                 {openItems['item5'] ? <ExpandLess /> : <ExpandMore />}
                             </ListItemButton>
                             <Collapse in={openItems['item5']} timeout="auto" unmountOnExit>
@@ -125,8 +123,8 @@ export const Faq: React.FC = () => {
                                         <ListItemIcon>
                                             <StarBorder />
                                         </ListItemIcon>
-                                        <ListItemText primary='Após criar uma conta, fazer login e realizar um teste você terá salvo em sua página os resultados
-                                    do testes, acessível a qualquer momento.' />
+                                        <ListItemText primaryTypographyProps={{ fontSize: '1.3rem'}} primary='Após criar uma conta, fazer login e realizar um
+                                        teste você terá salvo em sua página os resultados do testes, acessível a qualquer momento.'/>
                                     </ListItemButton>
                                 </List>
                             </Collapse>

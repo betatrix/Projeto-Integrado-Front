@@ -1,5 +1,10 @@
 {
     "translation": {
-        "header": "Cabeçalho"
+      "welcome": "Bem-vindo ao React e react-i18next",
+      "login": "Entrar",
+      "home": "Início",
+      "about": "Sobre",
+      "faq": "FAQ",
+      "testInformation": "Informações do Teste"
     }
-}
+  }

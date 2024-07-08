@@ -1,61 +1,50 @@
-import { Grid, Box, Typography, Button } from '@mui/material';
+import { Grid, Box, Typography, Button, Divider } from '@mui/material';
 import { Link } from 'react-router-dom';
 import InitialPageHeader from '../../components/HomeHeader/';
-import Footer from '../../components/AdminFooter';
 import About from './about';
 import Faq from './faq';
 import {
     homePageBoxStyles,
     gridIndexContainerStyles,
-    gridItemStyles,
-    boxTitleStyles,
     typographyTitleStyles,
     typographySubtitleStyles,
-    boxButtonContainerStyles,
     buttonStyles,
 } from './styles';
 import TestInformation from './testInf';
+import InitialPageFooter from '../../components/HomeFooter';
 
 export const HomePage: React.FC = () => {
     return (
         <>
             <InitialPageHeader />
-
             <Box sx={homePageBoxStyles} id="home">
-                <Grid container spacing={4} alignItems="center" justifyContent="center" sx={gridIndexContainerStyles}>
-                    <Grid item xs={12} md={6} sx={gridItemStyles}>
-                        <Box sx={boxTitleStyles}>
-                            <Typography variant="h1" sx={typographyTitleStyles}>
-                                VOCCO
-                            </Typography>
-                            <Typography variant="h6" sx={typographySubtitleStyles}>
-                                ENCONTRE UNIVERSIDADES E FAÇA TESTES VOCACIONAIS PARA DECIDIR SEU FUTURO PROFISSIONAL.
-                            </Typography>
-                        </Box>
-                        <Box sx={boxButtonContainerStyles}>
-                            <Grid container spacing={2} alignItems="center" justifyContent="center">
-                                <Grid item>
-                                    <Link to="/cadastro" style={{ textDecoration: 'none' }}>
-                                        <Button variant="contained" size="large" sx={buttonStyles}>
-                                            Cadastre-se
-                                        </Button>
-                                    </Link>
-                                </Grid>
-                            </Grid>
-                        </Box>
-                    </Grid>
+                <Grid spacing={4} alignItems="colum" justifyContent="flex-start" sx={gridIndexContainerStyles}>
+                    <Typography variant="h1" sx={typographyTitleStyles}>
+                        VOCCO
+                    </Typography>
+                    <Typography variant="h6" sx={typographySubtitleStyles}>
+                        ENCONTRE UNIVERSIDADES E FAÇA TESTES VOCACIONAIS <br /> PARA DECIDIR SEU FUTURO PROFISSIONAL.
+                    </Typography>
+                    <Link to="/register" style={{ textDecoration: 'none' }}>
+                        <Button variant="contained" size="large" sx={buttonStyles}>
+                            Cadastre-se
+                        </Button>
+                    </Link>
                 </Grid>
             </Box>
-            <Box id="about">
-                <About />
-            </Box>
-            <Box id="faq">
-                <Faq />
-            </Box>
+            <Divider sx={{ borderColor: '#735fe4', borderBottomWidth: 2 }} />
             <Box id="testInformation">
                 <TestInformation />
             </Box>
-            <Footer />
+            <Divider sx={{ borderColor: '#735fe4', borderBottomWidth: 2 }} />
+            <Box id="about">
+                <About />
+            </Box>
+            <Divider sx={{ borderColor: '#735fe4', borderBottomWidth: 2 }} />
+            <Box id="faq">
+                <Faq />
+            </Box>
+            <InitialPageFooter />
         </>
     );
 };

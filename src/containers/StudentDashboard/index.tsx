@@ -1,20 +1,35 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Grid, Box, Typography, Card, CardContent, Paper } from '@mui/material';
 import { Link } from 'react-router-dom';
 //import AssignmentTurnedInRoundedIcon from '@mui/icons-material/AssignmentTurnedInRounded';
 import StudentHeader from '../../components/StudentHeader';
-import Footer from '../../components/AdminFooter';
 import AnnouncementBar from './announcement';
 import { SquareButton, TextButton, CardContentBox, TestButton } from './styles';
 // import { Subtitle, SquareButton, TextButton, CardContentBox, TestButton } from './styles';
 import VideogameAssetIcon from '@mui/icons-material/VideogameAsset';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import InsightsIcon from '@mui/icons-material/Insights';
+import StudentFooter from '../../components/StudentFooter';
+import { contarTeste } from '../../services/apiService';
 
 const StudentDashboard: React.FC = () => {
     const [showAnnouncement, setShowAnnouncement] = useState(true);
-    const [contarTeste] = useState(0); // Simulating test count
+    const [testCount, setTestCount] = useState(0); // Simulating test count
     // const [testCount, setTestCount] = useState(0); // Simulating test count
+
+    useEffect(() => {
+        // Função para buscar a contagem de testes
+        const fetchTestCount = async () => {
+            try {
+                const count = await contarTeste();
+                setTestCount(count);
+            } catch (error) {
+                console.error('Erro ao buscar contagem de testes:', error);
+            }
+        };
+
+        fetchTestCount(); // Chamar a função ao carregar o componente
+    }, []);
 
     const handleCloseAnnouncement = () => {
         setShowAnnouncement(false);
@@ -44,7 +59,7 @@ const StudentDashboard: React.FC = () => {
                                     <TextButton>Testes Preenchidos</TextButton>
                                     <InsightsIcon style={{ fontSize: 80, color: '#1b1f27' }} />
                                     <Typography variant="h3" component="div">
-                                        {contarTeste}
+                                        {testCount}
                                     </Typography>
                                 </SquareButton>
                             </Paper>
@@ -85,7 +100,7 @@ const StudentDashboard: React.FC = () => {
 
                 </Box>
 
-                <Footer />
+                <StudentFooter />
             </Box>
         </>
     );

@@ -10,9 +10,9 @@ import {
     MenuItem,
     Button,
 } from '@mui/material';
-//import { Link } from 'react-router-dom';
 import { Link as ScrollLink } from 'react-scroll';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const styles = {
     logo: {
@@ -34,13 +34,15 @@ const styles = {
         color: 'white',
         textDecoration: 'none',
         marginRight: '20px',
-        cursor: 'pointer', // Adicione o cursor de ponteiro para links
+        cursor: 'pointer',
     },
 };
 
 function InitialPageHeader() {
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
     const navigate = useNavigate();
+    // const { t, i18n } = useTranslation();
+    // const [currentLanguage, setCurrentLanguage] = useState(i18n.language);
 
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElUser(event.currentTarget);
@@ -54,13 +56,33 @@ function InitialPageHeader() {
         setAnchorElUser(null);
         navigate('/admin');
     };
+
     const handleStudentLogin = () => {
         setAnchorElUser(null);
         navigate('/estudante');
     };
 
+    // const handleChangeLanguage = () => {
+    //     const newLanguage = currentLanguage === 'en' ? 'pt' : 'en';
+    //     i18n.changeLanguage(newLanguage);
+    //     setCurrentLanguage(newLanguage);
+    // };
+    const{
+        t,
+        i18n: {
+            changeLanguage, language
+        },
+    } = useTranslation();
+
+    const[currentLanguage, setCurrentLanguage] = useState(language);
+
+    const handleChangeLanguage = () => {
+        const newLanguage = currentLanguage === 'en' ? 'pt' : 'en';
+        changeLanguage(newLanguage);
+        setCurrentLanguage(newLanguage);
+    };
     return (
-        <AppBar position="fixed" style={{ backgroundColor: '#1b1f27' }}>
+        <AppBar position="sticky" style={{ backgroundColor: '#1b1f27' }}>
             <Container maxWidth="xl">
                 <Toolbar sx={{ justifyContent: 'space-between' }}>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -75,22 +97,26 @@ function InitialPageHeader() {
                         </Typography>
                         <Box sx={{ marginLeft: '800px' }}>
                             <ScrollLink to="home" smooth={true} duration={500} style={styles.linkButton}>
-                                <Button color="inherit">Home</Button>
-                            </ScrollLink>
-                            <ScrollLink to="about" smooth={true} duration={500} style={styles.linkButton}>
-                                <Button color="inherit">Sobre</Button>
-                            </ScrollLink>
-                            <ScrollLink to="faq" smooth={true} duration={500} style={styles.linkButton}>
-                                <Button color="inherit">FAQ</Button>
+                                <Button color="inherit">{t('home')}</Button>
                             </ScrollLink>
                             <ScrollLink to="testInformation" smooth={true} duration={500} style={styles.linkButton}>
-                                <Button color="inherit">Informações</Button>
+                                <Button color="inherit">{t('testInformation')}</Button>
                             </ScrollLink>
+                            <ScrollLink to="about" smooth={true} duration={500} style={styles.linkButton}>
+                                <Button color="inherit">{t('about')}</Button>
+                            </ScrollLink>
+                            <ScrollLink to="faq" smooth={true} duration={500} style={styles.linkButton}>
+                                <Button color="inherit">{t('faq')}</Button>
+                            </ScrollLink>
+                            <Button onClick={handleChangeLanguage} color="inherit">
+                                {currentLanguage === 'en' ? 'Português' : 'English'}
+                            </Button>
                         </Box>
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <Tooltip title="Login">
-                            <Button type='button' variant='outlined' onClick={handleOpenUserMenu} sx={styles.LoginText}> Entrar
+                            <Button type="button" variant="outlined" onClick={handleOpenUserMenu} sx={styles.LoginText}>
+                                {t('login')}
                             </Button>
                         </Tooltip>
                         <Menu
@@ -106,10 +132,10 @@ function InitialPageHeader() {
                             onClose={handleCloseUserMenu}
                         >
                             <MenuItem onClick={handleStudentLogin}>
-                                <Typography textAlign="center">Estudante</Typography>
+                                <Typography textAlign="center">{t('student')}</Typography>
                             </MenuItem>
                             <MenuItem onClick={handleAdminLogin}>
-                                <Typography textAlign="center">Administrador</Typography>
+                                <Typography textAlign="center">{t('admin')}</Typography>
                             </MenuItem>
                         </Menu>
                     </Box>

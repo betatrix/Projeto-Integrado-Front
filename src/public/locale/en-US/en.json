@@ -1,5 +1,11 @@
 {
     "translation": {
-        "header": "Our Header"
+      "welcome": "Welcome to React and react-i18next",
+      "login": "Login",
+      "home": "Home",
+      "about": "About",
+      "faq": "FAQ",
+      "testInformation": "Test Information"
     }
-}
+  }
+  

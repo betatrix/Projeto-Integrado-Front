@@ -13,6 +13,11 @@ import About from '../containers/HomePage/about';
 import CourseList from '../containers/Course Management';
 import DataStudent from '../containers/StudentDashboard/perfilStudent';
 import VocacionalTest from '../containers/Vocacional Test';
+import Login from '../containers/Login/index';
+import RecoverPassword from '../containers/Recover Password';
+import NewPassword from '../containers/New Password';
+import Register from '../containers/Register/index';
+import SucessPassword from '../containers/Register/SucessPassword';
 
 export const AppRoutes: React.FC = () => {
     return (
@@ -25,6 +30,11 @@ export const AppRoutes: React.FC = () => {
                     <Route path='/gerenciamento-instituicao' element={<InstitutionManagement/>}/>
                     <Route path='/gerenciamento-curso' element={<CourseList/>}/>
                     <Route path='/instituicao' element={<InstitutionList/>}/>
+                    <Route path="/login" element={<Login/>}/>
+                    <Route path="/recover-password" element={<RecoverPassword/>}/>
+                    <Route path="/new-password" element={<NewPassword/>}/>
+                    <Route path="/success-change-password" element={<SucessPassword/>}/>
+                    <Route path="/register" element={<Register/>}/>
                     <Route path='/perfil' element={<DataStudent/>}/>
                     <Route path='/estudante' element={<StudentDashboard />} />
                     <Route path='/sobre' element={<About />} />

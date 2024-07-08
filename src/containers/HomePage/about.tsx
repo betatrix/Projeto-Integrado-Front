@@ -5,12 +5,11 @@ import {
     gridItemImageStyles,
     imageStyles,
     gridItemTextStyles,
-    typographyTitleStyles,
     dividerBoxStyles,
     typographyBodyStyles,
     typographySmallBodyStyles,
     typographyAboutTitleStyles,
-    gridAboutContainerStyles
+    gridAboutContainerStyles,
 } from './styles';
 import backgroundIcone from '../../assets/img/backgroundIcone.png';
 
@@ -23,19 +22,19 @@ export const About: React.FC = () => {
                         <img src={backgroundIcone} alt="Ícone de fundo" style={imageStyles} />
                     </Grid>
                     <Grid item xs={12} md={6} sx={gridItemTextStyles}>
-                        <Typography variant="h3" sx={typographyTitleStyles}>
+                        <Typography variant="h3" sx={typographyAboutTitleStyles}>
                             Sobre nós
-                            <Box sx={dividerBoxStyles} />
                         </Typography>
+                        <Box sx={dividerBoxStyles} />
                         <Typography variant="body1" sx={typographyBodyStyles}>
                             Nós somos a <b>VOCCO</b>, uma plataforma destinada a orientar alunos do ensino médio da rede pública de educação no Brasil,
-                             auxiliando-os na escolha consciente de suas futuras carreiras profissionais.
+                             auxiliando-os na escolha de suas futuras carreiras profissionais.
                         </Typography>
-                        <Typography variant="h4" sx={typographyAboutTitleStyles}>
+                        <Typography variant="h4" sx={{marginLeft:'40px'}}>
                             Nome Vocco
                         </Typography>
                         <Typography variant="body1" sx={typographySmallBodyStyles}>
-                            Nosso nome deriva da palavra vocação em Latim.
+                            Nosso nome deriva da palavra <b>vocação</b> em Latim.
                         </Typography>
                     </Grid>
                 </Grid>
