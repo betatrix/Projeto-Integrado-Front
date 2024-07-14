@@ -66,3 +66,9 @@ export const redefinirSenha = async (token: string, senha:string) => {
     const response = await axios.post(`${API_URL}/auth/redefinirSenha?token=${encodeURIComponent(token)}&novaSenha=${encodeURIComponent(senha)}`);
     return response.data, response.status;
 };
+
+// Fazer o login
+export const loginConta = async (entidade: string, data: object) => {
+    const response = await axios.post(`${API_URL}/auth/${entidade}/login`, data);
+    return { data: response.data, status: response.status };
+};
