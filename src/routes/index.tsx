@@ -18,33 +18,42 @@ import RecuperarSenha from '../containers/Recover Password';
 import { BuscaPoliticas } from '../containers/Institution Register/searchPolicies';
 import { InstitutionProvider } from '../context/institutionContext';
 import ResultadoTeste from '../containers/ResultTest';
+import { AuthProvider } from '../contexts/auth';
+import PrivateRoute from '../components/routes/privateRoutes';
 
 export const AppRoutes = () =>{
     return(
-        <BrowserRouter>
-            <InstitutionProvider>
-                <Routes>
-                    <Route path='/cadastro' element={<CadastroInstituicao />} />
-                    <Route path='/cursos' element={<BuscaCurso />} />
-                    <Route path='/politicas' element={<BuscaPoliticas />} />
-                    <Route path='/gerenciamento-instituicao' element={<InstitutionManagement/>}/>
-                    <Route path='/gerenciamento-curso' element={<CourseList/>}/>
-                    <Route path='/instituicao' element={<InstitutionList/>}/>
-                    <Route path="/login" element={<Login/>}/>
-                    <Route path="/recuperar-senha" element={<RecuperarSenha/>}/>
-                    <Route path="/nova-senha" element={<NovaSenha/>}/>
-                    <Route path="/success-change-password" element={<SucessPassword/>}/>
-                    <Route path="/register" element={<Register/>}/>
-                    <Route path="/resultado" element={<ResultadoTeste/>}/>
-                    <Route path='/perfil' element={<DataStudent/>}/>
-                    <Route path='/estudante' element={<StudentDashboard />} />
-                    <Route path='/sobre' element={<About />} />
-                    <Route path='/admin' element={<Dashboard />} />
-                    <Route path='/teste-vocacional' element={<VocacionalTest/>}/>
-                    <Route path='/pagina-inicial' element={<HomePage />} />
-                    <Route path='*' element={<Navigate to='/pagina-inicial' replace />} />
-                </Routes>
-            </InstitutionProvider>
-        </BrowserRouter>
+        <AuthProvider>
+            <BrowserRouter>
+                <InstitutionProvider>
+                    <Routes>
+                        {/* Private Routes - Admin*/}
+                        <Route path="/cadastro" element={<PrivateRoute><CadastroInstituicao/></PrivateRoute>}/>
+                        <Route path="/cursos" element={<PrivateRoute><BuscaCurso/></PrivateRoute>}/>
+                        <Route path='/politicas' element={<BuscaPoliticas />} />
+                        <Route path="/gerenciamento-instituicao" element={<PrivateRoute><InstitutionManagement/></PrivateRoute>}/>
+                        <Route path='/gerenciamento-curso' element={<CourseList/>}/>
+                        <Route path='/instituicao' element={<InstitutionList/>}/>
+                        <Route path="/pagina-inicial" element={<PrivateRoute><Dashboard/></PrivateRoute>}/>
+                        {/* Public routes */}
+                        <Route path="/login" element={<Login/>}/>
+                        <Route path="/register" element={<Register/>}/>
+                        <Route path="/recuperar-senha" element={<RecuperarSenha/>}/>
+                        <Route path="/nova-senha" element={<NovaSenha/>}/>
+                        <Route path="/success-change-password" element={<SucessPassword/>}/>
+                        <Route path="/register" element={<Register/>}/>
+                        <Route path="/resultado" element={<ResultadoTeste/>}/>
+                        <Route path='/perfil' element={<DataStudent/>}/>
+                        <Route path='/estudante' element={<StudentDashboard />} />
+                        <Route path='/sobre' element={<About />} />
+                        <Route path='/admin' element={<Dashboard />} />
+                        <Route path='/teste-vocacional' element={<VocacionalTest/>}/>
+                        <Route path='/pagina-inicial' element={<HomePage />} />
+                        <Route path='*' element={<Navigate to='/pagina-inicial' replace />} />
+                        {/* <Route path="*" element={<Navigate to="/login" replace />} /> */}
+                    </Routes>
+                </InstitutionProvider>
+            </BrowserRouter>
+        </AuthProvider>
     );
 };

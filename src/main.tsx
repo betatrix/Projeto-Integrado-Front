@@ -2,29 +2,16 @@ import React from 'react';
 import GlobalStyle from './styles/globalStyles';
 import ReactDOM from 'react-dom/client';
 import App from './app';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-//import { i18n } from 'i18next';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-//import i18n from './lib/i18n';
+import { AuthProvider } from './contexts/auth';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-    <React.StrictMode>
-        <GlobalStyle />
-        < App />
-    </React.StrictMode>,
+    <AuthProvider>
+        <React.StrictMode>
+            <GlobalStyle />
+            < App />
+        </React.StrictMode>
+    </AuthProvider>
 );
-
-// import React from 'react'
-// import ReactDOM from 'react-dom/client'
-// import Login from './containers/Login'
-// import GlobalStyle from './styles/globalStyles'
-
-// ReactDOM.createRoot(document.getElementById('root')!).render(
-//   <React.StrictMode>
-//     <GlobalStyle />
-//     <Login />
-//   </React.StrictMode>,
-// )
 
 //TODO(beatriz.andrade) utilizar nas páginas que precisa de tradução
 //TODO(beatriz.andrade) verificar modo de armazenar estado do handleChangeLanguage
@@ -43,3 +30,4 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 //     changeLanguage(newLanguage);
 //     setCurrentLanguage(newLanguage);
 // };
+

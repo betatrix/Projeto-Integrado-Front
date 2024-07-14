@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
     AppBar,
     Container,
@@ -13,6 +13,7 @@ import {
     Button,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../../contexts/auth';
 
 const settings = ['Account', 'Dashboard', 'Logout'];
 
@@ -44,12 +45,26 @@ const styles = {
 
 function AdminHeader() {
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+    const authContext = useContext(AuthContext);
+
+    if (!authContext) {
+        return null;
+    }
+
+    const { student, logout } = authContext;
 
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElUser(event.currentTarget);
     };
 
-    const handleCloseUserMenu = () => {
+    const handleCloseUserMenu = (event: {}, reason: "backdropClick" | "escapeKeyDown") => {
+        setAnchorElUser(null);
+    };
+
+    const handleMenuItemClick = (setting: string) => {
+        if (setting === 'Logout') {
+            logout();
+        }
         setAnchorElUser(null);
     };
 
@@ -74,10 +89,12 @@ function AdminHeader() {
                         </Link>
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Typography sx={styles.welcomeText}>Bem vindo de volta, fulano!</Typography>
+                        <Typography sx={styles.welcomeText}>
+                            Bem vindo de volta, {student ? student.nome : 'usuário'}!
+                        </Typography>
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={styles.avatarButton}>
-                                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                                <Avatar alt={student ? student.nome : 'User Avatar'} src="/static/images/avatar/2.jpg" />
                             </IconButton>
                         </Tooltip>
                         <Menu
@@ -93,7 +110,7 @@ function AdminHeader() {
                             onClose={handleCloseUserMenu}
                         >
                             {settings.map((setting) => (
-                                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                                <MenuItem key={setting} onClick={() => handleMenuItemClick(setting)}>
                                     <Typography textAlign="center">{setting}</Typography>
                                 </MenuItem>
                             ))}
