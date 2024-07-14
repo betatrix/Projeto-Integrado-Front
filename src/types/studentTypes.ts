@@ -6,3 +6,8 @@ export type StudentRegisterForm = {
 	celular: string;
 	nivelEscolar: string;
   };
+
+  export type StudentLoginForm = {
+	login: string;
+	senha: string;
+  };
