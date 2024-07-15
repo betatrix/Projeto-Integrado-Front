@@ -1,32 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../../components/AdminHeader';
 import Footer from '../../components/AdminFooter';
-import { Button, Typography, RadioGroup, FormControlLabel, Radio } from '@mui/material';
+import { Button, Typography, RadioGroup, FormControlLabel, Radio, LinearProgress } from '@mui/material';
 import { CenteredDiv, ButtonGroup, RadioContainer } from './styles';
 import axios from 'axios';
 
-interface EstudanteTeste {
-    id: number;
-    teste: Teste;
-    estudante: Estudante;
-    data: string;
-}
-
-interface Estudante {
-    id: number;
-    nome: string;
-    email: string;
-    senha: string;
-    dataNascimento: string;
-    celular: string;
-    ativo: boolean;
-}
-
 interface Teste {
     id: number;
-    titulo: string;
-    descricao: string;
+}
+
+interface Pergunta {
+    id: number;
+    texto: string;
     ativo: boolean;
+    testeId: number;
+}
+
+interface Usuario {
+    id: number;
 }
 
 const VocacionalTest: React.FC = () => {
@@ -34,31 +25,37 @@ const VocacionalTest: React.FC = () => {
 
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [answers, setAnswers] = useState<number[]>(new Array(30).fill(0));
-    const [questions, setQuestions] = useState<string[]>([]);
-    const [estudanteTeste, setEstudanteTeste] = useState<EstudanteTeste | null>(null);
+    const [questions, setQuestions] = useState<Pergunta[]>([]);
+    const [usuario, setUsuario] = useState<Usuario | null>(null);
+    const [teste, setTeste] = useState<Teste | null>(null);
 
     useEffect(() => {
         const fetchQuestions = async () => {
             try {
                 const response = await axios.get(`${apiUrl}/pergunta/teste/1`);
-                setQuestions(response.data.map((pergunta: { texto: string }) => pergunta.texto));
+                setQuestions(response.data);
             } catch (error) {
                 console.error('Erro ao buscar perguntas:', error);
             }
         };
 
-        const fetchEstudanteTeste = async () => {
+        const fetchInitialData = async () => {
             try {
-                const response = await axios.get(`${apiUrl}/estudanteTeste/1`);
-                setEstudanteTeste(response.data);
+                const testeResponse = await axios.get(`${apiUrl}/teste/1`);
+                setTeste(testeResponse.data);
+
+                if (usuario?.id) {
+                    const usuarioResponse = await axios.get(`${apiUrl}/estudante/${usuario.id}`);
+                    setUsuario(usuarioResponse.data);
+                }
             } catch (error) {
-                console.error('Erro ao buscar dados do estudante:', error);
+                console.error('Erro ao buscar dados iniciais:', error);
             }
         };
 
         fetchQuestions();
-        fetchEstudanteTeste();
-    }, [apiUrl]);
+        fetchInitialData();
+    }, [apiUrl, teste?.id, usuario?.id]);
 
     const handleNext = () => {
         if (currentQuestion < questions.length - 1) {
@@ -79,22 +76,15 @@ const VocacionalTest: React.FC = () => {
     };
 
     const handleSubmit = async () => {
-        if (!estudanteTeste) {
-            console.error('EstudanteTeste não carregado');
-            return;
-        }
-
         const payload = {
             estudanteTeste: {
-                id: estudanteTeste.id,
-                teste: estudanteTeste.teste,
-                estudante: estudanteTeste.estudante,
-                data: estudanteTeste.data,
+                testeId: teste?.id,
+                usuarioId: 1,
             },
             respostas: answers.map((resposta, index) => ({
-                perguntaId: index + 1,
-                resposta
-            }))
+                perguntaId: questions[index].id,
+                resposta,
+            })),
         };
 
         try {
@@ -105,23 +95,29 @@ const VocacionalTest: React.FC = () => {
         }
     };
 
-    const allQuestionsAnswered = answers.every(answer => answer !== 0);
+    const allQuestionsAnswered = answers.every((answer) => answer !== 0);
+
+    const isAnswerSelected = answers[currentQuestion] !== 0;
+
+    const progress = ((currentQuestion + 1) / questions.length) * 100;
 
     return (
         <>
             <Header />
             <CenteredDiv>
+                <LinearProgress style={{ width: '70%', marginBottom: '70px' }} variant="determinate" value={progress} />
                 <Typography variant="h5" gutterBottom>
-                    {questions[currentQuestion]}
+                    {questions[currentQuestion]?.texto}
                 </Typography>
-                <RadioGroup
-                    row
-                    value={answers[currentQuestion]}
-                    onChange={handleAnswerChange}
-                >
+                <RadioGroup row value={answers[currentQuestion]} onChange={handleAnswerChange}>
                     {[1, 2, 3, 4, 5].map((value) => (
                         <RadioContainer key={value}>
-                            <FormControlLabel value={value} control={<Radio />} label="" />
+                            <FormControlLabel
+                                value={value}
+                                control={<Radio />}
+                                label=""
+                                disabled={!questions[currentQuestion]?.ativo}
+                            />
                             <Typography variant="caption">{value}</Typography>
                         </RadioContainer>
                     ))}
@@ -139,7 +135,7 @@ const VocacionalTest: React.FC = () => {
                         variant="contained"
                         color="primary"
                         onClick={handleNext}
-                        disabled={currentQuestion === questions.length - 1}
+                        disabled={currentQuestion === questions.length - 1 || !isAnswerSelected}
                     >
                         Próximo
                     </Button>
