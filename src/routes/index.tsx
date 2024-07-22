@@ -10,6 +10,7 @@ import RecuperarSenha from '../containers/Recover Password';
 import SucessPassword from '../containers/SucessPassword';
 import { InstitutionProvider } from '../context/institutionContext';
 import VocacionalTest from '../containers/VocacionalTest';
+import ResultadoTeste from '../containers/ResultTest';
 
 export const AppRoutes = () =>{
     return(
@@ -26,6 +27,7 @@ export const AppRoutes = () =>{
                     <Route path="/register" element={<Register/>}/>
                     <Route path="/pagina-inicial" element={<Dashboard/>}/>
                     <Route path="/teste-vocacional" element={<VocacionalTest/>}/>
+                    <Route path="/resultado" element={<ResultadoTeste/>}/>
                     <Route path="*" element={<Navigate to="/teste-vocacional" replace />} />
                 </Routes>
             </InstitutionProvider>
