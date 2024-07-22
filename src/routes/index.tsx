@@ -1,10 +1,7 @@
-import { BrowserRouter as Router, Route, Routes, Navigate} from 'react-router-dom';
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import Dashboard from '../containers/AdminDashboard/index';
-
-import { CadastroInstituicao } from '../containers/Institution Register/index';
+import {CadastroInstituicao} from '../containers/Institution Register/index';
 import { BuscaCurso } from '../containers/Institution Register/searchCourse';
-import { BuscaPoliticas } from '../containers/Institution Register/searchPolicies';
-import { InstitutionProvider } from '../context/institutionContext';
 import InstitutionManagement from '../containers/Institution Management/index';
 import HomePage from '../containers/HomePage';
 import StudentDashboard from '../containers/StudentDashboard';
@@ -12,16 +9,18 @@ import InstitutionList from '../containers/StudentDashboard/searchInstitution';
 import About from '../containers/HomePage/about';
 import CourseList from '../containers/Course Management';
 import DataStudent from '../containers/StudentDashboard/perfilStudent';
-import VocacionalTest from '../containers/Vocacional Test';
+import VocacionalTest from '../containers/VocacionalTest';
 import Login from '../containers/Login/index';
-import RecoverPassword from '../containers/Recover Password';
-import NewPassword from '../containers/New Password';
 import Register from '../containers/Register/index';
 import SucessPassword from '../containers/Register/SucessPassword';
+import NovaSenha from '../containers/New Password';
+import RecuperarSenha from '../containers/Recover Password';
+import { BuscaPoliticas } from '../containers/Institution Register/searchPolicies';
+import { InstitutionProvider } from '../context/institutionContext';
 
-export const AppRoutes: React.FC = () => {
-    return (
-        <Router>
+export const AppRoutes = () =>{
+    return(
+        <BrowserRouter>
             <InstitutionProvider>
                 <Routes>
                     <Route path='/cadastro' element={<CadastroInstituicao />} />
@@ -31,8 +30,8 @@ export const AppRoutes: React.FC = () => {
                     <Route path='/gerenciamento-curso' element={<CourseList/>}/>
                     <Route path='/instituicao' element={<InstitutionList/>}/>
                     <Route path="/login" element={<Login/>}/>
-                    <Route path="/recover-password" element={<RecoverPassword/>}/>
-                    <Route path="/new-password" element={<NewPassword/>}/>
+                    <Route path="/recuperar-senha" element={<RecuperarSenha/>}/>
+                    <Route path="/nova-senha" element={<NovaSenha/>}/>
                     <Route path="/success-change-password" element={<SucessPassword/>}/>
                     <Route path="/register" element={<Register/>}/>
                     <Route path='/perfil' element={<DataStudent/>}/>
@@ -44,6 +43,6 @@ export const AppRoutes: React.FC = () => {
                     <Route path='*' element={<Navigate to='/pagina-inicial' replace />} />
                 </Routes>
             </InstitutionProvider>
-        </Router>
+        </BrowserRouter>
     );
 };

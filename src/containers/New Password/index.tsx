@@ -30,7 +30,7 @@ const validationSchema = Yup.object({
         .required('Confirmação de senha é obrigatória.'),
 });
 
-const RecoverPassword: React.FC = () => {
+const NovaSenha: React.FC = () => {
     const [loading, setLoading] = useState(false);
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     const [showErrorMessage, setShowErrorMessage] = useState(false);
@@ -175,4 +175,4 @@ const RecoverPassword: React.FC = () => {
     );
 };
 
-export default RecoverPassword;
+export default NovaSenha;

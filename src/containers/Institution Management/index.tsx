@@ -110,7 +110,6 @@ const InstitutionManagement: React.FC = () => {
         setInstitutionsToDeleteMultiple([]);
         setDeleteMultipleModalOpen(false);
     };
-
     // search API datas
     const [searchValue, setSearchValue] = useState<string>('');
 

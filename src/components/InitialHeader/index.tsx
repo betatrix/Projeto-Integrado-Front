@@ -10,9 +10,7 @@ import {
     Avatar,
     Menu,
     MenuItem,
-    Button,
 } from '@mui/material';
-import { Link } from 'react-router-dom';
 
 const settings = ['Account', 'Dashboard', 'Logout'];
 
@@ -35,14 +33,9 @@ const styles = {
         mr: 2,
         color: 'white',
     },
-    linkButton: {
-        color: 'white',
-        textDecoration: 'none',
-        marginRight: '20px',
-    },
 };
 
-function AdminHeader() {
+function InitialHeader() {
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -54,7 +47,7 @@ function AdminHeader() {
     };
 
     return (
-        <AppBar position="static" style={{ backgroundColor: '#1b1f27' }}> 
+        <AppBar position="static" style={{ backgroundColor: '#1b1f27' }}>
             <Container maxWidth="xl">
                 <Toolbar sx={{ justifyContent: 'space-between' }}>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -68,13 +61,8 @@ function AdminHeader() {
                             VOCCO
                         </Typography>
                     </Box>
-                    <Box sx={{marginLeft: '900px' }}>
-                        <Link to="/pagina-inicial" style={styles.linkButton}>
-                            <Button color="inherit">Home</Button>
-                        </Link>
-                    </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Typography sx={styles.welcomeText}>Bem vindo de volta, fulano!</Typography>
+                        <Typography sx={styles.welcomeText}>Entre em nossa plataforma!</Typography>
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={styles.avatarButton}>
                                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
@@ -105,4 +93,4 @@ function AdminHeader() {
     );
 }
 
-export default AdminHeader;
+export default InitialHeader;

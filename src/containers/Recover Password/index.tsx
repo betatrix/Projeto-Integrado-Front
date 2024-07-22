@@ -20,7 +20,7 @@ import {
 } from './styles';
 import { Alert, Snackbar } from '@mui/material';
 
-const RecoverPassword: React.FC = () => {
+const RecuperarSenha: React.FC = () => {
 
     const [email, setEmail] = useState('');
     const [loading, setLoading] = useState(false);
@@ -144,4 +144,4 @@ const RecoverPassword: React.FC = () => {
     );
 };
 
-export default RecoverPassword;
+export default RecuperarSenha;

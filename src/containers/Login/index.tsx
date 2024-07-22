@@ -46,7 +46,7 @@ const Login: React.FC = () => {
             </style>
             <Container>
                 <BackButton startIcon={<ArrowBackIcon />}>
-                    <CustomLink to={'/pagina-inicial'}>Página inicial</CustomLink>
+                    <CustomLink to={'/login'}>Página inicial</CustomLink>
                 </BackButton>
                 <LoginContainer>
                     <Header variant="h4">Acesse o Vocco!</Header>
@@ -59,7 +59,7 @@ const Login: React.FC = () => {
                         </FormControl>
 
                         <SubText variant="body2" color="textSecondary">
-                            <CustomLink to={'/recover-password'}>Esqueceu sua senha?</CustomLink>
+                            <CustomLink to={'/recuperar-senha'}>Esqueceu sua senha?</CustomLink>
                         </SubText>
 
                         <FormControl variant="filled">

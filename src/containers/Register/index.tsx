@@ -93,7 +93,7 @@ export const StudentRegister = () => {
                 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
             </style>
             <BackButton startIcon={<ArrowBackIcon />}>
-                <CustomLink to={'/pagina-inicial'}>Página inicial</CustomLink>
+                <CustomLink to={'/login'}>Página inicial</CustomLink>
             </BackButton>
             <LoginContainer>
                 <Header variant="h4">É novo? Cadastre-se aqui.</Header>
