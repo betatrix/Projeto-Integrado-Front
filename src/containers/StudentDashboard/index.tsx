@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Grid, Box, Typography, Card, CardContent, Paper } from '@mui/material';
+import { Grid, Box, Typography, Card, CardContent, Paper, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 import StudentHeader from '../../components/StudentHeader';
 import AnnouncementBar from './announcement';
-import { SquareButton, TextButton, CardContentBox, TestButton } from './styles';
+import { SquareButton, TextButton, CardContentBox, TestButton, homePageBoxStyles } from './styles';
 import VideogameAssetIcon from '@mui/icons-material/VideogameAsset';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import InsightsIcon from '@mui/icons-material/Insights';
@@ -59,14 +59,14 @@ const StudentDashboard: React.FC = () => {
                     onClose={handleCloseAnnouncement}
                 />
             )}
-            <Box sx={{ marginTop: '40px', padding: '20px' }}>
+            <Box sx={homePageBoxStyles}>
                 <Grid container justifyContent="center">
-                    <Grid container spacing={2} justifyContent="center">
+                    <Grid container spacing={25} justifyContent="center">
                         <Grid item>
-                            <Paper>
+                            <Paper sx={{backgroundColor:'white'}}>
                                 <SquareButton>
                                     <TextButton>Testes Preenchidos</TextButton>
-                                    <InsightsIcon style={{ fontSize: 80, color: '#1b1f27' }} />
+                                    <InsightsIcon style={{ fontSize: 80, color: 'linear-gradient(90deg, #040410, #302EB7)' }} />
                                     <Typography variant="h3" component="div">
                                         {testCount}
                                     </Typography>
@@ -74,10 +74,10 @@ const StudentDashboard: React.FC = () => {
                             </Paper>
                         </Grid>
                         <Grid item>
-                            <Paper>
+                            <Paper sx={{backgroundColor:'white'}}>
                                 <SquareButton>
                                     <TextButton>Resultados</TextButton>
-                                    <BarChartIcon style={{ fontSize: 80, color: '#1b1f27' }} />
+                                    <BarChartIcon style={{ fontSize: 80, color: 'linear-gradient(90deg, #040410, #302EB7)' }} />
                                     <CardContentBox>
                                         <Card sx={{ width: '100%', mt: 2 }}>
                                             <CardContent>
@@ -100,11 +100,11 @@ const StudentDashboard: React.FC = () => {
                         </Grid>
                     </Grid>
                 </Grid>
-                <Box sx={{ mt: '20px', textAlign: 'center' }}>
+                <Box sx={{ mt: '20px', textAlign: 'center', marginTop: '50px' }}>
                     <Link to="/teste-vocacional" style={{ textDecoration: 'none' }}>
-                        <TestButton variant="contained" size="large" startIcon={<VideogameAssetIcon />}>
-                            Realize um Teste Vocacional
-                        </TestButton>
+                        <Button variant="contained" size="large" sx={TestButton} startIcon={<VideogameAssetIcon />}>
+                            Fazer Teste Vocacional
+                        </Button>
                     </Link>
                 </Box>
                 <StudentFooter />

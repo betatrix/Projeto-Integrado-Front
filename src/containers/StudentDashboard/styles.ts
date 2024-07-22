@@ -1,11 +1,33 @@
-import { Box, IconButton, TextField } from '@mui/material';
+import { Box, IconButton, SxProps, TextField } from '@mui/material';
 import styled, { keyframes } from 'styled-components';
 import { Button } from '@mui/material';
+import { Theme } from '@emotion/react';
+import pageFour from '../../assets/img/pageFour.png';
+
+const globalBoxStyles: SxProps<Theme> = (theme) => ({
+    minHeight: '100vh',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundColor: '#caddff',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    [theme.breakpoints.down('sm')]: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        backgroundAttachment: 'local',
+    },
+});
 
 //Style Index
+export const homePageBoxStyles: SxProps<Theme> = (theme) => ({
+    backgroundImage: `url(${pageFour})`,
+    ...globalBoxStyles(theme),
+});
+
 export const SquareButton = styled(Button)`
-    width: 250px;
-    height: 250px;
+    width: 350px;
+    height: 350px;
     background-color: #ffffff;
     border: 2px solid #5479f7;
     display: flex;
@@ -33,19 +55,31 @@ export const CardContentBox = styled.div`
     margin-top: 10px;
 `;
 
-export const TestButton = styled(Button)`
-    background: linear-gradient(90deg, #040410, #302EB7);
-    border-radius: 20px;
-    padding: 15px 50px;
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: white;
-    text-transform: none;
+// export const TestButton = styled(Button)`
+//     background: linear-gradient(90deg, #040410, #302EB7);
+//     border-radius: 20px;
+//     padding: 15px 50px;
+//     font-size: 1.2rem;
+//     font-weight: bold;
+//     color: white;
+//     text-transform: none;
 
-    &:hover {
-        background: linear-gradient(90deg, #302EB7, #040410);
+//     &:hover {
+//         background: linear-gradient(90deg, #302EB7, #040410);
+//     }
+// `;
+
+export const TestButton: SxProps<Theme> = (theme) => ({
+    background: 'linear-gradient(90deg, #040410, #302EB7)',
+    borderRadius: '20px',
+    padding: '15px 50px',
+    fontSize: '1.1rem',
+    fontWeight: 'bold',
+    color: 'white',
+    '&:hover': {
+        background: 'linear-gradient(90deg, #302EB7, #040410)',
     }
-`;
+});
 //Style Announcement
 const slide = keyframes`
     0% {
@@ -62,7 +96,7 @@ export const AnnouncementBarContainer = styled(Box)`
     color: #fff;
     text-align: center;
     padding: 10px 0;
-    position: relative;
+    position: absolute;
     display: flex;
     justify-content: center;
     align-items: center;
