@@ -17,6 +17,7 @@ import NovaSenha from '../containers/New Password';
 import RecuperarSenha from '../containers/Recover Password';
 import { BuscaPoliticas } from '../containers/Institution Register/searchPolicies';
 import { InstitutionProvider } from '../context/institutionContext';
+import ResultadoTeste from '../containers/ResultTest';
 
 export const AppRoutes = () =>{
     return(
@@ -34,6 +35,7 @@ export const AppRoutes = () =>{
                     <Route path="/nova-senha" element={<NovaSenha/>}/>
                     <Route path="/success-change-password" element={<SucessPassword/>}/>
                     <Route path="/register" element={<Register/>}/>
+                    <Route path="/resultado" element={<ResultadoTeste/>}/>
                     <Route path='/perfil' element={<DataStudent/>}/>
                     <Route path='/estudante' element={<StudentDashboard />} />
                     <Route path='/sobre' element={<About />} />

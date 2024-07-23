@@ -4,6 +4,7 @@ import Footer from '../../components/AdminFooter';
 import { Button, Typography, RadioGroup, FormControlLabel, Radio, LinearProgress } from '@mui/material';
 import { CenteredDiv, ButtonGroup, RadioContainer } from './styles';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 interface Teste {
     id: number;
@@ -141,14 +142,17 @@ const VocacionalTest: React.FC = () => {
                     </Button>
                 </ButtonGroup>
                 {currentQuestion === questions.length - 1 && allQuestionsAnswered && (
-                    <Button
-                        variant="contained"
-                        color="secondary"
-                        onClick={handleSubmit}
-                        style={{ marginTop: '20px' }}
-                    >
+                    <Link to="/resultado" style={{ textDecoration: 'none' }}>
+                        <Button
+                            variant="contained"
+                            color="secondary"
+                            onClick={handleSubmit}
+                            style={{ marginTop: '20px' }}
+                        >
                         Enviar
-                    </Button>
+                        </Button>
+                    </Link>
+
                 )}
             </CenteredDiv>
             <Footer />
