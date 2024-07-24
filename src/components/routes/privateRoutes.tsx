@@ -1,23 +1,24 @@
 // src/components/PrivateRoute.tsx
 import { useContext } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 import { AuthContext } from '../../contexts/auth';
 
-const PrivateRoute = ({ children }: { children: JSX.Element }) => {
-    const authContext = useContext(AuthContext);
-    console.log(authContext)
-    console.log("HERE2--------------------")
+interface PrivateRouteProps {
+    requiredRole?: string;
+}
 
-    if (!authContext) {
-        console.log('AuthContext is undefined');
-        return null;
+const PrivateRoute: React.FC<PrivateRouteProps> = ({ requiredRole }) => {
+    const authContext = useContext(AuthContext);
+
+    if (!authContext || !authContext.isAuthenticated) {
+        return <Navigate to="/login" />;
     }
 
-    const { isAuthenticated } = authContext;
+    if (requiredRole && authContext.role !== requiredRole) {
+        return <Navigate to="/login" />;
+    }
 
-    console.log('isAuthenticated:', isAuthenticated);
-
-    return isAuthenticated ? children : <Navigate to="/login" />;
+    return <Outlet />;
 };
 
 export default PrivateRoute;

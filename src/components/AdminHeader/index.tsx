@@ -57,7 +57,7 @@ function AdminHeader() {
         setAnchorElUser(event.currentTarget);
     };
 
-    const handleCloseUserMenu = (event: {}, reason: "backdropClick" | "escapeKeyDown") => {
+    const handleCloseUserMenu = (_event: {}, _reason: "backdropClick" | "escapeKeyDown") => {
         setAnchorElUser(null);
     };
 

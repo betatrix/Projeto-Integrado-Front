@@ -53,7 +53,7 @@ const Login: React.FC = () => {
 
             if (response.status === 200) {
                 console.log('Sucesso ao realizar o login.');
-                authContext?.login(response.data.token, response.data.usuario, response.data.estudante);
+                authContext?.login(response.data.token, response.data.usuario, response.data.estudante, response.data.usuario.role);
                 
                 // const data = response.data;
                 // localStorage.setItem('token', encryptData(data.token));
@@ -64,7 +64,7 @@ const Login: React.FC = () => {
                 setError('Email ou senha inválidos');
             }
 
-            window.location.href = '/pagina-inicial';
+            window.location.href = '/pagina-inicial-adm';
         } catch (error) {
             setError('Ocorreu um erro ao tentar fazer login');
             console.log(error);
