@@ -42,7 +42,7 @@ const styles = {
     },
 };
 
-function StudentHeader() {
+function InstitutionSearchHeader() {
 
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
     const [anchorElTeste, setAnchorElTeste] = useState<null | HTMLElement>(null);
@@ -64,7 +64,6 @@ function StudentHeader() {
         setAnchorElTeste(null);
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const handleStudentPerfil = () => {
         setAnchorElUser(null);
         navigate('/perfil');
@@ -98,8 +97,8 @@ function StudentHeader() {
                         <Link to="/pagina-inicial" style={styles.linkButton}>
                             <Button color="inherit">Home</Button>
                         </Link>
-                        <Link to="/instituicao" style={styles.linkButton}>
-                            <Button color="inherit">Universidades</Button>
+                        <Link to="/estudante" style={styles.linkButton}>
+                            <Button color="inherit">Painel</Button>
                         </Link>
                         <Tooltip title='Opções de Teste'>
                             <Button onClick={handleOpenTesteMenu} color="inherit">Teste</Button>
@@ -146,9 +145,9 @@ function StudentHeader() {
                             open={Boolean(anchorElUser)}
                             onClose={handleCloseUserMenu}
                         >
-                            {/* <MenuItem onClick={handleStudentPerfil}>
+                            <MenuItem onClick={handleStudentPerfil}>
                                 <Typography textAlign="center">Perfil</Typography>
-                            </MenuItem> */}
+                            </MenuItem>
                         </Menu>
                     </Box>
                 </Toolbar>
@@ -157,4 +156,4 @@ function StudentHeader() {
     );
 }
 
-export default StudentHeader;
+export default InstitutionSearchHeader;

@@ -54,7 +54,7 @@ function InitialPageHeader() {
 
     const handleAdminLogin = () => {
         setAnchorElUser(null);
-        navigate('/admin');
+        navigate('/login');
     };
 
     const handleStudentLogin = () => {
@@ -76,6 +76,7 @@ function InitialPageHeader() {
 
     const[currentLanguage, setCurrentLanguage] = useState(language);
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const handleChangeLanguage = () => {
         const newLanguage = currentLanguage === 'en' ? 'pt' : 'en';
         changeLanguage(newLanguage);
@@ -100,17 +101,17 @@ function InitialPageHeader() {
                                 <Button color="inherit">{t('home')}</Button>
                             </ScrollLink>
                             <ScrollLink to="testInformation" smooth={true} duration={500} style={styles.linkButton}>
-                                <Button color="inherit">{t('testInformation')}</Button>
+                                <Button color="inherit">{t('Informações')}</Button>
                             </ScrollLink>
                             <ScrollLink to="about" smooth={true} duration={500} style={styles.linkButton}>
-                                <Button color="inherit">{t('about')}</Button>
+                                <Button color="inherit">{t('Sobre')}</Button>
                             </ScrollLink>
                             <ScrollLink to="faq" smooth={true} duration={500} style={styles.linkButton}>
                                 <Button color="inherit">{t('faq')}</Button>
                             </ScrollLink>
-                            <Button onClick={handleChangeLanguage} color="inherit">
+                            {/* <Button onClick={handleChangeLanguage} color="inherit">
                                 {currentLanguage === 'en' ? 'Português' : 'English'}
-                            </Button>
+                            </Button> */}
                         </Box>
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import StudentHeader from '../../components/StudentHeader';
 import AnnouncementBar from './announcement';
 import { SquareButton, TextButton, CardContentBox, TestButton, homePageBoxStyles } from './styles';
-import VideogameAssetIcon from '@mui/icons-material/VideogameAsset';
+// import VideogameAssetIcon from '@mui/icons-material/VideogameAsset';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import InsightsIcon from '@mui/icons-material/Insights';
 import StudentFooter from '../../components/StudentFooter';
@@ -102,7 +102,7 @@ const StudentDashboard: React.FC = () => {
                 </Grid>
                 <Box sx={{ mt: '20px', textAlign: 'center', marginTop: '50px' }}>
                     <Link to="/teste-vocacional" style={{ textDecoration: 'none' }}>
-                        <Button variant="contained" size="large" sx={TestButton} startIcon={<VideogameAssetIcon />}>
+                        <Button variant="contained" size="large" sx={TestButton}>
                             Fazer Teste Vocacional
                         </Button>
                     </Link>

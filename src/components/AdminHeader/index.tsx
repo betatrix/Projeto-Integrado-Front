@@ -54,7 +54,7 @@ function AdminHeader() {
     };
 
     return (
-        <AppBar position="static" style={{ backgroundColor: '#1b1f27' }}> 
+        <AppBar position="static" style={{ backgroundColor: '#1b1f27' }}>
             <Container maxWidth="xl">
                 <Toolbar sx={{ justifyContent: 'space-between' }}>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>

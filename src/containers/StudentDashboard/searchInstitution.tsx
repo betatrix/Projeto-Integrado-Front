@@ -8,11 +8,11 @@ import {
     Modal,
     Grid,
 } from '@mui/material';
-import InitialPageHeader from '../../components/HomeHeader';
 import Footer from '../../components/AdminFooter';
 import { Endereco } from '../../types/institutionTypes';
 import { buscarEntidades, buscarEntidadePorId, buscarCursosPorInstituicao } from '../../services/apiService';
 import { DetailTypography, GridContainer, ListBox, SearchBox, StyledBox, StyledModal, StyledTypography } from './styles';
+import InstitutionSearchHeader from '../../components/InstitutionSearchHeader';
 
 interface Curso {
     id: number;
@@ -69,7 +69,7 @@ const InstitutionList: React.FC = () => {
 
     return (
         <>
-            <InitialPageHeader />
+            <InstitutionSearchHeader />
             <StyledBox>
                 <StyledTypography>
                     <Typography variant="h5">

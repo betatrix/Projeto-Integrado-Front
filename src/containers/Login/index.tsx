@@ -46,7 +46,7 @@ const Login: React.FC = () => {
             </style>
             <Container>
                 <BackButton startIcon={<ArrowBackIcon />}>
-                    <CustomLink to={'/login'}>Página inicial</CustomLink>
+                    <CustomLink to={'/pagina-inicial'}>Página inicial</CustomLink>
                 </BackButton>
                 <LoginContainer>
                     <Header variant="h4">Acesse o Vocco!</Header>
