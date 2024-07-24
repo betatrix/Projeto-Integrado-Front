@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../../components/AdminHeader';
 import Footer from '../../components/AdminFooter';
-import { Button, Typography, RadioGroup, FormControlLabel, Radio, LinearProgress } from '@mui/material';
-import { CenteredDiv, ButtonGroup, RadioContainer } from './styles';
+import { IconButton, Typography } from '@mui/material';
+import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import { CenteredDiv, ButtonGroup, StyledLinearProgress, Global, StyledButton, IntroText } from './styles';
 import axios from 'axios';
+import AnswerOptions from './answerOptions';
 
 interface Teste {
     id: number;
@@ -69,9 +72,9 @@ const VocacionalTest: React.FC = () => {
         }
     };
 
-    const handleAnswerChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleAnswerChange = (value: number) => {
         const updatedAnswers = [...answers];
-        updatedAnswers[currentQuestion] = parseInt(event.target.value, 10);
+        updatedAnswers[currentQuestion] = value;
         setAnswers(updatedAnswers);
     };
 
@@ -103,52 +106,47 @@ const VocacionalTest: React.FC = () => {
 
     return (
         <>
+            <Global />
             <Header />
             <CenteredDiv>
-                <LinearProgress style={{ width: '70%', marginBottom: '70px' }} variant="determinate" value={progress} />
+                {/* Adicione a introdução acima da barra de progresso */}
+                <IntroText variant="body1" align="center" paragraph>
+                Responda às afirmações abaixo com o quanto você se identifica com cada uma delas
+                </IntroText>
+                <StyledLinearProgress variant="determinate" value={progress} />
                 <Typography variant="h5" gutterBottom>
                     {questions[currentQuestion]?.texto}
                 </Typography>
-                <RadioGroup row value={answers[currentQuestion]} onChange={handleAnswerChange}>
-                    {[1, 2, 3, 4, 5].map((value) => (
-                        <RadioContainer key={value}>
-                            <FormControlLabel
-                                value={value}
-                                control={<Radio />}
-                                label=""
-                                disabled={!questions[currentQuestion]?.ativo}
-                            />
-                            <Typography variant="caption">{value}</Typography>
-                        </RadioContainer>
-                    ))}
-                </RadioGroup>
+                <AnswerOptions
+                    value={answers[currentQuestion]}
+                    onChange={handleAnswerChange}
+                    disabled={!questions[currentQuestion]?.ativo}
+                />
                 <ButtonGroup>
-                    <Button
-                        variant="contained"
-                        color="primary"
+                    <IconButton
                         onClick={handlePrev}
                         disabled={currentQuestion === 0}
+                        style={{ fontSize: '3rem' }}
                     >
-                        Anterior
-                    </Button>
-                    <Button
-                        variant="contained"
-                        color="primary"
+                        <NavigateBeforeIcon fontSize="inherit" />
+                    </IconButton>
+                    <IconButton
                         onClick={handleNext}
                         disabled={currentQuestion === questions.length - 1 || !isAnswerSelected}
+                        style={{ fontSize: '3rem' }}
                     >
-                        Próximo
-                    </Button>
+                        <NavigateNextIcon fontSize="inherit" />
+                    </IconButton>
                 </ButtonGroup>
                 {currentQuestion === questions.length - 1 && allQuestionsAnswered && (
-                    <Button
+                    <StyledButton
                         variant="contained"
                         color="secondary"
                         onClick={handleSubmit}
-                        style={{ marginTop: '20px' }}
+                        style={{ marginTop: '30px' }}
                     >
                         Enviar
-                    </Button>
+                    </StyledButton>
                 )}
             </CenteredDiv>
             <Footer />
