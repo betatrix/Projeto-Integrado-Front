@@ -21,20 +21,12 @@ import ResultadoTeste from '../containers/ResultTest';
 import { AuthProvider } from '../contexts/auth';
 import PrivateRoute from '../components/routes/privateRoutes';
 
-export const AppRoutes = () =>{
-    return(
+export const AppRoutes = () => {
+    return (
         <AuthProvider>
             <BrowserRouter>
                 <InstitutionProvider>
                     <Routes>
-                        {/* Private Routes - Admin*/}
-                        <Route path="/cadastro" element={<PrivateRoute><CadastroInstituicao/></PrivateRoute>}/>
-                        <Route path="/cursos" element={<PrivateRoute><BuscaCurso/></PrivateRoute>}/>
-                        <Route path='/politicas' element={<BuscaPoliticas />} />
-                        <Route path="/gerenciamento-instituicao" element={<PrivateRoute><InstitutionManagement/></PrivateRoute>}/>
-                        <Route path='/gerenciamento-curso' element={<CourseList/>}/>
-                        <Route path='/instituicao' element={<InstitutionList/>}/>
-                        <Route path="/pagina-inicial" element={<PrivateRoute><Dashboard/></PrivateRoute>}/>
                         {/* Public routes */}
                         <Route path="/login" element={<Login/>}/>
                         <Route path="/register" element={<Register/>}/>
@@ -49,6 +41,18 @@ export const AppRoutes = () =>{
                         <Route path='/admin' element={<Dashboard />} />
                         <Route path='/teste-vocacional' element={<VocacionalTest/>}/>
                         <Route path='/pagina-inicial' element={<HomePage />} />
+
+                        {/* Private Routes - Admin */}
+                        <Route element={<PrivateRoute requiredRole="ADMINISTRADOR" />}>
+                            <Route path="/cadastro" element={<CadastroInstituicao />} />
+                            <Route path="/cursos" element={<BuscaCurso />} />
+                            <Route path='/politicas' element={<BuscaPoliticas />} />
+                            <Route path='/gerenciamento-curso' element={<CourseList/>}/>
+                            <Route path='/instituicao' element={<InstitutionList/>}/>
+                            <Route path="/gerenciamento-instituicao" element={<InstitutionManagement />} />
+                            <Route path="/pagina-inicial" element={<Dashboard />} />
+                        </Route>
+
                         <Route path='*' element={<Navigate to='/pagina-inicial' replace />} />
                         {/* <Route path="*" element={<Navigate to="/login" replace />} /> */}
                     </Routes>
