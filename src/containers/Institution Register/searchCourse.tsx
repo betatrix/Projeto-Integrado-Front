@@ -18,7 +18,6 @@ import {
     StepLabel,
     Grid,
     Modal,
-    Paper,
 } from '@mui/material';
 
 import { useInstitution } from '../../context/institutionContext';
@@ -142,6 +141,7 @@ export const BuscaCurso: React.FC = () => {
             if (selectedEntries.length > 0) {
                 for (const { notaMec, courseId } of selectedEntries) {
                     await notaMecSchema.validate(notaMec);
+                    console.log(courseId);
                 }
                 const responses = await Promise.all(
                     selectedEntries.map(({ notaMec, courseId }) =>

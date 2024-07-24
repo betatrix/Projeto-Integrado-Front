@@ -64,11 +64,11 @@ function StudentHeader() {
         setAnchorElTeste(null);
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const handleStudentPerfil = () => {
-        setAnchorElUser(null);
-        navigate('/perfil');
-    };
+    // // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // const handleStudentPerfil = () => {
+    //     setAnchorElUser(null);
+    //     navigate('/perfil');
+    // };
 
     const handleStudentTeste = () => {
         setAnchorElUser(null);

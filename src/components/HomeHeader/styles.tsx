@@ -1,4 +1,4 @@
-import { Typography, Menu } from '@mui/material';
+import { Typography, Menu} from '@mui/material';
 import styled from 'styled-components';
 
 export const HeaderStyle = styled.div`

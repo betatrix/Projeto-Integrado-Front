@@ -62,11 +62,6 @@ function InitialPageHeader() {
         navigate('/estudante');
     };
 
-    // const handleChangeLanguage = () => {
-    //     const newLanguage = currentLanguage === 'en' ? 'pt' : 'en';
-    //     i18n.changeLanguage(newLanguage);
-    //     setCurrentLanguage(newLanguage);
-    // };
     const{
         t,
         i18n: {
@@ -76,7 +71,6 @@ function InitialPageHeader() {
 
     const[currentLanguage, setCurrentLanguage] = useState(language);
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const handleChangeLanguage = () => {
         const newLanguage = currentLanguage === 'en' ? 'pt' : 'en';
         changeLanguage(newLanguage);
@@ -109,14 +103,14 @@ function InitialPageHeader() {
                             <ScrollLink to="faq" smooth={true} duration={500} style={styles.linkButton}>
                                 <Button color="inherit">{t('faq')}</Button>
                             </ScrollLink>
-                            {/* <Button onClick={handleChangeLanguage} color="inherit">
+                            <Button onClick={handleChangeLanguage} color="inherit" sx={{display:'none'}}>
                                 {currentLanguage === 'en' ? 'Português' : 'English'}
-                            </Button> */}
+                            </Button>
                         </Box>
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <Tooltip title="Login">
-                            <Button type="button" variant="outlined" onClick={handleOpenUserMenu} sx={styles.LoginText}>
+                            <Button type="button" variant="outlined" onClick={handleOpenUserMenu} sx={styles.LoginText} >
                                 {t('login')}
                             </Button>
                         </Tooltip>

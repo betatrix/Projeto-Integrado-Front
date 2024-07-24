@@ -1,7 +1,6 @@
-import { Box, IconButton, SxProps, TextField } from '@mui/material';
+import { Box, IconButton, SxProps, TextField, Theme } from '@mui/material';
 import styled, { keyframes } from 'styled-components';
 import { Button } from '@mui/material';
-import { Theme } from '@emotion/react';
 import pageFour from '../../assets/img/pageFour.png';
 
 const globalBoxStyles: SxProps<Theme> = (theme) => ({
@@ -78,7 +77,12 @@ export const TestButton: SxProps<Theme> = (theme) => ({
     color: 'white',
     '&:hover': {
         background: 'linear-gradient(90deg, #302EB7, #040410)',
-    }
+    },
+    [theme.breakpoints.down('sm')]: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        backgroundAttachment: 'local',
+    },
 });
 //Style Announcement
 const slide = keyframes`
