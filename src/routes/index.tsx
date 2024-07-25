@@ -41,6 +41,7 @@ export const AppRoutes = () => {
                         <Route path='/admin' element={<Dashboard />} />
                         <Route path='/teste-vocacional' element={<VocacionalTest/>}/>
                         <Route path='/pagina-inicial' element={<HomePage />} />
+                        <Route path='/instituicao' element={<InstitutionList/>}/>
 
                         {/* Private Routes - Admin */}
                         <Route element={<PrivateRoute requiredRole="ADMINISTRADOR" />}>
@@ -48,7 +49,6 @@ export const AppRoutes = () => {
                             <Route path="/cursos" element={<BuscaCurso />} />
                             <Route path='/politicas' element={<BuscaPoliticas />} />
                             <Route path='/gerenciamento-curso' element={<CourseList/>}/>
-                            <Route path='/instituicao' element={<InstitutionList/>}/>
                             <Route path="/gerenciamento-instituicao" element={<InstitutionManagement />} />
                             <Route path="/pagina-inicial" element={<Dashboard />} />
                         </Route>
