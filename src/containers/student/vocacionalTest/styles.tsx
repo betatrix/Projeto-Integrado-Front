@@ -1,5 +1,6 @@
 import styled, { createGlobalStyle } from 'styled-components';
-import { LinearProgress, Button, Typography } from '@mui/material';
+import { LinearProgress, Button, Typography, SxProps, Theme } from '@mui/material';
+import pageOne from '../../../assets/img/pageOne.png';
 
 export const Global = createGlobalStyle`
   body {
@@ -15,6 +16,13 @@ export const CenteredDiv = styled.div`
     align-items: center;
     justify-content: center;
     height: 70vh;
+    width: 90%; 
+    max-width: 950px;
+    background-color: white;
+    border-radius: 10px; 
+    padding: 30px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    margin: auto;
 `;
 
 export const ButtonGroup = styled.div`
@@ -46,7 +54,7 @@ export const StyledLinearProgress = styled(LinearProgress)`
     
     & .MuiLinearProgress-barColorPrimary {
         background: linear-gradient(90deg, #312ef4 0%, #0f1c5c 100%); /* Cor da barra de progresso */
-        height: 20px; /* Ajuste a altura conforme necessário */
+        height: 20px;
     }
     
     &.MuiLinearProgress-colorPrimary {
@@ -78,3 +86,25 @@ export const StyledButton = styled(Button)`
     color: #a0a0a0;
   }
 `;
+
+// Background -------------------------------------------------------
+const globalBoxStyles: SxProps<Theme> = (theme) => ({
+    minHeight: '90vh',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundColor: '#caddff',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    [theme.breakpoints.down('sm')]: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        backgroundAttachment: 'local',
+    },
+});
+
+// eslint-disable-next-line react-refresh/only-export-components
+export const homePageBoxStyles: SxProps<Theme> = (theme) => ({
+    backgroundImage: `url(${pageOne})`,
+    ...globalBoxStyles(theme),
+});
