@@ -1,13 +1,27 @@
 import styled, { createGlobalStyle } from 'styled-components';
 import { LinearProgress, Button, Typography, SxProps, Theme } from '@mui/material';
-import pageOne from '../../../assets/img/pageOne.png';
+import vocacionalTestImg from '../../../assets/img/vocacionaTest.png';
 
 export const Global = createGlobalStyle`
+  @import url('https://fonts.googleapis.com/css2?family=Exo:wght@400;600&display=swap');
+
   body {
     color: rgba(16,24,64,1);
-    font-family: 'Roboto', sans-serif;
-    font-weight: bold;
+    font-weight: 400;
+    font-style: normal;
   }
+`;
+
+export const IntroText = styled(Typography)`
+  font-size: 0.8rem;
+  color: rgba(0, 0, 0, 0.6); 
+  margin-bottom: 20px;
+  text-align: center;
+  font-family: 'Exo', sans-serif;
+`;
+
+export const StyledTypography = styled(Typography)`
+  font-family: 'Exo', sans-serif;
 `;
 
 export const CenteredDiv = styled.div`
@@ -17,7 +31,7 @@ export const CenteredDiv = styled.div`
     justify-content: center;
     height: 70vh;
     width: 90%; 
-    max-width: 950px;
+    max-width: 800px;
     background-color: white;
     border-radius: 10px; 
     padding: 30px; 
@@ -39,13 +53,6 @@ export const RadioContainer = styled.div`
     margin: 0 10px;
     margin-top: 30px;
     margin-bottom: 15px;
-`;
-
-export const IntroText = styled(Typography)`
-  font-size: 0.8rem;
-  color: rgba(0, 0, 0, 0.6); 
-  margin-bottom: 20px;
-  text-align: center;
 `;
 
 export const StyledLinearProgress = styled(LinearProgress)`
@@ -87,6 +94,36 @@ export const StyledButton = styled(Button)`
   }
 `;
 
+export const CustomButton = styled(Button)`
+  &.MuiButton-root {
+    background: linear-gradient(90deg, rgba(53,51,205,1) 0%, rgba(16,24,64,1) 100%);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin-top: 5px;
+    margin-bottom: 2px;
+    border-radius: 10px;
+    height: 55px;
+
+    &:hover {
+        background: linear-gradient(269deg,#3533cd,#101840,#3533cd);
+        background-size: 180% 180%;
+        animation: gradient-animation 10s ease infinite;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      
+      @keyframes gradient-animation {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+    }
+  }
+`;
+
 // Background -------------------------------------------------------
 const globalBoxStyles: SxProps<Theme> = (theme) => ({
     minHeight: '90vh',
@@ -105,6 +142,6 @@ const globalBoxStyles: SxProps<Theme> = (theme) => ({
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const homePageBoxStyles: SxProps<Theme> = (theme) => ({
-    backgroundImage: `url(${pageOne})`,
+    backgroundImage: `url(${vocacionalTestImg})`,
     ...globalBoxStyles(theme),
 });

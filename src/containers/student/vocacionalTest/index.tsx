@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import Header from '../../../components/adminHeader';
-import Footer from '../../../components/adminFooter';
-import { IconButton, Typography, Box } from '@mui/material';
+import Header from '../../../components/studentHeader';
+import Footer from '../../../components/studentFooter';
+import { IconButton, Box } from '@mui/material';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import { CenteredDiv, ButtonGroup, StyledLinearProgress, Global, StyledButton, IntroText, homePageBoxStyles } from './styles';
+import { CenteredDiv, ButtonGroup, StyledLinearProgress, Global, IntroText, homePageBoxStyles, StyledTypography, CustomButton } from './styles';
 import axios from 'axios';
 import AnswerOptions from './answerOptions';
 
@@ -114,9 +114,9 @@ const VocacionalTest: React.FC = () => {
                     Responda às afirmações abaixo com o quanto você se identifica com cada uma delas
                     </IntroText>
                     <StyledLinearProgress variant="determinate" value={progress} />
-                    <Typography variant="h5" gutterBottom>
+                    <StyledTypography variant="h5" gutterBottom>
                         {questions[currentQuestion]?.texto}
-                    </Typography>
+                    </StyledTypography>
                     <AnswerOptions
                         value={answers[currentQuestion]}
                         onChange={handleAnswerChange}
@@ -139,14 +139,14 @@ const VocacionalTest: React.FC = () => {
                         </IconButton>
                     </ButtonGroup>
                     {currentQuestion === questions.length - 1 && allQuestionsAnswered && (
-                        <StyledButton
+                        <CustomButton
                             variant="contained"
                             color="secondary"
                             onClick={handleSubmit}
                             style={{ marginTop: '30px' }}
                         >
                             Enviar
-                        </StyledButton>
+                        </CustomButton>
                     )}
                 </CenteredDiv>
             </Box>
