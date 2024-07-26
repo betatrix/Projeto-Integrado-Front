@@ -23,7 +23,9 @@ export const HomePage: React.FC = () => {
                         VOCCO
                     </Typography>
                     <Typography variant="h6" sx={typographySubtitleStyles}>
-                        ENCONTRE UNIVERSIDADES E FAÇA TESTES VOCACIONAIS <br /> PARA DECIDIR SEU FUTURO PROFISSIONAL.
+                        ENCONTRE O CURSO E A FACULDADE PERFEITOS PARA VOCÊ! <br />
+                        TENHA ACESSO AO NOSSO TESTE VOCACIONAL EXCLUSIVO E INFORMAÇÕES SOBRE <br />
+                        UNIVERSIDADES BRASILEIRAS CLICANDO NO BOTÃO ABAIXO:
                     </Typography>
                     <Link to="/register" style={{ textDecoration: 'none' }}>
                         <Button variant="contained" size="large" sx={buttonStyles}>

@@ -59,7 +59,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const storedUser = localStorage.getItem('user');
     const storedStudent = localStorage.getItem('student');
     const storedRole = localStorage.getItem('role');
-    
+
     if (token && storedUser) {
       try {
         const user = JSON.parse(storedUser);
