@@ -12,6 +12,7 @@ export const Logo = styled(Typography)`
     letter-spacing: '.3rem';
     color: 'inherit';
     text-decoration: 'none';
+    font-family: 'Poppins', sans-serif;
 `;
 
 export const MenuStyle = styled(Menu)` 
@@ -21,4 +22,5 @@ export const MenuStyle = styled(Menu)`
 export const WelcomeText = styled(Typography)` 
     margin-right: 2;
     color: 'white';
+    font-family: 'Poppins', sans-serif;
 `;
