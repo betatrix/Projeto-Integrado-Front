@@ -24,8 +24,8 @@ import {
 import { login } from '../../../services/studentService';
 import { StudentLoginForm } from '../../../types/studentTypes';
 import { Formik } from 'formik';
-// import { encryptData } from '../../../services/encryptionService';
 import { AuthContext } from '../../../contexts/auth';
+import { encryptData } from '../../../services/encryptionService';
 
 const initialValues: StudentLoginForm = {
     login: '',
@@ -53,7 +53,12 @@ const Login: React.FC = () => {
 
             if (response.status === 200) {
                 console.log('Sucesso ao realizar o login.');
-                authContext?.login(response.data.token, response.data.usuario, response.data.estudante, response.data.usuario.role);
+                authContext?.login(
+                    encryptData(response.data.token), 
+                    encryptData(JSON.stringify(response.data.usuario)), 
+                    encryptData(JSON.stringify(response.data.estudante)), 
+                    encryptData(response.data.usuario.role)
+                );
                 
                 // const data = response.data;
                 // localStorage.setItem('token', encryptData(data.token));

@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../contexts/auth';
+import { decryptData } from '../../services/encryptionService';
 
 const settings = ['Account', 'Dashboard', 'Logout'];
 
@@ -51,7 +52,9 @@ function AdminHeader() {
         return null;
     }
 
-    const { student, logout } = authContext;
+    const { logout } = authContext;
+    const studentData = authContext.student ? decryptData(authContext.student) : null;
+    const student = studentData ? JSON.parse(studentData) : null;
 
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElUser(event.currentTarget);
