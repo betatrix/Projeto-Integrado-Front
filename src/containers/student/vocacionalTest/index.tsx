@@ -1,5 +1,6 @@
 /* eslint-disable max-len */
 import React, { useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom'; // Importar useNavigate
 import Header from '../../../components/studentHeader';
 import Footer from '../../../components/studentFooter';
 import { IconButton, Box, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
@@ -29,13 +30,14 @@ interface Usuario {
 
 const VocacionalTest: React.FC = () => {
     const apiUrl = import.meta.env.VITE_API_URL;
+    const navigate = useNavigate();
 
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [answers, setAnswers] = useState<number[]>(new Array(30).fill(0));
     const [questions, setQuestions] = useState<Pergunta[]>([]);
     const [usuario, setUsuario] = useState<Usuario | null>(null);
     const [teste, setTeste] = useState<Teste | null>(null);
-    const [showModal, setShowModal] = useState(true); // Estado para o modal
+    const [showModal, setShowModal] = useState(true);
 
     useEffect(() => {
         const fetchQuestions = async () => {
@@ -107,6 +109,9 @@ const VocacionalTest: React.FC = () => {
         try {
             const response = await axios.post(`${apiUrl}/resposta`, payload);
             console.log('Respostas enviadas com sucesso:', response.data);
+
+            // Redirecionar para a tela de resultados com o resultado do teste
+            navigate('/resultado', { state: { resultado: response.data } });
         } catch (error) {
             console.error('Erro ao enviar as respostas:', error);
         }
