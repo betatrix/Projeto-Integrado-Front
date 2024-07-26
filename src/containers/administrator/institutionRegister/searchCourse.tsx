@@ -20,7 +20,7 @@ import {
     Modal,
 } from '@mui/material';
 
-import { useInstitution } from '../../../context/institutionContext';
+import { useInstitution } from '../../../contexts/institutionContext';
 import { buscarCursos } from '../../../services/courseService';
 import { cadastrarCursoInstituicao } from '../../../services/courseInstitutionService';
 import Step from '@mui/material/Step';

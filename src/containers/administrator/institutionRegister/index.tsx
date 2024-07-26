@@ -6,7 +6,7 @@ import { Button, Box, Typography, Grid, Paper, Stepper, StepLabel } from '@mui/m
 import Step from '@mui/material/Step';
 import axios from 'axios';
 import * as Yup from 'yup';
-import { useInstitution } from '../../../context/institutionContext';
+import { useInstitution } from '../../../contexts/institutionContext';
 import { useNavigate } from 'react-router-dom';
 import { cadastrarInstituicao } from '../../../services/institutionService';
 import AdminHeader from '../../../components/adminHeader';

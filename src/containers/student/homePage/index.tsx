@@ -1,3 +1,4 @@
+import React from 'react';
 import { Grid, Box, Typography, Button, Divider } from '@mui/material';
 import { Link } from 'react-router-dom';
 import InitialPageHeader from '../../../components/homeHeader';
@@ -12,22 +13,25 @@ import {
 } from './styles';
 import TestInformation from './testInf';
 import InitialPageFooter from '../../../components/homeFooter';
+import { useTranslation } from 'react-i18next';
 
 export const HomePage: React.FC = () => {
+    const { t } = useTranslation();
+
     return (
         <>
             <InitialPageHeader />
             <Box sx={homePageBoxStyles} id="home">
-                <Grid spacing={4} alignItems="colum" justifyContent="flex-start" sx={gridIndexContainerStyles}>
+                <Grid alignItems="column" justifyContent="flex-start" sx={gridIndexContainerStyles}>
                     <Typography variant="h1" sx={typographyTitleStyles}>
                         VOCCO
                     </Typography>
                     <Typography variant="h6" sx={typographySubtitleStyles}>
-                        ENCONTRE UNIVERSIDADES E FAÇA TESTES VOCACIONAIS <br /> PARA DECIDIR SEU FUTURO PROFISSIONAL.
+                        {t('welcomeText1')} <br /> {t('welcomeText2')}
                     </Typography>
                     <Link to="/register" style={{ textDecoration: 'none' }}>
                         <Button variant="contained" size="large" sx={buttonStyles}>
-                            Cadastre-se
+                            {t('registerButton')}
                         </Button>
                     </Link>
                 </Grid>

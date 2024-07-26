@@ -1,0 +1,35 @@
+{
+  "translation": {
+    "welcome": "Welcome to React and react-i18next",
+    "login": "Login",
+    "home": "Home",
+    "about": "About",
+    "faq": "FAQ",
+    "testInformation": "Test Information",
+
+    "welcomeText1": "",
+    "welcomeText2": "",
+    "registerButton": "Register",
+
+    "informationTitle": "",
+    "informationTitleImages": "",
+    "informationText": "",
+
+    "aboutTitle1": "",
+    "aboutText1": "",
+    "aboutTitle2": "",
+    "aboutText2": "",
+
+    "faqTitle": "",
+    "faqTitleText1": "",
+    "faqText1":"",
+    "faqTitleText2": "",
+    "faqText2":"",
+    "faqTitleText3": "",
+    "faqText3":"",
+    "faqTitleText4": "",
+    "faqText4":"",
+    "faqTitleText5": "",
+    "faqText5":""
+  }
+}

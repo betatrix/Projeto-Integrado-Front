@@ -16,7 +16,7 @@ import SucessPassword from '../containers/auth/sucessPassword';
 import NovaSenha from '../containers/auth/newPassword';
 import RecuperarSenha from '../containers/auth/recoverPassword';
 import { BuscaPoliticas } from '../containers/administrator/institutionRegister/searchPolicies';
-import { InstitutionProvider } from '../context/institutionContext';
+import { InstitutionProvider } from '../contexts/institutionContext';
 import ResultadoTeste from '../containers/student/resultTest';
 import { AuthProvider } from '../contexts/auth';
 import PrivateRoute from '../components/routes/privateRoutes';
@@ -44,7 +44,7 @@ export const AppRoutes = () => {
                         <Route path='/instituicao' element={<InstitutionList/>}/>
 
                         {/* Private Routes - Admin */}
-                        <Route element={<PrivateRoute requiredRole="ADMINISTRADOR" />}>
+                        <Route element={<PrivateRoute requiredRole="ESTUDANTE" />}>
                             <Route path="/cadastro" element={<CadastroInstituicao />} />
                             <Route path="/cursos" element={<BuscaCurso />} />
                             <Route path='/politicas' element={<BuscaPoliticas />} />

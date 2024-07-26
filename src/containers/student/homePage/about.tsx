@@ -12,8 +12,11 @@ import {
     gridAboutContainerStyles,
 } from './styles';
 import backgroundIcone from '../../../assets/img/backgroundIcone.png';
+import { useTranslation } from 'react-i18next';
 
 export const About: React.FC = () => {
+    const{ t } = useTranslation();
+
     return (
         <>
             <Box sx={aboutBoxStyles}>
@@ -23,18 +26,17 @@ export const About: React.FC = () => {
                     </Grid>
                     <Grid item xs={12} md={6} sx={gridItemTextStyles}>
                         <Typography variant="h3" sx={typographyAboutTitleStyles}>
-                            Sobre nós
+                            {t('aboutTitle1')}
                         </Typography>
                         <Box sx={dividerBoxStyles} />
                         <Typography variant="body1" sx={typographyBodyStyles}>
-                            Nós somos a <b>VOCCO</b>, uma plataforma destinada a orientar alunos do ensino médio da rede pública de educação no Brasil,
-                             auxiliando-os na escolha de suas futuras carreiras profissionais.
+                            {t('aboutText1')}            
                         </Typography>
                         <Typography variant="h4" sx={{marginLeft:'40px'}}>
-                            Nome Vocco
+                            {t('aboutTitle2')}
                         </Typography>
                         <Typography variant="body1" sx={typographySmallBodyStyles}>
-                            Nosso nome deriva da palavra <b>vocação</b> em Latim.
+                            {t('aboutText2')}
                         </Typography>
                     </Grid>
                 </Grid>

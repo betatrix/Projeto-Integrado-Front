@@ -15,7 +15,7 @@ import {
     Grid,
     Modal
 } from '@mui/material';
-import { useInstitution } from '../../../context/institutionContext';
+import { useInstitution } from '../../../contexts/institutionContext';
 import { buscarPoliticas } from '../../../services/policiesService';
 import { PolicesInstitutionForm } from '../../../types/policiesTypes';
 import { useNavigate } from 'react-router-dom';

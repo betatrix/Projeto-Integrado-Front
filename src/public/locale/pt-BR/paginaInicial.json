@@ -1,0 +1,49 @@
+{
+    "translation": {
+      "welcome": "Bem-vindo ao React e react-i18next",
+      "login": "Entrar",
+      "home": "Início",
+      "about": "Sobre",
+      "faq": "FAQ",
+      "testInformation": "O Teste",
+
+      "welcomeText1": "Encontre o curso e a faculdade perfeitos para você!",
+      "welcomeText2": "Tenha acesso ao nosso teste vocacional exclusivo e informações sobre universidades brasileiras.",
+      "registerButton": "Cadastre-se",
+
+      "informationTitle": "Teoria de John Holland",
+      "informationTitleImages": "Os Seis Tipos Vocacionais",
+      "informationText": "Nosso teste vocacional é fundamentado nos estudos do psicólogo John L. Holland, que desenvolveu a Teoria dos Tipos Vocacionais. Esta teoria identifica seis tipos principais de personalidade e ambientes de trabalho, conhecidos pela sigla RIASEC. Ao responder nosso teste, suas características pessoais são comparadas com os tipos RIASEC para identificar carreiras e áreas de estudo que correspondem ao seu perfil, aumentando as chances de satisfação e sucesso profissional.",
+    
+      "aboutTitle1": "Sobre nós",
+      "aboutText1": " Nós somos a VOCCO, uma plataforma destinada a orientar alunos do ensino médio da rede pública de educação no Brasil, auxiliando-os na escolha de suas futuras carreiras profissionais.",
+      "aboutTitle2": "Nome Vocco",
+      "aboutText2": "Nosso nome deriva da palavra vocação em Latim.",
+
+      "faqTitle": "FAQ - Perguntas Frequentes",
+      "faqTitleText1": "O que é um teste vocacional?",
+      "faqText1":"Um teste vocacional é uma ferramenta que ajuda a identificar suas aptidões, interesses e habilidades, sugerindo possíveis carreiras e áreas de estudo que se alinham com seu perfil.",
+      "faqTitleText2": "Como funciona o teste vocacional?",
+      "faqText2":"'O teste consiste em uma série de perguntas sobre seus interesses, habilidades e preferências. Com base nas suas respostas, ele gera um relatório com sugestões de carreiras e cursos adequados para você.",
+      "faqTitleText3": "Como posso entrar em contato com uma universidade específica?",
+      "faqText3":"Cada página de universidade inclui detalhes de contato, como endereço, telefone e e-mail. Você também pode encontrar links para os sites oficiais das universidades.",
+      "faqTitleText4": "Como criar uma conta no site?",
+      "faqText4":"Clique no botão 'Cadastre-se' no centro da primeira página e preencha o formulário com suas informações pessoais.",
+      "faqTitleText5": "Como posso salvar minhas pesquisas e resultados de testes?",
+      "faqText5":"Após criar uma conta, fazer login e realizar um teste você terá salvo em sua página os resultados do testes, acessível a qualquer momento.",
+
+      "profileTitle1":"Realista (R)",
+      "profileText1":"Práticos e com habilidades manuais. Áreas: Mecânica, construção, engenharia.",
+      "profileTitle2":"Investigativo (I)",
+      "profileText2":"Analíticos, curiosos e intelectuais. Áreas: Ciências, pesquisa, tecnologia.",
+      "profileTitle3":"Artístico (A)",
+      "profileText3":"Criativos e expressivos. Áreas: Artes, música, design.",
+      "profileTitle4":"Social (S)",
+      "profileText4":"Comunicativos e cooperativos. Áreas: Educação, saúde, serviços sociais.",
+      "profileTitle5":"Empreendedor (E)",
+      "profileText5":"Energéticos e líderes. Áreas: Negócios, gestão, vendas.",
+      "profileTitle6":"Convencional (C)",
+      "profileText6":"Organizados e detalhistas. Áreas: Contabilidade, administração, finanças."
+
+    }
+  }
