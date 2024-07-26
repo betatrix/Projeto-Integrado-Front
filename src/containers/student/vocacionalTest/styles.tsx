@@ -6,7 +6,7 @@ export const Global = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css2?family=Exo:wght@400;600&display=swap');
 
   body {
-    color: rgba(16,24,64,1);
+    color: #030140;
     font-weight: 400;
     font-style: normal;
   }
@@ -20,8 +20,18 @@ export const IntroText = styled(Typography)`
   font-family: 'Exo', sans-serif;
 `;
 
+export const ModalText = styled(Typography)`
+  font-size: 10rem;
+  color: rgba(0, 0, 0, 0.6); 
+  margin-bottom: 20px;
+  text-align: center;
+  font-family: 'Exo', sans-serif;
+  text-align: justify;
+`;
+
 export const StyledTypography = styled(Typography)`
   font-family: 'Exo', sans-serif;
+  text-align: center;
 `;
 
 export const CenteredDiv = styled.div`
@@ -34,9 +44,10 @@ export const CenteredDiv = styled.div`
     max-width: 800px;
     background-color: white;
     border-radius: 10px; 
-    padding: 30px; 
+    padding: 20px; 
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
     margin: auto;
+    max-height: 450px;
 `;
 
 export const ButtonGroup = styled.div`
@@ -102,6 +113,7 @@ export const CustomButton = styled(Button)`
     margin-bottom: 2px;
     border-radius: 10px;
     height: 55px;
+    color: #fff;
 
     &:hover {
         background: linear-gradient(269deg,#3533cd,#101840,#3533cd);

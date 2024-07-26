@@ -1,10 +1,11 @@
+/* eslint-disable max-len */
 import React, { useState, useEffect } from 'react';
 import Header from '../../../components/studentHeader';
 import Footer from '../../../components/studentFooter';
-import { IconButton, Box } from '@mui/material';
+import { IconButton, Box, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import { CenteredDiv, ButtonGroup, StyledLinearProgress, Global, IntroText, homePageBoxStyles, StyledTypography, CustomButton } from './styles';
+import { CenteredDiv, ButtonGroup, StyledLinearProgress, Global, IntroText, homePageBoxStyles, StyledTypography, CustomButton, ModalText } from './styles';
 import axios from 'axios';
 import AnswerOptions from './answerOptions';
 
@@ -31,6 +32,7 @@ const VocacionalTest: React.FC = () => {
     const [questions, setQuestions] = useState<Pergunta[]>([]);
     const [usuario, setUsuario] = useState<Usuario | null>(null);
     const [teste, setTeste] = useState<Teste | null>(null);
+    const [showModal, setShowModal] = useState(true); // Estado para o modal
 
     useEffect(() => {
         const fetchQuestions = async () => {
@@ -98,10 +100,12 @@ const VocacionalTest: React.FC = () => {
         }
     };
 
+    const handleStartTest = () => {
+        setShowModal(false);
+    };
+
     const allQuestionsAnswered = answers.every((answer) => answer !== 0);
-
     const isAnswerSelected = answers[currentQuestion] !== 0;
-
     const progress = ((currentQuestion + 1) / questions.length) * 100;
 
     return (
@@ -111,10 +115,10 @@ const VocacionalTest: React.FC = () => {
             <Box sx={homePageBoxStyles}>
                 <CenteredDiv>
                     <IntroText variant="body1" align="center" paragraph>
-                    Responda às afirmações abaixo com o quanto você se identifica com cada uma delas
+                        Responda às afirmações abaixo com o quanto você se identifica com cada uma delas
                     </IntroText>
                     <StyledLinearProgress variant="determinate" value={progress} />
-                    <StyledTypography variant="h5" gutterBottom>
+                    <StyledTypography variant="h6" gutterBottom>
                         {questions[currentQuestion]?.texto}
                     </StyledTypography>
                     <AnswerOptions
@@ -130,6 +134,9 @@ const VocacionalTest: React.FC = () => {
                         >
                             <NavigateBeforeIcon fontSize="inherit" />
                         </IconButton>
+                        <IntroText variant="body1">
+                            {currentQuestion + 1} - {questions.length}
+                        </IntroText>
                         <IconButton
                             onClick={handleNext}
                             disabled={currentQuestion === questions.length - 1 || !isAnswerSelected}
@@ -151,6 +158,44 @@ const VocacionalTest: React.FC = () => {
                 </CenteredDiv>
             </Box>
             <Footer />
+
+            {/* Modal de Instruções */}
+            <Dialog
+                open={showModal}
+                onClose={() => setShowModal(false)}
+                PaperProps={{
+                    style: {
+                        width: '90%',
+                        maxWidth: '800px',
+                        margin: 'auto',
+                        borderRadius: '10px',
+                        height: '470px',
+                        padding: '20px'
+                    },
+                }}
+            >
+                <DialogTitle style={{textAlign: 'center', fontSize: '22px', marginBottom: '15px'}}>Antes de começar ...</DialogTitle>
+
+                <DialogContent>
+                    <ModalText variant="body1" style={{fontSize: '16px'}}>
+                    Nosso teste vocacional é inpirado na teoria do psicólogo John L. Holland, conhecida como RIASEC - Realista, Investigativo, Artístico, Social, Empreendedor e Convencional.
+                    </ModalText>
+                    <br></br>
+                    <ModalText>
+                    Essa teoria divide as pessoas em seis tipos diferentes de personalidade e ambientes de trabalho. Ao responder ao teste, suas características são comparadas com esses seis tipos para sugerir carreiras e áreas de estudo que combinam com o seu perfil.
+                    </ModalText>
+                    <br></br>
+                    <ModalText>
+                    Além disso, usamos essas informações para ajudar você a encontrar cursos e universidades que se encaixam no seu perfil, aumentando suas chances de se sentir realizado e ter sucesso na sua trajetória profissional.
+                    </ModalText>
+                </DialogContent>
+
+                <DialogActions>
+                    <CustomButton onClick={handleStartTest} color="primary" style={{justifyItems: 'center', width: '200px', height: '40px'}}>
+                        Iniciar Teste
+                    </CustomButton>
+                </DialogActions>
+            </Dialog>
         </>
     );
 };
