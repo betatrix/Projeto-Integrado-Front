@@ -1,4 +1,4 @@
-import { Box, Collapse, Divider, List, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
+import { Box, Collapse, List, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
 import { ExpandLess, ExpandMore, StarBorder } from '@mui/icons-material';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 import * as React from 'react';
