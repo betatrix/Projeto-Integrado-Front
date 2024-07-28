@@ -24,7 +24,7 @@ const styles = {
         textDecoration: 'none',
     },
     LoginText: {
-        mr: 2,
+        // mr: 2,
         color: 'white',
     },
     menu: {
@@ -90,7 +90,7 @@ function InitialPageHeader() {
                         >
                             VOCCO
                         </Typography>
-                        <Box sx={{ marginLeft: '800px' }}>
+                        <Box sx={{ marginLeft: '10px' }}>
                             <ScrollLink to="home" smooth={true} duration={500} style={styles.linkButton}>
                                 <Button color="inherit">{t('home')}</Button>
                             </ScrollLink>

@@ -10,45 +10,44 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import {
     BoxCardHollandStyles,
-    BoxTitleAndDividerBoxStyles,
     CardStyle,
+    GridItemCards,
     GridItemText,
     TestInfoContent,
     TestInfoTitle,
-    dividerBoxTestInfStyles,
     testInfBoxStyles,
 } from './styles';
 
 const data = [
     {
         src: Realista,
-        title: 'Realista (R)',
-        description: 'Práticos e com habilidades manuais. Áreas: Mecânica, construção, engenharia.',
+        title: 'Realista',
+        description: 'Práticos e com habilidades manuais.',
     },
     {
         src: Investigativo,
-        title: 'Investigativo (I)',
-        description: 'Analíticos, curiosos e intelectuais. Áreas: Ciências, pesquisa, tecnologia.',
+        title: 'Investigativo',
+        description: 'Analíticos, curiosos e intelectuais.',
     },
     {
         src: Artistico,
-        title: 'Artístico (A)',
-        description: 'Criativos e expressivos. Áreas: Artes, música, design.',
+        title: 'Artístico',
+        description: 'Criativos e expressivos.',
     },
     {
         src: Social,
-        title: 'Social (S)',
-        description: 'Comunicativos e cooperativos. Áreas: Educação, saúde, serviços sociais.',
+        title: 'Social',
+        description: 'Comunicativos e cooperativos.',
     },
     {
         src: Empreendedor,
-        title: 'Empreendedor (E)',
-        description: 'Energéticos e líderes. Áreas: Negócios, gestão, vendas.',
+        title: 'Empreendedor',
+        description: 'Energéticos e líderes.',
     },
     {
         src: Convencional,
-        title: 'Convencional (C)',
-        description: 'Organizados e detalhistas. Áreas: Contabilidade, administração, finanças.',
+        title: 'Convencional',
+        description: 'Organizados e detalhistas.',
     },
 ];
 
@@ -77,11 +76,10 @@ export const TestInformation: React.FC = () => {
         <Box sx={testInfBoxStyles}>
             <Grid container spacing={4} alignItems="center" justifyContent="center">
                 <Grid item xs={12} md={6} sx={GridItemText}>
-                    <Box sx={BoxTitleAndDividerBoxStyles}>
-                        <Typography sx={TestInfoTitle} variant='h3'>Teoria de John Holland</Typography>
-                        <Box sx={dividerBoxTestInfStyles} />
+                    <Box>
+                        <Typography sx={TestInfoTitle}>Teoria de John Holland</Typography>
                     </Box>
-                    <Typography variant="body1" sx={TestInfoContent}>
+                    <Typography sx={TestInfoContent}>
                         Nosso teste vocacional é fundamentado nos estudos do psicólogo John L. Holland, que desenvolveu a Teoria dos
                         Tipos Vocacionais. Esta teoria identifica seis tipos principais de personalidade e ambientes de trabalho,
                         conhecidos pela sigla RIASEC. Ao responder nosso teste, suas características pessoais são comparadas com os
@@ -89,35 +87,35 @@ export const TestInformation: React.FC = () => {
                         chances de satisfação e sucesso profissional.
                     </Typography>
                 </Grid>
-                <Grid item xs={12} md={6}>
-                    <Typography variant="h4" mt={20} sx={{ textAlign: 'center' }}>
-                        Os Seis Tipos Vocacionais
-                    </Typography>
-                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mt: 2 }}>
-                        <Box sx={BoxCardHollandStyles}>
-                            <IconButton onClick={handlePrevClick}>
-                                <ArrowBackIosNewIcon />
-                            </IconButton>
-                            {visibleData.map((item, idx) => (
-                                <Card key={item.title} variant="outlined" sx={{ ...CardStyle, transform: idx === 1 ? 'scale(1.1)' : 'scale(0.8)' }}>
-                                    <CardMedia
-                                        component="img"
-                                        height="auto"
-                                        image={item.src}
-                                        alt={item.title}
-                                    />
-                                    <Box sx={{ whiteSpace: 'normal', padding: '1rem', textAlign: 'center'}}>
-                                        <Typography variant="h6">{item.title}</Typography>
-                                        <Typography variant="body2">{item.description}</Typography>
-                                    </Box>
-                                </Card>
-                            ))}
-                            <IconButton onClick={handleNextClick}>
-                                <ArrowForwardIosIcon />
-                            </IconButton>
-                        </Box>
-
+                <Grid item xs={12} md={6} sx={GridItemCards}>
+                    {/* <Typography mt={20} sx={{ textAlign: 'center', fontFamily: 'Exo 2', fontSize: 'Poppins', marginBottom: '0.5rem' }}>
+                        Tipos Vocacionais
+                    </Typography> */}
+                    {/* <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mt: 2 }}> */}
+                    <Box sx={BoxCardHollandStyles}>
+                        <IconButton onClick={handlePrevClick}>
+                            <ArrowBackIosNewIcon />
+                        </IconButton>
+                        {visibleData.map((item, idx) => (
+                            <Card key={item.title} variant="outlined" sx={{ ...CardStyle, transform: idx === 1 ? 'scale(1.1)' : 'scale(0.8)' }}>
+                                <CardMedia
+                                    component="img"
+                                    height="auto"
+                                    image={item.src}
+                                    alt={item.title}
+                                />
+                                <Box sx={{ whiteSpace: 'nowrap', padding: '1rem', textAlign: 'center' }}>
+                                    <Typography sx={{fontFamily:'Poppins', fontSize:'0.8rem', fontWeight: 'bold', color:'#1b1f27'}}>{item.title}</Typography>
+                                    {/* <Typography>{item.description}</Typography> */}
+                                </Box>
+                            </Card>
+                        ))}
+                        <IconButton onClick={handleNextClick}>
+                            <ArrowForwardIosIcon />
+                        </IconButton>
                     </Box>
+
+                    {/* </Box> */}
                 </Grid>
             </Grid>
         </Box>

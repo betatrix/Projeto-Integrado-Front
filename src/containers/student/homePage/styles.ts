@@ -12,10 +12,21 @@ const globalBoxStyles: SxProps<Theme> = (theme) => ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
+    paddingLeft: '200px',
+    paddingRight: '200px',
     [theme.breakpoints.down('sm')]: {
         flexDirection: 'column',
         alignItems: 'center',
         backgroundAttachment: 'local',
+        paddingLeft: '0px',
+        paddingRight: '0px',
+    },
+    [theme.breakpoints.down('md')]: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        backgroundAttachment: 'local',
+        paddingLeft: '0px',
+        paddingRight: '0px',
     },
 });
 
@@ -37,28 +48,29 @@ export const gridIndexContainerStyles: SxProps<Theme> = (theme) => ({
 });
 
 export const typographyTitleStyles: SxProps<Theme> = (theme) => ({
-    fontFamily: 'Roboto, sans-serif',
+    fontFamily: 'Exo 2',
     fontSize: '2.4rem', // 48px converted to rem and reduced to 80%
     fontWeight: 700,
-    color: 'linear-gradient(90deg, #040410, #302EB7)',
+    color: '#1b1f27',
     [theme.breakpoints.down('sm')]: {
         fontSize: '1.8rem', // 36px converted to rem and reduced to 80%
     },
 });
 
 export const typographySubtitleStyles: SxProps<Theme> = (theme) => ({
-    fontFamily: 'Roboto, sans-serif',
+    fontFamily: 'Poppins',
     fontSize: '1.4rem', // 28px converted to rem and reduced to 80%
-    fontWeight: 600,
+    // fontWeight: 600,
     mb: '1rem', // 20px converted to rem and reduced to 80%
     mt: '0.5rem', // 10px converted to rem and reduced to 80%
-    color: 'linear-gradient(90deg, #040410, #302EB7)',
+    color: '#1b1f27',
     [theme.breakpoints.down('sm')]: {
         fontSize: '1rem', // 20px converted to rem and reduced to 80%
     },
 });
 
 export const buttonStyles: SxProps<Theme> = (theme) => ({
+    fontFamily: 'Poppins',
     background: 'linear-gradient(90deg, #040410, #302EB7)',
     borderRadius: '1rem', // 20px converted to rem
     padding: '0.75rem 2.5rem', // 15px 50px converted to rem and reduced to 80%
@@ -78,14 +90,14 @@ export const buttonStyles: SxProps<Theme> = (theme) => ({
 export const aboutBoxStyles: SxProps<Theme> = (theme) => ({
     ...globalBoxStyles(theme),
     backgroundImage: `url(${pageThree})`,
+    backgroundColor: 'white',
 });
 
 export const gridAboutContainerStyles: SxProps<Theme> = (theme) => ({
-    marginBottom: '7.5rem', // 150px converted to rem and reduced to 80%
+    // marginBottom: '7.5rem', // 150px converted to rem and reduced to 80%
     height: '100%',
     [theme.breakpoints.down('sm')]: {
-        marginRight: '0.25rem', // 5px converted to rem and reduced to 80%
-        marginBottom: '0.75rem', // 15px converted to rem and reduced to 80%
+        alignItems: 'center',
     },
 });
 
@@ -93,19 +105,21 @@ export const gridItemImageStyles: SxProps<Theme> = (theme) => ({
     display: 'flex',
     justifyContent: 'center',
     [theme.breakpoints.down('sm')]: {
-        width: '40%',
-        maxWidth: '10rem', // 200px converted to rem and reduced to 80%
+        width: '100%',
+        maxWidth: '25rem', // 200px converted to rem and reduced to 80%
     },
 });
 
 export const imageStyles: React.CSSProperties = {
-    marginTop: '7.5rem', // 150px converted to rem and reduced to 80%
-    width: '90%',
-    maxWidth: '30rem', // 600px converted to rem and reduced to 80%
+    width: '100%',
+    maxWidth: '25rem', // 600px converted to rem and reduced to 80%
+    borderRadius:'1rem',
+
 };
 
 export const gridItemTextStyles: SxProps<Theme> = (theme) => ({
-    textAlign: 'left',
+    // textAlign: 'left',
+    color: '#1b1f27',
     [theme.breakpoints.down('sm')]: {
         fontSize: '1rem', // 20px converted to rem and reduced to 80%
         textAlign: 'center',
@@ -113,30 +127,21 @@ export const gridItemTextStyles: SxProps<Theme> = (theme) => ({
 });
 
 export const typographyAboutTitleStyles: SxProps<Theme> = (theme) => ({
-    textAlign: 'center',
+    color: '#1b1f27',
+    fontFamily:'Exo 2',
+    fontSize: '2.3rem',
     [theme.breakpoints.down('sm')]: {
-        fontSize: '1.2rem', // 24px converted to rem and reduced to 80%
-    },
-});
-
-export const dividerBoxStyles: SxProps<Theme> = (theme) => ({
-    width: '100%',
-    height: '0.15rem', // 3px converted to rem and reduced to 80%
-    backgroundColor: '#735fe4',
-    margin: '0.05rem', // 1px converted to rem and reduced to 80%
-    [theme.breakpoints.down('sm')]: {
-        width: '100%',
+        fontSize: '2rem', // 24px converted to rem and reduced to 80%
+        textAlign: 'center',
     },
 });
 
 export const typographyBodyStyles: SxProps<Theme> = (theme) => ({
+    fontFamily: 'Poppins',
+    color: '#1b1f27',
     textAlign: 'justify',
-    marginRight: '2rem', // 40px converted to rem and reduced to 80%
-    marginLeft: '2rem', // 40px converted to rem and reduced to 80%
-    marginTop: '1rem', // 20px converted to rem and reduced to 80%
     fontSize: '1.25rem', // 25px converted to rem and reduced to 80%
     lineHeight: '140%',
-    marginBottom: '1.5rem', // 30px converted to rem and reduced to 80%
     [theme.breakpoints.down('sm')]: {
         fontSize: '1.2rem', // 24px converted to rem and reduced to 80%
     },
@@ -144,6 +149,7 @@ export const typographyBodyStyles: SxProps<Theme> = (theme) => ({
 
 export const typographySmallBodyStyles: SxProps<Theme> = (theme) => ({
     marginLeft: '2rem', // 40px converted to rem and reduced to 80%
+    fontFamily: 'Poppins',
     fontSize: '1.25rem', // 25px converted to rem and reduced to 80%
     lineHeight: '140%',
     [theme.breakpoints.down('sm')]: {
@@ -155,37 +161,59 @@ export const typographySmallBodyStyles: SxProps<Theme> = (theme) => ({
 export const faqBoxStyles: SxProps<Theme> = (theme) => ({
     ...globalBoxStyles(theme),
     backgroundImage: `url(${pageFour})`,
+    display: 'flex',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    alignItems: 'center',
+    height: '100vh',
 });
 
-export const gridContainerStyles: SxProps<Theme> = (theme) => ({
-    height: '100%',
+export const gridStyles: SxProps<Theme> = (theme) => ({
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
     alignItems: 'center',
-    textAlign: 'center',
-    marginBottom: '3.5rem', // 70px converted to rem and reduced to 80%
+    // width: '60%',
+    bgcolor: '#99b9ff',
+    borderRadius: '0.5rem',
+    padding: '0.25rem',
+    marginLeft: '1rem',
+    marginRight: '1rem',
     [theme.breakpoints.down('sm')]: {
-        marginLeft: '0.1rem', // 2% of viewport width (not converted)
+        width: '90%',
+        padding: '0px',
+        borderRadius: '0.25rem',
+    },
+    [theme.breakpoints.down('md')]: {
+        padding: '0rem',
+        borderRadius: '0.25rem',
     },
 });
 
 export const innerBoxStyles: SxProps<Theme> = (theme) => ({
-    marginLeft: '25rem', // 500px converted to rem and reduced to 80%
-    marginTop: '3.5rem', // 70px converted to rem and reduced to 80%
-    maxWidth: '50rem', // 1000px converted to rem and reduced to 80%
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: '',
+    textAlign: 'center',
+    flexDirection: 'column',
     width: '100%',
-    bgcolor: '#735fe4',
-    borderRadius: '0.5rem', // 10px converted to rem
-    padding: '0.25rem', // 5px converted to rem
     [theme.breakpoints.down('sm')]: {
-        padding: '0.5rem', // 10px converted to rem and reduced to 80%
-        borderRadius: '0.25rem', // 5px converted to rem
+        width: '100%',
+        padding: '0px',
+        borderRadius: '0.25rem',
+    },
+    [theme.breakpoints.down('md')]: {
+        padding: '0rem',
+        borderRadius: '0.25rem',
     },
 });
 
 export const listStyles: SxProps<Theme> = (theme) => ({
-    maxWidth: '100%',
+    maxWidth: '70rem',
     bgcolor: 'background.paper',
     color: 'black',
     borderRadius: '0.5rem', // 10px converted to rem
+    marginTop: '3rem',
     [theme.breakpoints.down('sm')]: {
         borderRadius: '0.25rem', // 5px converted to rem
     },
@@ -194,35 +222,26 @@ export const listStyles: SxProps<Theme> = (theme) => ({
 export const listItemIconStyles: SxProps<Theme> = (theme) => ({
     color: 'black',
     [theme.breakpoints.down('sm')]: {
-        fontSize: '4rem', // 5rem reduced to 80%
+        fontSize: '0.5rem', // 5rem reduced to 80%
     },
 });
 
 export const listItemTextStyles: SxProps<Theme> = (theme) => ({
     fontSize: '1.6rem', // 32rem reduced to 80% (assuming 32rem was a mistake and should be 32px)
     [theme.breakpoints.down('sm')]: {
-        fontSize: '1rem', // 20rem reduced to 80% (assuming 20rem was a mistake and should be 20px)
+        fontSize: '0.5rem', // 20rem reduced to 80% (assuming 20rem was a mistake and should be 20px)
         borderRadius: '0.25rem', // 5px converted to rem
     },
 });
 
-export const dividerBoxTestFaqStyles: SxProps<Theme> = (theme) => ({
-    width: '50%',
-    height: '0.15rem', // 3px converted to rem and reduced to 80%
-    alignItems: 'center',
-    textAlign: 'center',
-    backgroundColor: '#735fe4',
-    margin: '0.05rem', // 1px converted to rem and reduced to 80%
-    [theme.breakpoints.down('sm')]: {
-        width: '100%',
-    },
-});
-
 export const FaqTitle: SxProps<Theme> = (theme) => ({
-    textAlign: 'left',
-    marginLeft: '7.5rem', // 150px converted to rem and reduced to 80%
+    color: '#1b1f27',
+    textAlign: 'center',
+    fontFamily: 'Exo 2',
+    fontSize: '2.3rem',
     [theme.breakpoints.down('sm')]: {
         textAlign: 'center',
+        fontVariant: 'h6',
     },
 });
 
@@ -238,62 +257,78 @@ export const testInfBoxStyles: SxProps<Theme> = (theme) => ({
 });
 
 export const TestInfoContent: SxProps<Theme> = (theme) => ({
-    marginLeft: '2rem', // 40px converted to rem and reduced to 80%
-    marginRight: '2rem', // 40px converted to rem and reduced to 80%
+    fontFamily: 'Poppins',
+    color: '#1b1f27',
     textAlign: 'justify',
-    fontSize: '1.25rem', // 25px converted to rem and reduced to 80%
+    fontSize: '1.2rem', // 25px converted to rem and reduced to 80%
     lineHeight: '140%',
     [theme.breakpoints.down('sm')]: {
         textAlign: 'center',
     },
 });
 
-export const dividerBoxTestInfStyles: SxProps<Theme> = (theme) => ({
-    width: '100%',
-    alignItems: 'flex-start',
-    height: '0.15rem', // 3px converted to rem and reduced to 80%
-    backgroundColor: '#735fe4',
-    margin: '0.05rem', // 1px converted to rem and reduced to 80%
-    [theme.breakpoints.down('sm')]: {
-        width: '100%',
-    },
-});
-
 export const TestInfoTitle: SxProps<Theme> = (theme) => ({
-    textAlign: 'center',
+    color: '#1b1f27',
+    fontFamily: 'Exo 2',
+    fontSize: '2.3rem',
     [theme.breakpoints.down('sm')]: {
         textAlign: 'center',
     },
 });
 
 export const BoxCardHollandStyles: SxProps<Theme> = (theme) => ({
+    backgroundColor: '#99b9ff',
+    borderRadius:'0.5rem',
+    paddingTop:'2rem',
+    paddingBottom: '2rem',
     display: 'flex',
     gap: '0.5rem',
     overflow: 'hidden',
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
-});
-
-export const CardStyle: SxProps<Theme> = (theme) => ({
-    flex: '0 0 auto', // Permite que o cartão não redimensione automaticamente
-    transition: 'transform 0.3s ease',
-});
-export const CardContentStyles: SxProps<Theme> = (theme) => ({
-    whiteSpace: 'normal',
-    padding: '1rem',
-    textAlign: 'center',
-});
-
-export const BoxTitleAndDividerBoxStyles: SxProps<Theme> = (theme) => ({
-    marginBottom: '1rem', // 20px converted to rem and reduced to 80%
     [theme.breakpoints.down('sm')]: {
         textAlign: 'center',
     },
 });
 
+export const CardStyle: SxProps<Theme> = (theme) => ({
+    flex: '0 0 auto',
+    transition: 'transform 0.3s ease',
+    [theme.breakpoints.down('sm')]: {
+        textAlign: 'center',
+    },
+});
+// export const CardContentStyles: SxProps<Theme> = (theme) => ({
+//     whiteSpace: 'normal',
+//     padding: '1rem',
+//     textAlign: 'center',
+//     [theme.breakpoints.down('sm')]: {
+//         textAlign: 'center',
+//     },
+// });
+
 export const GridItemText: SxProps<Theme> = (theme) => ({
-    marginBottom: '5rem', // 100px converted to rem and reduced to 80%
+    // marginBottom: '5rem', // 100px converted to rem and reduced to 80%
+    [theme.breakpoints.down('sm')]: {
+        textAlign: 'center',
+    },
+});
+
+export const GridItemCards: SxProps<Theme> = (theme) => ({
+    // marginBottom: '10rem', // 100px converted to rem and reduced to 80%
+    [theme.breakpoints.down('sm')]: {
+        textAlign: 'center',
+    },
+});
+
+// Style Parceiros-------------------------------------------------------
+export const CarouselTitle: SxProps<Theme> = (theme) => ({
+    marginTop: '0.8rem',
+    textAlign: 'center',
+    fontFamily: 'Poppins',
+    fontWeight: 'bold',
+    color: '#1b1f27',
     [theme.breakpoints.down('sm')]: {
         textAlign: 'center',
     },

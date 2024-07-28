@@ -1,4 +1,4 @@
-import { Grid, Box, Typography, Button, Divider } from '@mui/material';
+import { Grid, Box, Typography, Button, Container } from '@mui/material';
 import { Link } from 'react-router-dom';
 import InitialPageHeader from '../../../components/homeHeader';
 import About from './about';
@@ -9,9 +9,11 @@ import {
     typographyTitleStyles,
     typographySubtitleStyles,
     buttonStyles,
+    CarouselTitle,
 } from './styles';
 import TestInformation from './testInf';
 import InitialPageFooter from '../../../components/homeFooter';
+import LogoCarousel from './logoCarousel';
 
 export const HomePage: React.FC = () => {
     return (
@@ -23,9 +25,9 @@ export const HomePage: React.FC = () => {
                         VOCCO
                     </Typography>
                     <Typography variant="h6" sx={typographySubtitleStyles}>
-                        ENCONTRE O CURSO E A FACULDADE PERFEITOS PARA VOCÊ! <br />
-                        TENHA ACESSO AO NOSSO TESTE VOCACIONAL EXCLUSIVO E INFORMAÇÕES SOBRE <br />
-                        UNIVERSIDADES BRASILEIRAS CLICANDO NO BOTÃO ABAIXO:
+                        Encontre o curso e a faculdade perfeitos para você!<br />
+                        Tenha acesso ao nosso teste vocacional exclusivo e informações sobre <br />
+                        universidades brasileiras clicando no botão abaixo:
                     </Typography>
                     <Link to="/register" style={{ textDecoration: 'none' }}>
                         <Button variant="contained" size="large" sx={buttonStyles}>
@@ -34,15 +36,21 @@ export const HomePage: React.FC = () => {
                     </Link>
                 </Grid>
             </Box>
-            <Divider sx={{ borderColor: '#735fe4', borderBottomWidth: 2 }} />
+            {/* <Divider sx={{ borderColor: '#735fe4', borderBottomWidth: 2 }} /> */}
+            <Container>
+                <Typography sx={CarouselTitle}>
+                    Nossos Parceiros
+                </Typography>
+                <LogoCarousel />
+            </Container>
             <Box id="testInformation">
                 <TestInformation />
             </Box>
-            <Divider sx={{ borderColor: '#735fe4', borderBottomWidth: 2 }} />
+            {/* <Divider sx={{ borderColor: '#735fe4', borderBottomWidth: 2 }} /> */}
             <Box id="about">
                 <About />
             </Box>
-            <Divider sx={{ borderColor: '#735fe4', borderBottomWidth: 2 }} />
+            {/* <Divider sx={{ borderColor: '#735fe4', borderBottomWidth: 2 }} /> */}
             <Box id="faq">
                 <Faq />
             </Box>
