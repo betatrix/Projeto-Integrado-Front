@@ -1,5 +1,4 @@
 import { createContext, useState, useEffect, ReactNode } from 'react';
-import { decryptData } from '../services/encryptionService';
 
 interface AuthContextType {
   isAuthenticated: boolean;
