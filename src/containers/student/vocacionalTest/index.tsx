@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Header from '../../../components/studentHeader';
 import Footer from '../../../components/studentFooter';
 import { IconButton, Box, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
@@ -8,6 +8,8 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import { CenteredDiv, ButtonGroup, StyledLinearProgress, Global, IntroText, homePageBoxStyles, StyledTypography, CustomButton, ModalText } from './styles';
 import axios from 'axios';
 import AnswerOptions from './answerOptions';
+import { AuthContext } from '../../../contexts/auth';
+import { decryptData } from '../../../services/encryptionService';
 
 interface Teste {
     id: number;
@@ -80,11 +82,20 @@ const VocacionalTest: React.FC = () => {
         setAnswers(updatedAnswers);
     };
 
+    const authcontext = useContext(AuthContext);
+
+    if (!authcontext) {
+        return <div>Não conseguiu pegar o contexto.</div>;
+    }
+    const userData = authcontext.user ? decryptData(authcontext.user) : null;
+
+    const user = userData ? JSON.parse(userData) : null;
+
     const handleSubmit = async () => {
         const payload = {
             estudanteTeste: {
                 testeId: teste?.id,
-                usuarioId: 1,
+                usuarioId: user.id,
             },
             respostas: answers.map((resposta, index) => ({
                 perguntaId: questions[index].id,
