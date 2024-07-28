@@ -1,7 +1,5 @@
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-import { Typography, Box } from '@mui/material';
 import styled, { createGlobalStyle } from 'styled-components';
+import { Typography, Box } from '@mui/material';
 
 export const Global = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css2?family=Exo:wght@400;600&display=swap');
@@ -11,15 +9,16 @@ export const Global = createGlobalStyle`
     font-weight: 400;
     font-style: normal;
     background-color: #caddff;
+    overflow: hidden; /* Esconde o overflow da página */
   }
 
-    .slick-slide {
-        margin: 0 35px; /*  espaçamento entre os slides */
-    }
+  .slick-slide {
+    margin: 0 10px; /* espaçamento entre os slides */
+  }
 
-    .slick-list {
-        padding: 0 20px; /*padding ao redor do carrossel */
-    }
+  .slick-list {
+    padding: 0 20px; /* padding ao redor do carrossel */
+  }
 `;
 
 export const TitleResult = styled(Typography)`
@@ -54,6 +53,13 @@ export const CourseCard = styled(Box)`
   margin: 0 10px; /* espaçamento entre os cards */
   text-align: center;
   height: 350px;
-  width: 20px;
+  width: 150px; /* Defina a largura dos cards */
   box-sizing: border-box;
+`;
+
+export const CarouselContainer = styled(Box)`
+  width: 80%; /* Ajuste a largura conforme necessário */
+  margin: 0 auto; /* Centraliza o contêiner */
+  padding: 20px;
+  overflow: hidden;
 `;

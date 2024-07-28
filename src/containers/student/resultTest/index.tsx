@@ -4,7 +4,9 @@ import { Box, Typography } from '@mui/material';
 import Slider from 'react-slick';
 import Header from '../../../components/studentHeader';
 import Footer from '../../../components/studentFooter';
-import { Global, TitleResult, ResultContainerMessage, ResultMessage, CourseCard } from './styles';
+import { Global, TitleResult, ResultContainerMessage, ResultMessage, CourseCard, CarouselContainer } from './styles';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 interface ResultData {
     id: number;
@@ -38,15 +40,15 @@ const ResultScreen: React.FC = () => {
     const { resultado } = location.state as { resultado: ResultData };
 
     const allCourses = [
-        ...resultado.cursos.cursosPerfilPrimario,
-        ...resultado.cursos.cursosPerfilSecundario
+        ...resultado.cursos.cursosPerfilPrimario.map(curso => ({ ...curso, perfil: 'Perfil Primário' })),
+        ...resultado.cursos.cursosPerfilSecundario.map(curso => ({ ...curso, perfil: 'Perfil Secundário' }))
     ];
 
     const settings = {
         dots: true,
         infinite: true,
         speed: 500,
-        slidesToShow: 3, // número de slides visíveis
+        slidesToShow: 3,
         slidesToScroll: 1,
         centerMode: true,
         centerPadding: '0',
@@ -76,9 +78,9 @@ const ResultScreen: React.FC = () => {
 
     return (
         <>
-            <Global/>
+            <Global />
             <Header />
-            <Box sx={{ padding: '20px' }}>
+            <Box sx={{ padding: '20px', overflow: 'hidden' }}>
                 <TitleResult variant="h4" gutterBottom>
                     Resultado do Teste
                 </TitleResult>
@@ -88,26 +90,29 @@ const ResultScreen: React.FC = () => {
                     </ResultMessage>
                 </ResultContainerMessage>
 
-                <Box sx={{ padding: '20px', maxWidth: '100%', overflow: 'hidden' }}>
+                <CarouselContainer>
                     <Slider {...settings}>
                         {allCourses.map(curso => (
                             <CourseCard key={curso.id}>
                                 <Typography variant="h6" gutterBottom>
                                     {curso.descricao}
                                 </Typography>
-                                <Typography variant="body1">
-                    Área: {curso.area}
+                                <Typography variant="body2" color="textSecondary">
+                                    {curso.perfil}
                                 </Typography>
                                 <Typography variant="body1">
-                    Empregabilidade: {curso.empregabilidade}
+                                    Área: {curso.area}
+                                </Typography>
+                                <Typography variant="body1">
+                                    Empregabilidade: {curso.empregabilidade}
                                 </Typography>
                                 <Typography variant="body2">
-                    Possíveis Carreiras: {curso.possiveisCarreiras.join(', ')}
+                                    Possíveis Carreiras: {curso.possiveisCarreiras.join(', ')}
                                 </Typography>
                             </CourseCard>
                         ))}
                     </Slider>
-                </Box>
+                </CarouselContainer>
             </Box>
             <Footer />
         </>
