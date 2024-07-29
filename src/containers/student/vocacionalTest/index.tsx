@@ -3,9 +3,10 @@ import React, { useState, useEffect, useContext } from 'react';
 import Header from '../../../components/studentHeader';
 import Footer from '../../../components/studentFooter';
 import { IconButton, Box, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import { CenteredDiv, ButtonGroup, StyledLinearProgress, Global, IntroText, homePageBoxStyles, StyledTypography, CustomButton, ModalText } from './styles';
+import { CenteredDiv, ButtonGroup, StyledLinearProgress, Global, IntroText, homePageBoxStyles, StyledTypography, CustomButton, ModalText, BackButton, CustomLink } from './styles';
 import axios from 'axios';
 import AnswerOptions from './answerOptions';
 import { AuthContext } from '../../../contexts/auth';
@@ -122,7 +123,13 @@ const VocacionalTest: React.FC = () => {
     return (
         <>
             <Global />
+            <style>
+                @import url('https://fonts.googleapis.com/css2?family=Exo:ital,wght@0,100..900;1,100..900&family=Poppins&display=swap');
+            </style>
             <Header />
+            <BackButton startIcon={<ArrowBackIcon />}>
+                <CustomLink to={'/estudante'}>Dashboard</CustomLink>
+            </BackButton>
             <Box sx={homePageBoxStyles}>
                 <CenteredDiv>
                     <IntroText variant="body1" align="center" paragraph>
