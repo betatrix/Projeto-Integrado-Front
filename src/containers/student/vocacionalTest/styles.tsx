@@ -1,6 +1,7 @@
 import styled, { createGlobalStyle } from 'styled-components';
-import { LinearProgress, Button, Typography, SxProps, Theme } from '@mui/material';
+import { LinearProgress, Button, Typography, SxProps, Theme} from '@mui/material';
 import vocacionalTestImg from '../../../assets/img/vocacionaTest.png';
+import { Link } from 'react-router-dom';
 
 export const Global = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css2?family=Exo:wght@400;600&display=swap');
@@ -157,3 +158,27 @@ export const homePageBoxStyles: SxProps<Theme> = (theme) => ({
     backgroundImage: `url(${vocacionalTestImg})`,
     ...globalBoxStyles(theme),
 });
+
+export const BackButton = styled(Button)`
+  &.MuiButton-root {
+    position: absolute;
+    top: 80px;
+    left: 20px;
+    color: #3533cd;
+    
+    &:hover {
+      background-color: rgba(89,87,230,0.1) !important;
+    }
+  }
+`;
+
+export const CustomLink = styled(Link)`
+  text-decoration: none;
+  font-weight: 600;
+  color: #735FE4;
+  transition: 0.3s;
+
+  &:hover {
+    color: #452DCB;
+  }
+`;
