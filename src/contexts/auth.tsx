@@ -1,5 +1,4 @@
 import { ReactNode, useState, useEffect, createContext } from "react";
-import { useNavigate } from "react-router-dom";
 
 interface AuthContextType {
     isAuthenticated: boolean;
@@ -14,7 +13,6 @@ interface AuthContextType {
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-    const navigate = useNavigate();
 
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [user, setUser] = useState<any>(null);
@@ -50,7 +48,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setStudent(null);
         setAdmin(null);
         setRole(null);
-        navigate('/login');
+        window.location.href = '/login';
     };
 
     const checkTokenExpiration = () => {
