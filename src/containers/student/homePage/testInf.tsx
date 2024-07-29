@@ -97,7 +97,7 @@ export const TestInformation: React.FC = () => {
                             <ArrowBackIosNewIcon />
                         </IconButton>
                         {visibleData.map((item, idx) => (
-                            <Card key={item.title} variant="outlined" sx={{ ...CardStyle, transform: idx === 1 ? 'scale(1.1)' : 'scale(0.8)' }}>
+                            <Card key={item.title} variant="outlined" sx={{ ...CardStyle, transform: idx === 1 ? 'scale(1.1)' : 'scale(0.8)', transition: 'transform 1.0s ease' }}>
                                 <CardMedia
                                     component="img"
                                     height="auto"

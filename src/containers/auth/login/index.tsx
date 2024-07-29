@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import IconButton from '@mui/material/IconButton';
@@ -6,6 +6,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
 import CircularProgress from '@mui/material/CircularProgress';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { Formik } from 'formik';
 import {
     Global,
     LoginContainer,
@@ -21,13 +22,13 @@ import {
     RightPanel,
     BackButton
 } from './styles';
-import { login } from '../../../services/studentService';
-import { StudentLoginForm } from '../../../types/studentTypes';
-import { Formik } from 'formik';
 import { AuthContext } from '../../../contexts/auth';
 import { encryptData } from '../../../services/encryptionService';
+import { loginEstudante } from '../../../services/studentService';
+import { LoginForm } from '../../../types/loginTypes';
+import { loginAdministrador } from '../../../services/admService';
 
-const initialValues: StudentLoginForm = {
+const initialValues: LoginForm = {
     login: '',
     senha: '',
 };
@@ -35,63 +36,58 @@ const initialValues: StudentLoginForm = {
 const Login: React.FC = () => {
     const authContext = useContext(AuthContext);
 
-    const [showPassword, setShowPassword] = React.useState(false);
-    const [loading, setLoading] = React.useState(false);
-    const [error, setError] = React.useState<string | null>(null);
+    const [showPassword, setShowPassword] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
-    const handleClickShowPassword = () => setShowPassword((show) => !show);
+    const handleClickShowPassword = () => setShowPassword(prev => !prev);
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
     };
 
-    const handleSubmit = async (values: StudentLoginForm, { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }) => {
+    const handleSubmit = async (values: LoginForm, { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }) => {
         setLoading(true);
         setError(null);
-
+    
         try {
-            const response = await login(values);
+            const isAdmin = values.login.endsWith('@vocco.com');
+            const response = isAdmin ? await loginAdministrador(values) : await loginEstudante(values);
 
             if (response.status === 200) {
-                console.log('Sucesso ao realizar o login.');
+                const role = isAdmin ? 'ADMIN' : 'ESTUDANTE';
+    
                 authContext?.login(
-                    encryptData(response.data.token), 
-                    encryptData(JSON.stringify(response.data.usuario)), 
-                    encryptData(JSON.stringify(response.data.estudante)), 
-                    encryptData(response.data.usuario.role)
+                    encryptData(response.data.token),
+                    encryptData(JSON.stringify(response.data.usuario)),
+                    encryptData(role),
+                    encryptData(JSON.stringify(response.data.estudante || null)),
+                    encryptData(JSON.stringify(response.data.administrador || null))
                 );
-                
-                // const data = response.data;
-                // localStorage.setItem('token', encryptData(data.token));
-                // localStorage.setItem('role', encryptData(data.usuario.role));
-                // localStorage.setItem('user', encryptData(JSON.stringify(data.usuario)));
-                // localStorage.setItem('info', encryptData(JSON.stringify(data.estudante)));               
+    
+                const redirectUrl = role === "ESTUDANTE" ? '/estudante' : '/admin';
+                window.location.href = redirectUrl;
             } else {
-                setError('Email ou senha inválidos');
+                setError('Email ou senha inválidos!');
             }
-
-            window.location.href = '/pagina-inicial-adm';
         } catch (error) {
-            setError('Ocorreu um erro ao tentar fazer login');
+            setError('Ocorreu um erro ao tentar fazer login.');
             console.log(error);
         } finally {
             setLoading(false);
             setSubmitting(false);
         }
-    };
+    };    
 
     return (
         <>
             <Global />
-            <style>
-                @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
-            </style>
             <Container>
                 <BackButton startIcon={<ArrowBackIcon />}>
-                    <CustomLink to={'/pagina-inicial'}>Página inicial</CustomLink>
+                    <CustomLink to="/pagina-inicial">Página inicial</CustomLink>
                 </BackButton>
                 <LoginContainer>
                     <Header variant="h4">Acesse o Vocco!</Header>
-                    <Paragraph> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras congue id diam in scelerisque.</Paragraph>
+                    <Paragraph>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras congue id diam in scelerisque.</Paragraph>
 
                     <Formik initialValues={initialValues} onSubmit={handleSubmit}>
                         {({ handleChange, handleBlur, handleSubmit, values }) => (
@@ -100,7 +96,7 @@ const Login: React.FC = () => {
                                     <CustomInputLabel htmlFor="login">Digite seu email</CustomInputLabel>
                                     <CustomField
                                         id="login"
-                                        type={'email'}
+                                        type="email"
                                         name="login"
                                         value={values.login}
                                         onChange={handleChange}
@@ -110,7 +106,7 @@ const Login: React.FC = () => {
                                 </FormControl>
 
                                 <SubText variant="body2" color="textSecondary">
-                                    <CustomLink to={'/recuperar-senha'}>Esqueceu sua senha?</CustomLink>
+                                    <CustomLink to="/recuperar-senha">Esqueceu sua senha?</CustomLink>
                                 </SubText>
 
                                 <FormControl variant="filled">
@@ -143,16 +139,17 @@ const Login: React.FC = () => {
                                         {loading ? <CircularProgress size={24} color="inherit" /> : 'Entrar'}
                                     </CustomButton>
                                 </FormControl>
+                                
                                 {error && <div>{error}</div>}
                             </FormContainer>
                         )}
                     </Formik>
 
                     <SubText variant="body1">
-                        Não possuí uma conta?<CustomLink to={'/register'}> Cadastre-se!</CustomLink>
+                        Não possui uma conta?<CustomLink to="/register"> Cadastre-se!</CustomLink>
                     </SubText>
                 </LoginContainer>
-                <RightPanel></RightPanel>
+                <RightPanel />
             </Container>
         </>
     );

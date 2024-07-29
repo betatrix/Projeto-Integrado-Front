@@ -53,8 +53,8 @@ function AdminHeader() {
     }
 
     const { logout } = authContext;
-    const studentData = authContext.student ? decryptData(authContext.student) : null;
-    const student = studentData ? JSON.parse(studentData) : null;
+    const adminData = authContext.admin ? decryptData(authContext.admin) : null;
+    const admin = adminData ? JSON.parse(adminData) : null;
 
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElUser(event.currentTarget);
@@ -93,11 +93,11 @@ function AdminHeader() {
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <Typography sx={styles.welcomeText}>
-                            Bem vindo de volta, {student ? student.nome : 'usuário'}!
+                            Bem vindo de volta, {admin ? admin.nome : 'usuário'}!
                         </Typography>
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={styles.avatarButton}>
-                                <Avatar alt={student ? student.nome : 'User Avatar'} src="/static/images/avatar/2.jpg" />
+                                <Avatar alt={admin ? admin.nome : 'User Avatar'} src="/static/images/avatar/2.jpg" />
                             </IconButton>
                         </Tooltip>
                         <Menu

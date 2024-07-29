@@ -34,23 +34,24 @@ export const AppRoutes = () => {
                         <Route path="/nova-senha" element={<NovaSenha/>}/>
                         <Route path="/success-change-password" element={<SucessPassword/>}/>
                         <Route path="/register" element={<Register/>}/>
-                        <Route path="/resultado" element={<ResultadoTeste/>}/>
-                        <Route path='/perfil' element={<DataStudent/>}/>
-                        <Route path='/estudante' element={<StudentDashboard />} />
                         <Route path='/sobre' element={<About />} />
-                        <Route path='/admin' element={<Dashboard />} />
-                        <Route path='/teste-vocacional' element={<VocacionalTest/>}/>
                         <Route path='/pagina-inicial' element={<HomePage />} />
                         <Route path='/instituicao' element={<InstitutionList/>}/>
-
+                        {/* Private Routes - Student */}
+                        <Route element={<PrivateRoute requiredRole="ESTUDANTE" />}>
+                            <Route path='/teste-vocacional' element={<VocacionalTest/>}/>
+                            <Route path='/estudante' element={<StudentDashboard />} />
+                            <Route path="/resultado" element={<ResultadoTeste/>}/>
+                            <Route path='/perfil' element={<DataStudent/>}/>
+                        </Route>
                         {/* Private Routes - Admin */}
-                        <Route element={<PrivateRoute requiredRole="ADMINISTRADOR" />}>
+                        <Route element={<PrivateRoute requiredRole="ADMIN" />}>
                             <Route path="/cadastro" element={<CadastroInstituicao />} />
                             <Route path="/cursos" element={<BuscaCurso />} />
                             <Route path='/politicas' element={<BuscaPoliticas />} />
                             <Route path='/gerenciamento-curso' element={<CourseList/>}/>
                             <Route path="/gerenciamento-instituicao" element={<InstitutionManagement />} />
-                            <Route path="/pagina-inicial" element={<Dashboard />} />
+                            <Route path='/admin' element={<Dashboard />} />
                         </Route>
 
                         <Route path='*' element={<Navigate to='/pagina-inicial' replace />} />

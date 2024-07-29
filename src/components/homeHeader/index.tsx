@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import {
     AppBar,
     Container,
@@ -6,8 +5,6 @@ import {
     Box,
     Typography,
     Tooltip,
-    Menu,
-    MenuItem,
     Button,
 } from '@mui/material';
 import { Link as ScrollLink } from 'react-scroll';
@@ -39,43 +36,14 @@ const styles = {
 };
 
 function InitialPageHeader() {
-    const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
     const navigate = useNavigate();
-    // const { t, i18n } = useTranslation();
-    // const [currentLanguage, setCurrentLanguage] = useState(i18n.language);
 
-    const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorElUser(event.currentTarget);
-    };
-
-    const handleCloseUserMenu = () => {
-        setAnchorElUser(null);
-    };
-
-    const handleAdminLogin = () => {
-        setAnchorElUser(null);
+    const handleLogin = () => {
         navigate('/login');
     };
 
-    const handleStudentLogin = () => {
-        setAnchorElUser(null);
-        navigate('/estudante');
-    };
+    const{ t } = useTranslation();
 
-    const{
-        t,
-        i18n: {
-            changeLanguage, language
-        },
-    } = useTranslation();
-
-    const[currentLanguage, setCurrentLanguage] = useState(language);
-
-    const handleChangeLanguage = () => {
-        const newLanguage = currentLanguage === 'en' ? 'pt' : 'en';
-        changeLanguage(newLanguage);
-        setCurrentLanguage(newLanguage);
-    };
     return (
         <AppBar position="sticky" style={{ backgroundColor: '#1b1f27' }}>
             <Container maxWidth="xl">
@@ -103,36 +71,14 @@ function InitialPageHeader() {
                             <ScrollLink to="faq" smooth={true} duration={500} style={styles.linkButton}>
                                 <Button color="inherit">{t('faq')}</Button>
                             </ScrollLink>
-                            <Button onClick={handleChangeLanguage} color="inherit" sx={{display:'none'}}>
-                                {currentLanguage === 'en' ? 'Português' : 'English'}
-                            </Button>
                         </Box>
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <Tooltip title="Login">
-                            <Button type="button" variant="outlined" onClick={handleOpenUserMenu} sx={styles.LoginText} >
+                            <Button type="button" variant="outlined" onClick={handleLogin} sx={styles.LoginText} >
                                 {t('login')}
                             </Button>
                         </Tooltip>
-                        <Menu
-                            sx={styles.menu}
-                            id="menu-appbar"
-                            anchorEl={anchorElUser}
-                            anchorOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            keepMounted
-                            open={Boolean(anchorElUser)}
-                            onClose={handleCloseUserMenu}
-                        >
-                            <MenuItem onClick={handleStudentLogin}>
-                                <Typography textAlign="center">{t('student')}</Typography>
-                            </MenuItem>
-                            <MenuItem onClick={handleAdminLogin}>
-                                <Typography textAlign="center">{t('admin')}</Typography>
-                            </MenuItem>
-                        </Menu>
                     </Box>
                 </Toolbar>
             </Container>
