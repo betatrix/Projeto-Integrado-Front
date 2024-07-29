@@ -27,6 +27,7 @@ import { encryptData } from '../../../services/encryptionService';
 import { loginEstudante } from '../../../services/studentService';
 import { LoginForm } from '../../../types/loginTypes';
 import { loginAdministrador } from '../../../services/admService';
+import { useNavigate } from 'react-router-dom';
 
 const initialValues: LoginForm = {
     login: '',
@@ -35,7 +36,8 @@ const initialValues: LoginForm = {
 
 const Login: React.FC = () => {
     const authContext = useContext(AuthContext);
-
+    const navigate = useNavigate();
+    
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -63,9 +65,9 @@ const Login: React.FC = () => {
                     encryptData(JSON.stringify(response.data.estudante || null)),
                     encryptData(JSON.stringify(response.data.administrador || null))
                 );
-    
+            
                 const redirectUrl = role === "ESTUDANTE" ? '/estudante' : '/admin';
-                window.location.href = redirectUrl;
+                navigate(redirectUrl);
             } else {
                 setError('Email ou senha inválidos!');
             }
