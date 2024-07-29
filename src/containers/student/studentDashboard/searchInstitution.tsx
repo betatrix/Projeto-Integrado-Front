@@ -72,7 +72,7 @@ const InstitutionList: React.FC = () => {
             <InstitutionSearchHeader />
             <StyledBox>
                 <StyledTypography>
-                    <Typography variant="h5">
+                    <Typography variant="h6">
                         Lista de Instituições
                     </Typography>
                 </StyledTypography>
@@ -106,35 +106,35 @@ const InstitutionList: React.FC = () => {
                         {selectedInstitution && (
                             <>
                                 <DetailTypography>
-                                    <Typography variant="h5" gutterBottom>
+                                    <Typography variant="h6" gutterBottom>
                                         {selectedInstitution.nome}
                                     </Typography>
                                 </DetailTypography>
                                 <Grid container spacing={3}>
                                     <Grid item xs={6}>
-                                        <Typography variant="h6" gutterBottom>
+                                        <Typography variant="subtitle1" gutterBottom>
                                             Dados Gerais
                                         </Typography>
-                                        <Typography>Nome: {selectedInstitution.nome}</Typography>
-                                        <Typography>Sigla: {selectedInstitution.sigla}</Typography>
-                                        <Typography>Site: {selectedInstitution.site || 'Não disponível'}</Typography>
-                                        <Typography>Nota MEC: {selectedInstitution.notaMec || 'Não disponível'}</Typography>
+                                        <Typography variant="body2">Nome: {selectedInstitution.nome}</Typography>
+                                        <Typography variant="body2">Sigla: {selectedInstitution.sigla}</Typography>
+                                        <Typography variant="body2">Site: {selectedInstitution.site || 'Não disponível'}</Typography>
+                                        <Typography variant="body2">Nota MEC: {selectedInstitution.notaMec || 'Não disponível'}</Typography>
                                     </Grid>
                                     <Grid item xs={6}>
-                                        <Typography variant="h6" gutterBottom>
+                                        <Typography variant="subtitle1" gutterBottom>
                                             Endereço
                                         </Typography>
-                                        <Typography>Rua: {selectedInstitution.endereco.logradouro}</Typography>
-                                        <Typography>Número: {selectedInstitution.endereco.numero}</Typography>
-                                        <Typography>Cidade: {selectedInstitution.endereco.cidade}</Typography>
-                                        <Typography>Estado: {selectedInstitution.endereco.estado}</Typography>
-                                        <Typography>CEP: {selectedInstitution.endereco.cep}</Typography>
+                                        <Typography variant="body2">Rua: {selectedInstitution.endereco.logradouro}</Typography>
+                                        <Typography variant="body2">Número: {selectedInstitution.endereco.numero}</Typography>
+                                        <Typography variant="body2">Cidade: {selectedInstitution.endereco.cidade}</Typography>
+                                        <Typography variant="body2">Estado: {selectedInstitution.endereco.estado}</Typography>
+                                        <Typography variant="body2">CEP: {selectedInstitution.endereco.cep}</Typography>
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <Typography variant="h6" gutterBottom>
+                                        <Typography variant="subtitle1" gutterBottom>
                                             Cursos
                                         </Typography>
-                                        <List dense>
+                                        <List dense style={{ maxHeight: 200, overflow: 'auto' }}>
                                             {selectedInstitution.cursos?.length > 0 ? (
                                                 selectedInstitution.cursos.map((curso) => (
                                                     <ListItem key={curso.id}>
@@ -142,7 +142,7 @@ const InstitutionList: React.FC = () => {
                                                     </ListItem>
                                                 ))
                                             ) : (
-                                                <Typography variant="body1" color="textSecondary">
+                                                <Typography variant="body2" color="textSecondary">
                                                     Não há cursos na instituição.
                                                 </Typography>
                                             )}

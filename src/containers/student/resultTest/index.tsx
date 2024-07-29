@@ -16,7 +16,7 @@ const ResultadoTeste: React.FC<{ /*estudanteTestId: number*/ }> = (/*{ estudante
     useEffect(() => {
         const fetchResultado = async () => {
             try {
-                const response = await axios.get(`${apiUrl}/resultado/estudanteTeste/1`);
+                const response = await axios.get(`${apiUrl}/resultado/estudanteTeste/`);
                 setResultado(response.data);
             } catch (error) {
                 console.error('Erro ao buscar resultado do teste:', error);

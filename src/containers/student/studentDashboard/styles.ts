@@ -1,6 +1,6 @@
 import { Box, IconButton, SxProps, TextField, Theme } from '@mui/material';
 import styled, { keyframes } from 'styled-components';
-import { Button } from '@mui/material';
+//import { Button } from '@mui/material';
 import pageFour from '../../../assets/img/pageFour.png';
 
 const globalBoxStyles: SxProps<Theme> = (theme) => ({
@@ -21,26 +21,46 @@ const globalBoxStyles: SxProps<Theme> = (theme) => ({
 // Style Index
 export const homePageBoxStyles: SxProps<Theme> = (theme) => ({
     backgroundImage: `url(${pageFour})`,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
     ...globalBoxStyles(theme),
 });
 
-export const SquareButton = styled(Button)`
-    width: 17.5rem;  // 350px converted to rem and reduced to 80%
-    height: 17.5rem;  // 350px converted to rem and reduced to 80%
-    background-color: #ffffff;
-    border: 0.1rem solid #5479f7;  // 2px converted to rem and reduced to 80%
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border-radius: 1rem;  // 20px converted to rem and reduced to 80%
-    transition: transform 0.2s;
+export const paperStyles: SxProps<Theme> = (theme) => ({
+    backgroundColor: 'white',
+    padding: '5%',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+    width: '100%',
+    maxWidth: '20rem',
+    [theme.breakpoints.down('sm')]: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        backgroundAttachment: 'local',
+    },
+});
 
-    &:hover {
-        transform: scale(1.05);
-        background-color: #e6e6e6;
-    }
-`;
+// export const SquareButton = styled(Button)`
+//     width: 17.5rem;  // 350px converted to rem and reduced to 80%
+//     height: 17.5rem;  // 350px converted to rem and reduced to 80%
+//     background-color: #ffffff;
+//     border: 0.1rem solid #5479f7;  // 2px converted to rem and reduced to 80%
+//     display: flex;
+//     flex-direction: column;
+//     justify-content: center;
+//     align-items: center;
+//     border-radius: 1rem;  // 20px converted to rem and reduced to 80%
+//     transition: transform 0.2s;
+
+//     &:hover {
+//         transform: scale(1.05);
+//         background-color: #e6e6e6;
+//     }
+// `;
 
 export const TextButton = styled.span`
     font-size: 1.2rem;
@@ -49,10 +69,10 @@ export const TextButton = styled.span`
     text-align: center;
 `;
 
-export const CardContentBox = styled.div`
-    width: 100%;
-    margin-top: 0.5rem;  // 10px converted to rem and reduced to 80%
-`;
+// export const CardContentBox = styled.div`
+//     width: 100%;
+//     margin-top: 0.5rem;  // 10px converted to rem and reduced to 80%
+// `;
 
 export const TestButton: SxProps<Theme> = (theme) => ({
     background: 'linear-gradient(90deg, #040410, #302EB7)',

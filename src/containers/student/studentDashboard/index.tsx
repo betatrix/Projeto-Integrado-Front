@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Grid, Box, Typography, Paper, Button, Card, CardContent } from '@mui/material';
+import { Grid, Box, Typography, Paper, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 import Slider from 'react-slick';
 import StudentHeader from '../../../components/studentHeader';
 import AnnouncementBar from './announcement';
-import { SquareButton, TextButton, CardContentBox, TestButton, homePageBoxStyles } from './styles';
+import { TestButton, homePageBoxStyles, paperStyles } from './styles';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import InsightsIcon from '@mui/icons-material/Insights';
 import StudentFooter from '../../../components/studentFooter';
@@ -23,10 +23,6 @@ const StudentDashboard: React.FC = () => {
     const userData = authContext?.user ? decryptData(authContext.user) : null;
     const user = userData ? JSON.parse(userData) : null;
 
-    console.log('AuthContext:', authContext);
-    console.log('Decrypted User Data:', userData);
-    console.log('Parsed User:', user);
-
     useEffect(() => {
         const fetchTestCount = async () => {
             try {
@@ -43,9 +39,10 @@ const StudentDashboard: React.FC = () => {
             try {
                 if (user?.id) {
                     const tests = await buscarTestesDeEstudante(user.id);
+                    console.log('Histórico de testes retornado pela API:', tests);
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     const formattedTests = tests.map((test: any) => ({
-                        date: test.data,
+                        date: new Date(test.data).toLocaleDateString('pt-BR'),
                         tipo: test.teste,
                         result: test.perfis,
                     }));
@@ -100,93 +97,82 @@ const StudentDashboard: React.FC = () => {
                 />
             )}
             <Box sx={homePageBoxStyles}>
-                <Grid container justifyContent="center">
-                    <Grid container spacing={25} justifyContent="center">
-                        <Grid item>
-                            <Paper sx={{ backgroundColor: 'white' }}>
-                                <SquareButton>
-                                    <TextButton>Testes Preenchidos</TextButton>
-                                    <InsightsIcon style={{ fontSize: '80px', color: 'linear-gradient(90deg, #040410, #302EB7)' }} />
-                                    <Typography variant="h3" component="div">
-                                        {testCount}
-                                    </Typography>
-                                </SquareButton>
-                            </Paper>
-                        </Grid>
-                        <Grid item>
-                            <Paper sx={{ backgroundColor: 'white' }}>
-                                <SquareButton>
-                                    <TextButton>Perfis mais recorrentes</TextButton>
-                                    <ListAltIcon style={{ fontSize: '80px', color: 'linear-gradient(90deg, #040410, #302EB7)' }} />
-                                    <CardContentBox>
-                                        <Card sx={{ width: '100%', mt: 2 }}>
-                                            <CardContent>
-                                                {recorrentes.length > 0 ? (
-                                                    recorrentes.map((profile, index) => (
-                                                        <Typography key={index} variant="body2" color="text.secondary">
-                                                            {profile}
-                                                        </Typography>
-                                                    ))
-                                                ) : (
-                                                    <Typography variant="body2" color="text.secondary">
-                                                        Nenhum perfil encontrado.
-                                                    </Typography>
-                                                )}
-                                            </CardContent>
-                                        </Card>
-                                    </CardContentBox>
-                                </SquareButton>
-                            </Paper>
-                        </Grid>
-                        <Grid item>
-                            <Paper sx={{ backgroundColor: 'white' }}>
-                                <SquareButton>
-                                    <TextButton>Resultados</TextButton>
-                                    <BarChartIcon style={{ fontSize: '80px', color: 'linear-gradient(90deg, #040410, #302EB7)' }} />
-                                    <CardContentBox>
-                                        <Slider {...carouselSettings}>
-                                            {testHistory.length > 0 ? (
-                                                testHistory.map((test, index) => (
-                                                    <Card key={index} sx={{ width: '100%', mt: 2 }}>
-                                                        <CardContent>
-                                                            <Typography variant="body2" color="text.secondary">
-                                                                Data: {test.date}
-                                                            </Typography>
-                                                            <Typography variant="body2" color="text.secondary">
-                                                                Teste: {test.tipo}
-                                                            </Typography>
-                                                            <Typography variant="body2" color="text.secondary">
-                                                                Resultado: {test.result.join(', ')}
-                                                            </Typography>
-                                                        </CardContent>
-                                                    </Card>
-                                                ))
-                                            ) : (
-                                                <Typography variant="body2" color="text.secondary">
-                                                    Nenhum teste realizado.
-                                                </Typography>
-                                            )}
-                                        </Slider>
-                                    </CardContentBox>
-                                </SquareButton>
-                            </Paper>
-                        </Grid>
-                        <Grid item>
-                            <Typography variant="body2" color="text.secondary">
-                                Histórico de testes
-                                <ListAltIcon style={{ fontSize: '80px', color: 'linear-gradient(90deg, #040410, #302EB7)' }} />
+                <Grid container justifyContent="center" spacing={4}>
+                    <Grid item xs={12} md={6}>
+                        <Paper sx={paperStyles}>
+                            <Typography variant="h6" component="div">
+                                Testes Preenchidos
                             </Typography>
-                            <Box sx={{ mt: '20px', textAlign: 'center', marginTop: '50px' }}>
+                            <InsightsIcon style={{ fontSize: '80px', color: 'linear-gradient(90deg, #040410, #302EB7)' }} />
+                            <Typography variant="h3" component="div">
+                                {testCount}
+                            </Typography>
+                        </Paper>
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                        <Paper sx={paperStyles}>
+                            <Typography variant="h6" component="div">
+                                Perfis mais recorrentes
+                            </Typography>
+                            <ListAltIcon style={{ fontSize: '80px', color: 'linear-gradient(90deg, #040410, #302EB7)' }} />
+                            {recorrentes.length > 0 ? (
+                                recorrentes.map((profile, index) => (
+                                    <Typography key={index} variant="body2" color="text.secondary">
+                                        {profile}
+                                    </Typography>
+                                ))
+                            ) : (
+                                <Typography variant="body2" color="text.secondary">
+                                    Nenhum perfil encontrado.
+                                </Typography>
+                            )}
+                        </Paper>
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                        <Paper sx={paperStyles}>
+                            <Typography variant="h6" component="div">
+                                Histórico de testes
+                            </Typography>
+                            <ListAltIcon style={{ fontSize: '80px', color: 'linear-gradient(90deg, #040410, #302EB7)' }} />
+                            <Box sx={{ mt: '20px', textAlign: 'center' }}>
                                 <Link to="/teste-vocacional" style={{ textDecoration: 'none' }}>
                                     <Button variant="contained" size="large" sx={TestButton}>
-                                        Responder Novamente
+                                        {testCount === 0 ? 'Fazer Teste' : 'Refazer Teste'}
                                     </Button>
                                 </Link>
                             </Box>
-                        </Grid>
+                        </Paper>
+                    </Grid>
+                    <Grid item xs={12} md={6} display="flex" justifyContent="center">
+                        <Paper sx={paperStyles}>
+                            <Typography variant="h6" component="div">
+                                Resultados
+                            </Typography>
+                            <BarChartIcon style={{ fontSize: '80px', color: 'linear-gradient(90deg, #040410, #302EB7)' }} />
+                            {testHistory.length > 0 ? (
+                                <Slider {...carouselSettings}>
+                                    {testHistory.map((test, index) => (
+                                        <Box key={index} sx={{ padding: '1%' }}>
+                                            <Typography variant="body2" color="text.secondary">
+                                                Data: {test.date}
+                                            </Typography>
+                                            <Typography variant="body2" color="text.secondary">
+                                                Teste: {test.tipo}
+                                            </Typography>
+                                            <Typography variant="body2" color="text.secondary">
+                                                Resultado: {test.result.join(', ')}
+                                            </Typography>
+                                        </Box>
+                                    ))}
+                                </Slider>
+                            ) : (
+                                <Typography variant="body2" color="text.secondary">
+                                    Nenhum teste realizado.
+                                </Typography>
+                            )}
+                        </Paper>
                     </Grid>
                 </Grid>
-
                 <StudentFooter />
             </Box>
         </>
