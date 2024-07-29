@@ -126,13 +126,11 @@ function StudentHeader() {
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <Typography sx={styles.welcomeText}>Bem vindo de volta, fulano!</Typography>
-                        <Tooltip title="Opções de Perfil">
-                            <IconButton onClick={handleOpenUserMenu} sx={styles.avatarButton}>
-                                <Avatar sx={{ width: 50, height: 50 }}>
-                                    <AccountCircleRoundedIcon sx={{ fontSize: 60 }} />
-                                </Avatar>
-                            </IconButton>
-                        </Tooltip>
+                        <IconButton onClick={handleOpenUserMenu} sx={styles.avatarButton}>
+                            <Avatar sx={{ width: 50, height: 50 }}>
+                                <AccountCircleRoundedIcon sx={{ fontSize: 60 }} />
+                            </Avatar>
+                        </IconButton>
                         <Menu
                             sx={styles.menu}
                             id="menu-appbar"

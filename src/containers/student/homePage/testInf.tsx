@@ -22,32 +22,26 @@ const data = [
     {
         src: Realista,
         title: 'Realista',
-        description: 'Práticos e com habilidades manuais.',
     },
     {
         src: Investigativo,
         title: 'Investigativo',
-        description: 'Analíticos, curiosos e intelectuais.',
     },
     {
         src: Artistico,
         title: 'Artístico',
-        description: 'Criativos e expressivos.',
     },
     {
         src: Social,
         title: 'Social',
-        description: 'Comunicativos e cooperativos.',
     },
     {
         src: Empreendedor,
         title: 'Empreendedor',
-        description: 'Energéticos e líderes.',
     },
     {
         src: Convencional,
         title: 'Convencional',
-        description: 'Organizados e detalhistas.',
     },
 ];
 
@@ -88,10 +82,6 @@ export const TestInformation: React.FC = () => {
                     </Typography>
                 </Grid>
                 <Grid item xs={12} md={6} sx={GridItemCards}>
-                    {/* <Typography mt={20} sx={{ textAlign: 'center', fontFamily: 'Exo 2', fontSize: 'Poppins', marginBottom: '0.5rem' }}>
-                        Tipos Vocacionais
-                    </Typography> */}
-                    {/* <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mt: 2 }}> */}
                     <Box sx={BoxCardHollandStyles}>
                         <IconButton onClick={handlePrevClick}>
                             <ArrowBackIosNewIcon />
@@ -106,7 +96,6 @@ export const TestInformation: React.FC = () => {
                                 />
                                 <Box sx={{ whiteSpace: 'nowrap', padding: '1rem', textAlign: 'center' }}>
                                     <Typography sx={{fontFamily:'Poppins', fontSize:'0.8rem', fontWeight: 'bold', color:'#1b1f27'}}>{item.title}</Typography>
-                                    {/* <Typography>{item.description}</Typography> */}
                                 </Box>
                             </Card>
                         ))}
@@ -114,8 +103,6 @@ export const TestInformation: React.FC = () => {
                             <ArrowForwardIosIcon />
                         </IconButton>
                     </Box>
-
-                    {/* </Box> */}
                 </Grid>
             </Grid>
         </Box>

@@ -23,7 +23,6 @@ export const About: React.FC = () => {
                         <Typography sx={typographyAboutTitleStyles}>
                             Sobre nós
                         </Typography>
-                        {/* <Box sx={dividerBoxStyles} /> */}
                         <Typography sx={typographyBodyStyles}>
                             Nós somos a <b>VOCCO</b>, uma plataforma destinada a orientar alunos do ensino médio da rede pública de educação no Brasil,
                              auxiliando-os na escolha de suas futuras carreiras profissionais. Nosso nome deriva da palavra <b>vocação</b> em Latim.

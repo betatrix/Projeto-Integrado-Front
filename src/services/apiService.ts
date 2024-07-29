@@ -44,8 +44,14 @@ export const buscarTestesDeEstudante = async (estudanteId: number) => {
 };
 
 //contar quantos testes o estudante fez
-export const contarTeste = async() => {
-    const response = await axios.get(`${API_URL}/estudanteTeste/contagem`);
+export const contarTeste = async(estudanteId: number) => {
+    const response = await axios.get(`${API_URL}/estudanteTeste/contagem/${estudanteId}`);
+    return response.data;
+};
+
+// Nova função para buscar perfis recorrentes
+export const buscarPerfisRecorrentes = async (estudanteId: number) => {
+    const response = await axios.get(`${API_URL}/estudanteTeste/teste/perfis/${estudanteId}`);
     return response.data;
 };
 

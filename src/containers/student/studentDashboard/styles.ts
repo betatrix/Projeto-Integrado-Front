@@ -18,22 +18,22 @@ const globalBoxStyles: SxProps<Theme> = (theme) => ({
     },
 });
 
-//Style Index
+// Style Index
 export const homePageBoxStyles: SxProps<Theme> = (theme) => ({
     backgroundImage: `url(${pageFour})`,
     ...globalBoxStyles(theme),
 });
 
 export const SquareButton = styled(Button)`
-    width: 350px;
-    height: 350px;
+    width: 17.5rem;  // 350px converted to rem and reduced to 80%
+    height: 17.5rem;  // 350px converted to rem and reduced to 80%
     background-color: #ffffff;
-    border: 2px solid #5479f7;
+    border: 0.1rem solid #5479f7;  // 2px converted to rem and reduced to 80%
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border-radius: 20px;
+    border-radius: 1rem;  // 20px converted to rem and reduced to 80%
     transition: transform 0.2s;
 
     &:hover {
@@ -45,33 +45,19 @@ export const SquareButton = styled(Button)`
 export const TextButton = styled.span`
     font-size: 1.2rem;
     color: #1b1f27;
-    margin-bottom: 10px;
+    margin-bottom: 0.5rem;  // 10px converted to rem and reduced to 80%
     text-align: center;
 `;
 
 export const CardContentBox = styled.div`
     width: 100%;
-    margin-top: 10px;
+    margin-top: 0.5rem;  // 10px converted to rem and reduced to 80%
 `;
-
-// export const TestButton = styled(Button)`
-//     background: linear-gradient(90deg, #040410, #302EB7);
-//     border-radius: 20px;
-//     padding: 15px 50px;
-//     font-size: 1.2rem;
-//     font-weight: bold;
-//     color: white;
-//     text-transform: none;
-
-//     &:hover {
-//         background: linear-gradient(90deg, #302EB7, #040410);
-//     }
-// `;
 
 export const TestButton: SxProps<Theme> = (theme) => ({
     background: 'linear-gradient(90deg, #040410, #302EB7)',
-    borderRadius: '20px',
-    padding: '15px 50px',
+    borderRadius: '1rem', // 20px converted to rem and reduced to 80%
+    padding: '0.75rem 2.5rem', // 15px 50px converted to rem and reduced to 80%
     fontSize: '1.1rem',
     fontWeight: 'bold',
     color: 'white',
@@ -84,7 +70,8 @@ export const TestButton: SxProps<Theme> = (theme) => ({
         backgroundAttachment: 'local',
     },
 });
-//Style Announcement
+
+// Style Announcement
 const slide = keyframes`
     0% {
         transform: translateX(100%);
@@ -99,7 +86,7 @@ export const AnnouncementBarContainer = styled(Box)`
     background-color: #ff9800;
     color: #fff;
     text-align: center;
-    padding: 10px 0;
+    padding: 0.5rem 0;  // 10px converted to rem and reduced to 80%
     position: absolute;
     display: flex;
     justify-content: center;
@@ -116,7 +103,7 @@ export const SlidingImage = styled.div`
 
 export const StyledImage = styled.img`
     max-width: none;
-    max-height: 70px;
+    max-height: 3.5rem;  // 70px converted to rem and reduced to 80%
     width: auto;
     height: auto;
     display: block;
@@ -124,24 +111,24 @@ export const StyledImage = styled.img`
 
 export const CloseButton = styled(IconButton)`
     position: absolute;
-    right: 300px;
-    bottom: 25px; 
+    right: 15rem;  // 300px converted to rem and reduced to 80%
+    bottom: 1.25rem;  // 25px converted to rem and reduced to 80%
 `;
 
-//Style SearchInstitution
+// Style SearchInstitution
 
 export const StyledBox = styled(Box)`
-    margin-bottom: 60px;
+    margin-bottom: 3rem;  // 60px converted to rem and reduced to 80%
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    max-width: 700px;
+    gap: 0.8rem;  // 16px converted to rem and reduced to 80%
+    max-width: 35rem;  // 700px converted to rem and reduced to 80%
     margin: auto;
-    margin-top: 32px;
+    margin-top: 1.6rem;  // 32px converted to rem and reduced to 80%
 `;
 
 export const StyledTypography = styled(Box)`
-    margin-bottom: 16px;
+    margin-bottom: 0.8rem;  // 16px converted to rem and reduced to 80%
     text-align: center;
 `;
 
@@ -155,7 +142,7 @@ export const StyledTextField = styled(TextField)`
 `;
 
 export const ListBox = styled(Box)`
-    padding-top: 8px;
+    padding-top: 0.4rem;  // 8px converted to rem and reduced to 80%
 `;
 
 export const StyledModal = styled(Box)`
@@ -164,21 +151,21 @@ export const StyledModal = styled(Box)`
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: white;
-    box-shadow: 24px;
-    padding: 32px;
+    box-shadow: 1.2rem;  // 24px converted to rem and reduced to 80%
+    padding: 1.6rem;  // 32px converted to rem and reduced to 80%
     width: 80%;
-    max-width: 600px;
+    max-width: 30rem;  // 600px converted to rem and reduced to 80%
 `;
 
 export const DetailTypography = styled(Box)`
-    margin-top: 16px;
+    margin-top: 0.8rem;  // 16px converted to rem and reduced to 80%
     text-align: center;
-    padding-left: 16px;
+    padding-left: 0.8rem;  // 16px converted to rem and reduced to 80%
 `;
 
 export const GridContainer = styled(Box)`
-    margin-top: 16px;
+    margin-top: 0.8rem;  // 16px converted to rem and reduced to 80%
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 0.8rem;  // 16px converted to rem and reduced to 80%
 `;
