@@ -60,32 +60,9 @@ function StudentHeader() {
         setAnchorElUser(event.currentTarget);
     };
 
-    // const handleOpenTesteMenu = (event: React.MouseEvent<HTMLElement>) => {
-    //     setAnchorElTeste(event.currentTarget);
-    // };
-
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
-
-    // const handleCloseTesteMenu = () => {
-    //     setAnchorElTeste(null);
-    // };
-
-    // // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    // const handleStudentPerfil = () => {
-    //     setAnchorElUser(null);
-    //     navigate('/perfil');
-    // };
-
-    // const handleStudentTeste = () => {
-    //     setAnchorElUser(null);
-    //     navigate('/teste-vocacional');
-    // };
-    // const handleStudentResultadoTeste = () => {
-    //     setAnchorElUser(null);
-    //     navigate('/resultado');
-    // };
 
     const handleMenuItemClick = () => {
         setAnchorElUser(null);
@@ -106,39 +83,17 @@ function StudentHeader() {
                         >
                             VOCCO
                         </Typography>
-                    </Box>
-                    <Box sx={{ marginLeft: '600px' }}>
-                        <Link to="/pagina-inicial" style={styles.linkButton}>
-                            <Button color="inherit">Home</Button>
-                        </Link>
-                        <Link to="/instituicao" style={styles.linkButton}>
-                            <Button color="inherit">Universidades</Button>
-                        </Link>
-                        <Link to="/teste-vocacional" style={styles.linkButton}>
-                            <Button color="inherit">Teste</Button>
-                        </Link>
-                        {/* <Tooltip title='Opções de Teste'>
-                            <Button onClick={handleOpenTesteMenu} color="inherit">Teste</Button>
-                        </Tooltip>
-                        <Menu
-                            sx={styles.menu}
-                            id="menu-appbar"
-                            anchorEl={anchorElTeste}
-                            anchorOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            keepMounted
-                            open={Boolean(anchorElTeste)}
-                            onClose={handleCloseTesteMenu}
-                        >
-                            <MenuItem onClick={handleStudentTeste}>
-                                <Typography textAlign="center">Faça um teste</Typography>
-                            </MenuItem>
-                            <MenuItem onClick={handleStudentResultadoTeste}>
-                                <Typography textAlign="center">Resultado do Teste</Typography>
-                            </MenuItem>
-                        </Menu> */}
+                        <Box sx={{ marginLeft: '10px' }}>
+                            <Link to="/pagina-inicial" style={styles.linkButton}>
+                                <Button color="inherit">Home</Button>
+                            </Link>
+                            <Link to="/instituicao" style={styles.linkButton}>
+                                <Button color="inherit">Universidades</Button>
+                            </Link>
+                            <Link to="/teste-vocacional" style={styles.linkButton}>
+                                <Button color="inherit">Teste</Button>
+                            </Link>
+                        </Box>
 
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -168,9 +123,6 @@ function StudentHeader() {
                             <MenuItem onClick={handleMenuItemClick}>
                                 <Typography textAlign="center">Logout</Typography>
                             </MenuItem>
-                            {/* <MenuItem onClick={handleStudentPerfil}>
-                                <Typography textAlign="center">Perfil</Typography>
-                            </MenuItem> */}
                         </Menu>
                     </Box>
                 </Toolbar>

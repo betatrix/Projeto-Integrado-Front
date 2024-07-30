@@ -11,17 +11,30 @@ const globalBoxStyles: SxProps<Theme> = (theme) => ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
+    paddingLeft: '10%',
+    paddingRight: '10%',
     [theme.breakpoints.down('sm')]: {
         flexDirection: 'column',
         alignItems: 'center',
         backgroundAttachment: 'local',
+        paddingLeft: '0px',
+        paddingRight: '0px',
+    },
+    [theme.breakpoints.down('md')]: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        backgroundAttachment: 'local',
+        paddingLeft: '0px',
+        paddingRight: '0px',
     },
 });
 
 // Style Index
 export const homePageBoxStyles: SxProps<Theme> = (theme) => ({
     // backgroundImage: `url(${pageFour})`,
-    backgroundImage: `url(${pageDashboard})`,
+    backgroundImage: `url(${pageDashboard}), linear-gradient(to bottom,  #99b9ff 25%, #caddff 0%, #caddff 75%)`,
+    width: '100%',
+    // height: '10rem',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -33,13 +46,106 @@ export const gridStyles: SxProps<Theme> = (theme) => ({
     justifyContent:'center',
     alignItems:'center',
     display:'flex',
-    backgroundColor:'#99b9ff',
-    marginBottom:'4%',
     [theme.breakpoints.down('sm')]: {
         flexDirection: 'column',
         alignItems: 'center',
         backgroundAttachment: 'local',
     },
+    [theme.breakpoints.down('md')]: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        backgroundAttachment: 'local',
+    },
+});
+
+export const titleMainStyle: SxProps<Theme> =(theme) => ({
+    textAlign: 'center',
+    fontFamily: 'Poppins',
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: '2.5rem',
+    marginBottom: '5%',
+    paddingTop: '5%',
+    textShadow: '1px 1px 2px #000000',
+    [theme.breakpoints.down('sm')]: {
+        textAlign: 'center',
+        fontSize: '1.8rem',
+        marginTop:'5rem',
+    },
+    [theme.breakpoints.down('md')]: {
+        textAlign: 'center',
+        fontSize: '1.8rem',
+        marginTop:'5rem',
+    },
+
+});
+
+export const titleStyle: SxProps<Theme> =(theme) => ({
+    textAlign: 'center',
+    fontFamily: 'Exo 2',
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: '1.5rem',
+    [theme.breakpoints.down('sm')]: {
+        textAlign: 'center',
+        fontSize: '0.8rem',
+    },
+    [theme.breakpoints.down('md')]: {
+        textAlign: 'center',
+        fontSize: '0.8rem',
+    },
+
+});
+
+export const numberStyle: SxProps<Theme> =(theme) => ({
+    textAlign: 'center',
+    fontFamily: 'Exo 2',
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: '3rem',
+    [theme.breakpoints.down('sm')]: {
+        textAlign: 'center',
+        fontSize: '0.8rem',
+    },
+    [theme.breakpoints.down('md')]: {
+        textAlign: 'center',
+        fontSize: '0.8rem',
+    },
+
+});
+
+export const contentStyle: SxProps<Theme> =(theme) => ({
+    textAlign: 'center',
+    fontFamily: 'Exo 2',
+    color: '1b1f27',
+    fontWeight: 'bold',
+    fontSize: '1rem',
+    [theme.breakpoints.down('sm')]: {
+        textAlign: 'center',
+        fontSize: '0.8rem',
+    },
+    [theme.breakpoints.down('md')]: {
+        textAlign: 'center',
+        fontSize: '0.8rem',
+    },
+});
+
+export const content0Style: SxProps<Theme> =(theme) => ({
+    textAlign: 'center',
+    marginTop: '0.5rem',
+    fontFamily: 'Exo 2',
+    color: '#1b1f27',
+    fontWeight: 'bold',
+    fontSize: '1rem',
+    [theme.breakpoints.down('sm')]: {
+        textAlign: 'center',
+        fontSize: '0.8rem',
+    },
+    [theme.breakpoints.down('md')]: {
+        textAlign: 'center',
+        fontSize: '0.8rem',
+    },
+
 });
 
 export const boxStyles: SxProps<Theme> = (theme) => ({
@@ -58,35 +164,57 @@ export const boxStyles: SxProps<Theme> = (theme) => ({
 });
 
 export const paperStyles: SxProps<Theme> = (theme) => ({
-    backgroundColor: 'white',
+    backgroundColor: '#99b9ff',
     padding: '5%',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
     textAlign: 'center',
-    width: '100%',
-    maxWidth: '20rem',
+    width: '20rem',
+    height: '12rem',
+    margin: '0.5rem',
+    [theme.breakpoints.down('sm')]: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        width: '15rem',
+        height: '12rem',
+    },
+    [theme.breakpoints.down('md')]: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        width: '15rem',
+        height: '12rem',
+    },
+});
+
+export const IconStyle: SxProps<Theme> = (theme) => ({
+    fontSize: '50px',
+    color: 'white',
+    background: 'linear-gradient(90deg, #302EB7, #040410)',
+    borderRadius:'0.5rem',
     [theme.breakpoints.down('sm')]: {
         flexDirection: 'column',
         alignItems: 'center',
         backgroundAttachment: 'local',
+        borderRadius:'none',
+        fontSize: '30px',
+    },
+    [theme.breakpoints.down('sm')]: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        backgroundAttachment: 'local',
+        borderRadius:'none',
+        fontSize: '30px',
     },
 });
 
-export const TextButton = styled.span`
-    font-size: 1.2rem;
-    color: #1b1f27;
-    margin-bottom: 0.5rem;  
-    text-align: center;
-`;
-
 export const TestButton: SxProps<Theme> = (theme) => ({
+    fontFamily: 'Poppins',
     background: 'linear-gradient(90deg, #040410, #302EB7)',
     borderRadius: '1rem',
     padding: '0.75rem 2.5rem',
     fontSize: '1rem',
     fontWeight: 'bold',
-    fontFamily: 'Exo 2',
     color: 'white',
     '&:hover': {
         background: 'linear-gradient(90deg, #302EB7, #040410)',
@@ -95,6 +223,15 @@ export const TestButton: SxProps<Theme> = (theme) => ({
         flexDirection: 'column',
         alignItems: 'center',
         backgroundAttachment: 'local',
+        fontSize: '0.8rem',
+        padding: '0.5rem 1.5rem',
+    },
+    [theme.breakpoints.down('md')]: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        backgroundAttachment: 'local',
+        fontSize: '0.8rem',
+        padding: '0.5rem 1.5rem',
     },
 });
 

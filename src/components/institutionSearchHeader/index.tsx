@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
     AppBar,
     Container,
@@ -13,8 +13,8 @@ import {
     Button,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
-import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
+import { AuthContext } from '../../contexts/auth';
+import { decryptData } from '../../services/encryptionService';
 
 const styles = {
     logo: {
@@ -42,40 +42,31 @@ const styles = {
     },
 };
 
-function InstitutionSearchHeader() {
+function StudentHeader() {
 
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-    const [anchorElTeste, setAnchorElTeste] = useState<null | HTMLElement>(null);
-    const navigate = useNavigate();
+    // const [anchorElTeste, setAnchorElTeste] = useState<null | HTMLElement>(null);
+    const authContext = useContext(AuthContext);
+    // const navigate = useNavigate();
+
+    if (!authContext) {
+        return null;
+    }
+    const { logout } = authContext;
+    const studentData = authContext.student ? decryptData(authContext.student) : null;
+    const student = studentData ? JSON.parse(studentData) : null;
 
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElUser(event.currentTarget);
-    };
-
-    const handleOpenTesteMenu = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorElTeste(event.currentTarget);
     };
 
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
 
-    const handleCloseTesteMenu = () => {
-        setAnchorElTeste(null);
-    };
-
-    const handleStudentPerfil = () => {
+    const handleMenuItemClick = () => {
         setAnchorElUser(null);
-        navigate('/perfil');
-    };
-
-    const handleStudentTeste = () => {
-        setAnchorElUser(null);
-        navigate('/teste-vocacional');
-    };
-    const handleStudentResultadoTeste = () => {
-        setAnchorElUser(null);
-        navigate('/resultado');
+        logout();
     };
 
     return (
@@ -92,45 +83,25 @@ function InstitutionSearchHeader() {
                         >
                             VOCCO
                         </Typography>
-                    </Box>
-                    <Box sx={{ marginLeft: '600px' }}>
-                        <Link to="/pagina-inicial" style={styles.linkButton}>
-                            <Button color="inherit">Home</Button>
-                        </Link>
-                        <Link to="/estudante" style={styles.linkButton}>
-                            <Button color="inherit">Painel</Button>
-                        </Link>
-                        <Tooltip title='Opções de Teste'>
-                            <Button onClick={handleOpenTesteMenu} color="inherit">Teste</Button>
-                        </Tooltip>
-                        <Menu
-                            sx={styles.menu}
-                            id="menu-appbar"
-                            anchorEl={anchorElTeste}
-                            anchorOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            keepMounted
-                            open={Boolean(anchorElTeste)}
-                            onClose={handleCloseTesteMenu}
-                        >
-                            <MenuItem onClick={handleStudentTeste}>
-                                <Typography textAlign="center">Faça um teste</Typography>
-                            </MenuItem>
-                            <MenuItem onClick={handleStudentResultadoTeste}>
-                                <Typography textAlign="center">Resultado do Teste</Typography>
-                            </MenuItem>
-                        </Menu>
-
+                        <Box sx={{ marginLeft: '10px' }}>
+                            <Link to="/pagina-inicial" style={styles.linkButton}>
+                                <Button color="inherit">Home</Button>
+                            </Link>
+                            <Link to="/estudante" style={styles.linkButton}>
+                                <Button color="inherit">Dashboard</Button>
+                            </Link>
+                            <Link to="/teste-vocacional" style={styles.linkButton}>
+                                <Button color="inherit">Teste</Button>
+                            </Link>
+                        </Box>
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Typography sx={styles.welcomeText}>Bem vindo de volta, fulano!</Typography>
+                        <Typography sx={styles.welcomeText}>
+                            Bem vindo de volta, {student ? student.nome : 'usuário'}!
+                        </Typography>
                         <Tooltip title="Opções de Perfil">
                             <IconButton onClick={handleOpenUserMenu} sx={styles.avatarButton}>
-                                <Avatar sx={{ width: 50, height: 50 }}>
-                                    <AccountCircleRoundedIcon sx={{ fontSize: 60 }} />
-                                </Avatar>
+                                <Avatar alt={student ? student.nome : 'User Avatar'} src="/static/images/avatar/2.jpg" />
                             </IconButton>
                         </Tooltip>
                         <Menu
@@ -145,8 +116,11 @@ function InstitutionSearchHeader() {
                             open={Boolean(anchorElUser)}
                             onClose={handleCloseUserMenu}
                         >
-                            <MenuItem onClick={handleStudentPerfil}>
-                                <Typography textAlign="center">Perfil</Typography>
+                            <MenuItem>
+                                <Typography textAlign="center">Account</Typography>
+                            </MenuItem>
+                            <MenuItem onClick={handleMenuItemClick}>
+                                <Typography textAlign="center">Logout</Typography>
                             </MenuItem>
                         </Menu>
                     </Box>
@@ -156,4 +130,5 @@ function InstitutionSearchHeader() {
     );
 }
 
-export default InstitutionSearchHeader;
+export default StudentHeader;
+
