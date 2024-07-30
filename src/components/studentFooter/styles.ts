@@ -5,6 +5,6 @@ export const FooterStyle = styled.footer `
     color: #7C7C80;
     padding: 10px;
     width: 100%;
-    position: fixed;
+    position: relative;
 	bottom: 0;
 `;

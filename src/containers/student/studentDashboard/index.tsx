@@ -1,14 +1,13 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Grid, Box, Typography, Paper, Button } from '@mui/material';
+import { Grid, Box, Typography, Paper, Button, Container } from '@mui/material';
 import { Link } from 'react-router-dom';
 import Slider from 'react-slick';
 import StudentHeader from '../../../components/studentHeader';
 import AnnouncementBar from './announcement';
-import { TestButton, homePageBoxStyles, paperStyles } from './styles';
-import BarChartIcon from '@mui/icons-material/BarChart';
-import InsightsIcon from '@mui/icons-material/Insights';
+import { TestButton, boxStyles, gridStyles, homePageBoxStyles, paperStyles } from './styles';
 import StudentFooter from '../../../components/studentFooter';
 import ListAltIcon from '@mui/icons-material/ListAlt';
+import PersonIcon from '@mui/icons-material/Person'; // Importando o ícone desejado
 import { contarTeste, buscarTestesDeEstudante, buscarPerfisRecorrentes } from '../../../services/apiService';
 import { AuthContext } from '../../../contexts/auth';
 import { decryptData } from '../../../services/encryptionService';
@@ -39,7 +38,6 @@ const StudentDashboard: React.FC = () => {
             try {
                 if (user?.id) {
                     const tests = await buscarTestesDeEstudante(user.id);
-                    console.log('Histórico de testes retornado pela API:', tests);
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     const formattedTests = tests.map((test: any) => ({
                         date: new Date(test.data).toLocaleDateString('pt-BR'),
@@ -97,84 +95,104 @@ const StudentDashboard: React.FC = () => {
                 />
             )}
             <Box sx={homePageBoxStyles}>
-                <Grid container justifyContent="center" spacing={4}>
-                    <Grid item xs={12} md={6}>
-                        <Paper sx={paperStyles}>
-                            <Typography variant="h6" component="div">
-                                Testes Preenchidos
-                            </Typography>
-                            <InsightsIcon style={{ fontSize: '80px', color: 'linear-gradient(90deg, #040410, #302EB7)' }} />
-                            <Typography variant="h3" component="div">
+                <Grid container sx={gridStyles} spacing={2}>
+                    <Grid item xs={12} md={6} display="flex" justifyContent="center">
+                        <Box sx={boxStyles}>
+                            <Typography fontFamily="Exo 2" fontWeight="bold" fontSize="3rem" component="div" color="#1b1f27">
                                 {testCount}
                             </Typography>
-                        </Paper>
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                        <Paper sx={paperStyles}>
-                            <Typography variant="h6" component="div">
-                                Perfis mais recorrentes
+                            <Typography fontFamily="Exo 2" fontWeight="bold" fontSize="1rem" component="div" color="#1b1f27">
+                                TESTES RESPONDIDOS
                             </Typography>
-                            <ListAltIcon style={{ fontSize: '80px', color: 'linear-gradient(90deg, #040410, #302EB7)' }} />
+                        </Box>
+                    </Grid>
+                    <Grid item xs={12} md={6} display="flex" justifyContent="center">
+                        <Box sx={boxStyles}>
+                            <Typography fontFamily="Exo 2" fontWeight="bold" fontSize="1rem" component="div">
+                                PERFIS MAIS RECORRENTES <br />NOS SEUS RESULTADOS
+                            </Typography>
                             {recorrentes.length > 0 ? (
                                 recorrentes.map((profile, index) => (
-                                    <Typography key={index} variant="body2" color="text.secondary">
-                                        {profile}
-                                    </Typography>
+                                    <Box key={index} display="flex" alignItems="center" justifyContent="center" marginTop="0.5rem">
+                                        <PersonIcon style={{ marginRight: '8px', color: '#1b1f27' }} />
+                                        <Typography fontFamily="Exo 2" fontWeight="bold" fontSize="1rem" color="#1b1f27">
+                                            {profile}
+                                        </Typography>
+                                    </Box>
                                 ))
                             ) : (
                                 <Typography variant="body2" color="text.secondary">
-                                    Nenhum perfil encontrado.
+                                    Descubra seu perfil fazendo um teste.
                                 </Typography>
                             )}
-                        </Paper>
+                        </Box>
                     </Grid>
-                    <Grid item xs={12} md={6}>
+                </Grid>
+                <Container sx={{ justifyContent: 'center', alignItems: 'center', display: 'flex' }}>
+                    <Box sx={{ width: '40%', justifyContent: 'center', alignItems: 'center', display: 'flex' }}>
+                        <Typography textAlign="center" fontFamily="Exo 2" fontWeight="bold" fontSize="1.5rem" marginBottom="5%">
+                            HISTÓRICO DE TESTES
+                        </Typography>
+                    </Box>
+                </Container>
+                <Grid container justifyContent="center" alignItems="center" display="flex" spacing={2}>
+                    <Grid item xs={12} md={6} display="flex" justifyContent="center">
+                        {/* <Box sx={boxStyles}> */}
                         <Paper sx={paperStyles}>
-                            <Typography variant="h6" component="div">
-                                Histórico de testes
-                            </Typography>
-                            <ListAltIcon style={{ fontSize: '80px', color: 'linear-gradient(90deg, #040410, #302EB7)' }} />
-                            <Box sx={{ mt: '20px', textAlign: 'center' }}>
+                            <ListAltIcon style={{ fontSize: '50px', color: '#1b1f27' }} />
+                            <Box sx={{ mt: '20px', textAlign: 'center' }} component="div">
                                 <Link to="/teste-vocacional" style={{ textDecoration: 'none' }}>
-                                    <Button variant="contained" size="large" sx={TestButton}>
+                                    <Button variant="contained" sx={TestButton}>
                                         {testCount === 0 ? 'Fazer Teste' : 'Refazer Teste'}
                                     </Button>
                                 </Link>
                             </Box>
                         </Paper>
+                        {/* </Box> */}
                     </Grid>
                     <Grid item xs={12} md={6} display="flex" justifyContent="center">
                         <Paper sx={paperStyles}>
-                            <Typography variant="h6" component="div">
-                                Resultados
+                            <Typography fontFamily="Exo 2" fontWeight="bold" fontSize="1rem" color="#1b1f27" component="div">
+                                RESULTADOS
                             </Typography>
-                            <BarChartIcon style={{ fontSize: '80px', color: 'linear-gradient(90deg, #040410, #302EB7)' }} />
-                            {testHistory.length > 0 ? (
+                            {testHistory.length > 1 ? (
                                 <Slider {...carouselSettings}>
                                     {testHistory.map((test, index) => (
                                         <Box key={index} sx={{ padding: '1%' }}>
-                                            <Typography variant="body2" color="text.secondary">
+                                            <Typography fontFamily="Exo 2" fontWeight="bold" fontSize="1rem" color="#1b1f27">
                                                 Data: {test.date}
                                             </Typography>
-                                            <Typography variant="body2" color="text.secondary">
+                                            <Typography fontFamily="Exo 2" fontWeight="bold" fontSize="1rem" color="#1b1f27">
                                                 Teste: {test.tipo}
                                             </Typography>
-                                            <Typography variant="body2" color="text.secondary">
+                                            <Typography fontFamily="Exo 2" fontWeight="bold" fontSize="1rem" color="#1b1f27">
                                                 Resultado: {test.result.join(', ')}
                                             </Typography>
                                         </Box>
                                     ))}
                                 </Slider>
+                            ) : testHistory.length === 1 ? (
+                                <Box sx={{ padding: '1%' }}>
+                                    <Typography fontFamily="Exo 2" fontWeight="bold" fontSize="1rem" color="#1b1f27">
+                                        Data: {testHistory[0].date}
+                                    </Typography>
+                                    <Typography fontFamily="Exo 2" fontWeight="bold" fontSize="1rem" color="#1b1f27">
+                                        Teste: {testHistory[0].tipo}
+                                    </Typography>
+                                    <Typography fontFamily="Exo 2" fontWeight="bold" fontSize="1rem" color="#1b1f27">
+                                        Resultado: {testHistory[0].result.join(', ')}
+                                    </Typography>
+                                </Box>
                             ) : (
-                                <Typography variant="body2" color="text.secondary">
+                                <Typography fontFamily="Exo 2" fontWeight="bold" fontSize="1rem" color="#1b1f27">
                                     Nenhum teste realizado.
                                 </Typography>
                             )}
                         </Paper>
                     </Grid>
                 </Grid>
-                <StudentFooter />
             </Box>
+            <StudentFooter />
         </>
     );
 };

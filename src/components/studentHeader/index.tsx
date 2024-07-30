@@ -12,7 +12,7 @@ import {
     MenuItem,
     Button,
 } from '@mui/material';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { AuthContext } from '../../contexts/auth';
 import { decryptData } from '../../services/encryptionService';
 
@@ -45,9 +45,9 @@ const styles = {
 function StudentHeader() {
 
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-    const [anchorElTeste, setAnchorElTeste] = useState<null | HTMLElement>(null);
+    // const [anchorElTeste, setAnchorElTeste] = useState<null | HTMLElement>(null);
     const authContext = useContext(AuthContext);
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     if (!authContext) {
         return null;
@@ -60,17 +60,17 @@ function StudentHeader() {
         setAnchorElUser(event.currentTarget);
     };
 
-    const handleOpenTesteMenu = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorElTeste(event.currentTarget);
-    };
+    // const handleOpenTesteMenu = (event: React.MouseEvent<HTMLElement>) => {
+    //     setAnchorElTeste(event.currentTarget);
+    // };
 
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
 
-    const handleCloseTesteMenu = () => {
-        setAnchorElTeste(null);
-    };
+    // const handleCloseTesteMenu = () => {
+    //     setAnchorElTeste(null);
+    // };
 
     // // eslint-disable-next-line @typescript-eslint/no-unused-vars
     // const handleStudentPerfil = () => {
@@ -78,14 +78,14 @@ function StudentHeader() {
     //     navigate('/perfil');
     // };
 
-    const handleStudentTeste = () => {
-        setAnchorElUser(null);
-        navigate('/teste-vocacional');
-    };
-    const handleStudentResultadoTeste = () => {
-        setAnchorElUser(null);
-        navigate('/resultado');
-    };
+    // const handleStudentTeste = () => {
+    //     setAnchorElUser(null);
+    //     navigate('/teste-vocacional');
+    // };
+    // const handleStudentResultadoTeste = () => {
+    //     setAnchorElUser(null);
+    //     navigate('/resultado');
+    // };
 
     const handleMenuItemClick = () => {
         setAnchorElUser(null);
@@ -114,7 +114,10 @@ function StudentHeader() {
                         <Link to="/instituicao" style={styles.linkButton}>
                             <Button color="inherit">Universidades</Button>
                         </Link>
-                        <Tooltip title='Opções de Teste'>
+                        <Link to="/teste-vocacional" style={styles.linkButton}>
+                            <Button color="inherit">Teste</Button>
+                        </Link>
+                        {/* <Tooltip title='Opções de Teste'>
                             <Button onClick={handleOpenTesteMenu} color="inherit">Teste</Button>
                         </Tooltip>
                         <Menu
@@ -135,7 +138,7 @@ function StudentHeader() {
                             <MenuItem onClick={handleStudentResultadoTeste}>
                                 <Typography textAlign="center">Resultado do Teste</Typography>
                             </MenuItem>
-                        </Menu>
+                        </Menu> */}
 
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
