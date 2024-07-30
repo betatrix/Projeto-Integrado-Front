@@ -212,7 +212,7 @@ const VocacionalTest: React.FC = () => {
 
                 <DialogContent>
                     <ModalText variant="body1" style={{ fontSize: '16px' }}>
-                        Nosso teste vocacional é inpirado na teoria do psicólogo John L. Holland, conhecida como RIASEC - Realista, Investigativo, Artístico, Social, Empreendedor e Convencional.
+                        Nosso teste vocacional é inspirado na teoria do psicólogo John L. Holland, conhecida como RIASEC - Realista, Investigativo, Artístico, Social, Empreendedor e Convencional.
                     </ModalText>
                     <br />
                     <ModalText>
