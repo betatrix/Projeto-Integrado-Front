@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
     AppBar,
     Container,
@@ -13,7 +13,8 @@ import {
     Button,
 } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
-import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
+import { AuthContext } from '../../contexts/auth';
+import { decryptData } from '../../services/encryptionService';
 
 const styles = {
     logo: {
@@ -45,7 +46,15 @@ function StudentHeader() {
 
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
     const [anchorElTeste, setAnchorElTeste] = useState<null | HTMLElement>(null);
+    const authContext = useContext(AuthContext);
     const navigate = useNavigate();
+
+    if (!authContext) {
+        return null;
+    }
+    const { logout } = authContext;
+    const studentData = authContext.student ? decryptData(authContext.student) : null;
+    const student = studentData ? JSON.parse(studentData) : null;
 
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElUser(event.currentTarget);
@@ -76,6 +85,11 @@ function StudentHeader() {
     const handleStudentResultadoTeste = () => {
         setAnchorElUser(null);
         navigate('/resultado');
+    };
+
+    const handleMenuItemClick = () => {
+        setAnchorElUser(null);
+        logout();
     };
 
     return (
@@ -125,12 +139,14 @@ function StudentHeader() {
 
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Typography sx={styles.welcomeText}>Bem vindo de volta, fulano!</Typography>
-                        <IconButton onClick={handleOpenUserMenu} sx={styles.avatarButton}>
-                            <Avatar sx={{ width: 50, height: 50 }}>
-                                <AccountCircleRoundedIcon sx={{ fontSize: 60 }} />
-                            </Avatar>
-                        </IconButton>
+                        <Typography sx={styles.welcomeText}>
+                            Bem vindo de volta, {student ? student.nome : 'usuário'}!
+                        </Typography>
+                        <Tooltip title="Opções de Perfil">
+                            <IconButton onClick={handleOpenUserMenu} sx={styles.avatarButton}>
+                                <Avatar alt={student ? student.nome : 'User Avatar'} src="/static/images/avatar/2.jpg" />
+                            </IconButton>
+                        </Tooltip>
                         <Menu
                             sx={styles.menu}
                             id="menu-appbar"
@@ -143,6 +159,12 @@ function StudentHeader() {
                             open={Boolean(anchorElUser)}
                             onClose={handleCloseUserMenu}
                         >
+                            <MenuItem>
+                                <Typography textAlign="center">Account</Typography>
+                            </MenuItem>
+                            <MenuItem onClick={handleMenuItemClick}>
+                                <Typography textAlign="center">Logout</Typography>
+                            </MenuItem>
                             {/* <MenuItem onClick={handleStudentPerfil}>
                                 <Typography textAlign="center">Perfil</Typography>
                             </MenuItem> */}

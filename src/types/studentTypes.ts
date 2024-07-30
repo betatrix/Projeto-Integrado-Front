@@ -7,7 +7,3 @@ export type StudentRegisterForm = {
 	nivelEscolar: string;
   };
 
-  export type StudentLoginForm = {
-	login: string;
-	senha: string;
-  };

@@ -1,4 +1,5 @@
-import { StudentLoginForm, StudentRegisterForm } from '../types/studentTypes';
+import { LoginForm } from '../types/loginTypes';
+import { StudentRegisterForm } from '../types/studentTypes';
 import { cadastrarEstudante, recuperarSenha, redefinirSenha, loginConta } from './apiService';
 
 export const cadastroEstudante = async (estudanteData: StudentRegisterForm) => {
@@ -16,7 +17,7 @@ export const redefinicaoSenha = async (token: string, senha: string) => {
     return response;
 };
 
-export const login = async (estudanteData:StudentLoginForm) => {
+export const loginEstudante = async (estudanteData:LoginForm) => {
     const response = await loginConta('estudante', estudanteData);
     return response;
 };
