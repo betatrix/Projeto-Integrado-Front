@@ -10,7 +10,7 @@ export const Global = createGlobalStyle`
     color: #030140;
     font-weight: 400;
     font-style: normal;
-  }
+}
 `;
 
 export const IntroText = styled(Typography)`
