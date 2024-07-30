@@ -14,8 +14,11 @@ import {
 import TestInformation from './testInf';
 import InitialPageFooter from '../../../components/homeFooter';
 import LogoCarousel from './logoCarousel';
+import { useTranslation } from 'react-i18next';
 
 export const HomePage: React.FC = () => {
+    const{ t } = useTranslation();
+    
     return (
         <>
             <InitialPageHeader />
@@ -25,20 +28,20 @@ export const HomePage: React.FC = () => {
                         VOCCO
                     </Typography>
                     <Typography sx={typographySubtitleStyles}>
-                        Encontre o curso e a faculdade perfeitos para você!<br />
-                        Tenha acesso ao nosso teste vocacional exclusivo e informações sobre <br />
-                        universidades brasileiras clicando no botão abaixo:
+                        {t('welcomeText1')}<br />
+                        {t('welcomeText2')}<br />
+                        {t('welcomeText3')}
                     </Typography>
                     <Link to="/register" style={{ textDecoration: 'none' }}>
                         <Button variant="contained" size="large" sx={buttonStyles}>
-                            Cadastre-se
+                            {t('registerButton')}
                         </Button>
                     </Link>
                 </Grid>
             </Box>
             <Container>
                 <Typography sx={CarouselTitle}>
-                    Nossos Parceiros
+                    {t('partner')}
                 </Typography>
                 <LogoCarousel />
             </Container>

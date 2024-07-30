@@ -10,9 +10,11 @@ import {
     listItemTextStyles,
     FaqTitle,
 } from './styles';
+import { useTranslation } from 'react-i18next';
 
 export const Faq: React.FC = () => {
     const [openItems, setOpenItems] = React.useState<{ [key: string]: boolean }>({});
+    const{ t } = useTranslation();
 
     const handleClick = (item: string) => {
         setOpenItems(prevState => ({
@@ -24,14 +26,14 @@ export const Faq: React.FC = () => {
         <Box sx={faqBoxStyles}>
             <Box sx={innerBoxStyles}>
                 <Typography sx={FaqTitle} component="span">
-                    Perguntas Frequentes
+                    {t('faqTitle')}
                 </Typography>
                 <Box sx={listStyles}>
                     <ListItemButton onClick={() => handleClick('item1')}>
                         <ListItemIcon>
                             <QuestionAnswerIcon sx={listItemIconStyles}/>
                         </ListItemIcon>
-                        <ListItemText primaryTypographyProps={{ sx: listItemTextStyles }} primary='O que é um teste vocacional?' />
+                        <ListItemText primaryTypographyProps={{ sx: listItemTextStyles }} primary={t('faqTitleText1')} />
                         {openItems['item1'] ? <ExpandLess /> : <ExpandMore />}
                     </ListItemButton>
                     <Collapse in={openItems['item1']} timeout="auto" unmountOnExit>
@@ -40,8 +42,7 @@ export const Faq: React.FC = () => {
                                 <ListItemIcon>
                                     <StarBorder />
                                 </ListItemIcon>
-                                <ListItemText primaryTypographyProps={{ sx: listItemTextStyles }} primary='Um teste vocacional é uma ferramenta que ajuda a
-                                        identificar suas aptidões, interesses e habilidades, sugerindo possíveis carreiras e áreas de estudo que se alinham com seu perfil.' />
+                                <ListItemText primaryTypographyProps={{ sx: listItemTextStyles }} primary={t('faqText1')} />
                             </ListItemButton>
                         </List>
                     </Collapse>
@@ -51,7 +52,7 @@ export const Faq: React.FC = () => {
                         <ListItemIcon>
                             <QuestionAnswerIcon sx={listItemIconStyles}/>
                         </ListItemIcon>
-                        <ListItemText primaryTypographyProps={{ sx: listItemTextStyles }} primary='Como funciona o teste vocacional?' />
+                        <ListItemText primaryTypographyProps={{ sx: listItemTextStyles }} primary={t('faqTitleText2')} />
                         {openItems['item2'] ? <ExpandLess /> : <ExpandMore />}
                     </ListItemButton>
                     <Collapse in={openItems['item2']} timeout="auto" unmountOnExit>
@@ -60,9 +61,7 @@ export const Faq: React.FC = () => {
                                 <ListItemIcon>
                                     <StarBorder />
                                 </ListItemIcon>
-                                <ListItemText primaryTypographyProps={{ sx: listItemTextStyles }} primary='O teste consiste em uma série de perguntas sobre seus
-                                        interesses, habilidades e preferências. Com base nas suas respostas, ele gera um relatório com sugestões de carreiras e cursos
-                                        adequados para você.' />
+                                <ListItemText primaryTypographyProps={{ sx: listItemTextStyles }} primary={t('faqText2')} />
                             </ListItemButton>
                         </List>
                     </Collapse>
@@ -72,7 +71,7 @@ export const Faq: React.FC = () => {
                         <ListItemIcon >
                             <QuestionAnswerIcon sx={listItemIconStyles} />
                         </ListItemIcon>
-                        <ListItemText primaryTypographyProps={{ sx: listItemTextStyles }} primary='Como posso entrar em contato com uma universidade específica?' />
+                        <ListItemText primaryTypographyProps={{ sx: listItemTextStyles }} primary={t('faqTitleText3')} />
                         {openItems['item3'] ? <ExpandLess /> : <ExpandMore />}
                     </ListItemButton>
                     <Collapse in={openItems['item3']} timeout="auto" unmountOnExit>
@@ -81,8 +80,7 @@ export const Faq: React.FC = () => {
                                 <ListItemIcon>
                                     <StarBorder />
                                 </ListItemIcon>
-                                <ListItemText primaryTypographyProps={{ sx: listItemTextStyles }} primary='Cada página de universidade inclui detalhes de contato,
-                                        como endereço, telefone e e-mail. Você também pode encontrar links para os sites oficiais das universidades.' />
+                                <ListItemText primaryTypographyProps={{ sx: listItemTextStyles }} primary={t('faqText3')} />
                             </ListItemButton>
                         </List>
                     </Collapse>
@@ -92,7 +90,7 @@ export const Faq: React.FC = () => {
                         <ListItemIcon>
                             <QuestionAnswerIcon sx={listItemIconStyles} />
                         </ListItemIcon>
-                        <ListItemText primaryTypographyProps={{ sx: listItemTextStyles }} primary='Como criar uma conta no site?' />
+                        <ListItemText primaryTypographyProps={{ sx: listItemTextStyles }} primary={t('faqTitleText4')} />
                         {openItems['item4'] ? <ExpandLess /> : <ExpandMore />}
                     </ListItemButton>
                     <Collapse in={openItems['item4']} timeout="auto" unmountOnExit>
@@ -101,8 +99,7 @@ export const Faq: React.FC = () => {
                                 <ListItemIcon>
                                     <StarBorder />
                                 </ListItemIcon>
-                                <ListItemText primaryTypographyProps={{ sx: listItemTextStyles }} primary='Clique no botão "Cadastre-se" no centro da primeira
-                                         página e preencha o formulário com suas informações pessoais.' />
+                                <ListItemText primaryTypographyProps={{ sx: listItemTextStyles }} primary={t('faqText4')} />
                             </ListItemButton>
                         </List>
                     </Collapse>
@@ -113,7 +110,7 @@ export const Faq: React.FC = () => {
                             <QuestionAnswerIcon sx={listItemIconStyles}/>
                         </ListItemIcon>
                         <ListItemText primaryTypographyProps={{ sx: listItemTextStyles }}
-                            primary='Como posso salvar minhas pesquisas e resultados de testes?' />
+                            primary={t('faqTitleText5')} />
                         {openItems['item5'] ? <ExpandLess /> : <ExpandMore />}
                     </ListItemButton>
                     <Collapse in={openItems['item5']} timeout="auto" unmountOnExit>
@@ -122,8 +119,7 @@ export const Faq: React.FC = () => {
                                 <ListItemIcon>
                                     <StarBorder />
                                 </ListItemIcon>
-                                <ListItemText primaryTypographyProps={{ sx: listItemTextStyles }} primary='Após criar uma conta, fazer login e realizar um
-                                        teste você terá salvo em sua página os resultados do testes, acessível a qualquer momento.'/>
+                                <ListItemText primaryTypographyProps={{ sx: listItemTextStyles }} primary={t('faqText5')} />
                             </ListItemButton>
                         </List>
                     </Collapse>

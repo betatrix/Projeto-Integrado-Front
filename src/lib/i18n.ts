@@ -1,35 +1,23 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
-import enTranslations from '../public/locale/en-US/en.json';
-import ptTranslations from '../public/locale/pt-BR/pt.json';
-
-// i18n.use(initReactI18next).init({
-//     resources: {
-//         en: {
-//             ...enTranslations
-//         },
-
-//         pt: {
-//             ...ptTranslations
-//         },
-//     },
-//     lng: 'en',
-// });
+import enTranslations from '../public/locale/en-US/enTranslation.json';
+import ptTranslations from '../public/locale/pt-BR/ptTranslation.json';
 
 i18n.use(initReactI18next).init({
     resources: {
         en: {
-            translation: enTranslations
+            ...enTranslations
         },
+
         pt: {
-            translation: ptTranslations
+            ...ptTranslations
         },
     },
-    lng: 'en', // Define o idioma padrão
-    fallbackLng: 'en', // Define o idioma de fallback
+    lng: 'pt',
+    fallbackLng: 'en',
     interpolation: {
-        escapeValue: false // O React já faz escaping dos valores
+        escapeValue: false
     }
 });
 
