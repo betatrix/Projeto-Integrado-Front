@@ -1,6 +1,7 @@
 import styled, { createGlobalStyle } from 'styled-components';
-import { Typography, Box, Button, IconButton } from '@mui/material';
+import { Typography, Box, Button, IconButton, SxProps, Theme } from '@mui/material';
 import { Link } from 'react-router-dom';
+import resultTest from '../../../assets/img/resultTest.png';
 
 export const Global = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css2?family=Exo:wght@400;600&display=swap');
@@ -198,3 +199,24 @@ export const SearchButton = styled(IconButton)`
     background-color: #303f9f;
   }
 `;
+
+const globalBoxStyles: SxProps<Theme> = (theme) => ({
+    minHeight: '90vh',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundColor: '#caddff',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    [theme.breakpoints.down('sm')]: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        backgroundAttachment: 'local',
+    },
+});
+
+// eslint-disable-next-line react-refresh/only-export-components
+export const homePageBoxStyles: SxProps<Theme> = (theme) => ({
+    backgroundImage: `url(${resultTest})`,
+    ...globalBoxStyles(theme),
+});
