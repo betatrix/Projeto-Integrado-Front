@@ -11,7 +11,7 @@ export const Global = createGlobalStyle`
     font-weight: 400;
     font-style: normal;
     background-color: #caddff;
-    overflow: hidden; /* Esconde o overflow da página */
+    /* overflow: hidden; Esconde o overflow da página */
   }
 
   .slick-slide {
@@ -20,6 +20,10 @@ export const Global = createGlobalStyle`
 
   .slick-list {
     padding: 0 20px; /* padding ao redor do carrossel */
+  }
+
+  .slick-dots {
+    bottom: 43%; /* ajuste esta linha para aproximar os dots */
   }
 
   /* Estilizando a barra de rolagem */
@@ -112,7 +116,8 @@ export const CarouselContainer = styled(Box)`
   width: 85%; 
   margin: 0 auto;
   padding: 20px;
-  overflow: hidden;
+  /* overflow: hidden; */
+  margin-bottom: -300px;
 `;
 
 export const CustomButton = styled(Button)`
