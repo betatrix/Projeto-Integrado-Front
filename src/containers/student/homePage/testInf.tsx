@@ -17,6 +17,7 @@ import {
     TestInfoTitle,
     testInfBoxStyles,
 } from './styles';
+import { useTranslation } from 'react-i18next';
 
 const data = [
     {
@@ -46,6 +47,7 @@ const data = [
 ];
 
 export const TestInformation: React.FC = () => {
+    const{ t } = useTranslation();
     const [index, setIndex] = useState(0);
 
     const handlePrevClick = () => {
@@ -71,14 +73,10 @@ export const TestInformation: React.FC = () => {
             <Grid container spacing={4} alignItems="center" justifyContent="center">
                 <Grid item xs={12} md={6} sx={GridItemText}>
                     <Box>
-                        <Typography sx={TestInfoTitle}>Teoria de John Holland</Typography>
+                        <Typography sx={TestInfoTitle}>{t('informationTitle')}</Typography>
                     </Box>
                     <Typography sx={TestInfoContent}>
-                        Nosso teste vocacional é fundamentado nos estudos do psicólogo John L. Holland, que desenvolveu a Teoria dos
-                        Tipos Vocacionais. Esta teoria identifica seis tipos principais de personalidade e ambientes de trabalho,
-                        conhecidos pela sigla RIASEC. Ao responder nosso teste, suas características pessoais são comparadas com os
-                        tipos RIASEC para identificar carreiras e áreas de estudo que correspondem ao seu perfil, aumentando as
-                        chances de satisfação e sucesso profissional.
+                        {t('informationText')}
                     </Typography>
                 </Grid>
                 <Grid item xs={12} md={6} sx={GridItemCards}>

@@ -10,6 +10,7 @@ import {
 import { Link as ScrollLink } from 'react-scroll';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import LanguageMenu from '../translationButton';
 
 const styles = {
     logo: {
@@ -21,8 +22,14 @@ const styles = {
         textDecoration: 'none',
     },
     LoginText: {
-        // mr: 2,
+        mr: 2,
+        marginLeft: '10px',
         color: 'white',
+        borderColor: 'white',
+        '&:hover': {
+            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+            borderColor: 'white',
+        },
     },
     menu: {
         mt: '45px',
@@ -30,19 +37,18 @@ const styles = {
     linkButton: {
         color: 'white',
         textDecoration: 'none',
-        marginRight: '20px',
+        marginRight: '10px',
         cursor: 'pointer',
     },
 };
 
 function InitialPageHeader() {
     const navigate = useNavigate();
+    const{ t } = useTranslation();
 
     const handleLogin = () => {
         navigate('/login');
     };
-
-    const{ t } = useTranslation();
 
     return (
         <AppBar position="sticky" style={{ backgroundColor: '#1b1f27' }}>
@@ -63,10 +69,10 @@ function InitialPageHeader() {
                                 <Button color="inherit">{t('home')}</Button>
                             </ScrollLink>
                             <ScrollLink to="testInformation" smooth={true} duration={500} style={styles.linkButton}>
-                                <Button color="inherit">{t('Informações')}</Button>
+                                <Button color="inherit">{t('testInformation')}</Button>
                             </ScrollLink>
                             <ScrollLink to="about" smooth={true} duration={500} style={styles.linkButton}>
-                                <Button color="inherit">{t('Sobre')}</Button>
+                                <Button color="inherit">{t('about')}</Button>
                             </ScrollLink>
                             <ScrollLink to="faq" smooth={true} duration={500} style={styles.linkButton}>
                                 <Button color="inherit">{t('faq')}</Button>
@@ -74,6 +80,7 @@ function InitialPageHeader() {
                         </Box>
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <LanguageMenu />
                         <Tooltip title="Login">
                             <Button type="button" variant="outlined" onClick={handleLogin} sx={styles.LoginText} >
                                 {t('login')}
