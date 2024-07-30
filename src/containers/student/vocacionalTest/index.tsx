@@ -1,13 +1,12 @@
-/* eslint-disable max-len */
 import React, { useState, useEffect, useContext } from 'react';
-import { useNavigate } from 'react-router-dom'; // Importar useNavigate
+import { useNavigate } from 'react-router-dom'; 
 import Header from '../../../components/studentHeader';
 import Footer from '../../../components/studentFooter';
-import { IconButton, Box, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { IconButton, Box, Dialog, DialogActions, DialogContent, DialogTitle, Button as MuiButton } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import { CenteredDiv, ButtonGroup, StyledLinearProgress, Global, IntroText, homePageBoxStyles, StyledTypography, CustomButton, ModalText, BackButton, CustomLink } from './styles';
+import { CenteredDiv, ButtonGroup, StyledLinearProgress, Global, IntroText, homePageBoxStyles, StyledTypography, CustomButton, ModalText, BackButton } from './styles';
 import axios from 'axios';
 import AnswerOptions from './answerOptions';
 import { AuthContext } from '../../../contexts/auth';
@@ -38,6 +37,7 @@ const VocacionalTest: React.FC = () => {
     const [usuario, setUsuario] = useState<Usuario | null>(null);
     const [teste, setTeste] = useState<Teste | null>(null);
     const [showModal, setShowModal] = useState(true);
+    const [showExitModal, setShowExitModal] = useState(false);
 
     useEffect(() => {
         const fetchQuestions = async () => {
@@ -110,7 +110,6 @@ const VocacionalTest: React.FC = () => {
             const response = await axios.post(`${apiUrl}/resposta`, payload);
             console.log('Respostas enviadas com sucesso:', response.data);
 
-            // Redirecionar para a tela de resultados com o resultado do teste
             navigate('/resultado', { state: { resultado: response.data } });
         } catch (error) {
             console.error('Erro ao enviar as respostas:', error);
@@ -119,6 +118,19 @@ const VocacionalTest: React.FC = () => {
 
     const handleStartTest = () => {
         setShowModal(false);
+    };
+
+    const handleBackToDashboard = () => {
+        setShowExitModal(true);
+    };
+
+    const confirmExit = () => {
+        setShowExitModal(false);
+        navigate('/estudante');
+    };
+
+    const cancelExit = () => {
+        setShowExitModal(false);
     };
 
     const allQuestionsAnswered = answers.every((answer) => answer !== 0);
@@ -132,8 +144,8 @@ const VocacionalTest: React.FC = () => {
                 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
             </style>
             <Header />
-            <BackButton startIcon={<ArrowBackIcon />}>
-                <CustomLink to={'/estudante'}>Dashboard</CustomLink>
+            <BackButton startIcon={<ArrowBackIcon />} onClick={handleBackToDashboard} style={{fontSize: '12px', fontWeight: 'bold'}}>
+                Dashboard
             </BackButton>
             <Box sx={homePageBoxStyles}>
                 <CenteredDiv>
@@ -182,7 +194,6 @@ const VocacionalTest: React.FC = () => {
             </Box>
             <Footer />
 
-            {/* Modal de Instruções */}
             <Dialog
                 open={showModal}
                 onClose={() => setShowModal(false)}
@@ -197,26 +208,56 @@ const VocacionalTest: React.FC = () => {
                     },
                 }}
             >
-                <DialogTitle style={{textAlign: 'center', fontSize: '22px', marginBottom: '15px'}}>Antes de começar ...</DialogTitle>
+                <DialogTitle style={{ textAlign: 'center', fontSize: '22px', marginBottom: '15px' }}>Antes de começar ...</DialogTitle>
 
                 <DialogContent>
-                    <ModalText variant="body1" style={{fontSize: '16px'}}>
-                    Nosso teste vocacional é inpirado na teoria do psicólogo John L. Holland, conhecida como RIASEC - Realista, Investigativo, Artístico, Social, Empreendedor e Convencional.
+                    <ModalText variant="body1" style={{ fontSize: '16px' }}>
+                        Nosso teste vocacional é inpirado na teoria do psicólogo John L. Holland, conhecida como RIASEC - Realista, Investigativo, Artístico, Social, Empreendedor e Convencional.
                     </ModalText>
-                    <br></br>
+                    <br />
                     <ModalText>
-                    Essa teoria divide as pessoas em seis tipos diferentes de personalidade e ambientes de trabalho. Ao responder ao teste, suas características são comparadas com esses seis tipos para sugerir carreiras e áreas de estudo que combinam com o seu perfil.
+                        Essa teoria divide as pessoas em seis tipos diferentes de personalidade e ambientes de trabalho. Ao responder ao teste, suas características são comparadas com esses seis tipos para sugerir carreiras e áreas de estudo que combinam com o seu perfil.
                     </ModalText>
-                    <br></br>
+                    <br />
                     <ModalText>
-                    Além disso, usamos essas informações para ajudar você a encontrar cursos e universidades que se encaixam no seu perfil, aumentando suas chances de se sentir realizado e ter sucesso na sua trajetória profissional.
+                        Além disso, usamos essas informações para ajudar você a encontrar cursos e universidades que se encaixam no seu perfil, aumentando suas chances de se sentir realizado e ter sucesso na sua trajetória profissional.
                     </ModalText>
                 </DialogContent>
 
                 <DialogActions>
-                    <CustomButton onClick={handleStartTest} color="primary" style={{justifyItems: 'center', width: '200px', height: '40px'}}>
+                    <CustomButton onClick={handleStartTest} color="primary" style={{ justifyItems: 'center', width: '200px', height: '40px' }}>
                         Iniciar Teste
                     </CustomButton>
+                </DialogActions>
+            </Dialog>
+
+            {/* Modal de Confirmação de Saída */}
+            <Dialog
+                open={showExitModal}
+                onClose={cancelExit}
+                PaperProps={{
+                    style: {
+                        width: '90%',
+                        maxWidth: '400px',
+                        margin: 'auto',
+                        borderRadius: '10px',
+                        padding: '20px',
+                    },
+                }}
+            >
+                <DialogTitle style={{ textAlign: 'center', fontSize: '18px', marginBottom: '15px' }}>Tem certeza de que deseja sair?</DialogTitle>
+                <DialogContent>
+                    <ModalText variant="body1" style={{ fontSize: '16px' }}>
+                        Suas respostas atuais não serão salvas se você sair agora.
+                    </ModalText>
+                </DialogContent>
+                <DialogActions>
+                    <MuiButton onClick={confirmExit} color="primary">
+                        Sair
+                    </MuiButton>
+                    <MuiButton onClick={cancelExit} color="secondary">
+                        Cancelar
+                    </MuiButton>
                 </DialogActions>
             </Dialog>
         </>
