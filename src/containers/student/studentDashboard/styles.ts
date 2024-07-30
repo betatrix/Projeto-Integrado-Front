@@ -32,7 +32,7 @@ const globalBoxStyles: SxProps<Theme> = (theme) => ({
 // Style Index
 export const homePageBoxStyles: SxProps<Theme> = (theme) => ({
     // backgroundImage: `url(${pageFour})`,
-    backgroundImage: `url(${pageDashboard}), linear-gradient(to bottom,  #99b9ff 25%, #caddff 0%, #caddff 75%)`,
+    backgroundImage: `url(${pageDashboard}), linear-gradient(to bottom,  #99b9ff 50%, #caddff 0%, #caddff 50%)`,
     width: '100%',
     // height: '10rem',
     display: 'flex',
