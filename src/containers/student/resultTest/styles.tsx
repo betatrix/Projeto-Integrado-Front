@@ -1,5 +1,6 @@
 import styled, { createGlobalStyle } from 'styled-components';
-import { Typography, Box, Button } from '@mui/material';
+import { Typography, Box, Button, IconButton } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 export const Global = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css2?family=Exo:wght@400;600&display=swap');
@@ -36,7 +37,7 @@ export const Global = createGlobalStyle`
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: #555; /* Cor do polegar da barra de rolagem quando em hover */
+    background: #555;
   }
 `;
 
@@ -47,6 +48,12 @@ export const TitleResult = styled(Typography)`
   text-align: center;
   font-family: 'Exo', sans-serif;
   font-weight: bold;
+`;
+
+export const DetailsResult = styled(Typography)`
+  color:rgba(0, 0, 0, 0.5); 
+  margin-bottom: 20px;
+  font-family: 'Exo', sans-serif;
 `;
 
 export const ResultContainerMessage = styled(Box)`
@@ -60,11 +67,14 @@ export const ResultContainerMessage = styled(Box)`
 
 export const ResultMessage = styled(Typography)`
   font-size: 12px;
-  color: #333;
+  color: #474646;
   margin-bottom: 20px;
 `;
 
-export const CourseCard = styled(Box)`
+export const CourseCard = styled(Box)<{ primary: boolean }>`
+  /* color: ${({ primary }) => (primary ? '#368ABF' : '#7F00F5')}; */
+  border-color:  ${({ primary }) => (primary ? '#5dabdc' : '#861aeb')};
+  border-style: solid;
   display: flex;
   flex-direction: column;
   justify-content: space-between; /* Garante que o botão fique no final */
@@ -79,6 +89,7 @@ export const CourseCard = styled(Box)`
   height: 350px;
   width: 150px; /* Defina a largura dos cards */
   box-sizing: border-box;
+  position: relative; /* Necessário para posicionar o botão corretamente */
 
   .MuiTypography-root {
     text-align: justify;
@@ -97,8 +108,8 @@ export const CourseCard = styled(Box)`
 `;
 
 export const CarouselContainer = styled(Box)`
-  width: 80%; /* Ajuste a largura conforme necessário */
-  margin: 0 auto; /* Centraliza o contêiner */
+  width: 80%; 
+  margin: 0 auto;
   padding: 20px;
   overflow: hidden;
 `;
@@ -131,7 +142,7 @@ export const CustomButton = styled(Button)`
       }
     }
   }
-  margin-top: auto; /* Empurra o botão para o final */
+  margin-top: auto;
 `;
 
 export const ModalContent = styled(Box)`
@@ -149,5 +160,41 @@ export const ModalContent = styled(Box)`
   }
   ::-webkit-scrollbar-thumb:hover {
     background: #555;
+  }
+`;
+
+export const BackButton = styled(Button)`
+  &.MuiButton-root {
+    position: absolute;
+    top: 80px;
+    left: 20px;
+    color: #3533cd;
+    
+    &:hover {
+      background-color: rgba(89,87,230,0.1) !important;
+    }
+  }
+`;
+
+export const CustomLink = styled(Link)`
+  text-decoration: none;
+  font-weight: 600;
+  color: #735FE4;
+  transition: 0.3s;
+
+  &:hover {
+    color: #452DCB;
+  }
+`;
+
+export const SearchButton = styled(IconButton)`
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background-color: #1a237e;
+  color: #fff;
+
+  &:hover {
+    background-color: #303f9f;
   }
 `;

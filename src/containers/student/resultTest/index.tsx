@@ -1,12 +1,24 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Box, Typography, List, ListItem, Modal } from '@mui/material';
+import { Box, Typography, List, ListItem, Modal, IconButton } from '@mui/material';
 import Slider from 'react-slick';
 import Header from '../../../components/studentHeader';
 import Footer from '../../../components/studentFooter';
-import { Global, TitleResult, ResultContainerMessage, ResultMessage, CourseCard, CarouselContainer, CustomButton, ModalContent } from './styles';
+import { Global,
+    TitleResult,
+    ResultContainerMessage,
+    ResultMessage,
+    CourseCard,
+    CarouselContainer,
+    // CustomButton,
+    ModalContent,
+    BackButton,
+    CustomLink,
+    DetailsResult } from './styles';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import SearchIcon from '@mui/icons-material/Search';
 
 interface ResultData {
     id: number;
@@ -52,7 +64,7 @@ const ResultScreen: React.FC = () => {
     const [openModal, setOpenModal] = useState(false);
     const [institutions, setInstitutions] = useState<Institution[]>([]);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [selectedCourse, setSelectedCourse] = useState<number | null>(null);
+    const [, setSelectedCourse] = useState<number | null>(null);
 
     const perfilPrimarioDescricao = resultado.perfis[0]?.descricao || 'Perfil Primário';
     const perfilSecundarioDescricao = resultado.perfis[1]?.descricao || 'Perfil Secundário';
@@ -114,6 +126,9 @@ const ResultScreen: React.FC = () => {
         <>
             <Global />
             <Header />
+            <BackButton startIcon={<ArrowBackIcon />}>
+                <CustomLink to={'/estudante'}>Dashboard</CustomLink>
+            </BackButton>
             <Box sx={{ padding: '20px', overflow: 'hidden' }}>
                 <TitleResult variant="h4" gutterBottom style={{ textAlign: 'center', fontWeight: 'bold', marginBottom: '30px' }}>
                     Resultado do Teste
@@ -127,37 +142,44 @@ const ResultScreen: React.FC = () => {
                 <CarouselContainer>
                     <Slider {...settings}>
                         {allCourses.map((curso, index) => (
-                            <CourseCard key={curso.id}>
-                                <Typography variant="h6" gutterBottom style={{ textAlign: 'center' }}>
+                            <CourseCard
+                                key={curso.id}
+                                primary={index < 3}
+                            >
+                                <Typography variant="h6" gutterBottom style={{ textAlign: 'center', fontWeight: 'bold', color: 'rgba(0, 0, 0, 0.5)', marginBottom: '15px' }}>
                                     {index < 3 ? perfilPrimarioDescricao : perfilSecundarioDescricao}
                                 </Typography>
-                                <Typography variant="body1">
+                                <DetailsResult variant="body1" style={{marginBottom: '7px'}}>
                                     Curso recomendado: {curso.descricao}
-                                </Typography>
-                                <Typography variant="body1">
+                                </DetailsResult>
+                                <DetailsResult variant="body1" style={{marginBottom: '7px'}}>
                                     Área: {curso.area}
-                                </Typography>
-                                <Typography variant="body1">
+                                </DetailsResult>
+                                <DetailsResult variant="body1" style={{marginBottom: '7px'}}>
                                     Empregabilidade: {curso.empregabilidade}
-                                </Typography>
-                                <Typography variant="body1">
+                                </DetailsResult>
+                                <DetailsResult variant="body1" style={{marginBottom: '7px'}}>
                                     Possíveis Carreiras:
-                                </Typography>
+                                </DetailsResult>
                                 <List>
                                     {curso.possiveisCarreiras.map((carreira, i) => (
-                                        <ListItem key={i}>
+                                        <ListItem key={i} style={{color: 'rgba(0, 0, 0, 0.5)', marginLeft: '10px'}}>
                                             - {carreira}
                                         </ListItem>
                                     ))}
                                 </List>
-                                <CustomButton
-                                    variant="contained"
-                                    color="primary"
+                                <IconButton
                                     onClick={() => handleOpenModal(curso.id)}
-                                    style={{ marginTop: '10px' }}
+                                    style={{
+                                        position: 'absolute',
+                                        bottom: '10px',
+                                        right: '10px',
+                                        // backgroundColor: '#1a237e',
+                                        // color: '#000',
+                                    }}
                                 >
-                                    Ver Instituições
-                                </CustomButton>
+                                    <SearchIcon />
+                                </IconButton>
                             </CourseCard>
                         ))}
                     </Slider>
