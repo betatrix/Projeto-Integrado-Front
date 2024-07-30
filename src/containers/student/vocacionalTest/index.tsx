@@ -124,7 +124,7 @@ const VocacionalTest: React.FC = () => {
         <>
             <Global />
             <style>
-                @import url('https://fonts.googleapis.com/css2?family=Exo:ital,wght@0,100..900;1,100..900&family=Poppins&display=swap');
+                @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
             </style>
             <Header />
             <BackButton startIcon={<ArrowBackIcon />}>
