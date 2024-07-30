@@ -108,7 +108,7 @@ export const CourseCard = styled(Box)<{ primary: boolean }>`
 `;
 
 export const CarouselContainer = styled(Box)`
-  width: 80%; 
+  width: 85%; 
   margin: 0 auto;
   padding: 20px;
   overflow: hidden;

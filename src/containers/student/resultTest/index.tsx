@@ -1,20 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Box, Typography, List, ListItem, Modal, IconButton } from '@mui/material';
 import Slider from 'react-slick';
 import Header from '../../../components/studentHeader';
 import Footer from '../../../components/studentFooter';
-import { Global,
-    TitleResult,
-    ResultContainerMessage,
-    ResultMessage,
-    CourseCard,
-    CarouselContainer,
-    // CustomButton,
-    ModalContent,
-    BackButton,
-    CustomLink,
-    DetailsResult } from './styles';
+import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import { Global, TitleResult, ResultContainerMessage, ResultMessage, CourseCard, CarouselContainer, ModalContent, BackButton, CustomLink, DetailsResult } from './styles';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -55,6 +48,44 @@ interface Institution {
     notaMec: number;
 }
 
+const NextArrow = (props: { onClick: any; }) => {
+    const { onClick } = props;
+    return (
+        <IconButton
+            onClick={onClick}
+            style={{
+                position: 'absolute',
+                top: '54.5%',
+                right: '400px',
+                transform: 'translateY(-50%)',
+                zIndex: 2,
+                backgroundColor: 'rgba(255, 255, 255, 0.7)',
+            }}
+        >
+            <NavigateNextIcon style={{ fontSize: '1rem' }}/>
+        </IconButton>
+    );
+};
+
+const PrevArrow = (props: { onClick: any; }) => {
+    const { onClick } = props;
+    return (
+        <IconButton
+            onClick={onClick}
+            style={{
+                position: 'absolute',
+                top: '54.5%',
+                left: '400px',
+                transform: 'translateY(-50%)',
+                zIndex: 2,
+                backgroundColor: 'rgba(255, 255, 255, 0.7)',
+            }}
+        >
+            <NavigateBeforeIcon style={{ fontSize: '1rem' }} />
+        </IconButton>
+    );
+};
+
 const ResultScreen: React.FC = () => {
     const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -63,7 +94,6 @@ const ResultScreen: React.FC = () => {
 
     const [openModal, setOpenModal] = useState(false);
     const [institutions, setInstitutions] = useState<Institution[]>([]);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [, setSelectedCourse] = useState<number | null>(null);
 
     const perfilPrimarioDescricao = resultado.perfis[0]?.descricao || 'Perfil Primário';
@@ -82,6 +112,8 @@ const ResultScreen: React.FC = () => {
         slidesToScroll: 1,
         centerMode: true,
         centerPadding: '0',
+        nextArrow: <NextArrow onClick={undefined} />,
+        prevArrow: <PrevArrow onClick={undefined} />,
         responsive: [
             {
                 breakpoint: 1024,
@@ -134,7 +166,7 @@ const ResultScreen: React.FC = () => {
                     Resultado do Teste
                 </TitleResult>
                 <ResultContainerMessage>
-                    <ResultMessage variant="body1" gutterBottom style={{textAlign: 'justify'}}>
+                    <ResultMessage variant="body1" gutterBottom style={{ textAlign: 'justify' }}>
                         {resultado.mensagem}
                     </ResultMessage>
                 </ResultContainerMessage>
@@ -146,24 +178,24 @@ const ResultScreen: React.FC = () => {
                                 key={curso.id}
                                 primary={index < 3}
                             >
-                                <Typography variant="h6" gutterBottom style={{ textAlign: 'center', fontWeight: 'bold', color: 'rgba(0, 0, 0, 0.5)', marginBottom: '15px' }}>
+                                <Typography variant="h6" gutterBottom style={{ textAlign: 'center', fontWeight: 'bold', color: 'rgba(0, 0, 0, 0.5)', marginBottom: '7px' }}>
                                     {index < 3 ? perfilPrimarioDescricao : perfilSecundarioDescricao}
                                 </Typography>
-                                <DetailsResult variant="body1" style={{marginBottom: '7px'}}>
-                                    Curso recomendado: {curso.descricao}
-                                </DetailsResult>
-                                <DetailsResult variant="body1" style={{marginBottom: '7px'}}>
+                                <Typography style={{ marginBottom: '17px', textAlign: 'center', fontWeight: 'bold', color: 'rgba(0, 0, 0, 0.5)', fontSize: '17px' }}>
+                                    {curso.descricao}
+                                </Typography>
+                                <DetailsResult variant="body1" style={{ marginBottom: '7px' }}>
                                     Área: {curso.area}
                                 </DetailsResult>
-                                <DetailsResult variant="body1" style={{marginBottom: '7px'}}>
+                                <DetailsResult variant="body1" style={{ marginBottom: '7px' }}>
                                     Empregabilidade: {curso.empregabilidade}
                                 </DetailsResult>
-                                <DetailsResult variant="body1" style={{marginBottom: '7px'}}>
+                                <DetailsResult variant="body1" style={{ marginBottom: '7px' }}>
                                     Possíveis Carreiras:
                                 </DetailsResult>
                                 <List>
                                     {curso.possiveisCarreiras.map((carreira, i) => (
-                                        <ListItem key={i} style={{color: 'rgba(0, 0, 0, 0.5)', marginLeft: '10px'}}>
+                                        <ListItem key={i} style={{ color: 'rgba(0, 0, 0, 0.5)', marginLeft: '10px' }}>
                                             - {carreira}
                                         </ListItem>
                                     ))}
@@ -174,8 +206,6 @@ const ResultScreen: React.FC = () => {
                                         position: 'absolute',
                                         bottom: '10px',
                                         right: '10px',
-                                        // backgroundColor: '#1a237e',
-                                        // color: '#000',
                                     }}
                                 >
                                     <SearchIcon />
@@ -220,7 +250,6 @@ const ResultScreen: React.FC = () => {
                         )}
                     </ModalContent>
                 </Modal>
-
             </Box>
             <Footer />
         </>
