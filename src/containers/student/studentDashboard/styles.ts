@@ -210,28 +210,34 @@ export const IconStyle: SxProps<Theme> = (theme) => ({
 
 export const TestButton: SxProps<Theme> = (theme) => ({
     fontFamily: 'Poppins',
-    background: 'linear-gradient(90deg, #040410, #302EB7)',
+    fontFamily: 'Poppins',
+    background: 'linear-gradient(90deg, rgba(53,51,205,1) 0%, rgba(16,24,64,1) 100%)',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
     borderRadius: '1rem',
     padding: '0.75rem 2.5rem',
     fontSize: '1rem',
     fontWeight: 'bold',
     color: 'white',
     '&:hover': {
-        background: 'linear-gradient(90deg, #302EB7, #040410)',
+        background: 'linear-gradient(269deg, #3533cd, #101840, #3533cd)',
+        backgroundSize: '180% 180%',
+        animation: 'gradient-animation 10s ease infinite',
+        boxShadow: '0 8px 16px rgba(0, 0, 0, 0.3)',
+    },
+    '@keyframes gradient-animation': {
+        '0%': {
+            backgroundPosition: '0% 50%',
+        },
+        '50%': {
+            backgroundPosition: '100% 50%',
+        },
+        '100%': {
+            backgroundPosition: '0% 50%',
+        },
     },
     [theme.breakpoints.down('sm')]: {
-        flexDirection: 'column',
-        alignItems: 'center',
-        backgroundAttachment: 'local',
-        fontSize: '0.8rem',
         padding: '0.5rem 1.5rem',
-    },
-    [theme.breakpoints.down('md')]: {
-        flexDirection: 'column',
-        alignItems: 'center',
-        backgroundAttachment: 'local',
         fontSize: '0.8rem',
-        padding: '0.5rem 1.5rem',
     },
 });
 
