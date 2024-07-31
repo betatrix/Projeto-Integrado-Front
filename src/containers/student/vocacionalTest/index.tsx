@@ -11,6 +11,7 @@ import axios from 'axios';
 import AnswerOptions from './answerOptions';
 import { AuthContext } from '../../../contexts/auth';
 import { decryptData } from '../../../services/encryptionService';
+import { useTranslation } from 'react-i18next';
 
 interface Teste {
     id: number;
@@ -29,6 +30,7 @@ interface Usuario {
 
 const VocacionalTest: React.FC = () => {
     const apiUrl = import.meta.env.VITE_API_URL;
+    const{ t } = useTranslation();
     const navigate = useNavigate();
 
     const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -150,7 +152,7 @@ const VocacionalTest: React.FC = () => {
             <Box sx={homePageBoxStyles}>
                 <CenteredDiv>
                     <IntroText variant="body1" align="center" paragraph>
-                        Responda às afirmações abaixo com o quanto você se identifica com cada uma delas
+                        {t('testInstruction')}
                     </IntroText>
                     <StyledLinearProgress variant="determinate" value={progress} />
                     <StyledTypography variant="h6" gutterBottom>
@@ -187,7 +189,7 @@ const VocacionalTest: React.FC = () => {
                             onClick={handleSubmit}
                             style={{ marginTop: '30px' }}
                         >
-                            Enviar
+                            {t('forgotButton')}
                         </CustomButton>
                     )}
                 </CenteredDiv>
@@ -208,25 +210,25 @@ const VocacionalTest: React.FC = () => {
                     },
                 }}
             >
-                <DialogTitle style={{ textAlign: 'center', fontSize: '22px', marginBottom: '15px' }}>Antes de começar ...</DialogTitle>
+                <DialogTitle style={{ textAlign: 'center', fontSize: '22px', marginBottom: '15px' }}>{t('testIntroTitle')}</DialogTitle>
 
                 <DialogContent>
                     <ModalText variant="body1" style={{ fontSize: '16px' }}>
-                        Nosso teste vocacional é inspirado na teoria do psicólogo John L. Holland, conhecida como RIASEC - Realista, Investigativo, Artístico, Social, Empreendedor e Convencional.
+                        {t('testIntro1')}
                     </ModalText>
                     <br />
                     <ModalText>
-                        Essa teoria divide as pessoas em seis tipos diferentes de personalidade e ambientes de trabalho. Ao responder ao teste, suas características são comparadas com esses seis tipos para sugerir carreiras e áreas de estudo que combinam com o seu perfil.
+                        {t('testIntro2')}
                     </ModalText>
                     <br />
                     <ModalText>
-                        Além disso, usamos essas informações para ajudar você a encontrar cursos e universidades que se encaixam no seu perfil, aumentando suas chances de se sentir realizado e ter sucesso na sua trajetória profissional.
+                        {t('testIntro3')}
                     </ModalText>
                 </DialogContent>
 
                 <DialogActions>
                     <CustomButton onClick={handleStartTest} color="primary" style={{ justifyItems: 'center', width: '200px', height: '40px' }}>
-                        Iniciar Teste
+                        {t('testIntroButton')}
                     </CustomButton>
                 </DialogActions>
             </Dialog>
@@ -245,18 +247,18 @@ const VocacionalTest: React.FC = () => {
                     },
                 }}
             >
-                <DialogTitle style={{ textAlign: 'center', fontSize: '18px', marginBottom: '15px' }}>Tem certeza de que deseja sair?</DialogTitle>
+                <DialogTitle style={{ textAlign: 'center', fontSize: '18px', marginBottom: '15px' }}>{t('testWarningTitle')}</DialogTitle>
                 <DialogContent>
                     <ModalText variant="body1" style={{ fontSize: '16px' }}>
-                        Suas respostas atuais não serão salvas se você sair agora.
+                        {t('testWarning')}
                     </ModalText>
                 </DialogContent>
                 <DialogActions>
                     <MuiButton onClick={confirmExit} color="primary">
-                        Sair
+                        {t('testWarningExit')}
                     </MuiButton>
                     <MuiButton onClick={cancelExit} color="secondary">
-                        Cancelar
+                        {t('testWarningCancel')}
                     </MuiButton>
                 </DialogActions>
             </Dialog>

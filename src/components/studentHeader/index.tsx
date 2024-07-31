@@ -15,6 +15,8 @@ import {
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../contexts/auth';
 import { decryptData } from '../../services/encryptionService';
+import LanguageMenu from '../translationButton';
+import { useTranslation } from 'react-i18next';
 
 const styles = {
     logo: {
@@ -43,6 +45,7 @@ const styles = {
 };
 
 function StudentHeader() {
+    const{ t } = useTranslation();
 
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
     // const [anchorElTeste, setAnchorElTeste] = useState<null | HTMLElement>(null);
@@ -85,20 +88,21 @@ function StudentHeader() {
                         </Typography>
                         <Box sx={{ marginLeft: '10px' }}>
                             <Link to="/pagina-inicial" style={styles.linkButton}>
-                                <Button color="inherit">Home</Button>
+                                <Button color="inherit">{t('home')}</Button>
                             </Link>
                             <Link to="/instituicao" style={styles.linkButton}>
-                                <Button color="inherit">Universidades</Button>
+                                <Button color="inherit">{t('university')}</Button>
                             </Link>
                             <Link to="/teste-vocacional" style={styles.linkButton}>
-                                <Button color="inherit">Teste</Button>
+                                <Button color="inherit">{t('test')}</Button>
                             </Link>
                         </Box>
 
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <LanguageMenu />
                         <Typography sx={styles.welcomeText}>
-                            Bem vindo de volta, {student ? student.nome : 'usuário'}!
+                            {t('welcome')} {student ? student.nome : 'usuário'}!
                         </Typography>
                         <Tooltip title="Opções de Perfil">
                             <IconButton onClick={handleOpenUserMenu} sx={styles.avatarButton}>
@@ -117,9 +121,9 @@ function StudentHeader() {
                             open={Boolean(anchorElUser)}
                             onClose={handleCloseUserMenu}
                         >
-                            <MenuItem>
+                            {/* <MenuItem>
                                 <Typography textAlign="center">Account</Typography>
-                            </MenuItem>
+                            </MenuItem> */}
                             <MenuItem onClick={handleMenuItemClick}>
                                 <Typography textAlign="center">Logout</Typography>
                             </MenuItem>

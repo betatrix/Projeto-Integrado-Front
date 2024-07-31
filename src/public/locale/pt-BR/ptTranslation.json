@@ -1,6 +1,6 @@
 {
     "translation": {
-      "welcome": "Bem-vindo ao React e react-i18next",
+      "welcome": "Olá, ",
       "login": "Entrar",
       "home": "Início",
       "about": "Sobre",
@@ -60,15 +60,38 @@
       "forgotField": "Digite seu e-mail",
       "forgotButton": "Enviar",
       "forgotSucess": "E-mail enviado com sucesso!",
-      "forgotError": "O e-mail inserido não foi encontrado :(",
+      "forgotError1": "Insira um e-mail válido!",
+      "forgotError2": "O e-mail inserido não foi encontrado :(",
 
       "testIntroTitle": "Antes de começar ...",
-      "testIntro1": "Nosso teste vocacional é inpirado na teoria do psicólogo John L. Holland, conhecida como RIASEC - Realista, Investigativo, Artístico, Social, Empreendedor e Convencional.",
+      "testIntro1": "Nosso teste vocacional é inspirado na teoria do psicólogo John L. Holland, conhecida como RIASEC - Realista, Investigativo, Artístico, Social, Empreendedor e Convencional.",
       "testIntro2": "Essa teoria divide as pessoas em seis tipos diferentes de personalidade e ambientes de trabalho. Ao responder ao teste, suas características são comparadas com esses seis tipos para sugerir carreiras e áreas de estudo que combinam com o seu perfil.",
       "testIntro3": "Além disso, usamos essas informações para ajudar você a encontrar cursos e universidades que se encaixam no seu perfil, aumentando suas chances de se sentir realizado e ter sucesso na sua trajetória profissional.",
       "testIntroButton": "Iniciar Teste",
+      "testInstruction": "Responda às afirmações abaixo com o quanto você se identifica com cada uma delas.",
+      "testWarningTitle": "Tem certeza de que deseja sair?",
+      "testWarning": "Suas respostas atuais não serão salvas se você sair agora.",
+      "testWarningCancel": "Cancelar",
+      "testWarningExit": "Sair",
 
-      "testText": "Responda às afirmações abaixo com o quanto você se identifica com cada uma delas"
+      "dashboardTitle": "MEUS TESTES",
+      "dashboardCard1": "TESTES RESPONDIDOS",
+      "dashboardCard2": "PERFIS MAIS RECORRENTES",
+      "dashboardCard2Text": "Descubra seu perfil fazendo um teste.",
+      "dashboardCard3": "RESULTADOS",
+      "dashboardCard3Text": "Nenhum teste realizado.",
+      "dashboardTest1": "Fazer Teste",
+      "dashboardTest2": "Refazer Teste",
+
+      "dashboardInvestigativo": "Pessoas com este perfil são curiosas, analíticas e gostam de resolver problemas.",
+      "dashboardConvencional": "Pessoas com este perfil são organizadas, metódicas e preferem trabalhar com dados e detalhes.",
+      "dashboardEmpreendedor": "Pessoas com este perfil são líderes naturais, gostam de persuadir e influenciar os outros.",
+      "dashboardRealista": "Pessoas com este perfil são práticas, gostam de trabalhar com as mãos e preferem atividades físicas e mecânicas.",
+      "dashboardArtistico": "Pessoas com este perfil são criativas, gostam de se expressar através de diferentes formas de arte.",
+      "dashboardSocial": "Pessoas com este perfil são comunicativas, gostam de ajudar os outros e preferem atividades que envolvem interação interpessoal.",
+
+      "listInstitutionTitle": "Lista de Instituições",
+      "listInstitutionSearch": "Pesquisar Instituição"
 
     }
   }

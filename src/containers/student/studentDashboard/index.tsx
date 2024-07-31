@@ -12,8 +12,11 @@ import InfoIcon from '@mui/icons-material/Info';
 import { contarTeste, buscarTestesDeEstudante, buscarPerfisRecorrentes } from '../../../services/apiService';
 import { AuthContext } from '../../../contexts/auth';
 import { decryptData } from '../../../services/encryptionService';
+import { useTranslation } from 'react-i18next';
 
 const StudentDashboard: React.FC = () => {
+    const{ t } = useTranslation();
+    
     const [showAnnouncement, setShowAnnouncement] = useState(true);
     const [testCount, setTestCount] = useState(0);
     const [testHistory, setTestHistory] = useState<{ date: string, tipo: string, result: string[] }[]>([]);
@@ -108,7 +111,7 @@ const StudentDashboard: React.FC = () => {
                 <Grid container sx={{ justifyContent: 'center', display: 'flex' }}>
                     <Box>
                         <Typography sx={titleMainStyle}>
-                            MEUS TESTES
+                            {t('dashboardTitle')}
                         </Typography>
                     </Box>
                 </Grid>
@@ -119,14 +122,14 @@ const StudentDashboard: React.FC = () => {
                                 {testCount}
                             </Typography>
                             <Typography sx={titleStyle}>
-                                TESTES RESPONDIDOS
+                                {t('dashboardCard1')}
                             </Typography>
                         </Paper>
                     </Grid>
                     <Grid item xs={12} md={6} display="flex" justifyContent="center">
                         <Paper sx={paperStyles}>
                             <Typography sx={titleStyle} component="div">
-                                PERFIS MAIS RECORRENTES
+                                {t('dashboardCard2')}
                             </Typography>
                             {recorrentes.length > 0 ? (
                                 recorrentes.map((profile, index) => (
@@ -144,7 +147,7 @@ const StudentDashboard: React.FC = () => {
                                 ))
                             ) : (
                                 <Typography sx={content0Style}>
-                                    Descubra seu perfil fazendo um teste.
+                                    {t('dashboardCard2Text')}
                                 </Typography>
                             )}
                         </Paper>
@@ -157,7 +160,7 @@ const StudentDashboard: React.FC = () => {
                             <Box sx={{ mt: '20px', textAlign: 'center' }} component="div">
                                 <Link to="/teste-vocacional" style={{ textDecoration: 'none' }}>
                                     <Button variant="contained" size="large" sx={TestButton}>
-                                        {testCount === 0 ? 'Fazer Teste' : 'Refazer Teste'}
+                                        {testCount === 0 ? t('dashboardTest1') : t('dashboardTest2')}
                                     </Button>
                                 </Link>
                             </Box>
@@ -166,7 +169,7 @@ const StudentDashboard: React.FC = () => {
                     <Grid item xs={12} md={6} display="flex" justifyContent="center">
                         <Paper sx={paperStyles}>
                             <Typography sx={titleStyle} component="div">
-                                RESULTADOS
+                                {t('dashboardCard3')}
                             </Typography>
                             {testHistory.length > 1 ? (
                                 <Slider {...carouselSettings}>
@@ -198,7 +201,7 @@ const StudentDashboard: React.FC = () => {
                                 </Box>
                             ) : (
                                 <Typography sx={content0Style}>
-                                    Nenhum teste realizado.
+                                    {t('dashboardCard3Text')}
                                 </Typography>
                             )}
                         </Paper>
