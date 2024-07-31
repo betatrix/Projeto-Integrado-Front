@@ -6,6 +6,8 @@
       "about": "About",
       "faq": "FAQ",
       "testInformation": "Test Information",
+      "test": "Vocacional Test",
+      "university": "Universities",
   
       "welcomeText1": "Find the perfect course and college for you!",
       "welcomeText2": "Get access to our exclusive vocational test and information about",
@@ -41,22 +43,24 @@
 
       "backButton": "Back",
 
-      "loginBackButton": "Home",
+      "loginBackButton": "Home page",
 
       "loginTitle": "Acess Vocco!",
-      "loginText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras congue id diam in scelerisque.",
+      "loginText": "Enter your email and password to access our platform.⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
       "loginField1": "Type your e-mail",
       "loginField2": "Type your password",
-      "loginRegister": "Don't have an account? Register!",
+      "loginRegister1": "Don't have an account?",
+      "loginRegister2": "Register!",
       "loginRecover": "Forgot your password?",
       "loginButton": "Login",
+      "loginError": "The email or password entered was not found :(",
 
       "forgotTitle": "Forgot your password?",
       "forgotText": "To reset your password, enter your registered email and we will quickly send you a link! Don't forget to check your spam folder ;)",
       "forgotField": "Type your e-mail",
       "forgotButton": "Send",
       "forgotSucess": "Email successfully sent!",
-      "forgotError": "The email entered was not found :(",
+      "forgotError": "Invalid email or password:(",
 
       "testIntroTitle": "Before we starting...",
       "testIntro1": "Our vocational test is inspired by psychologist John L. Holland's theory, known as RIASEC - Realistic, Investigative, Artistic, Social, Enterprising and Conventional.",
