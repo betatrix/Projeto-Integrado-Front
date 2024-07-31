@@ -17,6 +17,7 @@ import {
     Container,
     RightPanel,
     BackButton,
+    Paragraph,
 } from './styles';
 import { Alert, Snackbar } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -67,7 +68,12 @@ const NovaSenha: React.FC = () => {
 
                 if (response === 200) {
                     console.log('Sucesso ao redefinir a senha:', response);
-                    navigate('/success-change-password');
+                    setShowSuccessMessage(true);
+
+                    // Redirecionar após 3 segundos
+                    setTimeout(() => {
+                        navigate('/login');
+                    }, 3000);
                 } else {
                     setErrorMessage('Não foi possível alterar sua senha :(');
                     setShowErrorMessage(true);
@@ -105,6 +111,10 @@ const NovaSenha: React.FC = () => {
                 <RightPanel></RightPanel>
                 <LoginContainer>
                     <Header variant="h4"> Vamos redefinir sua senha!</Header>
+
+                    <Paragraph>
+                    Por favor, insira sua nova senha abaixo. Certifique-se de que a senha tenha pelo menos 6 caracteres, incluindo uma combinação de letras, números e símbolos para garantir a segurança.
+                    </Paragraph>
 
                     <FormContainer onSubmit={formik.handleSubmit}>
                         <FormControl variant="filled" error={formik.touched.password && Boolean(formik.errors.password)}>

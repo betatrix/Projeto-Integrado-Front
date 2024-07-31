@@ -210,7 +210,6 @@ export const IconStyle: SxProps<Theme> = (theme) => ({
 
 export const TestButton: SxProps<Theme> = (theme) => ({
     fontFamily: 'Poppins',
-    fontFamily: 'Poppins',
     background: 'linear-gradient(90deg, rgba(53,51,205,1) 0%, rgba(16,24,64,1) 100%)',
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
     borderRadius: '1rem',
