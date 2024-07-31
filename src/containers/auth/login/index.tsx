@@ -28,6 +28,7 @@ import { loginEstudante } from '../../../services/studentService';
 import { LoginForm } from '../../../types/loginTypes';
 import { loginAdministrador } from '../../../services/admService';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const initialValues: LoginForm = {
     login: '',
@@ -36,6 +37,7 @@ const initialValues: LoginForm = {
 
 const Login: React.FC = () => {
     const authContext = useContext(AuthContext);
+    const{ t } = useTranslation();
     const navigate = useNavigate();
     
     const [showPassword, setShowPassword] = useState(false);
@@ -69,10 +71,10 @@ const Login: React.FC = () => {
                 const redirectUrl = role === "ESTUDANTE" ? '/estudante' : '/admin';
                 navigate(redirectUrl);
             } else {
-                setError('Email ou senha inválidos!');
+                setError('loginError');
             }
         } catch (error) {
-            setError('Ocorreu um erro ao tentar fazer login.');
+            setError(t('loginError'));
             console.log(error);
         } finally {
             setLoading(false);
@@ -85,17 +87,19 @@ const Login: React.FC = () => {
             <Global />
             <Container>
                 <BackButton startIcon={<ArrowBackIcon />}>
-                    <CustomLink to="/pagina-inicial">Página inicial</CustomLink>
+                    <CustomLink to="/pagina-inicial">{t('loginBackButton')}</CustomLink>
                 </BackButton>
                 <LoginContainer>
-                    <Header variant="h4">Acesse o Vocco!</Header>
-                    <Paragraph>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras congue id diam in scelerisque.</Paragraph>
+                    <Header variant="h4">{t('loginTitle')}</Header>
+                    <Paragraph>
+                        {t('loginText')}
+                    </Paragraph>
 
                     <Formik initialValues={initialValues} onSubmit={handleSubmit}>
                         {({ handleChange, handleBlur, handleSubmit, values }) => (
                             <FormContainer onSubmit={handleSubmit}>
                                 <FormControl variant="filled">
-                                    <CustomInputLabel htmlFor="login">Digite seu email</CustomInputLabel>
+                                    <CustomInputLabel htmlFor="login">{t('loginField1')}</CustomInputLabel>
                                     <CustomField
                                         id="login"
                                         type="email"
@@ -108,11 +112,11 @@ const Login: React.FC = () => {
                                 </FormControl>
 
                                 <SubText variant="body2" color="textSecondary">
-                                    <CustomLink to="/recuperar-senha">Esqueceu sua senha?</CustomLink>
+                                    <CustomLink to="/recuperar-senha">{t('loginRecover')}</CustomLink>
                                 </SubText>
 
                                 <FormControl variant="filled">
-                                    <CustomInputLabel htmlFor="senha">Digite sua senha</CustomInputLabel>
+                                    <CustomInputLabel htmlFor="senha">{t('loginField2')}</CustomInputLabel>
                                     <CustomField
                                         id="senha"
                                         type={showPassword ? 'text' : 'password'}
@@ -138,7 +142,7 @@ const Login: React.FC = () => {
 
                                 <FormControl>
                                     <CustomButton variant="contained" size="large" type="submit">
-                                        {loading ? <CircularProgress size={24} color="inherit" /> : 'Entrar'}
+                                        {loading ? <CircularProgress size={24} color="inherit" /> : t('loginButton')}
                                     </CustomButton>
                                 </FormControl>
                                 
@@ -148,7 +152,7 @@ const Login: React.FC = () => {
                     </Formik>
 
                     <SubText variant="body1">
-                        Não possui uma conta?<CustomLink to="/register"> Cadastre-se!</CustomLink>
+                        {t('loginRegister1')}<CustomLink to="/register"> {t('loginRegister2')}</CustomLink>
                     </SubText>
                 </LoginContainer>
                 <RightPanel />

@@ -5,7 +5,9 @@
       "home": "Início",
       "about": "Sobre",
       "faq": "FAQ",
-      "testInformation": "O Teste",
+      "testInformation": "Informação do teste",
+      "test": "Teste Vocacional",
+      "university": "Universidades",
 
       "welcomeText1": "Encontre o curso e a faculdade perfeitos para você!",
       "welcomeText2": "Tenha acesso ao nosso teste vocacional exclusivo e informações sobre",
@@ -44,12 +46,14 @@
       "loginBackButton": "Página Inicial",
 
       "loginTitle": "Acesse o Vocco!",
-      "loginText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras congue id diam in scelerisque.",
+      "loginText": "Informe seu email e senha para acessar a nossa plataforma.⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
       "loginField1": "Digite seu e-mail",
       "loginField2": "Digite sua senha",
-      "loginRegister": "Não possui uma conta? Cadastre-se!",
+      "loginRegister1": "Não possui uma conta?",
+      "loginRegister2": "Cadastre-se!",
       "loginRecover": "Esqueceu sua senha?",
       "loginButton": "Entrar",
+      "loginError": "Email ou senha inválidos :(",
 
       "forgotTitle": "Esqueceu sua senha?",
       "forgotText": "Para redefinir sua senha, digite seu e-mail cadastrado que rapidinho mandamos um link para você! Não esqueça de verificar a sua caixa de spam ;)",
