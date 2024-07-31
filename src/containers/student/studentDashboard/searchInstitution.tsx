@@ -13,6 +13,7 @@ import { Endereco } from '../../../types/institutionTypes';
 import { buscarEntidades, buscarEntidadePorId, buscarCursosPorInstituicao } from '../../../services/apiService';
 import { DetailTypography, GridContainer, ListBox, SearchBox, StyledBox, StyledModal, StyledTypography } from './styles';
 import InstitutionSearchHeader from '../../../components/institutionSearchHeader';
+import { useTranslation } from 'react-i18next';
 
 interface Curso {
     id: number;
@@ -30,6 +31,8 @@ interface Institution {
 }
 
 const InstitutionList: React.FC = () => {
+    const{ t } = useTranslation();
+    
     const [institutions, setInstitutions] = useState<Institution[]>([]);
     const [searchValue, setSearchValue] = useState<string>('');
     const [detailModalOpen, setDetailModalOpen] = useState(false);
@@ -73,12 +76,12 @@ const InstitutionList: React.FC = () => {
             <StyledBox>
                 <StyledTypography>
                     <Typography variant="h6">
-                        Lista de Instituições
+                        {t('listInstitutionTitle')}
                     </Typography>
                 </StyledTypography>
                 <SearchBox>
                     <TextField
-                        label="Pesquisar Instituição"
+                        label={t('listInstitutionSearch')}
                         variant='standard'
                         sx={{ width: '100%' }}
                         onChange={(e) => setSearchValue(e.target.value)}

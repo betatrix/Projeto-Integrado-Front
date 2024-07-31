@@ -19,8 +19,10 @@ import {
     SubText,
 } from './styles';
 import { Alert, Snackbar } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 const RecuperarSenha: React.FC = () => {
+    const{ t } = useTranslation();
 
     const [email, setEmail] = useState('');
     const [loading, setLoading] = useState(false);
@@ -82,20 +84,19 @@ const RecuperarSenha: React.FC = () => {
             </style>
             <Container>
                 <BackButton startIcon={<ArrowBackIcon />}>
-                    <CustomLink to={'/login'}>Página inicial</CustomLink>
+                    <CustomLink to={'/login'}>{t('backButton')}</CustomLink>
                 </BackButton>
                 <RightPanel></RightPanel>
                 <LoginContainer>
-                    <Header variant="h4">Esqueceu sua senha?</Header>
+                    <Header variant="h4">{t('forgotTitle')}</Header>
                     <Paragraph>
-                        Para redefinir sua senha, digite seu e-mail cadastrado que rapidinho mandamos um link para você!
-                        <b> Não esqueça de verificar a sua caixa de spam ;)</b>
+                        {t('forgotText')}
                     </Paragraph>
 
                     <FormContainer onSubmit={handleSubmit}>
-                        {emailError && <SubText>Insira um e-mail válido!</SubText>}
+                        {emailError && <SubText>{t('forgotError1')}</SubText>}
                         <FormControl variant="filled" >
-                            <CustomInputLabel htmlFor="email">Digite seu email</CustomInputLabel>
+                            <CustomInputLabel htmlFor="email">{t('forgotField')}</CustomInputLabel>
                             <CustomField
                                 id="email"
                                 type={'email'}
@@ -106,7 +107,7 @@ const RecuperarSenha: React.FC = () => {
 
                         <FormControl>
                             <CustomButton variant="contained" size="large" type="submit" >
-                                {loading ? <CircularProgress size={24} color="inherit" /> : 'Enviar'}
+                                {loading ? <CircularProgress size={24} color="inherit" /> : t('forgotButton')}
                             </CustomButton>
                         </FormControl>
                     </FormContainer>
@@ -121,7 +122,7 @@ const RecuperarSenha: React.FC = () => {
                         onClose={handleCloseSuccessMessage}
                     >
                         <Alert onClose={handleCloseSuccessMessage} severity="success" sx={{ width: '100%' }}>
-                            E-mail enviado com sucesso!
+                            {t('forgotSucess')}
                         </Alert>
                     </Snackbar>
 
@@ -135,7 +136,7 @@ const RecuperarSenha: React.FC = () => {
                         onClose={handleCloseErrorMessage}
                     >
                         <Alert onClose={handleCloseErrorMessage} severity="error" sx={{ width: '100%' }}>
-                            O e-mail inserido não foi encontrado :(
+                            {t('forgotError2')}
                         </Alert>
                     </Snackbar>
                 </LoginContainer>
