@@ -4,7 +4,6 @@ import {
     Toolbar,
     Box,
     Typography,
-    Tooltip,
     Button,
 } from '@mui/material';
 import { Link as ScrollLink } from 'react-scroll';
@@ -15,27 +14,38 @@ import LanguageMenu from '../translationButton';
 const styles = {
     logo: {
         mr: 2,
-        fontFamily: 'monospace',
+        fontFamily: 'Poppins',
         fontWeight: 700,
         letterSpacing: '.3rem',
-        color: 'inherit',
+        color: 'black',
         textDecoration: 'none',
     },
     LoginText: {
         mr: 2,
         marginLeft: '10px',
-        color: 'white',
-        borderColor: 'white',
+        fontFamily: 'Roboto, monospace',
+        fontSize: '15px',
+        backgroundColor: '#D9EEFF',
+        color: '#185D8E',
+        fontWeight: 700,
+        borderColor: '#185D8E',
+        borderRadius: '7px',
+        borderWidth: '2px',
+        boxShadow: '4px 4px 0px 1px rgba(0, 111, 255, 0.2)',
         '&:hover': {
-            backgroundColor: 'rgba(255, 255, 255, 0.1)',
-            borderColor: 'white',
+            backgroundColor: '#C0E3FF',
+            borderColor: '#185D8E',
+            borderWidth: '2px',
         },
     },
     menu: {
         mt: '45px',
     },
     linkButton: {
-        color: 'white',
+        fontFamily: 'Roboto, monospace',
+        fontSize: '15px',
+        color: '#232235',
+        fontWeight: 700,
         textDecoration: 'none',
         marginRight: '10px',
         cursor: 'pointer',
@@ -51,41 +61,45 @@ function InitialPageHeader() {
     };
 
     return (
-        <AppBar position="sticky" style={{ backgroundColor: '#1b1f27' }}>
+        <AppBar style={{ backgroundColor: '#F3F3F3', boxShadow: 'none' }}>
             <Container maxWidth="xl">
-                <Toolbar sx={{ justifyContent: 'space-between' }}>
+                <Toolbar sx={{ justifyContent: 'space-between', height: '100px' }}>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Typography
-                            variant="h5"
-                            noWrap
-                            component="a"
-                            href="/pagina-inicial"
-                            sx={styles.logo}
-                        >
-                            VOCCO
-                        </Typography>
-                        <Box sx={{ marginLeft: '10px' }}>
-                            <ScrollLink to="home" smooth={true} duration={500} style={styles.linkButton}>
-                                <Button color="inherit">{t('home')}</Button>
-                            </ScrollLink>
-                            <ScrollLink to="testInformation" smooth={true} duration={500} style={styles.linkButton}>
-                                <Button color="inherit">{t('testInformation')}</Button>
-                            </ScrollLink>
-                            <ScrollLink to="about" smooth={true} duration={500} style={styles.linkButton}>
-                                <Button color="inherit">{t('about')}</Button>
-                            </ScrollLink>
-                            <ScrollLink to="faq" smooth={true} duration={500} style={styles.linkButton}>
-                                <Button color="inherit">{t('faq')}</Button>
-                            </ScrollLink>
-                        </Box>
+                        <ScrollLink to="home" smooth={true} duration={500}>
+                            <Typography
+                                variant="h5"
+                                noWrap
+                                component="a"
+                                href="/pagina-inicial"
+                                sx={styles.logo}
+                            >
+                                VOCCO
+                            </Typography>
+                        </ScrollLink>
+                    </Box>
+                    <Box sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                    }}>
+                        <ScrollLink to="testInformation" smooth={true} duration={500}>
+                            <Button color="inherit" style={styles.linkButton}>{t('testInformation')}</Button>
+                        </ScrollLink>
+                        <ScrollLink to="about" smooth={true} duration={500}>
+                            <Button color="inherit" style={styles.linkButton}>{t('about')}</Button>
+                        </ScrollLink>
+                        <ScrollLink to="faq" smooth={true} duration={500}>
+                            <Button color="inherit" style={styles.linkButton}>{t('faq')}</Button>
+                        </ScrollLink>
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     <LanguageMenu />
-                        <Tooltip title="Login">
-                            <Button type="button" variant="outlined" onClick={handleLogin} sx={styles.LoginText} >
-                                {t('login')}
-                            </Button>
-                        </Tooltip>
+                        <Button type="button" variant="outlined" onClick={handleLogin} sx={styles.LoginText} >
+                            {t('login')}
+                        </Button>
                     </Box>
                 </Toolbar>
             </Container>

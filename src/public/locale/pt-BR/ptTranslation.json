@@ -3,16 +3,15 @@
       "welcome": "Olá, ",
       "login": "Entrar",
       "home": "Início",
-      "about": "Sobre",
+      "about": "Sobre nós",
       "faq": "FAQ",
-      "testInformation": "Informação do teste",
+      "testInformation": "O teste",
       "test": "Teste Vocacional",
       "university": "Universidades",
 
-      "welcomeText1": "Encontre o curso e a faculdade perfeitos para você!",
-      "welcomeText2": "Tenha acesso ao nosso teste vocacional exclusivo e informações sobre",
-      "welcomeText3": "universidades brasileiras.",
-      "registerButton": "Cadastre-se",
+      "welcomeText1": "Descubra o caminho que te inspira e construa o futuro que você merece.",
+      "welcomeText2": "Faça nosso teste vocacional e explore e conheça as melhores universidades brasileiras para começar essa jornada!",
+      "registerButton": "BORA LÁ!",
 
       "partner": "Nossos Parceiros",
 

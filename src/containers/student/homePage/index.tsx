@@ -1,5 +1,5 @@
-import { Grid, Box, Typography, Button, Container } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Grid, Box, Typography, Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import InitialPageHeader from '../../../components/homeHeader';
 import About from './about';
 import Faq from './faq';
@@ -10,6 +10,7 @@ import {
     typographySubtitleStyles,
     buttonStyles,
     CarouselTitle,
+    BoxCarouselStyles,
 } from './styles';
 import TestInformation from './testInf';
 import InitialPageFooter from '../../../components/homeFooter';
@@ -18,33 +19,36 @@ import { useTranslation } from 'react-i18next';
 
 export const HomePage: React.FC = () => {
     const{ t } = useTranslation();
+    const navigate = useNavigate();
+
+    const handleLogin = () => {
+        navigate('/login');
+    };
     
     return (
         <>
             <InitialPageHeader />
             <Box sx={homePageBoxStyles} id="home">
-                <Grid spacing={4} alignItems="colum" justifyContent="flex-start" sx={gridIndexContainerStyles}>
-                    <Typography sx={typographyTitleStyles}>
-                        VOCCO
-                    </Typography>
-                    <Typography sx={typographySubtitleStyles}>
-                        {t('welcomeText1')}<br />
-                        {t('welcomeText2')}<br />
-                        {t('welcomeText3')}
-                    </Typography>
-                    <Link to="/register" style={{ textDecoration: 'none' }}>
-                        <Button variant="contained" size="large" sx={buttonStyles}>
+                <Grid container spacing={4} alignItems="colum" justifyContent="flex-start" sx={gridIndexContainerStyles}>
+                    <Grid item xs={12} md={6}>
+                        <Typography sx={typographyTitleStyles}>
+                            {t('welcomeText1')}
+                        </Typography>
+                        <Typography sx={typographySubtitleStyles}>
+                            {t('welcomeText2')}
+                        </Typography>
+                        <Button type="button" onClick={handleLogin} variant="outlined" sx={buttonStyles} >
                             {t('registerButton')}
                         </Button>
-                    </Link>
+                    </Grid>
                 </Grid>
-            </Box>
-            <Container>
+            <Box sx={BoxCarouselStyles}>
                 <Typography sx={CarouselTitle}>
                     {t('partner')}
                 </Typography>
                 <LogoCarousel />
-            </Container>
+            </Box>
+            </Box>
             <Box id="testInformation">
                 <TestInformation />
             </Box>
