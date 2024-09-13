@@ -1,6 +1,5 @@
 import { SxProps, Theme } from '@mui/material';
 import pageThree from '../../../assets/img/pageThree.png';
-import pageOne from '../../../assets/img/pageOne.png';
 import pageTwo from '../../../assets/img/pageTwo.png';
 import pageFour from '../../../assets/img/pageFour.png';
 
@@ -8,12 +7,12 @@ const globalBoxStyles: SxProps<Theme> = (theme) => ({
     minHeight: '100vh',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    backgroundColor: '#caddff',
+    backgroundColor: '#F3F3F3',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    paddingLeft: '200px',
-    paddingRight: '200px',
+    paddingLeft: '110px',
+    paddingRight: '110px',
     [theme.breakpoints.down('sm')]: {
         flexDirection: 'column',
         alignItems: 'center',
@@ -32,23 +31,26 @@ const globalBoxStyles: SxProps<Theme> = (theme) => ({
 
 // Style Index-------------------------------------------------------
 export const homePageBoxStyles: SxProps<Theme> = (theme) => ({
-    backgroundImage: `url(${pageOne})`,
+    //TODO(beatriz.andrade): adicionar backgorund
     ...globalBoxStyles(theme),
 });
 
 export const gridIndexContainerStyles: SxProps<Theme> = (theme) => ({
-    height: '100%',
-    textAlign: 'center',
-    padding: '5%',
+    width: '100%',
+    textAlign: 'left',
+    padding: '15px',
+    marginTop: '10rem',
     [theme.breakpoints.down('sm')]: {
+        textAlign: 'left',
+        padding: '10px',
         height: '100%',
     },
 });
 
 export const typographyTitleStyles: SxProps<Theme> = (theme) => ({
-    fontFamily: 'Exo 2',
+    fontFamily: 'Poppins, sans-serif',  // Altere para Inter
+    fontWeight: 800,  
     fontSize: '2.4rem',
-    fontWeight: 700,
     color: '#1b1f27',
     [theme.breakpoints.down('sm')]: {
         fontSize: '1.8rem',
@@ -56,44 +58,36 @@ export const typographyTitleStyles: SxProps<Theme> = (theme) => ({
 });
 
 export const typographySubtitleStyles: SxProps<Theme> = (theme) => ({
-    fontFamily: 'Poppins',
+    fontFamily: 'Poppins, sans-serif',
+    fontWeight: 300, 
     fontSize: '1.4rem',
     mb: '1rem',
     color: '#1b1f27',
     [theme.breakpoints.down('sm')]: {
         fontSize: '1rem',
-        textAlign: 'justify',
+        textAlign: 'left',
     },
 });
 
 export const buttonStyles: SxProps<Theme> = (theme) => ({
-    fontFamily: 'Poppins',
-    background: 'linear-gradient(90deg, rgba(53,51,205,1) 0%, rgba(16,24,64,1) 100%)',
-    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
-    borderRadius: '1rem',
-    padding: '0.75rem 2.5rem',
-    fontSize: '1rem',
-    fontWeight: 'bold',
-    color: 'white',
+    mr: 2,
+    fontFamily: 'Roboto, monospace',
+    fontSize: '1.3rem',
+    padding: '0.4rem 13.5rem',
+    backgroundColor: '#D9EEFF',
+    color: '#185D8E',
+    fontWeight: 700,
+    borderColor: '#185D8E',
+    borderRadius: '7px',
+    borderWidth: '2px',
+    boxShadow: '4px 4px 0px 1px rgba(0, 111, 255, 0.2)',
     '&:hover': {
-        background: 'linear-gradient(269deg, #3533cd, #101840, #3533cd)',
-        backgroundSize: '180% 180%',
-        animation: 'gradient-animation 10s ease infinite',
-        boxShadow: '0 8px 16px rgba(0, 0, 0, 0.3)',
-    },
-    '@keyframes gradient-animation': {
-        '0%': {
-            backgroundPosition: '0% 50%',
-        },
-        '50%': {
-            backgroundPosition: '100% 50%',
-        },
-        '100%': {
-            backgroundPosition: '0% 50%',
-        },
+        backgroundColor: '#C0E3FF',
+        borderColor: '#185D8E',
+        borderWidth: '2px',
     },
     [theme.breakpoints.down('sm')]: {
-        padding: '0.5rem 1.5rem',
+        padding: '0.5rem 7rem',
         fontSize: '0.8rem',
     },
 });
@@ -138,7 +132,7 @@ export const gridItemTextStyles: SxProps<Theme> = (theme) => ({
 
 export const typographyAboutTitleStyles: SxProps<Theme> = (theme) => ({
     color: '#1b1f27',
-    fontFamily:'Exo 2',
+    fontFamily:'Poppins, sans-serif',
     fontSize: '2.3rem',
     textAlign: 'center',
     [theme.breakpoints.down('sm')]: {
@@ -148,7 +142,7 @@ export const typographyAboutTitleStyles: SxProps<Theme> = (theme) => ({
 });
 
 export const typographyBodyStyles: SxProps<Theme> = (theme) => ({
-    fontFamily: 'Poppins',
+    fontFamily: 'Poppins, sans-serif',
     color: '#1b1f27',
     textAlign: 'justify',
     fontSize: '1.25rem',
@@ -206,7 +200,7 @@ export const listItemIconStyles: SxProps<Theme> = (theme) => ({
 
 export const listItemTextStyles: SxProps<Theme> = (theme) => ({
     fontSize: '1.2rem',
-    fontFamily: 'Poppins',
+    fontFamily: 'Poppins, sans-serif',
     [theme.breakpoints.down('sm')]: {
         fontSize: '1rem',
     },
@@ -215,7 +209,7 @@ export const listItemTextStyles: SxProps<Theme> = (theme) => ({
 export const FaqTitle: SxProps<Theme> = (theme) => ({
     color: '#1b1f27',
     textAlign: 'center',
-    fontFamily: 'Exo 2',
+    fontFamily: 'Poppins, sans-serif',
     fontSize: '2.3rem',
     [theme.breakpoints.down('sm')]: {
         textAlign: 'center',
@@ -235,7 +229,7 @@ export const testInfBoxStyles: SxProps<Theme> = (theme) => ({
 });
 
 export const TestInfoContent: SxProps<Theme> = (theme) => ({
-    fontFamily: 'Poppins',
+    fontFamily: 'Poppins, sans-serif',
     color: '#1b1f27',
     textAlign: 'justify',
     fontSize: '1.2rem',
@@ -248,7 +242,7 @@ export const TestInfoContent: SxProps<Theme> = (theme) => ({
 
 export const TestInfoTitle: SxProps<Theme> = (theme) => ({
     color: '#1b1f27',
-    fontFamily: 'Exo 2',
+    fontFamily: 'Poppins, sans-serif',
     fontSize: '2.3rem',
     textAlign: 'center',
     [theme.breakpoints.down('sm')]: {
@@ -294,12 +288,23 @@ export const GridItemCards: SxProps<Theme> = (theme) => ({
 });
 
 // Style Parceiros-------------------------------------------------------
+export const BoxCarouselStyles: SxProps<Theme> = (theme) => ({
+    backgroundColor: 'white',
+    border: '3px solid #185D8E',
+    marginTop: '7rem',
+    borderRadius:'2rem',
+    boxShadow: '4px 4px 0px 1px rgba(0, 111, 255, 0.2)',
+    [theme.breakpoints.down('sm')]: {
+        textAlign: 'center',
+    },
+});
+
 export const CarouselTitle: SxProps<Theme> = (theme) => ({
-    marginTop: '0.8rem',
+    marginTop: '1rem',
     textAlign: 'center',
-    fontFamily: 'Poppins',
-    fontWeight: 'bold',
-    color: '#1b1f27',
+    fontFamily: 'Poppins, sans-serif',
+    fontWeight: 600,
+    color: '#185D8E',
     [theme.breakpoints.down('sm')]: {
         textAlign: 'center',
     },
