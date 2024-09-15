@@ -11,8 +11,8 @@ const globalBoxStyles: SxProps<Theme> = (theme) => ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    paddingLeft: '110px',
-    paddingRight: '110px',
+    paddingLeft: '5rem',
+    paddingRight: '5rem',
     [theme.breakpoints.down('sm')]: {
         flexDirection: 'column',
         alignItems: 'center',
@@ -41,6 +41,7 @@ export const gridIndexContainerStyles: SxProps<Theme> = (theme) => ({
     padding: '15px',
     marginTop: '10rem',
     [theme.breakpoints.down('sm')]: {
+        marginTop: '4rem',
         textAlign: 'left',
         padding: '10px',
         height: '100%',
@@ -55,6 +56,9 @@ export const typographyTitleStyles: SxProps<Theme> = (theme) => ({
     [theme.breakpoints.down('sm')]: {
         fontSize: '1.8rem',
     },
+    [theme.breakpoints.down('lg')]: {
+        fontSize: '1.8rem',
+    },
 });
 
 export const typographySubtitleStyles: SxProps<Theme> = (theme) => ({
@@ -66,6 +70,9 @@ export const typographySubtitleStyles: SxProps<Theme> = (theme) => ({
     [theme.breakpoints.down('sm')]: {
         fontSize: '1rem',
         textAlign: 'left',
+    },
+    [theme.breakpoints.down('lg')]: {
+        fontSize: '1.1rem',
     },
 });
 
@@ -81,16 +88,34 @@ export const buttonStyles: SxProps<Theme> = (theme) => ({
     borderRadius: '7px',
     borderWidth: '2px',
     boxShadow: '4px 4px 0px 1px rgba(0, 111, 255, 0.2)',
+    textAlign: 'center',
+    maxWidth: '100%',
+    minWidth: '250px',
+    whiteSpace: 'nowrap',
+    transition: 'transform 0.3s ease-in-out',
     '&:hover': {
         backgroundColor: '#C0E3FF',
         borderColor: '#185D8E',
         borderWidth: '2px',
+        transform: 'scale(1.02)',
+    },
+    [theme.breakpoints.down('lg')]: {
+        padding: '0.3rem 10rem',
+        fontSize: '1rem',
+        minWidth: '200px',  
+    },
+    [theme.breakpoints.down('md')]: {
+        padding: '0.3rem 15rem',
+        fontSize: '1rem',
+        minWidth: '200px',  
     },
     [theme.breakpoints.down('sm')]: {
-        padding: '0.5rem 7rem',
-        fontSize: '0.8rem',
+        padding: '0.3rem 8rem',
+        fontSize: '1rem',
+        minWidth: '200px',  
     },
 });
+
 
 // Style About-----------------------------------------------------
 export const aboutBoxStyles: SxProps<Theme> = (theme) => ({
@@ -290,14 +315,31 @@ export const GridItemCards: SxProps<Theme> = (theme) => ({
 // Style Parceiros-------------------------------------------------------
 export const BoxCarouselStyles: SxProps<Theme> = (theme) => ({
     backgroundColor: 'white',
+    maxWidth: '100%',
     border: '3px solid #185D8E',
     marginTop: '7rem',
-    borderRadius:'2rem',
+    borderRadius: '2rem',
     boxShadow: '4px 4px 0px 1px rgba(0, 111, 255, 0.2)',
+    padding: '1.5rem',
     [theme.breakpoints.down('sm')]: {
-        textAlign: 'center',
+        maxWidth: '90%',
+        marginTop: '4rem',
+        padding: '0.1rem',
+    },
+    [theme.breakpoints.down('md')]: {
+        maxWidth: '90%',
+        padding: '0.1rem',
+    },
+    [theme.breakpoints.down('lg')]: {
+        marginTop: '4rem',
+        padding: '0.1rem',
+    },
+    [theme.breakpoints.up('xl')]: {
+        marginTop: '4rem',
+        padding: '0.1rem',
     },
 });
+
 
 export const CarouselTitle: SxProps<Theme> = (theme) => ({
     marginTop: '1rem',
