@@ -1,5 +1,5 @@
 import { Box, Collapse, List, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
-import { ExpandLess, ExpandMore, StarBorder } from '@mui/icons-material';
+import { ExpandLess, ExpandMore, QuestionAnswerOutlined, StarBorderOutlined } from '@mui/icons-material';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 import * as React from 'react';
 import {
@@ -31,7 +31,7 @@ export const Faq: React.FC = () => {
                 <Box sx={listStyles}>
                     <ListItemButton onClick={() => handleClick('item1')}>
                         <ListItemIcon>
-                            <QuestionAnswerIcon sx={listItemIconStyles}/>
+                            <QuestionAnswerOutlined sx={listItemIconStyles}/>
                         </ListItemIcon>
                         <ListItemText primaryTypographyProps={{ sx: listItemTextStyles }} primary={t('faqTitleText1')} />
                         {openItems['item1'] ? <ExpandLess /> : <ExpandMore />}
@@ -40,7 +40,7 @@ export const Faq: React.FC = () => {
                         <List component="div" disablePadding>
                             <ListItemButton sx={{ pl: 4 }}>
                                 <ListItemIcon>
-                                    <StarBorder />
+                                    <StarBorderOutlined sx={listItemIconStyles} />
                                 </ListItemIcon>
                                 <ListItemText primaryTypographyProps={{ sx: listItemTextStyles }} primary={t('faqText1')} />
                             </ListItemButton>
@@ -50,7 +50,7 @@ export const Faq: React.FC = () => {
                 <Box sx={listStyles}>
                     <ListItemButton onClick={() => handleClick('item2')}>
                         <ListItemIcon>
-                            <QuestionAnswerIcon sx={listItemIconStyles}/>
+                            <QuestionAnswerOutlined sx={listItemIconStyles}/>
                         </ListItemIcon>
                         <ListItemText primaryTypographyProps={{ sx: listItemTextStyles }} primary={t('faqTitleText2')} />
                         {openItems['item2'] ? <ExpandLess /> : <ExpandMore />}
@@ -59,7 +59,7 @@ export const Faq: React.FC = () => {
                         <List component="div" disablePadding>
                             <ListItemButton sx={{ pl: 4 }}>
                                 <ListItemIcon>
-                                    <StarBorder />
+                                    <StarBorderOutlined sx={listItemIconStyles} />
                                 </ListItemIcon>
                                 <ListItemText primaryTypographyProps={{ sx: listItemTextStyles }} primary={t('faqText2')} />
                             </ListItemButton>
@@ -69,7 +69,7 @@ export const Faq: React.FC = () => {
                 <Box sx={listStyles}>
                     <ListItemButton onClick={() => handleClick('item3')}>
                         <ListItemIcon >
-                            <QuestionAnswerIcon sx={listItemIconStyles} />
+                            <QuestionAnswerOutlined sx={listItemIconStyles} />
                         </ListItemIcon>
                         <ListItemText primaryTypographyProps={{ sx: listItemTextStyles }} primary={t('faqTitleText3')} />
                         {openItems['item3'] ? <ExpandLess /> : <ExpandMore />}
@@ -78,7 +78,7 @@ export const Faq: React.FC = () => {
                         <List component="div" disablePadding>
                             <ListItemButton sx={{ pl: 4 }}>
                                 <ListItemIcon>
-                                    <StarBorder />
+                                    <StarBorderOutlined sx={listItemIconStyles} />
                                 </ListItemIcon>
                                 <ListItemText primaryTypographyProps={{ sx: listItemTextStyles }} primary={t('faqText3')} />
                             </ListItemButton>
@@ -88,7 +88,7 @@ export const Faq: React.FC = () => {
                 <Box sx={listStyles}>
                     <ListItemButton onClick={() => handleClick('item4')}>
                         <ListItemIcon>
-                            <QuestionAnswerIcon sx={listItemIconStyles} />
+                            <QuestionAnswerOutlined sx={listItemIconStyles} />
                         </ListItemIcon>
                         <ListItemText primaryTypographyProps={{ sx: listItemTextStyles }} primary={t('faqTitleText4')} />
                         {openItems['item4'] ? <ExpandLess /> : <ExpandMore />}
@@ -97,7 +97,7 @@ export const Faq: React.FC = () => {
                         <List component="div" disablePadding>
                             <ListItemButton sx={{ pl: 4 }}>
                                 <ListItemIcon>
-                                    <StarBorder />
+                                    <StarBorderOutlined sx={listItemIconStyles} />
                                 </ListItemIcon>
                                 <ListItemText primaryTypographyProps={{ sx: listItemTextStyles }} primary={t('faqText4')} />
                             </ListItemButton>
@@ -107,7 +107,7 @@ export const Faq: React.FC = () => {
                 <Box sx={listStyles}>
                     <ListItemButton onClick={() => handleClick('item5')}>
                         <ListItemIcon>
-                            <QuestionAnswerIcon sx={listItemIconStyles}/>
+                            <QuestionAnswerOutlined sx={listItemIconStyles}/>
                         </ListItemIcon>
                         <ListItemText primaryTypographyProps={{ sx: listItemTextStyles }}
                             primary={t('faqTitleText5')} />
@@ -117,7 +117,7 @@ export const Faq: React.FC = () => {
                         <List component="div" disablePadding>
                             <ListItemButton sx={{ pl: 4 }}>
                                 <ListItemIcon>
-                                    <StarBorder />
+                                    <StarBorderOutlined sx={listItemIconStyles} />
                                 </ListItemIcon>
                                 <ListItemText primaryTypographyProps={{ sx: listItemTextStyles }} primary={t('faqText5')} />
                             </ListItemButton>
