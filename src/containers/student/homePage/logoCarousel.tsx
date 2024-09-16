@@ -14,28 +14,28 @@ const LogoCarousel: React.FC = () => {
         dots: false,
         infinite: true,
         speed: 500,
-        slidesToShow: 5, // Padrão para desktop
+        slidesToShow: 5,
         slidesToScroll: 1,
         autoplay: true,
         autoplaySpeed: 4000,
         arrows: false,
         responsive: [
             {
-                breakpoint: 960, // Tablets
+                breakpoint: 960,
                 settings: {
-                    slidesToShow: 3, // Mostra 3 logos em telas médias
+                    slidesToShow: 3,
                 },
             },
             {
-                breakpoint: 600, // Mobile
+                breakpoint: 600,
                 settings: {
-                    slidesToShow: 2, // Mostra 2 logos em telas pequenas
+                    slidesToShow: 2,
                 },
             },
             {
-                breakpoint: 480, // Mobile bem pequenos
+                breakpoint: 480,
                 settings: {
-                    slidesToShow: 2, // Mostra 1 logo em telas menores
+                    slidesToShow: 2,
                 },
             },
         ],
