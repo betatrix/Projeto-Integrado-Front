@@ -173,13 +173,8 @@ export const typographyBodyStyles: SxProps<Theme> = (theme) => ({
 
 // Style FAQ-------------------------------------------------------
 export const faqBoxStyles: SxProps<Theme> = (theme) => ({
+    //TODO(beatriz.andrade): adicionar backgorund
     ...globalBoxStyles(theme),
-    backgroundImage: `url(${pageFour})`,
-    display: 'flex',
-    justifyContent: 'center',
-    flexDirection: 'column',
-    alignItems: 'center',
-    height: '100vh',
 });
 
 export const innerBoxStyles: SxProps<Theme> = (theme) => ({
@@ -188,6 +183,8 @@ export const innerBoxStyles: SxProps<Theme> = (theme) => ({
     textAlign: 'center',
     flexDirection: 'column',
     width: '100%',
+    paddingLeft:'7rem',
+    paddingRight: '7rem',
     [theme.breakpoints.down('sm')]: {
         width: '100%',
         paddingLeft:'1rem',
@@ -195,22 +192,30 @@ export const innerBoxStyles: SxProps<Theme> = (theme) => ({
     },
     [theme.breakpoints.down('md')]: {
         width: '100%',
-        paddingLeft:'1rem',
-        paddingRight: '1rem',
+        paddingLeft:'4rem',
+        paddingRight: '4rem',
     },
 });
 
 export const listStyles: SxProps<Theme> = (theme) => ({
-    backgroundColor: 'white',
+    backgroundColor: '#D9EEFF',
     borderRadius: '0.5rem',
-    marginTop: '0.4rem',
+    border: '3px solid #185D8E',
+    boxShadow: '4px 4px 0px 1px rgba(0, 111, 255, 0.2)',
+    padding: '0.5rem',
+    marginTop: '1.4rem',
     [theme.breakpoints.down('sm')]: {
-        fontSize: '0.5rem',
+        fontSize: '0.4rem',
+        padding: '0.1rem',
+    },
+    [theme.breakpoints.down('lg')]: {
+        fontSize: '0.4rem',
+        padding: '0.1rem',
     },
 });
 
 export const listItemIconStyles: SxProps<Theme> = (theme) => ({
-    color: 'black',
+    color: '#185D8E',
     fontSize: '1.25rem',
     [theme.breakpoints.down('sm')]: {
         fontSize: '1rem',
@@ -226,10 +231,11 @@ export const listItemTextStyles: SxProps<Theme> = (theme) => ({
 });
 
 export const FaqTitle: SxProps<Theme> = (theme) => ({
-    color: '#1b1f27',
-    textAlign: 'center',
     fontFamily: 'Poppins, sans-serif',
-    fontSize: '2.3rem',
+    fontWeight: 800,  
+    fontSize: '2.4rem',
+    color: '#1b1f27',
+    marginBottom: '2rem',
     [theme.breakpoints.down('sm')]: {
         textAlign: 'center',
         fontSize: '1.8rem',
