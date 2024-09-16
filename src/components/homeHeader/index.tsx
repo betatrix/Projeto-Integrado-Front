@@ -70,15 +70,15 @@ function InitialPageHeader() {
                 </ScrollLink>
             </ListItem>
             <ListItem>
-                <AssignmentIndOutlined style={{ color: '#185D8E' }} />
-                <ScrollLink to="testInformation" smooth={true} duration={500} onSetActive={handleCloseDrawer}>
-                    <Button color="inherit" sx={linkButtonMobile}>{t('testInformation')}</Button>
-                </ScrollLink>
-            </ListItem>
-            <ListItem>
                 <InfoOutlined style={{ color: '#185D8E' }} />
                 <ScrollLink to="about" smooth={true} duration={500} onSetActive={handleCloseDrawer}>
                     <Button color="inherit" sx={linkButtonMobile}>{t('about')}</Button>
+                </ScrollLink>
+            </ListItem>
+            <ListItem>
+                <AssignmentIndOutlined style={{ color: '#185D8E' }} />
+                <ScrollLink to="testInformation" smooth={true} duration={500} onSetActive={handleCloseDrawer}>
+                    <Button color="inherit" sx={linkButtonMobile}>{t('testInformation')}</Button>
                 </ScrollLink>
             </ListItem>
             <ListItem>
@@ -153,11 +153,11 @@ function InitialPageHeader() {
                                 left: '50%',
                                 transform: 'translate(-50%, -50%)',
                             }}>
-                                <ScrollLink to="testInformation" smooth={true} duration={500}>
-                                    <Button color="inherit" sx={linkButton}>{t('testInformation')}</Button>
-                                </ScrollLink>
                                 <ScrollLink to="about" smooth={true} duration={500}>
                                     <Button color="inherit" sx={linkButton}>{t('about')}</Button>
+                                </ScrollLink>
+                                <ScrollLink to="testInformation" smooth={true} duration={500}>
+                                    <Button color="inherit" sx={linkButton}>{t('testInformation')}</Button>
                                 </ScrollLink>
                                 <ScrollLink to="faq" smooth={true} duration={500}>
                                     <Button color="inherit" sx={linkButton}>{t('faq')}</Button>

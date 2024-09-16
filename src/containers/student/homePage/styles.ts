@@ -1,5 +1,4 @@
 import { SxProps, Theme } from '@mui/material';
-import pageThree from '../../../assets/img/pageThree.png';
 import pageTwo from '../../../assets/img/pageTwo.png';
 import pageFour from '../../../assets/img/pageFour.png';
 
@@ -42,22 +41,22 @@ export const gridIndexContainerStyles: SxProps<Theme> = (theme) => ({
     marginTop: '10rem',
     [theme.breakpoints.down('sm')]: {
         marginTop: '4rem',
-        textAlign: 'left',
+        textAlign: 'center',
         padding: '10px',
         height: '100%',
     },
 });
 
 export const typographyTitleStyles: SxProps<Theme> = (theme) => ({
-    fontFamily: 'Poppins, sans-serif',  // Altere para Inter
+    fontFamily: 'Poppins, sans-serif',
     fontWeight: 800,  
     fontSize: '2.4rem',
     color: '#1b1f27',
     [theme.breakpoints.down('sm')]: {
-        fontSize: '1.8rem',
+        fontSize: '1.6rem',
     },
     [theme.breakpoints.down('lg')]: {
-        fontSize: '1.8rem',
+        fontSize: '1.6rem',
     },
 });
 
@@ -69,7 +68,7 @@ export const typographySubtitleStyles: SxProps<Theme> = (theme) => ({
     color: '#1b1f27',
     [theme.breakpoints.down('sm')]: {
         fontSize: '1rem',
-        textAlign: 'left',
+        textAlign: 'center',
     },
     [theme.breakpoints.down('lg')]: {
         fontSize: '1.1rem',
@@ -119,56 +118,51 @@ export const buttonStyles: SxProps<Theme> = (theme) => ({
 
 // Style About-----------------------------------------------------
 export const aboutBoxStyles: SxProps<Theme> = (theme) => ({
+    //TODO(beatriz.andrade): adicionar backgorund
     ...globalBoxStyles(theme),
-    backgroundImage: `url(${pageThree})`,
-    backgroundColor: 'white',
 });
 
 export const gridAboutContainerStyles: SxProps<Theme> = (theme) => ({
-    height: '100%',
+    width: '100%',
+    textAlign: 'left',
     [theme.breakpoints.down('sm')]: {
         alignItems: 'center',
     },
 });
 
-export const gridItemImageStyles: SxProps<Theme> = (theme) => ({
-    display: 'flex',
-    justifyContent: 'center',
-    [theme.breakpoints.down('sm')]: {
-        width: '100%',
-        maxWidth: '25rem',
-    },
-});
-
-export const imageStyles: React.CSSProperties = {
-    width: '100%',
-    maxWidth: '25rem',
-    borderRadius:'1rem',
-
-};
-
 export const gridItemTextStyles: SxProps<Theme> = (theme) => ({
+    fontFamily: 'Poppins, sans-serif',
+    fontWeight: 300, 
+    fontSize: '1.4rem',
+    mb: '1rem',
     color: '#1b1f27',
     [theme.breakpoints.down('sm')]: {
+        margin: '14px',
         fontSize: '1rem',
-        padding: '5%',
+        textAlign: 'left',
+    },
+    [theme.breakpoints.down('lg')]: {
+        fontSize: '1rem',
     },
 });
 
 export const typographyAboutTitleStyles: SxProps<Theme> = (theme) => ({
+    fontFamily: 'Poppins, sans-serif',
+    fontWeight: 800,  
+    fontSize: '2.4rem',
     color: '#1b1f27',
-    fontFamily:'Poppins, sans-serif',
-    fontSize: '2.3rem',
-    textAlign: 'center',
     [theme.breakpoints.down('sm')]: {
+        fontSize: '1.4rem',
+    },
+    [theme.breakpoints.down('lg')]: {
         fontSize: '1.8rem',
-        textAlign: 'center',
     },
 });
 
 export const typographyBodyStyles: SxProps<Theme> = (theme) => ({
     fontFamily: 'Poppins, sans-serif',
     color: '#1b1f27',
+    paddingTop: '10px',
     textAlign: 'justify',
     fontSize: '1.25rem',
     lineHeight: '140%',

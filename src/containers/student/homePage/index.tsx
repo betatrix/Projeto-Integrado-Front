@@ -49,11 +49,11 @@ export const HomePage: React.FC = () => {
                 <LogoCarousel />
             </Box>
             </Box>
-            <Box id="testInformation">
-                <TestInformation />
-            </Box>
             <Box id="about">
                 <About />
+            </Box>
+            <Box id="testInformation">
+                <TestInformation />
             </Box>
             <Box id="faq">
                 <Faq />
