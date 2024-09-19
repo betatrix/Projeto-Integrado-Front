@@ -10,9 +10,7 @@ import {
     Avatar,
     Menu,
     MenuItem,
-    Button,
 } from '@mui/material';
-import { Link } from 'react-router-dom';
 import { AuthContext } from '../../contexts/auth';
 import { decryptData } from '../../services/encryptionService';
 
@@ -80,16 +78,11 @@ function AdminHeader() {
                             variant="h5"
                             noWrap
                             component="a"
-                            href="#app-bar-with-responsive-menu"
+                            href="/pagina-inicial"
                             sx={styles.logo}
                         >
                             VOCCO
                         </Typography>
-                    </Box>
-                    <Box sx={{marginLeft: '900px' }}>
-                        <Link to="/pagina-inicial" style={styles.linkButton}>
-                            <Button color="inherit">Home</Button>
-                        </Link>
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <Typography sx={styles.welcomeText}>
