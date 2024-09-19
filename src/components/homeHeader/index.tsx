@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
     AppBar,
     Container,
@@ -26,15 +26,25 @@ import { useTranslation } from 'react-i18next';
 import { useMediaQuery } from '@mui/material';
 import LanguageMenu from '../translationButton';
 import { linkButtonMobile, logo, linkButton, LoginText } from './styles';
+import { AuthContext } from '../../contexts/auth';
+import { decryptData } from '../../services/encryptionService';
 
-function InitialPageHeader() {
+const  InitialPageHeader = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
     const isMobile = useMediaQuery('(max-width:600px)');
     const [drawerOpen, setDrawerOpen] = useState(false);
 
+    const authContext = useContext(AuthContext);
+
     const handleLogin = () => {
-        navigate('/login');
+        if (authContext?.isAuthenticated === true && decryptData(authContext.role!) === 'ESTUDANTE'){
+            navigate('/estudante');
+        } else if (authContext?.isAuthenticated == true && decryptData(authContext.role!) == 'ADMIN') {
+            navigate('/admin');
+        } else {
+            navigate('/login');
+        }
     };
 
     const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -50,7 +60,6 @@ function InitialPageHeader() {
 
     const menuItems = (
         <List>
-            {/* Ícone de Fechar no topo */}
             <ListItem sx={{ justifyContent: 'flex-end' }}>
                 <IconButton onClick={handleCloseDrawer} sx={{ color: '#185D8E' }}>
                     <CloseIcon />
@@ -88,7 +97,6 @@ function InitialPageHeader() {
                 </ScrollLink>
             </ListItem>
 
-            {/* Direitos Reservados no canto inferior direito */}
             <Box
                 sx={{
                     position: 'absolute',
