@@ -1,6 +1,4 @@
 import { SxProps, Theme } from '@mui/material';
-import pageTwo from '../../../assets/img/pageTwo.png';
-import pageFour from '../../../assets/img/pageFour.png';
 
 const globalBoxStyles: SxProps<Theme> = (theme) => ({
     minHeight: '100vh',
@@ -10,8 +8,8 @@ const globalBoxStyles: SxProps<Theme> = (theme) => ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    paddingLeft: '5rem',
-    paddingRight: '5rem',
+    paddingLeft: '6rem',
+    paddingRight: '7rem',
     [theme.breakpoints.down('sm')]: {
         flexDirection: 'column',
         alignItems: 'center',
@@ -175,6 +173,8 @@ export const typographyBodyStyles: SxProps<Theme> = (theme) => ({
 export const faqBoxStyles: SxProps<Theme> = (theme) => ({
     //TODO(beatriz.andrade): adicionar backgorund
     ...globalBoxStyles(theme),
+    paddingTop: '3rem',
+    paddingBottom: '5rem',
 });
 
 export const innerBoxStyles: SxProps<Theme> = (theme) => ({
@@ -246,71 +246,105 @@ export const FaqTitle: SxProps<Theme> = (theme) => ({
 
 export const testInfBoxStyles: SxProps<Theme> = (theme) => ({
     ...globalBoxStyles(theme),
-    backgroundImage: `url(${pageTwo})`,
+    backgroundColor: '#BCD7EB',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
+    height: '100vh',
 });
+
 
 export const TestInfoContent: SxProps<Theme> = (theme) => ({
     fontFamily: 'Poppins, sans-serif',
     color: '#1b1f27',
+    paddingTop: '10px',
     textAlign: 'justify',
-    fontSize: '1.2rem',
-    lineHeight: '140%',
-    [theme.breakpoints.down('sm')]: {
+    fontSize: '1.25rem',
+    [theme.breakpoints.down('md')]: {
+        textAlign: 'justify',
         fontSize: '1rem',
-        padding: '5%',
+    },
+    [theme.breakpoints.down('sm')]: {
+        textAlign: 'justify',
+        fontSize: '1rem',
     },
 });
 
 export const TestInfoTitle: SxProps<Theme> = (theme) => ({
-    color: '#1b1f27',
     fontFamily: 'Poppins, sans-serif',
-    fontSize: '2.3rem',
-    textAlign: 'center',
+    fontWeight: 800,  
+    fontSize: '2.4rem',
+    color: '#1b1f27',
     [theme.breakpoints.down('sm')]: {
-        textAlign: 'center',
+        fontSize: '1.4rem',
+    },
+    [theme.breakpoints.down('lg')]: {
         fontSize: '1.8rem',
     },
 });
 
 export const BoxCardHollandStyles: SxProps<Theme> = (theme) => ({
-    backgroundColor: '#99b9ff',
-    borderRadius:'0.5rem',
-    paddingTop:'2rem',
-    paddingBottom: '2rem',
+    backgroundColor: 'white',
+    borderRadius: '2rem',
+    border: '3px solid #185D8E',
+    boxShadow: '4px 4px 0px 1px rgba(0, 111, 255, 0.2)',
+    padding: '4rem 3rem',
     display: 'flex',
-    gap: '0.5rem',
-    overflow: 'hidden',
     justifyContent: 'center',
     alignItems: 'center',
+    width: '90rem',
+    height: '40rem',
+    overflow: 'hidden',
+    [theme.breakpoints.down('lg')]: {
+        width: '55rem',
+        height: '40rem',
+    },
+    [theme.breakpoints.down('md')]: {
+        width: '35rem',
+        height: '37rem',
+        padding: '1rem 1rem',
+    },
+    [theme.breakpoints.down('sm')]: {
+        width: '21rem',
+        height: '37rem',
+        padding: '1rem 1rem',
+    },    
+});
+
+export const TestInfoContainerStyles: SxProps<Theme> = (theme) => ({
     width: '100%',
+    textAlign: 'left',
+    paddingLeft: '25px',
+    [theme.breakpoints.down('md')]: {
+        textAlign: 'center',
+        paddingLeft: '0px',
+    },
     [theme.breakpoints.down('sm')]: {
         textAlign: 'center',
-    },
+        paddingLeft: '0px',
+    },  
 });
 
-export const CardStyle: SxProps<Theme> = (theme) => ({
-    flex: '0 0 auto',
-    transition: 'transform 0.3s ease',
-    [theme.breakpoints.down('sm')]: {
-        textAlign: 'center',
-    },
-});
+export const IndicatorContainerStyles = {
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: '16px',
+};
 
-export const GridItemText: SxProps<Theme> = (theme) => ({
-    [theme.breakpoints.down('sm')]: {
-        textAlign: 'center',
-    },
-});
+export const IndicatorStyles = {
+    width: '10px',
+    height: '10px',
+    borderRadius: '50%',
+    backgroundColor: 'white',
+    margin: '0 5px',
+    transition: 'background-color 0.3s',
+};
 
-export const GridItemCards: SxProps<Theme> = (theme) => ({
-    [theme.breakpoints.down('sm')]: {
-        textAlign: 'center',
-    },
-});
+export const ActiveIndicatorStyles = {
+    ...IndicatorStyles,
+    backgroundColor: '#185D8E',
+};
 
 // Style Parceiros-------------------------------------------------------
 export const BoxCarouselStyles: SxProps<Theme> = (theme) => ({
