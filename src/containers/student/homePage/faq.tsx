@@ -1,6 +1,7 @@
 import { Box, Collapse, List, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
-import { ExpandLess, ExpandMore, QuestionAnswerOutlined, StarBorderOutlined } from '@mui/icons-material';
-import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
+import { QuestionAnswerOutlined, StarBorderOutlined } from '@mui/icons-material';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
 import * as React from 'react';
 import {
     faqBoxStyles,

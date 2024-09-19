@@ -16,7 +16,8 @@
       "partner": "Nossos Parceiros",
 
       "informationTitle": "Teoria de John Holland",
-      "informationText": "Nosso teste vocacional é fundamentado nos estudos do psicólogo John L. Holland, que desenvolveu a Teoria dos Tipos Vocacionais. Esta teoria identifica seis tipos principais de personalidade e ambientes de trabalho, conhecidos pela sigla RIASEC. Ao responder nosso teste, suas características pessoais são comparadas com os tipos RIASEC para identificar carreiras e áreas de estudo que correspondem ao seu perfil, aumentando as chances de satisfação e sucesso profissional.",
+      "informationText1": "Nosso teste vocacional é inspirado na teoria do psicólogo John L. Holland, que mapeia seis tipos de personalidade e ambientes de trabalho, chamados de RIASEC.",
+      "informationText2": "Quando você faz o teste, a gente combina seu estilo com esses tipos pra descobrir as profissões e áreas de estudo que são a sua cara, pra você se encontrar e mandar bem na sua carreira.",
     
       "aboutTitle": "Sobre nós",
       "aboutText1": "Nós somos a VOCCO, uma plataforma que ajuda a galera do ensino médio das escolas públicas a escolherem suas futuras carreiras.",
@@ -34,13 +35,34 @@
       "faqTitleText5": "Como posso salvar minhas pesquisas e resultados de testes?",
       "faqText5":"Após criar uma conta, fazer login e realizar um teste você terá salvo em sua página os resultados do testes, acessível a qualquer momento.",
 
-      "profileTitle1":"Realista",
-      "profileTitle2":"Investigativo",
-      "profileTitle3":"Artístico",
-      "profileTitle4":"Social",
-      "profileTitle5":"Empreendedor",
-      "profileTitle6":"Convencional",
+      "jonhHollandTitle": "Teoria de John Holland",
+      "jonhHollandContent": "Nosso teste vocacional é inspirado na teoria do psicólogo John L. Holland, que mapeia seis tipos de personalidade e ambientes de trabalho, chamados de RIASEC. ",
+      "jonhHollandContent2": "Quando você faz o teste, a gente combina seu estilo com esses tipos pra descobrir as profissões e áreas de estudo que são a sua cara, pra você se encontrar e mandar bem na sua carreira.",
 
+      "realistaTitle": "Realista",
+      "realistaContent": "Esse perfil é prático e adora colocar a mão na massa...",
+      "realistaContent2": "Com essas habilidades, você se dá bem em áreas como engenharia, construção e mais.",
+      
+      "investigativoTitle": "Investigativo",
+      "investigativoContent": "Esse perfil adora resolver problemas complexos...",
+      "investigativoContent2": "Carreiras em ciência e pesquisa são ótimas opções.",
+    
+      "artisticoTitle": "Artístico",
+      "artisticoContent": "Esse perfil é criativo e tem uma veia artística...",
+      "artisticoContent2": "Áreas como design, música e arte são perfeitas para você.",
+
+      "socialTitle": "Social",
+      "socialContent": "Esse perfil é prático e adora colocar a mão na massa...",
+      "socialContent2": "Com essas habilidades, você se dá bem em áreas como engenharia, construção e mais.",
+
+      "empreendedorTitle": "Empreendedor",
+      "empreendedorContent": "Esse perfil é puro carisma e liderança. São pessoas cheias de energia, que curtem estar no comando e sabem influenciar os outros com suas decisões e atitudes.",
+      "empreendedorContent2": "Com essas skills, mandam bem em áreas como marketing, gestão, e por aí vai.",
+
+      "convencionalTitle": "Convencional",
+      "convencionalContent": "Esse perfil é prático e adora colocar a mão na massa...",
+      "convencionalContent2": "Com essas habilidades, você se dá bem em áreas como engenharia, construção e mais.",
+      
       "backButton": "Voltar",
 
       "loginBackButton": "Página Inicial",
@@ -92,6 +114,5 @@
 
       "listInstitutionTitle": "Lista de Instituições",
       "listInstitutionSearch": "Pesquisar Instituição"
-
     }
   }

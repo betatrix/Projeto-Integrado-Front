@@ -14,10 +14,7 @@
       "registerButton": "LET'S GO!",
 
       "partner": "Our partners",
-  
-      "informationTitle": "John Holland theory",
-      "informationText": "Our vocational test is based on the studies of psychologist John L. Holland, who developed the Theory of Vocational Types. This theory identifies six main personality types and work environments, known by the acronym RIASEC. When answering our test, your personal characteristics are compared with RIASEC types to identify careers and areas of study that match your profile, increasing the chances of satisfaction and professional success.",
-  
+    
       "aboutTitle": "About us",
       "aboutText1": "We are VOCCO, a platform that helps high school students from public schools choose their future careers.",
       "aboutText2": "Our name comes from VOCATION in Latin, showing that we are here to help you connect with your future!",
@@ -34,12 +31,33 @@
       "faqTitleText5": "How can I save my searches and test results?",
       "faqText5":"After creating an account, logging in and carrying out a test, you will have the test results saved on your page, accessible at any time.",
 
-      "profileTitle1":"",
-      "profileTitle2":"",
-      "profileTitle3":"",
-      "profileTitle4":"",
-      "profileTitle5":"",
-      "profileTitle6":"",
+      "jonhHollandTitle": "Theory by John Holland",
+      "jonhHollandContent": "Our vocational test is inspired by psychologist John L. Holland's theory, which maps six personality types and work environments, called RIASEC.",
+      "jonhHollandContent2": "When you take the test, we match your style with these types to discover the professions and areas of study that suit you, so you can find yourself and do well in your career.",
+
+      "realistaTitle": "Realista",
+      "realistaContent": "Esse perfil é prático e adora colocar a mão na massa...",
+      "realistaContent2": "Com essas habilidades, você se dá bem em áreas como engenharia, construção e mais.",
+      
+      "investigativoTitle": "Investigativo",
+      "investigativoContent": "Esse perfil adora resolver problemas complexos...",
+      "investigativoContent2": "Carreiras em ciência e pesquisa são ótimas opções.",
+    
+      "artisticoTitle": "Artístico",
+      "artisticoContent": "Esse perfil é criativo e tem uma veia artística...",
+      "artisticoContent2": "Áreas como design, música e arte são perfeitas para você.",
+
+      "socialTitle": "Social",
+      "socialContent": "Esse perfil é prático e adora colocar a mão na massa...",
+      "socialContent2": "Com essas habilidades, você se dá bem em áreas como engenharia, construção e mais.",
+
+      "empreendedorTitle": "Entrepreneur",
+      "empreendedorContent": "This profile is pure charisma and leadership. They are people full of energy, who enjoy being in charge and know how to influence others with their decisions and attitudes.",
+      "empreendedorContent2": "With these skills, they do well in areas such as marketing, management, and so on.",
+
+      "convencionalTitle": "Convencional",
+      "convencionalContent": "Esse perfil é prático e adora colocar a mão na massa...",
+      "convencionalContent2": "Com essas habilidades, você se dá bem em áreas como engenharia, construção e mais.",
 
       "backButton": "Back",
 
