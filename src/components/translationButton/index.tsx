@@ -29,8 +29,9 @@ const LanguageMenu = () => {
                 onClick={handleClick}
                 variant="text"
                 sx={{
-                    color: 'white',
+                    color: 'black',
                     backgroundColor: 'transparent',
+                    fontFamily: 'Roboto, monospace',
                     marginRight: 2,
                     '&:hover': {
                         backgroundColor: 'rgba(255, 255, 255, 0.1)',
@@ -45,8 +46,8 @@ const LanguageMenu = () => {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
             >
-                <MenuItem onClick={() => handleLanguageChange('en')}>English</MenuItem>
-                <MenuItem onClick={() => handleLanguageChange('pt')}>Português</MenuItem>
+                <MenuItem sx={{ fontFamily: 'Roboto, monospace'}} onClick={() => handleLanguageChange('en')}>English</MenuItem>
+                <MenuItem sx={{ fontFamily: 'Roboto, monospace'}} onClick={() => handleLanguageChange('pt')}>Português</MenuItem>
             </Menu>
         </>
     );

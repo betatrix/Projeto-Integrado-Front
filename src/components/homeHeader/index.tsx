@@ -51,7 +51,7 @@ function InitialPageHeader() {
     };
 
     return (
-        <AppBar position="sticky" style={{ backgroundColor: '#1b1f27' }}>
+        <AppBar position="fixed" style={{ backgroundColor: '#1b1f27' }}>
             <Container maxWidth="xl">
                 <Toolbar sx={{ justifyContent: 'space-between' }}>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>

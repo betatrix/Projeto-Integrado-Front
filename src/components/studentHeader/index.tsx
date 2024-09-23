@@ -1,8 +1,6 @@
 import React, { useContext, useState } from 'react';
 import {
     AppBar,
-    Container,
-    Toolbar,
     Box,
     IconButton,
     Typography,
@@ -10,13 +8,11 @@ import {
     Avatar,
     Menu,
     MenuItem,
-    Button,
 } from '@mui/material';
-import { Link } from 'react-router-dom';
 import { AuthContext } from '../../contexts/auth';
 import { decryptData } from '../../services/encryptionService';
 import LanguageMenu from '../translationButton';
-import { useTranslation } from 'react-i18next';
+// import { useTranslation } from 'react-i18next';
 
 const styles = {
     logo: {
@@ -44,8 +40,8 @@ const styles = {
     },
 };
 
-function StudentHeader() {
-    const{ t } = useTranslation();
+function StudentHeader( ) {
+    // const { t } = useTranslation();
 
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
     // const [anchorElTeste, setAnchorElTeste] = useState<null | HTMLElement>(null);
@@ -73,64 +69,31 @@ function StudentHeader() {
     };
 
     return (
-        <AppBar position="static" style={{ backgroundColor: '#1b1f27' }}>
-            <Container maxWidth="xl">
-                <Toolbar sx={{ justifyContent: 'space-between' }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Typography
-                            variant="h5"
-                            noWrap
-                            component="a"
-                            href="#app-bar-with-responsive-menu"
-                            sx={styles.logo}
-                        >
-                            VOCCO
-                        </Typography>
-                        <Box sx={{ marginLeft: '10px' }}>
-                            <Link to="/pagina-inicial" style={styles.linkButton}>
-                                <Button color="inherit">{t('home')}</Button>
-                            </Link>
-                            <Link to="/instituicao" style={styles.linkButton}>
-                                <Button color="inherit">{t('university')}</Button>
-                            </Link>
-                            <Link to="/teste-vocacional" style={styles.linkButton}>
-                                <Button color="inherit">{t('test')}</Button>
-                            </Link>
-                        </Box>
-
-                    </Box>
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <LanguageMenu />
-                        <Typography sx={styles.welcomeText}>
-                            {t('welcome')} {student ? student.nome : 'usuário'}!
-                        </Typography>
-                        <Tooltip title="Opções de Perfil">
-                            <IconButton onClick={handleOpenUserMenu} sx={styles.avatarButton}>
-                                <Avatar alt={student ? student.nome : 'User Avatar'} src="/static/images/avatar/2.jpg" />
-                            </IconButton>
-                        </Tooltip>
-                        <Menu
-                            sx={styles.menu}
-                            id="menu-appbar"
-                            anchorEl={anchorElUser}
-                            anchorOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            keepMounted
-                            open={Boolean(anchorElUser)}
-                            onClose={handleCloseUserMenu}
-                        >
-                            {/* <MenuItem>
-                                <Typography textAlign="center">Account</Typography>
-                            </MenuItem> */}
-                            <MenuItem onClick={handleMenuItemClick}>
-                                <Typography textAlign="center">Logout</Typography>
-                            </MenuItem>
-                        </Menu>
-                    </Box>
-                </Toolbar>
-            </Container>
+        <AppBar position="static" sx={{ backgroundColor: '#F3F3F3', boxShadow: 'none' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 3, justifyContent: 'flex-end', mr: 5 }}>
+                <LanguageMenu />
+                <Tooltip title="Opções de Perfil">
+                    <IconButton onClick={handleOpenUserMenu} sx={styles.avatarButton}>
+                        <Avatar alt={student ? student.nome : 'User Avatar'} src="/static/images/avatar/2.jpg" />
+                    </IconButton>
+                </Tooltip>
+                <Menu
+                    sx={styles.menu}
+                    id="menu-appbar"
+                    anchorEl={anchorElUser}
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                    }}
+                    keepMounted
+                    open={Boolean(anchorElUser)}
+                    onClose={handleCloseUserMenu}
+                >
+                    <MenuItem onClick={handleMenuItemClick}>
+                        <Typography textAlign="center" sx={{ fontFamily: 'Roboto, monospace'}}>Logout</Typography>
+                    </MenuItem>
+                </Menu>
+            </Box>
         </AppBar>
     );
 }
