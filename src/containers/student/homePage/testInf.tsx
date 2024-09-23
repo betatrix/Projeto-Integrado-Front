@@ -1,5 +1,6 @@
-import { Box, Card, CardMedia, Grid, IconButton, Typography } from '@mui/material';
+import { Box, CardMedia, Grid, IconButton, Typography, useMediaQuery } from '@mui/material';
 import React, { useState } from 'react';
+import { useSwipeable } from 'react-swipeable'; // Importar a biblioteca de swipe
 import Realista from '../../../assets/img/Realista.png';
 import Investigativo from '../../../assets/img/Investigativo.png';
 import Artistico from '../../../assets/img/Artistico.png';
@@ -8,46 +9,57 @@ import Empreendedor from '../../../assets/img/Empreendedor.png';
 import Convencional from '../../../assets/img/Convencional.png';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import {
-    BoxCardHollandStyles,
-    CardStyle,
-    GridItemCards,
-    GridItemText,
-    TestInfoContent,
-    TestInfoTitle,
-    testInfBoxStyles,
-} from './styles';
+import { BoxCardHollandStyles, testInfBoxStyles, TestInfoContainerStyles, TestInfoContent, TestInfoTitle, IndicatorContainerStyles, IndicatorStyles, ActiveIndicatorStyles } from './styles';
 import { useTranslation } from 'react-i18next';
 
 const data = [
     {
         src: Realista,
-        title: 'Realista',
+        title: 'jonhHollandTitle',
+        content: 'jonhHollandContent',
+        content2: 'jonhHollandContent2'
+    },
+    {
+        src: Realista,
+        title: 'realistaTitle',
+        content: 'realistaContent',
+        content2: 'realistaContent2'
     },
     {
         src: Investigativo,
-        title: 'Investigativo',
+        title: 'investigativoTitle',
+        content: 'investigativoContent',
+        content2: 'investigativoContent2'
     },
     {
         src: Artistico,
-        title: 'Artístico',
+        title: 'artisticoTitle',
+        content: 'artisticoContent',
+        content2: 'artisticoContent2'
     },
     {
         src: Social,
-        title: 'Social',
+        title: 'socialTitle',
+        content: 'socialContent',
+        content2: 'socialContent2'
     },
     {
         src: Empreendedor,
-        title: 'Empreendedor',
+        title: 'empreendedorTitle',
+        content: 'empreendedorContent',
+        content2: 'empreendedorContent2'
     },
     {
         src: Convencional,
-        title: 'Convencional',
+        title: 'convencionalTitle',
+        content: 'convencionalContent',
+        content2: 'convencionalContent2'
     },
 ];
 
 export const TestInformation: React.FC = () => {
-    const{ t } = useTranslation();
+    const { t } = useTranslation();
+    const isMobile = useMediaQuery('(max-width:600px)');
     const [index, setIndex] = useState(0);
 
     const handlePrevClick = () => {
@@ -58,48 +70,57 @@ export const TestInformation: React.FC = () => {
         setIndex((prevIndex) => (prevIndex === data.length - 1 ? 0 : prevIndex + 1));
     };
 
-    const getVisibleData = () => {
-        const items = [];
-        for (let i = -1; i <= 1; i++) {
-            items.push(data[(index + i + data.length) % data.length]);
-        }
-        return items;
-    };
-
-    const visibleData = getVisibleData();
+    // Configurações do swipe para detecção de gestos de arrastar
+    const swipeHandlers = useSwipeable({
+        onSwipedLeft: handleNextClick,
+        onSwipedRight: handlePrevClick,
+        trackMouse: true,
+    });
 
     return (
         <Box sx={testInfBoxStyles}>
-            <Grid container spacing={4} alignItems="center" justifyContent="center">
-                <Grid item xs={12} md={6} sx={GridItemText}>
-                    <Box>
-                        <Typography sx={TestInfoTitle}>{t('informationTitle')}</Typography>
-                    </Box>
-                    <Typography sx={TestInfoContent}>
-                        {t('informationText')}
-                    </Typography>
-                </Grid>
-                <Grid item xs={12} md={6} sx={GridItemCards}>
-                    <Box sx={BoxCardHollandStyles}>
+            <Grid container alignItems="center" justifyContent="center">
+                <Grid item>
+                    <Box {...swipeHandlers} sx={BoxCardHollandStyles}>
                         <IconButton onClick={handlePrevClick}>
                             <ArrowBackIosNewIcon />
                         </IconButton>
-                        {visibleData.map((item, idx) => (
-                            <Card key={item.title} variant="outlined" sx={{ ...CardStyle, transform: idx === 1 ? 'scale(1.1)' : 'scale(0.8)', transition: 'transform 1.0s ease' }}>
-                                <CardMedia
-                                    component="img"
-                                    height="auto"
-                                    image={item.src}
-                                    alt={item.title}
-                                />
-                                <Box sx={{ whiteSpace: 'nowrap', padding: '1rem', textAlign: 'center' }}>
-                                    <Typography sx={{fontFamily:'Poppins', fontSize:'0.8rem', fontWeight: 'bold', color:'#1b1f27'}}>{item.title}</Typography>
+                        <Grid container alignItems="colum" justifyContent="flex-start" sx={TestInfoContainerStyles}>
+                            <Grid item xs={12} md={10}>
+                                <Box>
+                                    <Typography variant="h5" component="div" sx={TestInfoTitle}>
+                                        {t(data[index].title)}
+                                    </Typography>
+                                    <Typography variant="body2" color="text.secondary" sx={TestInfoContent}>
+                                        {t(data[index].content)}
+                                    </Typography>
+                                    <Typography variant="body2" color="text.secondary" sx={TestInfoContent}>
+                                        {t(data[index].content2)}
+                                    </Typography>
                                 </Box>
-                            </Card>
+                            </Grid>
+                        </Grid>
+                        {!isMobile && (
+                            <CardMedia
+                                component="img"
+                                height="auto"
+                                image={data[index].src}
+                                alt={t(data[index].title)}
+                            />
+                        )}
+                            <IconButton onClick={handleNextClick}>
+                                <ArrowForwardIosIcon />
+                            </IconButton>
+                    </Box>
+
+                    {/* Indicadores (bolinhas) */}
+                    <Box sx={IndicatorContainerStyles}>
+                        {data.map((_, idx) => (
+                            <Box
+                                key={idx}
+                                sx={idx === index ? ActiveIndicatorStyles : IndicatorStyles}
+                            />
                         ))}
-                        <IconButton onClick={handleNextClick}>
-                            <ArrowForwardIosIcon />
-                        </IconButton>
                     </Box>
                 </Grid>
             </Grid>

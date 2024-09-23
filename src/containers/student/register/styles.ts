@@ -2,11 +2,14 @@ import styled, { createGlobalStyle } from 'styled-components';
 import { Box, FilledInput, Button, InputLabel, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { ErrorMessage } from 'formik';
+import vocacionalTestImg from '../../../assets/img/vocacionaTest.png';
 
 export const Global = createGlobalStyle`
-  body {
-    font-family: 'Roboto', sans-serif;
-  }
+    backgroundImage: url(${vocacionalTestImg});
+    minHeight: '90vh',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundColor: '#caddff',
 `;
 
 export const BackButton = styled(Button)`
@@ -29,7 +32,11 @@ export const LoginContainer = styled(Box)`
   justify-content: center;
   min-height: 100vh;
   padding: 20px;
-  background-color: #f5f5f5;
+  backgroundImage: url(${vocacionalTestImg});
+    minHeight: '90vh',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundColor: '#caddff',
 `;
 
 export const FormContainer = styled.form`
