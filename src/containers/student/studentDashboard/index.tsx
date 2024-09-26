@@ -1,10 +1,13 @@
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { styled, useTheme } from '@mui/material/styles';
 import React, { useEffect, useState, useContext } from 'react';
-import { Grid, Box, Typography, Paper, Button, IconButton} from '@mui/material';
+import { Grid, Box, Typography, Paper, Button, IconButton } from '@mui/material';
 import { Link } from 'react-router-dom';
 import Slider from 'react-slick';
-import { Pie, Cell, Legend, PieChart } from 'recharts';
+// import { Pie, Cell, Legend} from 'recharts';
+// import { PieChart } from '@mui/icons-material';
+import { PieChart, pieArcLabelClasses } from '@mui/x-charts/PieChart';
+
 import {
     contentStyle, gridItem1Styles, titleResultStyle, TestButton,
     paperBannerStyles, paperTestStyles, paperPerfisStyles, paperResultStyles,
@@ -137,7 +140,7 @@ const StudentDashboard: React.FC = () => {
     return (
         <>
             <Box component="main" sx={{ flexGrow: 1, backgroundColor: '#F3F3F3', minHeight: '100vh' }}>
-                <DrawerHeader/>
+                <DrawerHeader />
                 <CustomDrawer open={open} handleDrawerOpen={handleDrawerOpen} handleDrawerClose={handleDrawerClose} />
                 <StudentHeader />
                 {/* Card Principal////////////////////////////////////////////////////////////////////////////// */}
@@ -191,7 +194,11 @@ const StudentDashboard: React.FC = () => {
                                         }, [theme.breakpoints.down('md')]: {
                                             width: '17rem',
                                             height: '11rem',
-                                        },
+                                        }, [theme.breakpoints.down(1116)]: {
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                            marginRight: '50rem'
+                                        }
                                     }}>
                                         <LockIcon sx={{
                                             fontSize: 100,
@@ -247,35 +254,61 @@ const StudentDashboard: React.FC = () => {
                                     {testHistory.length > 0 ? (
                                         <Slider ref={setSliderRef} {...carouselSettings}>
                                             {testHistory.map((test, index) => (
-                                                <Box key={index} sx={{ textAlign: 'right' }}>
+                                                <Box key={index} sx={{ textAlign: 'right' }} >
                                                     <Typography sx={contentStyle}>
                                                         {test.date}
                                                     </Typography>
-                                                    <PieChart width={isSmallScreen ? 100 : 400} height={isSmallScreen ? 50 : 200}>
-                                                        <Pie
-                                                            data={generateChartData(test.result)}
-                                                            dataKey="value"
-                                                            nameKey="name"
-                                                            cx={isSmallScreen ? 120 : 170}
-                                                            cy={isSmallScreen ? 80 : 70}
-                                                            cornerRadius={5}
-                                                            startAngle={-360}
-                                                            endAngle={225}
-                                                            outerRadius={isSmallScreen ? 70 : 90}
-                                                            innerRadius={0}
-                                                            paddingAngle={2}
-                                                            fill="#8884d8"
-                                                            stroke="white"
-                                                            strokeWidth={0}
-                                                        >
-                                                            {generateChartData(test.result).map((entry, index) => (
-                                                                <Cell key={`cell-${index}`} fill={PROFILE_DETAILS[entry.name].color || '#CCCCCC'} />
-                                                            ))}
+                                                    <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                                                        {/* Gráfico de pizza */}
+                                                        <Box sx={{ margin: 0 }} >
+                                                            <PieChart
+                                                                series={[
+                                                                    {
+                                                                        data: generateChartData(test.result).map(item => ({
+                                                                            id: item.name,
+                                                                            value: item.value,
+                                                                            color: PROFILE_DETAILS[item.name]?.color || '#CCCCCC',
+                                                                        })),
+                                                                        innerRadius: 4,
+                                                                        outerRadius: 100,
+                                                                        paddingAngle: 5,
+                                                                        cornerRadius: 5,
+                                                                        startAngle: -360,
+                                                                        endAngle: 225,
+                                                                    },
+                                                                ]}
+                                                                width={296}
+                                                                height={200}
+                                                            />
+                                                        </Box>
 
-                                                        </Pie>
-                                                        <Legend layout="vertical" align="right" verticalAlign="middle" />
-                                                    </PieChart>
+                                                        {/* Legenda ao lado do gráfico */}
+                                                        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', margin: 0 }}>
+                                                            {generateChartData(test.result).map((entry, index) => (
+                                                                <Box
+                                                                    key={index}
+                                                                    sx={{
+                                                                        display: 'flex',
+                                                                        alignItems: 'center',
+                                                                        marginBottom: '10px', // Espaçamento entre os itens da legenda
+                                                                    }}
+                                                                >
+                                                                    <Box
+                                                                        sx={{
+                                                                            width: '15px',
+                                                                            height: '15px',
+                                                                            backgroundColor: PROFILE_DETAILS[entry.name].color,
+                                                                        }}
+                                                                    />
+                                                                    <Typography variant="body2" sx={{ color: '#000000' }}>
+                                                                        {entry.name}
+                                                                    </Typography>
+                                                                </Box>
+                                                            ))}
+                                                        </Box>
+                                                    </Box>
                                                 </Box>
+
                                             ))}
                                         </Slider>
                                     ) : (

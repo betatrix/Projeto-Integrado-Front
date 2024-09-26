@@ -65,12 +65,17 @@ export const gridItem1Styles: SxProps<Theme> = (theme) => ({
     alignItems:'center',
     display:'flex',
     // marginLeft:'0.9rem',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down(1116)]: {
         flexDirection: 'column',
         alignItems: 'center',
         backgroundAttachment: 'local',
     },
     [theme.breakpoints.down('md')]: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        backgroundAttachment: 'local',
+    },
+    [theme.breakpoints.down('sm')]: {
         flexDirection: 'column',
         alignItems: 'center',
         backgroundAttachment: 'local',
@@ -163,8 +168,8 @@ export const contentStyle: SxProps<Theme> =(theme) => ({
     fontFamily: 'Roboto, monospace',
     color: '#0B2A40',
     fontWeight: 'bold',
-    fontSize: '1.5rem',
-    marginTop: '0.5rem',
+    fontSize: '1rem',
+    marginTop: '0.8rem',
     borderRadius: '8px', // cantos arredondados
     backgroundColor: '#E3EDF4',
     display: 'inline-block', // Faz o fundo colorido se ajustar ao tamanho do conteúdo
@@ -289,6 +294,10 @@ export const paperPerfisStyles: SxProps<Theme> = (theme) => ({
         width: '10.5rem',
         height: '4.7rem',
     },
+    [theme.breakpoints.down('md')]: {
+        width: '10.5rem',
+        height: '4.7rem',
+    },
 });
 
 export const paperImgStyles: SxProps<Theme> = (theme) => ({
@@ -301,14 +310,19 @@ export const paperImgStyles: SxProps<Theme> = (theme) => ({
     marginLeft: '0.3rem',
     // marginRight:'0.5rem',
     // marginTop: '0.5rem',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down(1116)]: {
+        justifyContent:'center',
+        alignItems:'center',
+        display:'flex',
+    },
+    [theme.breakpoints.down('md')]: {
         justifyContent:'center',
         alignItems:'center',
         display:'flex',
         width: '5.5rem',
         height: '10rem',
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
         justifyContent:'center',
         alignItems:'center',
         display:'flex',
@@ -330,12 +344,17 @@ export const paperTestStyles: SxProps<Theme> = (theme) => ({
     height: '15rem',
     marginBottom: '0.5rem',
     marginTop: '2rem',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down(1116)]: {
+        width: '30rem',
+        height: '15rem',
+        gap: '0.5rem'
+    },
+    [theme.breakpoints.down('md')]: {
         width: '17rem',
         height: '8rem',
         gap: '0.5rem'
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
         width: '17rem',
         height: '8rem',
         gap: '0.5rem'
