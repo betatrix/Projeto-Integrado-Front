@@ -7,13 +7,16 @@ import {
     TextField,
     Modal,
     Grid,
+    Box,
 } from '@mui/material';
-import Footer from '../../../components/adminFooter';
+import Footer from '../../../components/homeFooter';
 import { Endereco } from '../../../types/institutionTypes';
 import { buscarEntidades, buscarEntidadePorId, buscarCursosPorInstituicao } from '../../../services/apiService';
 import { DetailTypography, GridContainer, ListBox, SearchBox, StyledBox, StyledModal, StyledTypography } from './styles';
-import InstitutionSearchHeader from '../../../components/institutionSearchHeader';
 import { useTranslation } from 'react-i18next';
+import CustomDrawer from '../../../components/sidemenu/CustomDrawer';
+import StudentHeader from '../../../components/studentHeader';
+import styled from 'styled-components';
 
 interface Curso {
     id: number;
@@ -31,12 +34,19 @@ interface Institution {
 }
 
 const InstitutionList: React.FC = () => {
-    const{ t } = useTranslation();
-    
+    const { t } = useTranslation();
     const [institutions, setInstitutions] = useState<Institution[]>([]);
     const [searchValue, setSearchValue] = useState<string>('');
     const [detailModalOpen, setDetailModalOpen] = useState(false);
     const [selectedInstitution, setSelectedInstitution] = useState<Institution | null>(null);
+    const [open, setOpen] = React.useState(false);
+    const handleDrawerOpen = () => {
+        setOpen(true);
+    };
+
+    const handleDrawerClose = () => {
+        setOpen(false);
+    };
 
     useEffect(() => {
         const fetchInstitutions = async () => {
@@ -70,93 +80,104 @@ const InstitutionList: React.FC = () => {
         setSelectedInstitution(null);
     };
 
+    const DrawerHeader = styled('div')(() => ({
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        minHeight: '5px',
+    }));
+
     return (
         <>
-            <InstitutionSearchHeader />
-            <StyledBox>
-                <StyledTypography>
-                    <Typography variant="h6">
-                        {t('listInstitutionTitle')}
-                    </Typography>
-                </StyledTypography>
-                <SearchBox>
-                    <TextField
-                        label={t('listInstitutionSearch')}
-                        variant='standard'
-                        sx={{ width: '100%' }}
-                        onChange={(e) => setSearchValue(e.target.value)}
-                    />
-                </SearchBox>
-                <ListBox>
-                    <List>
-                        {filteredInstitutions.map((institution) => (
-                            <ListItem key={institution.id} button onClick={() => handleDetailModalOpen(institution)}>
-                                <ListItemText primary={institution.nome} />
-                            </ListItem>
-                        ))}
-                    </List>
-                </ListBox>
-            </StyledBox>
-            {/* Details Modal */}
-            <Modal
-                open={detailModalOpen}
-                onClose={handleDetailModalClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
-                <StyledModal>
-                    <GridContainer>
-                        {selectedInstitution && (
-                            <>
-                                <DetailTypography>
-                                    <Typography variant="h6" gutterBottom>
-                                        {selectedInstitution.nome}
-                                    </Typography>
-                                </DetailTypography>
-                                <Grid container spacing={3}>
-                                    <Grid item xs={6}>
-                                        <Typography variant="subtitle1" gutterBottom>
-                                            Dados Gerais
+            <Box component="main" sx={{ flexGrow: 1, p: 3, backgroundColor: '#F3F3F3', minHeight: '100vh' }}>
+                <CustomDrawer open={open} handleDrawerOpen={handleDrawerOpen} handleDrawerClose={handleDrawerClose} />
+                <StudentHeader />
+                <DrawerHeader />
+                <StyledBox>
+                    <StyledTypography>
+                        <Typography variant="h6">
+                            {t('listInstitutionTitle')}
+                        </Typography>
+                    </StyledTypography>
+                    <SearchBox>
+                        <TextField
+                            label={t('listInstitutionSearch')}
+                            variant='standard'
+                            sx={{ width: '100%' }}
+                            onChange={(e) => setSearchValue(e.target.value)}
+                        />
+                    </SearchBox>
+                    <ListBox>
+                        <List>
+                            {filteredInstitutions.map((institution) => (
+                                <ListItem key={institution.id} button onClick={() => handleDetailModalOpen(institution)}>
+                                    <ListItemText primary={institution.nome} />
+                                </ListItem>
+                            ))}
+                        </List>
+                    </ListBox>
+                </StyledBox>
+                {/* Details Modal */}
+                <Modal
+                    open={detailModalOpen}
+                    onClose={handleDetailModalClose}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                >
+                    <StyledModal>
+                        <GridContainer>
+                            {selectedInstitution && (
+                                <>
+                                    <DetailTypography>
+                                        <Typography variant="h6" gutterBottom>
+                                            {selectedInstitution.nome}
                                         </Typography>
-                                        <Typography variant="body2">Nome: {selectedInstitution.nome}</Typography>
-                                        <Typography variant="body2">Sigla: {selectedInstitution.sigla}</Typography>
-                                        <Typography variant="body2">Site: {selectedInstitution.site || 'Não disponível'}</Typography>
-                                        <Typography variant="body2">Nota MEC: {selectedInstitution.notaMec || 'Não disponível'}</Typography>
+                                    </DetailTypography>
+                                    <Grid container spacing={3}>
+                                        <Grid item xs={6}>
+                                            <Typography variant="subtitle1" gutterBottom>
+                                                Dados Gerais
+                                            </Typography>
+                                            <Typography variant="body2">Nome: {selectedInstitution.nome}</Typography>
+                                            <Typography variant="body2">Sigla: {selectedInstitution.sigla}</Typography>
+                                            <Typography variant="body2">Site: {selectedInstitution.site || 'Não disponível'}</Typography>
+                                            <Typography variant="body2">Nota MEC: {selectedInstitution.notaMec || 'Não disponível'}</Typography>
+                                        </Grid>
+                                        <Grid item xs={6}>
+                                            <Typography variant="subtitle1" gutterBottom>
+                                                Endereço
+                                            </Typography>
+                                            <Typography variant="body2">Rua: {selectedInstitution.endereco.logradouro}</Typography>
+                                            <Typography variant="body2">Número: {selectedInstitution.endereco.numero}</Typography>
+                                            <Typography variant="body2">Cidade: {selectedInstitution.endereco.cidade}</Typography>
+                                            <Typography variant="body2">Estado: {selectedInstitution.endereco.estado}</Typography>
+                                            <Typography variant="body2">CEP: {selectedInstitution.endereco.cep}</Typography>
+                                        </Grid>
+                                        <Grid item xs={12}>
+                                            <Typography variant="subtitle1" gutterBottom>
+                                                Cursos
+                                            </Typography>
+                                            <List dense style={{ maxHeight: 200, overflow: 'auto' }}>
+                                                {selectedInstitution.cursos?.length > 0 ? (
+                                                    selectedInstitution.cursos.map((curso) => (
+                                                        <ListItem key={curso.id}>
+                                                            <ListItemText primary={curso.descricao} />
+                                                        </ListItem>
+                                                    ))
+                                                ) : (
+                                                    <Typography variant="body2" color="textSecondary">
+                                                        Não há cursos na instituição.
+                                                    </Typography>
+                                                )}
+                                            </List>
+                                        </Grid>
                                     </Grid>
-                                    <Grid item xs={6}>
-                                        <Typography variant="subtitle1" gutterBottom>
-                                            Endereço
-                                        </Typography>
-                                        <Typography variant="body2">Rua: {selectedInstitution.endereco.logradouro}</Typography>
-                                        <Typography variant="body2">Número: {selectedInstitution.endereco.numero}</Typography>
-                                        <Typography variant="body2">Cidade: {selectedInstitution.endereco.cidade}</Typography>
-                                        <Typography variant="body2">Estado: {selectedInstitution.endereco.estado}</Typography>
-                                        <Typography variant="body2">CEP: {selectedInstitution.endereco.cep}</Typography>
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <Typography variant="subtitle1" gutterBottom>
-                                            Cursos
-                                        </Typography>
-                                        <List dense style={{ maxHeight: 200, overflow: 'auto' }}>
-                                            {selectedInstitution.cursos?.length > 0 ? (
-                                                selectedInstitution.cursos.map((curso) => (
-                                                    <ListItem key={curso.id}>
-                                                        <ListItemText primary={curso.descricao} />
-                                                    </ListItem>
-                                                ))
-                                            ) : (
-                                                <Typography variant="body2" color="textSecondary">
-                                                    Não há cursos na instituição.
-                                                </Typography>
-                                            )}
-                                        </List>
-                                    </Grid>
-                                </Grid>
-                            </>
-                        )}
-                    </GridContainer>
-                </StyledModal>
-            </Modal>
+                                </>
+                            )}
+                        </GridContainer>
+                    </StyledModal>
+                </Modal>
+            </Box>
             <Footer />
         </>
     );

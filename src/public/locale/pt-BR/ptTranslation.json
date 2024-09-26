@@ -9,6 +9,12 @@
       "test": "Teste Vocacional",
       "university": "Universidades",
 
+      "dashboard": "Dashboard",
+      "institution": "Instituição",
+      "myAccount": "Minha Conta",
+      "courses": "Cursos",
+      "logout": "Sair",
+
       "welcomeText1": "Descubra o caminho que te inspira e construa o futuro que você merece.",
       "welcomeText2": "Faça nosso teste vocacional e explore e conheça as melhores universidades brasileiras para começar a sua jornada!",
       "registerButton": "BORA LÁ!",
@@ -97,12 +103,12 @@
       "testWarningExit": "Sair",
 
       "dashboardTitle": "MEUS TESTES",
-      "dashboardCard1": "TESTES RESPONDIDOS",
+      "dashboardCard1": "Responda nosso teste e tenha acesso a seis cursos personalizados.",
       "dashboardCard2": "PERFIS MAIS RECORRENTES",
       "dashboardCard2Text": "Descubra seu perfil fazendo um teste.",
       "dashboardCard3": "RESULTADOS",
       "dashboardCard3Text": "Nenhum teste realizado.",
-      "dashboardTest1": "Fazer Teste",
+      "dashboardTest1": "Responder Teste",
       "dashboardTest2": "Refazer Teste",
 
       "dashboardInvestigativo": "Pessoas com este perfil são curiosas, analíticas e gostam de resolver problemas.",

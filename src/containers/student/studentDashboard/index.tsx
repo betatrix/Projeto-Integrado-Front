@@ -1,32 +1,23 @@
-import { styled, Theme, CSSObject } from '@mui/material/styles';
-import MuiDrawer from '@mui/material/Drawer';
-import List from '@mui/material/List';
-import CssBaseline from '@mui/material/CssBaseline';
-// import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded';
-import AccountBoxRoundedIcon from '@mui/icons-material/AccountBoxRounded';
-import LocalLibraryRoundedIcon from '@mui/icons-material/LocalLibraryRounded';
-import SchoolRoundedIcon from '@mui/icons-material/SchoolRounded';
-import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
-import ListItemText from '@mui/material/ListItemText';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { styled, useTheme } from '@mui/material/styles';
 import React, { useEffect, useState, useContext } from 'react';
-import { Grid, Box, Typography, Paper, Button, IconButton } from '@mui/material';
+import { Grid, Box, Typography, Paper, Button, IconButton} from '@mui/material';
 import { Link } from 'react-router-dom';
 import Slider from 'react-slick';
 import { Pie, Cell, Legend, PieChart } from 'recharts';
 import {
-    content0Style, contentStyle, gridItem1Styles, titleResultStyle, TestButton,
+    contentStyle, gridItem1Styles, titleResultStyle, TestButton,
     paperBannerStyles, paperTestStyles, paperPerfisStyles, paperResultStyles,
     paperImgStyles,
     gridContainerStyles,
     gridItem2Styles,
     titlePerfilStyle,
     cardTitleStyle,
-    cardTitle2Style
+    cardTitle2Style,
+    boxResultStyles,
+    // pieChartStyles,
+    contentPerfilStyle,
+    contentResultStyle,
 } from './styles';
 import { buscarTestesDeEstudante, buscarPerfisRecorrentes } from '../../../services/apiService';
 import { AuthContext } from '../../../contexts/auth';
@@ -37,11 +28,10 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import PaletteIcon from '@mui/icons-material/Palette';
 import GroupsIcon from '@mui/icons-material/Groups';
 import ScienceIcon from '@mui/icons-material/Science';
-import vocco from '../../../assets/img/vocco.png';
 import StudentHeader from '../../../components/studentHeader';
-import StudentFooter from '../../../components/studentFooter';
-// import { PieChart } from '@mui/x-charts/PieChart';
-// import StudentFooter from '../../../components/studentFooter';
+import LockIcon from '@mui/icons-material/Lock';
+import CustomDrawer from '../../../components/sidemenu/CustomDrawer';
+import Footer from '../../../components/homeFooter';
 
 const PROFILE_DETAILS: { [key: string]: { color: string; icon: React.ReactNode } } = {
     'Artistico': { color: '#FF69B4', icon: <PaletteIcon /> },
@@ -52,71 +42,17 @@ const PROFILE_DETAILS: { [key: string]: { color: string; icon: React.ReactNode }
     'Realista': { color: '#D2691E', icon: <PaletteIcon /> },
 };
 
-const iconMap: { [key: string]: { icon: React.ReactNode } } = {
-    'Dashboard': { icon: <DashboardIcon /> },
-    'Testes Vocacionais': { icon: <AssignmentRoundedIcon /> },
-    'Minha conta': { icon: <AccountBoxRoundedIcon /> },
-    'Cursos': { icon: <LocalLibraryRoundedIcon /> },
-    'Instituições': { icon: <SchoolRoundedIcon /> },
-    'Log Out': { icon: <LogoutRoundedIcon /> },
-};
-
-const drawerWidth = 240;
-
-const openedMixin = (theme: Theme): CSSObject => ({
-    width: drawerWidth,
-    transition: theme.transitions.create('width', {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.enteringScreen,
-    }),
-    overflowX: 'hidden',
-});
-
-const closedMixin = (theme: Theme): CSSObject => ({
-    transition: theme.transitions.create('width', {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-    }),
-    overflowX: 'hidden',
-    width: `calc(${theme.spacing(7)} + 1px)`,
-    [theme.breakpoints.up('sm')]: {
-        width: `calc(${theme.spacing(8)} + 1px)`,
-    },
-});
-
 const DrawerHeader = styled('div')(() => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-end',
-    minHeight: '5px',
+    minHeight: '2rem',
 }));
 
-const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-    ({ theme, open }) => ({
-        width: drawerWidth,
-        flexShrink: 0,
-        whiteSpace: 'nowrap',
-        boxSizing: 'border-box',
-        ...(open && {
-            ...openedMixin(theme), // Aplica o estilo quando o Drawer está aberto
-            '& .MuiDrawer-paper': {
-                ...openedMixin(theme),
-                backgroundColor: '#E3EDF4', // Cor de fundo personalizada
-            },
-        }),
-        ...(!open && {
-            ...closedMixin(theme), // Aplica o estilo quando o Drawer está fechado
-            '& .MuiDrawer-paper': {
-                ...closedMixin(theme),
-                backgroundColor: '#E3EDF4', // Cor de fundo personalizada
-            },
-        }),
-    })
-);
-
 const StudentDashboard: React.FC = () => {
+    const theme = useTheme();
+    const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
     const [open, setOpen] = React.useState(false);
-
     const handleDrawerOpen = () => {
         setOpen(true);
     };
@@ -124,9 +60,7 @@ const StudentDashboard: React.FC = () => {
     const handleDrawerClose = () => {
         setOpen(false);
     };
-    //___________________________________________________________________________________________
     const { t } = useTranslation();
-    //___________________________________________________________________________________________
 
     const [testHistory, setTestHistory] = useState<{ date: string, result: string[] }[]>([]);
     const [recorrentes, setRecorrentes] = useState<string[]>([]);
@@ -198,261 +132,178 @@ const StudentDashboard: React.FC = () => {
     if (!authContext) {
         return <div>Não conseguiu pegar o contexto.</div>;
     }
+    const showLockIcon = testHistory.length === 0;
 
     return (
-        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-            <Box sx={{ display: 'flex' }}>
-                <CssBaseline />
-                <Drawer variant="permanent" open={open}>
-                    <List sx={{ backgroundColor: '#E3EDF4', boxShadow: 'none' }}>
-                        <ListItem disablePadding sx={{ display: 'block' }}>
-                            {/* Alinhamento da logo e do texto VOCCO para seguir o mesmo padrão dos outros itens */}
-                            <ListItemButton
-                                sx={{
-                                    minHeight: 48,
-                                    justifyContent: open ? 'initial' : 'center', // Igual aos outros itens
-                                    px: 1.8,
-                                }}
-                                onClick={open ? handleDrawerClose : handleDrawerOpen} // Alterna entre abrir e fechar o Drawer
-                            >
-                                <ListItemIcon
-                                    sx={{
-                                        minWidth: 0,
-                                        justifyContent: 'center',
-                                        mr: open ? 2 : 'auto', // Mantém o espaçamento como os outros itens
-                                    }}
-                                >
-                                    {/* Ícone da logo (tamanho fixo) */}
-                                    <img
-                                        src={vocco}
-                                        alt="Logo"
-                                        style={{
-                                            width: '35px', // Tamanho fixo da logo (igual aos ícones)
-                                        }}
-                                    />
-                                </ListItemIcon>
-
-                                {/* Texto VOCCO (só aparece quando o Drawer está aberto) */}
-                                <ListItemText
-                                    primary={
-                                        <Typography
-                                            variant="h6"
-                                            sx={{
-                                                fontFamily: 'Poppins', // Exemplo de família de fontes
-                                                fontSize: '25px', // Tamanho personalizado da fonte
-                                                fontWeight: 'bold', // Exemplo de peso da fonte
-                                                color: '#185D8E',
-                                                opacity: open ? 1 : 0, // Faz com que desapareça quando fechado
-                                                transition: 'opacity 0.3s ease', // Transição suave
-                                            }}
-                                        >
-                                            VOCCO
-                                        </Typography>
-                                    }
-                                />
-                            </ListItemButton>
-                        </ListItem>
-                    </List>
-
-                    {/* O restante do menu, seguindo o mesmo padrão */}
-                    <List sx={{ backgroundColor: '#E3EDF4', boxShadow: 'none', color: '#185D8E', fontFamily: 'Roboto, monospace' }}>
-                        {['Dashboard', 'Testes Vocacionais', 'Minha conta', 'Cursos', 'Instituições'].map((text) => (
-                            <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-                                <ListItemButton
-                                    sx={[
-                                        { minHeight: 48, px: 2.5 },
-                                        open ? { justifyContent: 'initial' } : { justifyContent: 'center' },
-                                    ]}
-                                >
-                                    <ListItemIcon
-                                        sx={[
-                                            { minWidth: 0, justifyContent: 'center', color: '#0B2A40' },
-                                            open ? { mr: 3 } : { mr: 'auto' },
-                                        ]}
-                                    >
-                                        {iconMap[text]?.icon} {/* Usa o mapeamento para obter o ícone */}
-                                    </ListItemIcon>
-                                    <ListItemText
-                                        primary={text}
-                                        sx={[{ fontFamily: 'Roboto, monospace' }, open ? { opacity: 1 } : { opacity: 0 }]}
-                                    />
-                                </ListItemButton>
-                            </ListItem>
-                        ))}
-                    </List>
-
-                    {/* <Divider sx={{ minHeight: 290 }} /> */}
-
-                    <List sx={{ backgroundColor: '#E3EDF4', boxShadow: 'none', color: '#185D8E', fontFamily: 'Roboto, monospace' }}>
-                        {['Log Out'].map((text) => (
-                            <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-                                <ListItemButton
-                                    sx={[
-                                        { minHeight: 48, px: 2.5 },
-                                        open ? { justifyContent: 'initial' } : { justifyContent: 'center' },
-                                    ]}
-                                >
-                                    <ListItemIcon
-                                        sx={[
-                                            { minWidth: 0, justifyContent: 'center', color: '#0B2A40' },
-                                            open ? { mr: 3 } : { mr: 'auto' },
-                                        ]}
-                                    >
-                                        {iconMap[text]?.icon} {/* Usa o mapeamento para obter o ícone */}
-                                    </ListItemIcon>
-                                    <ListItemText
-                                        primary={text}
-                                        sx={[{ fontFamily: 'Roboto, monospace', }, open ? { opacity: 1 } : { opacity: 0 }]}
-                                    />
-                                </ListItemButton>
-                            </ListItem>
-                        ))}
-                    </List>
-                </Drawer>
-
-                <Box component="main" sx={{ flexGrow: 1, p: 3, backgroundColor: '#F3F3F3' }}>
-                    <StudentHeader />
-                    <DrawerHeader />
-                    {/* Card Principal////////////////////////////////////////////////////////////////////////////// */}
-                    <Grid display="flex" justifyContent="center">
-                        <Paper sx={paperTestStyles}>
-                            <Typography sx={cardTitleStyle} component="div">
-                                {t('dashboardCard1')}
-                            </Typography>
-                            <Typography sx={cardTitle2Style} component="div">
-                                {t('dashboardCard1')}
-                            </Typography>
-                            <Link to="/teste-vocacional" style={{ textDecoration: 'none' }}>
-                                {/* <Button variant="text" size="large" sx={TestButton} component="div">
-                                    {t('dashboardTestButton')}
-                                </Button> */}
-                            </Link>
-                        </Paper>
-                    </Grid>
-                    {/* Container Meio////////////////////////////////////////////////////////////////////////////// */}
-                    <Grid container sx={gridContainerStyles}>
-                        <Box>
-                            <Typography sx={titlePerfilStyle} component="div">
-                                {t('dashboardCard2')}
-                            </Typography>
-                            <Grid item sx={gridItem1Styles}>
-                                <Box sx={{justifyContent:'center', alignItems:'center', display:'flex'}}>
-                                    {/* <Paper sx={{
+        <>
+            <Box component="main" sx={{ flexGrow: 1, backgroundColor: '#F3F3F3', minHeight: '100vh' }}>
+                <DrawerHeader/>
+                <CustomDrawer open={open} handleDrawerOpen={handleDrawerOpen} handleDrawerClose={handleDrawerClose} />
+                <StudentHeader />
+                {/* Card Principal////////////////////////////////////////////////////////////////////////////// */}
+                <Grid display="flex" justifyContent="center">
+                    <Paper sx={paperTestStyles}>
+                        <Typography sx={cardTitleStyle} component="div">
+                            {t('dashboardTitle')}
+                        </Typography>
+                        <Typography sx={cardTitle2Style} component="div">
+                            {t('dashboardCard1')}
+                        </Typography>
+                        <Link to="/teste-vocacional" style={{ textDecoration: 'none' }}>
+                            <Button variant="text" size="large" sx={TestButton} component="div">
+                                {t('dashboardTest1')}
+                            </Button>
+                        </Link>
+                    </Paper>
+                </Grid>
+                {/* Container Meio////////////////////////////////////////////////////////////////////////////// */}
+                <Grid container sx={gridContainerStyles}>
+                    <Box>
+                        <Typography sx={titlePerfilStyle} component="div">
+                            {t('dashboardCard2')}
+                        </Typography>
+                        <Grid item sx={gridItem1Styles}>
+                            <Paper sx={{
+                                ...paperImgStyles,
+                                display: 'flex',
                                 justifyContent: 'center',
                                 alignItems: 'center',
-                                display: 'flex',
+                                width: '27.5rem',
                                 height: '16rem',
-                                width: '28rem',
-                                backgroundColor: 'transparent',
-                                boxShadow: 'none'
-                            }}> */}
-                                    <Paper sx={paperImgStyles}></Paper>
-
-                                    <Box>
-                                        {recorrentes.length > 0 ? (
-                                            recorrentes.map((profile, index) => (
+                                backgroundColor: '#D7E6F1',
+                                boxShadow: 'none', // Sem sombra
+                                [theme.breakpoints.down('sm')]: { // Responsividade no Paper interno também
+                                    width: '17rem',
+                                    height: '11rem',
+                                },
+                                [theme.breakpoints.down('md')]: { // Responsividade no Paper interno também
+                                    width: '17rem',
+                                    height: '11rem',
+                                },
+                            }}>
+                                {showLockIcon ? (
+                                    // Se não houver testes, exibe um único Paper com o cadeado
+                                    <Paper sx={{
+                                        ...paperImgStyles, display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '2rem', width: '25rem',
+                                        height: '16rem', backgroundColor: '#D7E6F1', boxShadow: 'none', [theme.breakpoints.down('sm')]: {
+                                            width: '17rem',
+                                            height: '11rem',
+                                        }, [theme.breakpoints.down('md')]: {
+                                            width: '17rem',
+                                            height: '11rem',
+                                        },
+                                    }}>
+                                        <LockIcon sx={{
+                                            fontSize: 100,
+                                            color: '#0B2A40',
+                                            [theme.breakpoints.down('sm')]: {
+                                                width: '1rem',
+                                                height: '2rem',
+                                            },
+                                            [theme.breakpoints.down('md')]: {
+                                                width: '1rem',
+                                                height: '2rem',
+                                            },
+                                        }} />
+                                    </Paper>
+                                ) : (
+                                    <>
+                                        <Paper sx={paperImgStyles}></Paper>
+                                        <Box>
+                                            {recorrentes.map((profile, index) => (
                                                 <Paper key={index} sx={paperPerfisStyles}>
                                                     <Box display="flex" alignItems="center">
-                                                        {PROFILE_DETAILS[profile].icon}
-                                                        <Typography sx={{ ...content0Style }}>
+                                                        <Box sx={{ fontSize: 'small' }}>
+                                                            {PROFILE_DETAILS[profile].icon} {/* Ícone estilizado */}
+                                                        </Box>
+                                                        <Typography sx={contentPerfilStyle(theme)} >
                                                             {profile}
                                                         </Typography>
                                                     </Box>
                                                 </Paper>
-                                            ))
-                                        ) : (
-                                            <Paper sx={paperPerfisStyles}>
-                                                <Typography sx={content0Style}>
-                                                    {t('dashboardCard2Text')}
-                                                </Typography>
-                                            </Paper>
-                                        )}
-                                    </Box>
-                                    {/* </Paper> */}
-                                </Box>
+                                            ))}
+                                        </Box>
+                                    </>
+                                )}
+                            </Paper>
+                        </Grid>
+                    </Box>
+                    <Box sx={{ width: '12.3rem' }}></Box>
+                    <Grid item sx={gridItem2Styles}>
+                        <Box sx={{ alignItems: 'center', textAlign: 'center' }}>
+                            <Typography sx={titleResultStyle} component="div" style={{ textAlign: 'center' }}>
+                                {t('dashboardCard3')}
+                            </Typography>
 
-                            </Grid>
-                        </Box>
-                        <Box sx={{ width: '12.5rem' }}></Box>
-                        <Grid item sx={gridItem2Styles}>
-                            <Box sx={{ alignItems: 'center', textAlign: 'center' }}>
-                                <Typography sx={titleResultStyle} component="div" style={{ textAlign: 'center', marginBottom: '0.4rem', marginTop: '0.4rem' }}>
-                                    {t('dashboardCard3')}
-                                </Typography>
-
-                                <Paper sx={{
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    display: 'flex',
-                                    backgroundColor: '#A4BFD2'
-                                }}>
+                            <Paper sx={paperResultStyles}>
+                                {/* Exibe o botão anterior apenas se houver mais de um teste */}
+                                {testHistory.length > 1 && (
                                     <IconButton onClick={() => sliderRef?.slickPrev()}>
                                         <ArrowBackIosIcon />
                                     </IconButton>
-                                    <Box sx={paperResultStyles}>
-                                        {testHistory.length > 0 ? (
-                                            <Slider ref={setSliderRef} {...carouselSettings}>
-                                                {testHistory.map((test, index) => (
-                                                    <Box key={index} sx={{ padding: '1%', textAlign: 'center' }}>
-                                                        <Typography sx={contentStyle}>
-                                                            {test.date}
-                                                        </Typography>
-                                                        <PieChart width={400} height={200}>
-                                                            <Pie
-                                                                data={generateChartData(test.result)}
-                                                                dataKey="value"
-                                                                nameKey="name"
-                                                                cx={170}
-                                                                cy={70}
-                                                                cornerRadius={5}
-                                                                startAngle={-360}
-                                                                endAngle={225}
-                                                                outerRadius={90}
-                                                                innerRadius={0}
-                                                                paddingAngle={2}
-                                                                fill="#8884d8"
-                                                                stroke="white"
-                                                                strokeWidth={0}
-                                                            >
+                                )}
 
-                                                                {generateChartData(test.result).map((entry, index) => (
-                                                                    <Cell key={`cell-${index}`} fill={PROFILE_DETAILS[entry.name].color || '#CCCCCC'} />
-                                                                ))}
-                                                            </Pie>
-                                                            {/* <Tooltip /> */}
-                                                            <Legend layout="vertical"// Faz a legenda ficar uma embaixo da outra
-                                                                align="left"// Alinha à direita
-                                                                verticalAlign="middle"
-                                                            />
-                                                        </PieChart>
-                                                    </Box>
-                                                ))}
-                                            </Slider>
-                                        ) : (
-                                            <Typography sx={content0Style}>
-                                                {t('dashboardCard3Text')}
-                                            </Typography>
-                                        )}
-                                    </Box>
+                                <Paper sx={boxResultStyles}>
+                                    {testHistory.length > 0 ? (
+                                        <Slider ref={setSliderRef} {...carouselSettings}>
+                                            {testHistory.map((test, index) => (
+                                                <Box key={index} sx={{ textAlign: 'right' }}>
+                                                    <Typography sx={contentStyle}>
+                                                        {test.date}
+                                                    </Typography>
+                                                    <PieChart width={isSmallScreen ? 100 : 400} height={isSmallScreen ? 50 : 200}>
+                                                        <Pie
+                                                            data={generateChartData(test.result)}
+                                                            dataKey="value"
+                                                            nameKey="name"
+                                                            cx={isSmallScreen ? 120 : 170}
+                                                            cy={isSmallScreen ? 80 : 70}
+                                                            cornerRadius={5}
+                                                            startAngle={-360}
+                                                            endAngle={225}
+                                                            outerRadius={isSmallScreen ? 70 : 90}
+                                                            innerRadius={0}
+                                                            paddingAngle={2}
+                                                            fill="#8884d8"
+                                                            stroke="white"
+                                                            strokeWidth={0}
+                                                        >
+                                                            {generateChartData(test.result).map((entry, index) => (
+                                                                <Cell key={`cell-${index}`} fill={PROFILE_DETAILS[entry.name].color || '#CCCCCC'} />
+                                                            ))}
+
+                                                        </Pie>
+                                                        <Legend layout="vertical" align="right" verticalAlign="middle" />
+                                                    </PieChart>
+                                                </Box>
+                                            ))}
+                                        </Slider>
+                                    ) : (
+                                        <Typography sx={contentResultStyle}>
+                                            {t('dashboardCard3Text')}
+                                        </Typography>
+                                    )}
+                                </Paper>
+
+                                {/* Exibe o botão próximo apenas se houver mais de um teste */}
+                                {testHistory.length > 1 && (
                                     <IconButton onClick={() => sliderRef?.slickNext()}>
                                         <ArrowForwardIosIcon />
                                     </IconButton>
-                                </Paper>
+                                )}
+                            </Paper>
 
-                            </Box>
-                        </Grid>
+                        </Box>
                     </Grid>
-                    {/* Container Meio/
+                </Grid>
+                {/* Container Meio/
                   ///////////////////////////////////////////////////////////////////////////// */}
-                    <Grid display="flex" justifyContent="center">
-                        <Paper sx={paperBannerStyles}></Paper>
-                    </Grid>
-
-                </Box >
-
+                <Grid display="flex" justifyContent="center">
+                    <Paper sx={paperBannerStyles}></Paper>
+                </Grid>
             </Box >
-            <StudentFooter />
-        </Box >
+            <Footer />
+        </>
     );
 };
 

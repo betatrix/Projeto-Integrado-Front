@@ -8,6 +8,12 @@
       "testInformation": "Test Information",
       "test": "Vocacional Test",
       "university": "Universities",
+
+      "dashboard": "Dashboard",
+      "institution": "Institution",
+      "myAccount": "My Account",
+      "courses": "Courses",
+      "logout": "Logout",
   
       "welcomeText1": "Discover the path that inspires you and build the future you deserve.",
       "welcomeText2": "Take our vocational test and explore and discover the best Brazilian universities to start your journey!",
@@ -93,12 +99,12 @@
       "testWarningExit": "Exit",
 
       "dashboardTitle": "MY TESTS",
-      "dashboardCard1": "TESTS ANSWERED",
+      "dashboardCard1": "Take our quiz and get access to six personalized courses.",
       "dashboardCard2": "MOST RECURRING PROFILES",
       "dashboardCard2Text": "Discover your profile by taking a test.",
       "dashboardCard3": "RESULTS",
       "dashboardCard3Text": "No tests performed.",
-      "dashboardTest1": "Start Test",
+      "dashboardTest1": "Answer Test",
       "dashboardTest2": "Retake Test",
 
       "dashboardInvestigativo": "Pessoas com este perfil são curiosas, analíticas e gostam de resolver problemas.",
