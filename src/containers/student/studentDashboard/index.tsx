@@ -258,9 +258,9 @@ const StudentDashboard: React.FC = () => {
                                                     <Typography sx={contentStyle}>
                                                         {test.date}
                                                     </Typography>
-                                                    <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                                                    <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                                                         {/* Gráfico de pizza */}
-                                                        <Box sx={{ margin: 0 }} >
+                                                        <Box sx={{ display: 'flex', alignItems: 'center' }} >
                                                             <PieChart
                                                                 series={[
                                                                     {
@@ -269,21 +269,23 @@ const StudentDashboard: React.FC = () => {
                                                                             value: item.value,
                                                                             color: PROFILE_DETAILS[item.name]?.color || '#CCCCCC',
                                                                         })),
-                                                                        innerRadius: 4,
-                                                                        outerRadius: 100,
+                                                                        innerRadius: 3,
+                                                                        outerRadius: 95,
                                                                         paddingAngle: 5,
                                                                         cornerRadius: 5,
                                                                         startAngle: -360,
                                                                         endAngle: 225,
+                                                                        cx: 120,
+                                                                        cy: 90,
                                                                     },
                                                                 ]}
-                                                                width={296}
+                                                                width={280}
                                                                 height={200}
                                                             />
                                                         </Box>
 
                                                         {/* Legenda ao lado do gráfico */}
-                                                        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', margin: 0 }}>
+                                                        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
                                                             {generateChartData(test.result).map((entry, index) => (
                                                                 <Box
                                                                     key={index}
