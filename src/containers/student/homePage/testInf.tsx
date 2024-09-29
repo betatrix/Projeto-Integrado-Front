@@ -9,7 +9,14 @@ import Empreendedor from '../../../assets/img/Empreendedor.png';
 import Convencional from '../../../assets/img/Convencional.png';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { BoxCardHollandStyles, testInfBoxStyles, TestInfoContainerStyles, TestInfoContent, TestInfoTitle, IndicatorContainerStyles, IndicatorStyles, ActiveIndicatorStyles } from './styles';
+import { BoxCardHollandStyles,
+    testInfBoxStyles,
+    TestInfoContainerStyles,
+    TestInfoContent,
+    TestInfoTitle,
+    IndicatorContainerStyles,
+    IndicatorStyles,
+    ActiveIndicatorStyles } from './styles';
 import { useTranslation } from 'react-i18next';
 
 const data = [
@@ -108,9 +115,9 @@ export const TestInformation: React.FC = () => {
                                 alt={t(data[index].title)}
                             />
                         )}
-                            <IconButton onClick={handleNextClick}>
-                                <ArrowForwardIosIcon />
-                            </IconButton>
+                        <IconButton onClick={handleNextClick}>
+                            <ArrowForwardIosIcon />
+                        </IconButton>
                     </Box>
 
                     {/* Indicadores (bolinhas) */}

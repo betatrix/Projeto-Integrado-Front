@@ -1,7 +1,7 @@
 import { MouseEvent, useState } from 'react';
 import { Button, Menu, MenuItem } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import GlobeIcon from '@mui/icons-material/Language'; // Importar o ícone de globo
+import { Public } from '@mui/icons-material';
 
 const LanguageMenu = () => {
     const { i18n } = useTranslation();
@@ -23,7 +23,9 @@ const LanguageMenu = () => {
     return (
         <>
             <Button
-                startIcon={<GlobeIcon />}
+                startIcon={<Public sx={{
+                    color: '#185D8E',
+                }} />}
                 aria-controls="language-menu"
                 aria-haspopup="true"
                 onClick={handleClick}
@@ -31,7 +33,8 @@ const LanguageMenu = () => {
                 sx={{
                     color: 'black',
                     backgroundColor: 'transparent',
-                    fontFamily: 'Roboto, monospace',
+                    fontFamily: 'Poppins, monospace',
+                    fontWeight: '600',
                     marginRight: 2,
                     '&:hover': {
                         backgroundColor: 'rgba(255, 255, 255, 0.1)',

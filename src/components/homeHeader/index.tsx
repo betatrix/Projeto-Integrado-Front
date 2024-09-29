@@ -11,14 +11,14 @@ import {
     List,
     ListItem,
 } from '@mui/material';
-import { 
-    Menu as MenuIcon, 
-    HouseOutlined, 
-    AssignmentIndOutlined, 
-    InfoOutlined, 
-    HelpOutline, 
-    Person2Outlined, 
-    Close as CloseIcon 
+import {
+    Menu as MenuIcon,
+    HouseOutlined,
+    AssignmentIndOutlined,
+    InfoOutlined,
+    HelpOutline,
+    Person2Outlined,
+    Close as CloseIcon
 } from '@mui/icons-material';
 import { Link as ScrollLink } from 'react-scroll';
 import { useNavigate } from 'react-router-dom';
@@ -29,7 +29,7 @@ import { linkButtonMobile, logo, linkButton, LoginText } from './styles';
 import { AuthContext } from '../../contexts/auth';
 import { decryptData } from '../../services/encryptionService';
 
-const  InitialPageHeader = () => {
+const InitialPageHeader = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
     const isMobile = useMediaQuery('(max-width:600px)');
@@ -106,14 +106,14 @@ const  InitialPageHeader = () => {
                     fontSize: '10px',
                 }}
             >
-                © 2024 Vocco. Todos os direitos reservados.   
+                © 2024 Vocco. Todos os direitos reservados.
             </Box>
         </List>
     );
 
     return (
         <AppBar style={{ backgroundColor: '#F3F3F3', boxShadow: 'none' }}>
-            <Container maxWidth={isMobile ? "md" : "xl"}>
+            <Container maxWidth={isMobile ? 'md' : 'xl'}>
                 <Toolbar sx={{ justifyContent: 'space-between', height: '100px' }}>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <ScrollLink to="home" smooth={true} duration={500}>
@@ -183,6 +183,6 @@ const  InitialPageHeader = () => {
             </Container>
         </AppBar>
     );
-}
+};
 
 export default InitialPageHeader;
