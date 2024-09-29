@@ -24,7 +24,7 @@ export const HomePage: React.FC = () => {
     const handleLogin = () => {
         navigate('/login');
     };
-    
+
     return (
         <>
             <InitialPageHeader />
@@ -42,12 +42,12 @@ export const HomePage: React.FC = () => {
                         </Button>
                     </Grid>
                 </Grid>
-            <Box sx={BoxCarouselStyles}>
-                <Typography sx={CarouselTitle}>
-                    {t('partner')}
-                </Typography>
-                <LogoCarousel />
-            </Box>
+                <Box sx={BoxCarouselStyles}>
+                    <Typography sx={CarouselTitle}>
+                        {t('partner')}
+                    </Typography>
+                    <LogoCarousel />
+                </Box>
             </Box>
             <Box id="about">
                 <About />

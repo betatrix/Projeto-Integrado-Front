@@ -47,7 +47,7 @@ export const gridIndexContainerStyles: SxProps<Theme> = (theme) => ({
 
 export const typographyTitleStyles: SxProps<Theme> = (theme) => ({
     fontFamily: 'Poppins, sans-serif',
-    fontWeight: 800,  
+    fontWeight: 800,
     fontSize: '2.4rem',
     color: '#1b1f27',
     [theme.breakpoints.down('sm')]: {
@@ -60,7 +60,7 @@ export const typographyTitleStyles: SxProps<Theme> = (theme) => ({
 
 export const typographySubtitleStyles: SxProps<Theme> = (theme) => ({
     fontFamily: 'Poppins, sans-serif',
-    fontWeight: 300, 
+    fontWeight: 300,
     fontSize: '1.4rem',
     mb: '1rem',
     color: '#1b1f27',
@@ -99,20 +99,19 @@ export const buttonStyles: SxProps<Theme> = (theme) => ({
     [theme.breakpoints.down('lg')]: {
         padding: '0.3rem 10rem',
         fontSize: '1rem',
-        minWidth: '200px',  
+        minWidth: '200px',
     },
     [theme.breakpoints.down('md')]: {
         padding: '0.3rem 15rem',
         fontSize: '1rem',
-        minWidth: '200px',  
+        minWidth: '200px',
     },
     [theme.breakpoints.down('sm')]: {
         padding: '0.3rem 8rem',
         fontSize: '1rem',
-        minWidth: '200px',  
+        minWidth: '200px',
     },
 });
-
 
 // Style About-----------------------------------------------------
 export const aboutBoxStyles: SxProps<Theme> = (theme) => ({
@@ -130,7 +129,7 @@ export const gridAboutContainerStyles: SxProps<Theme> = (theme) => ({
 
 export const gridItemTextStyles: SxProps<Theme> = (theme) => ({
     fontFamily: 'Poppins, sans-serif',
-    fontWeight: 300, 
+    fontWeight: 300,
     fontSize: '1.4rem',
     mb: '1rem',
     color: '#1b1f27',
@@ -146,7 +145,7 @@ export const gridItemTextStyles: SxProps<Theme> = (theme) => ({
 
 export const typographyAboutTitleStyles: SxProps<Theme> = (theme) => ({
     fontFamily: 'Poppins, sans-serif',
-    fontWeight: 800,  
+    fontWeight: 800,
     fontSize: '2.4rem',
     color: '#1b1f27',
     [theme.breakpoints.down('sm')]: {
@@ -232,7 +231,7 @@ export const listItemTextStyles: SxProps<Theme> = (theme) => ({
 
 export const FaqTitle: SxProps<Theme> = (theme) => ({
     fontFamily: 'Poppins, sans-serif',
-    fontWeight: 800,  
+    fontWeight: 800,
     fontSize: '2.4rem',
     color: '#1b1f27',
     marginBottom: '2rem',
@@ -254,7 +253,6 @@ export const testInfBoxStyles: SxProps<Theme> = (theme) => ({
     height: '100vh',
 });
 
-
 export const TestInfoContent: SxProps<Theme> = (theme) => ({
     fontFamily: 'Poppins, sans-serif',
     color: '#1b1f27',
@@ -273,7 +271,7 @@ export const TestInfoContent: SxProps<Theme> = (theme) => ({
 
 export const TestInfoTitle: SxProps<Theme> = (theme) => ({
     fontFamily: 'Poppins, sans-serif',
-    fontWeight: 800,  
+    fontWeight: 800,
     fontSize: '2.4rem',
     color: '#1b1f27',
     [theme.breakpoints.down('sm')]: {
@@ -309,7 +307,7 @@ export const BoxCardHollandStyles: SxProps<Theme> = (theme) => ({
         width: '21rem',
         height: '37rem',
         padding: '1rem 1rem',
-    },    
+    },
 });
 
 export const TestInfoContainerStyles: SxProps<Theme> = (theme) => ({
@@ -323,7 +321,7 @@ export const TestInfoContainerStyles: SxProps<Theme> = (theme) => ({
     [theme.breakpoints.down('sm')]: {
         textAlign: 'center',
         paddingLeft: '0px',
-    },  
+    },
 });
 
 export const IndicatorContainerStyles = {
@@ -373,7 +371,6 @@ export const BoxCarouselStyles: SxProps<Theme> = (theme) => ({
         padding: '0.1rem',
     },
 });
-
 
 export const CarouselTitle: SxProps<Theme> = (theme) => ({
     marginTop: '1rem',
