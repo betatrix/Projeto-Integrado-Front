@@ -91,6 +91,14 @@
       "forgotError1": "Insira um e-mail válido!",
       "forgotError2": "O e-mail inserido não foi encontrado :(",
 
+      "newPasswordTitle": "Vamos redefinir sua senha!",
+      "newPasswordText": "Por favor, insira sua nova senha abaixo. Certifique-se de que a senha tenha pelo menos 6 caracteres, incluindo uma combinação de letras, números e símbolos para garantir a segurança.",
+      "newPasswordField1": "Digite sua nova senha",
+      "newPasswordField2": "Confirme sua nova senha",
+      "newPasswordButton": "Enviar",
+      "newPasswordSucess": "Senha alterada com sucesso!",
+      "newPasswordError": "Não foi possível alterar sua senha :(",
+
       "testIntroTitle": "Antes de começar ...",
       "testIntro1": "Nosso teste vocacional é inspirado na teoria do psicólogo John L. Holland, conhecida como RIASEC - Realista, Investigativo, Artístico, Social, Empreendedor e Convencional.",
       "testIntro2": "Essa teoria divide as pessoas em seis tipos diferentes de personalidade e ambientes de trabalho. Ao responder ao teste, suas características são comparadas com esses seis tipos para sugerir carreiras e áreas de estudo que combinam com o seu perfil.",

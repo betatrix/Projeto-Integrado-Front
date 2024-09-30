@@ -6,21 +6,24 @@ import CircularProgress from '@mui/material/CircularProgress';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { redefinicaoSenha } from '../../../services/studentService';
 import {
-    Global,
-    LoginContainer,
-    CustomField,
-    CustomButton,
-    CustomInputLabel,
-    Header,
-    FormContainer,
-    CustomLink,
-    Container,
-    RightPanel,
-    BackButton,
-    Paragraph,
+    customField,
+    customButton,
+    customInputLabel,
+    header,
+    formContainer,
+    customLinkStyles,
+    container,
+    backButton,
+    paragraph,
+    headerNewPass,
+    sidePanelStyles,
+    loginContainer,
+    globalStyles,
 } from './styles';
-import { Alert, Snackbar } from '@mui/material';
+import { Alert, Box, Button, Snackbar, Typography, SxProps, Theme, InputLabel, FilledInput } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
+import LanguageMenu from '../../../components/translationButton';
+import { useTranslation } from 'react-i18next';
 
 const validationSchema = Yup.object({
     password: Yup.string()
@@ -32,6 +35,8 @@ const validationSchema = Yup.object({
 });
 
 const NovaSenha: React.FC = () => {
+    const { t } = useTranslation();
+
     const [loading, setLoading] = useState(false);
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     const [showErrorMessage, setShowErrorMessage] = useState(false);
@@ -67,7 +72,6 @@ const NovaSenha: React.FC = () => {
                 const response = await redefinicaoSenha(token, values.password);
 
                 if (response === 200) {
-                    console.log('Sucesso ao redefinir a senha:', response);
                     setShowSuccessMessage(true);
 
                     // Redirecionar após 3 segundos
@@ -77,19 +81,16 @@ const NovaSenha: React.FC = () => {
                 } else {
                     setErrorMessage('Não foi possível alterar sua senha :(');
                     setShowErrorMessage(true);
-                    console.error(response);
                 }
             } catch (error) {
                 setErrorMessage('Erro ao redefinir a senha.');
                 setShowErrorMessage(true);
-                console.error('Erro ao redefinir a senha:', error);
             } finally {
                 setLoading(false);
             }
         },
     });
 
-    // Função para fechar o pop-up
     const handleCloseSuccessMessage = () => {
         setShowSuccessMessage(false);
     };
@@ -100,26 +101,35 @@ const NovaSenha: React.FC = () => {
 
     return (
         <>
-            <Global />
-            <style>
-                @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
-            </style>
-            <Container>
-                <BackButton startIcon={<ArrowBackIcon />}>
-                    <CustomLink to={'/login'}>Página inicial</CustomLink>
-                </BackButton>
-                <RightPanel></RightPanel>
-                <LoginContainer>
-                    <Header variant="h4"> Vamos redefinir sua senha!</Header>
+            <Box sx={globalStyles as SxProps<Theme>} />
+            <Box sx={container}>
+                <Box sx={sidePanelStyles}>
+                    {/* <img src="" alt="Imagem ilustrativa" style={{ width: '100%' }} /> */}
+                </Box>
+                <Box sx={headerNewPass}>
+                    <Button sx={backButton} startIcon={<ArrowBackIcon />}>
+                        <Typography component="a" href="/login" sx={customLinkStyles}>
+                            {t('backButton')}
+                        </Typography>
+                    </Button>
+                    <LanguageMenu />
+                </Box>
+                <Box sx={loginContainer}>
+                    <Typography variant="h4" sx={header}>
+                        {t('newPasswordTitle')}
+                    </Typography>
 
-                    <Paragraph>
-                    Por favor, insira sua nova senha abaixo. Certifique-se de que a senha tenha pelo menos 6 caracteres, incluindo uma combinação de letras, números e símbolos para garantir a segurança.
-                    </Paragraph>
+                    <Typography sx={paragraph}>
+                        {t('newPasswordText')}
+                    </Typography>
 
-                    <FormContainer onSubmit={formik.handleSubmit}>
+                    <Box sx={formContainer} component="form" onSubmit={formik.handleSubmit}>
                         <FormControl variant="filled" error={formik.touched.password && Boolean(formik.errors.password)}>
-                            <CustomInputLabel htmlFor="password">Digite sua nova senha!</CustomInputLabel>
-                            <CustomField
+                            <InputLabel component="label" htmlFor="password" sx={customInputLabel}>
+                                {t('newPasswordField1')}
+                            </InputLabel>
+                            <FilledInput
+                                sx={customField}
                                 id="password"
                                 type="password"
                                 value={formik.values.password}
@@ -132,8 +142,11 @@ const NovaSenha: React.FC = () => {
                         </FormControl>
 
                         <FormControl variant="filled" error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}>
-                            <CustomInputLabel htmlFor="confirmPassword">Confirme sua senha</CustomInputLabel>
-                            <CustomField
+                            <InputLabel component="label" htmlFor="confirmPassword" sx={customInputLabel}>
+                                {t('newPasswordField2')}
+                            </InputLabel>
+                            <FilledInput
+                                sx={customField}
                                 id="confirmPassword"
                                 type="password"
                                 value={formik.values.confirmPassword}
@@ -146,11 +159,11 @@ const NovaSenha: React.FC = () => {
                         </FormControl>
 
                         <FormControl>
-                            <CustomButton variant="contained" size="large" type="submit">
-                                {loading ? <CircularProgress size={24} color="inherit" /> : 'Enviar'}
-                            </CustomButton>
+                            <Button sx={customButton} variant="contained" size="large" type="submit">
+                                {loading ? <CircularProgress size={24} color="inherit" /> : t('newPasswordButton')}
+                            </Button>
                         </FormControl>
-                    </FormContainer>
+                    </Box>
 
                     <Snackbar
                         anchorOrigin={{
@@ -161,8 +174,8 @@ const NovaSenha: React.FC = () => {
                         autoHideDuration={6000}
                         onClose={handleCloseSuccessMessage}
                     >
-                        <Alert onClose={handleCloseSuccessMessage} severity="success" sx={{ width: '100%' }}>
-                            Senha alterada com sucesso!
+                        <Alert onClose={handleCloseSuccessMessage} severity="success" sx={{ width: '100%', fontFamily: 'Poppins, sans-serif', fontSize: '1.1rem' }}>
+                            {t('newPasswordSucess')}
                         </Alert>
                     </Snackbar>
 
@@ -175,12 +188,12 @@ const NovaSenha: React.FC = () => {
                         autoHideDuration={6000}
                         onClose={handleCloseErrorMessage}
                     >
-                        <Alert onClose={handleCloseErrorMessage} severity="error" sx={{ width: '100%' }}>
-                            Não foi possível alterar sua senha :(
+                        <Alert onClose={handleCloseErrorMessage} severity="error" sx={{ width: '100%', fontFamily: 'Poppins, sans-serif', fontSize: '1.1rem' }}>
+                            {t('newPasswordError')}
                         </Alert>
                     </Snackbar>
-                </LoginContainer>
-            </Container>
+                </Box>
+            </Box>
         </>
     );
 };
