@@ -1,4 +1,5 @@
 import { SxProps, Theme } from '@mui/material';
+import backgorundImage from '../../../assets/img/background.png';
 
 export const globalStyle: SxProps<Theme> = () => ({
     body: {
@@ -63,13 +64,15 @@ export const formContainer: SxProps<Theme> = {
     display: 'grid',
 };
 
-export const container: SxProps<Theme> = {
+export const container: SxProps<Theme> = (theme) => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     height: '100vh',
-    backgroundColor: '#ffffff',
-};
+    [theme.breakpoints.down('md')]: {
+        backgroundImage: `url(${backgorundImage})`,
+    },
+});
 
 export const header: SxProps<Theme> = (theme) => ({
     fontFamily: 'Poppins, sans-serif',
@@ -143,7 +146,7 @@ export const customField: SxProps<Theme> = {
 };
 
 export const customInputLabel: SxProps<Theme> = {
-    color: '#232235',
+    color: '#696f8c',
     fontFamily: 'Poppins, sans-serif',
     '&.Mui-focused': {
         color: '#696f8c',

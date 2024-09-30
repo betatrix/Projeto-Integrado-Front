@@ -1,4 +1,5 @@
 import { SxProps, Theme } from '@mui/material';
+import backgorundImage from '../../../assets/img/background.png';
 
 const globalBoxStyles: SxProps<Theme> = (theme) => ({
     minHeight: '100vh',
@@ -30,6 +31,7 @@ const globalBoxStyles: SxProps<Theme> = (theme) => ({
 export const homePageBoxStyles: SxProps<Theme> = (theme) => ({
     //TODO(beatriz.andrade): adicionar backgorund
     ...globalBoxStyles(theme),
+    backgroundImage: `url(${backgorundImage})`,
 });
 
 export const gridIndexContainerStyles: SxProps<Theme> = (theme) => ({
@@ -172,6 +174,7 @@ export const typographyBodyStyles: SxProps<Theme> = (theme) => ({
 export const faqBoxStyles: SxProps<Theme> = (theme) => ({
     //TODO(beatriz.andrade): adicionar backgorund
     ...globalBoxStyles(theme),
+    backgroundImage: `url(${backgorundImage})`,
     paddingTop: '3rem',
     paddingBottom: '5rem',
 });

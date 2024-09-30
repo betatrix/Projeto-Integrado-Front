@@ -1,159 +1,133 @@
-import styled, { createGlobalStyle } from 'styled-components';
-import { Box, FilledInput, Button, InputLabel, Typography } from '@mui/material';
-import { Link } from 'react-router-dom';
-import { ErrorMessage } from 'formik';
-import vocacionalTestImg from '../../../assets/img/vocacionaTest.png';
+import { SxProps, Theme } from '@mui/material';
 
-export const Global = createGlobalStyle`
-    backgroundImage: url(${vocacionalTestImg});
+export const GlobalStyles: SxProps<Theme> = () => ({
     minHeight: '90vh',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     backgroundColor: '#caddff',
-`;
+});
 
-export const BackButton = styled(Button)`
-  &.MuiButton-root {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    color: #3533cd;
-    
-    &:hover {
-      background-color: rgba(89,87,230,0.1) !important;
-    }
-  }
-`;
+export const BackButton: SxProps<Theme> = () => ({
+    position: 'absolute',
+    top: 20,
+    left: 20,
+    color: '#3533cd',
+    '&:hover': {
+        backgroundColor: 'rgba(89,87,230,0.1) !important',
+    },
+});
 
-export const LoginContainer = styled(Box)`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  padding: 20px;
-  backgroundImage: url(${vocacionalTestImg});
-    minHeight: '90vh',
+export const LoginContainer: SxProps<Theme> = () => ({
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: '100vh',
+    padding: '20px',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     backgroundColor: '#caddff',
-`;
+});
 
-export const FormContainer = styled.form`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  width: 100%;
-  max-width: 700px;
-  background: white;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+export const FormContainer: SxProps<Theme> = () => ({
+    display: 'grid',
+    gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' },
+    gap: '20px',
+    width: '100%',
+    maxWidth: '700px',
+    background: 'white',
+    padding: '30px',
+    borderRadius: '10px',
+    boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
+});
 
-  @media (max-width: 600px) {
-    grid-template-columns: 1fr;
-  }
-`;
+export const Header: SxProps<Theme> = () => ({
+    fontWeight: 700,
+    marginBottom: '10px',
+});
 
-export const Header = styled(Typography)`
-  &.MuiTypography-root {
-    font-weight: 700;
-    margin-bottom: 10px;
-  }
-`;
+export const SubText: SxProps<Theme> = () => ({
+    color: '#474d66',
+    textDecoration: 'none',
+    textAlign: 'left',
+});
 
-export const SubText = styled(Typography)`
-  &.MuiTypography-root {
-    color: #474d66;
-    text-decoration: none;
-    text-align: left;
-  }
-`;
+export const CustomLink: SxProps<Theme> = () => ({
+    textDecoration: 'none',
+    fontWeight: 600,
+    color: '#735FE4',
+    transition: '0.3s',
+    '&:hover': {
+        color: '#452DCB',
+    },
+});
 
-export const CustomLink = styled(Link)`
-  text-decoration: none;
-  font-weight: 600;
-  color: #735FE4;
-  transition: 0.3s;
+export const CustomField: SxProps<Theme> = () => ({
+    backgroundColor: '#E6E6E6',
+    borderRadius: '10px',
+    '&:hover': {
+        backgroundColor: '#edeff5',
+    },
+    '&.Mui-focused': {
+        backgroundColor: '#edeff5',
+    },
+    '&::before, &:hover::before, &::after': {
+        borderBottom: 'none !important',
+    },
+    '&.Mui-error': {
+        backgroundColor: '#F9DADA',
+    },
+});
 
-  &:hover {
-    color: #452DCB;
-  }
-`;
+export const CustomInputLabel: SxProps<Theme> = () => ({
+    color: '#696f8c',
+    '&.Mui-focused': {
+        color: '#696f8c',
+    },
+});
 
-export const CustomField = styled(FilledInput)`
-  &.MuiFilledInput-root {
-    background-color: #E6E6E6;
-    border-radius: 10px;
+export const MessageError: SxProps<Theme> = () => ({
+    color: 'red',
+    fontSize: '0.875rem',
+    marginTop: '0.25rem',
+});
 
-    &:hover {
-      background-color: #edeff5;
-    }
-
-    &.Mui-focused {
-      background-color: #edeff5;
-    }
-
-    &::before {
-      border-bottom: none;
-    }
-
-    &:hover::before {
-      border-bottom: none !important; 
-    }
-
-    &::after {
-      border-bottom: none; 
-    }
-
-    &.Mui-error {
-      background-color: #F9DADA; 
-    }
-  }
-`;
-
-export const CustomInputLabel = styled(InputLabel)`
-  &.MuiInputLabel-root {
-    color: #696f8c;
-
-    &.Mui-focused {
-      color: #696f8c;
-    }
-  }
-`;
-
-export const CustomButton = styled(Button)`
-  &.MuiButton-root {
-    background: linear-gradient(90deg, rgba(53,51,205,1) 0%, rgba(16,24,64,1) 100%);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    margin-top: 5px;
-    margin-bottom: 2px;
-    border-radius: 10px;
-    height: 55px;
-
-    &:hover {
-        background: linear-gradient(269deg,#3533cd,#101840,#3533cd);
-        background-size: 180% 180%;
-        animation: gradient-animation 10s ease infinite;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-      
-      @keyframes gradient-animation {
-        0% {
-          background-position: 0% 50%;
-        }
-        50% {
-          background-position: 100% 50%;
-        }
-        100% {
-          background-position: 0% 50%;
-        }
-      }
-    }
-  }
-`;
-
-export const MessageError = styled(ErrorMessage)`
-  color: red;
-  font-size: 0.875rem;
-  margin-top: 0.25rem;
-`;
+export const loginButton: SxProps<Theme> = (theme) => ({
+    mr: 2,
+    marginTop: '1rem',
+    fontFamily: 'Roboto, monospace',
+    fontSize: '1.3rem',
+    padding: '0.4rem 13.5rem',
+    backgroundColor: '#D9EEFF',
+    color: '#185D8E',
+    fontWeight: 700,
+    border: 'solid 2px #185D8E',
+    borderRadius: '7px',
+    boxShadow: '4px 4px 0px 1px rgba(0, 111, 255, 0.2)',
+    textAlign: 'center',
+    maxWidth: '100%',
+    minWidth: '250px',
+    whiteSpace: 'nowrap',
+    transition: 'transform 0.3s ease-in-out',
+    '&:hover': {
+        backgroundColor: '#C0E3FF',
+        borderColor: '#185D8E',
+        borderWidth: '2px',
+        transform: 'scale(1.02)',
+    },
+    [theme.breakpoints.down('lg')]: {
+        padding: '0.3rem 10rem',
+        fontSize: '1rem',
+        minWidth: '200px',
+    },
+    [theme.breakpoints.down('md')]: {
+        padding: '0.3rem 15rem',
+        fontSize: '1rem',
+        minWidth: '200px',
+    },
+    [theme.breakpoints.down('sm')]: {
+        padding: '0.3rem 8rem',
+        fontSize: '1rem',
+        minWidth: '200px',
+    },
+});

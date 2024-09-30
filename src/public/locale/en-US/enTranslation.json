@@ -81,6 +81,14 @@
       "forgotError1": "Enter a valid e-mail!",
       "forgotError2": "E-mail was not found :(",
 
+      "newPasswordTitle": "Let's reset your password!",
+      "newPasswordText": "Please enter your new password below. Make sure the password is at least 6 characters long, including a combination of letters, numbers and symbols to ensure security.",
+      "newPasswordField1": "Enter your new password",
+      "newPasswordField2": "Confirm your new password",
+      "newPasswordButton": "Send",
+      "newPasswordSucess": "Password changed successfully!",
+      "newPasswordError": "Unable to change your password :(",
+
       "testIntroTitle": "Before we starting...",
       "testIntro1": "Our vocational test is inspired by psychologist John L. Holland's theory, known as RIASEC - Realistic, Investigative, Artistic, Social, Enterprising and Conventional.",
       "testIntro2": "This theory divides people into six different personality types and work environments. When taking the test, your characteristics are compared with these six types to suggest careers and areas of study that match your profile.",

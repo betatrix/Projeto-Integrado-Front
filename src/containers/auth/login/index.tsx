@@ -78,7 +78,6 @@ const Login: React.FC = () => {
             }
         } catch (error) {
             setError(t('loginError'));
-            console.log(error);
         } finally {
             setLoading(false);
             setSubmitting(false);
@@ -89,7 +88,6 @@ const Login: React.FC = () => {
         <>
             <Box sx={globalStyle} />
             <Box sx={container}>
-                {/* Conteúdo do login */}
                 <Box sx={loginContainer}>
                     <Box sx={headerLogin}>
                         <Button sx={backButton} startIcon={<ArrowBackIcon />}>
