@@ -162,9 +162,9 @@ function StudentHeader() {
 
     return (
         <>
-            <AppBar style={{ backgroundColor: '#F3F3F3', boxShadow: 'none' }}>
+            <AppBar style={{ backgroundColor: '#F3F3F3', boxShadow: 'none'}}>
                 <Container maxWidth={isMobile ? 'md' : 'xl'} disableGutters>
-                    <Toolbar sx={{ display: 'flex', justifyContent: isMobile ? 'space-between' : 'flex-end', width: '100%' }}>
+                    <Toolbar sx={{ display: 'flex', justifyContent: isMobile ? 'space-between' : 'flex-end', width: '100%'}}>
                         {isMobile && (
                             <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
                                 <ScrollLink to="home" smooth={true} duration={500}>

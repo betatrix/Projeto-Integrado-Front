@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+// import React, { useEffect } from 'react';
 import { styled, Theme, CSSObject } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
@@ -18,7 +18,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
-const drawerWidth = 215;
+const drawerWidth = 240;
 
 const openedMixin = (theme: Theme): CSSObject => ({
     width: drawerWidth,
@@ -87,23 +87,23 @@ const CustomDrawer: React.FC<CustomDrawerProps> = ({ open, handleDrawerOpen, han
     const isMobile = useMediaQuery('(max-width:600px)');
     const { t } = useTranslation();
 
-    // Desabilita o scroll do body e rola para o topo quando o Drawer está aberto
-    useEffect(() => {
-        if (open) {
-            // Desabilita o scroll do body
-            document.body.style.overflow = 'hidden';
-            // Rola para o topo
-            window.scrollTo(0, 0);
-        } else {
-            // Habilita o scroll do body
-            document.body.style.overflow = 'auto';
-        }
+    // // Desabilita o scroll do body e rola para o topo quando o Drawer está aberto
+    // useEffect(() => {
+    //     if (open) {
+    //         // Desabilita o scroll do body
+    //         document.body.style.overflow = 'hidden';
+    //         // Rola para o topo
+    //         window.scrollTo(0, 0);
+    //     } else {
+    //         // Habilita o scroll do body
+    //         document.body.style.overflow = 'auto';
+    //     }
 
-        // Limpeza quando o componente for desmontado
-        return () => {
-            document.body.style.overflow = 'auto'; // Garante que o scroll seja reabilitado
-        };
-    }, [open]);
+    //     // Limpeza quando o componente for desmontado
+    //     return () => {
+    //         document.body.style.overflow = 'auto'; // Garante que o scroll seja reabilitado
+    //     };
+    // }, [open]);
 
     return (
         <>

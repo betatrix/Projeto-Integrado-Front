@@ -105,10 +105,10 @@ export const cardTitleStyle: SxProps<Theme> =(theme) => ({
     fontWeight: 'bold',
     fontSize: '1.5rem',
     [theme.breakpoints.down('sm')]: {
-        fontSize: '0.8rem',
+        fontSize: '1rem',
     },
     [theme.breakpoints.down('md')]: {
-        fontSize: '0.8rem',
+        fontSize: '1rem',
     },
 
 });
@@ -117,12 +117,13 @@ export const cardTitle2Style: SxProps<Theme> =(theme) => ({
     fontFamily: 'Poppins, sans-serif',
     color: '#0B2A40',
     // fontWeight: 'bold',
-    fontSize: '1.2rem',
+    fontSize: '1.5rem',
+    marginTop: '0.5rem',
     [theme.breakpoints.down('sm')]: {
-        fontSize: '0.7rem',
+        fontSize: '0.8rem',
     },
     [theme.breakpoints.down('md')]: {
-        fontSize: '0.7rem',
+        fontSize: '0.8rem',
     },
 
 });
@@ -135,12 +136,14 @@ export const titleResultStyle: SxProps<Theme> =(theme) => ({
     textAlign: 'center',
     alignItems: 'center',
     [theme.breakpoints.down('sm')]: {
-        textAlign: 'center',
-        fontSize: '0.8rem',
+        textAlign: 'right',
+        fontSize: '1rem',
+        fontWeight: 'bold',
     },
     [theme.breakpoints.down('md')]: {
-        textAlign: 'center',
-        fontSize: '0.8rem',
+        textAlign: 'right',
+        fontSize: '1rem',
+        fontWeight: 'bold',
     },
 
 });
@@ -154,11 +157,13 @@ export const titlePerfilStyle: SxProps<Theme> =(theme) => ({
     // marginLeft: '0.9rem',
     [theme.breakpoints.down('sm')]: {
         textAlign: 'center',
-        fontSize: '0.8rem',
+        fontSize: '1rem',
+        fontWeight: 'bold',
     },
     [theme.breakpoints.down('md')]: {
         textAlign: 'center',
-        fontSize: '0.8rem',
+        fontSize: '1rem',
+        fontWeight: 'bold',
     },
 
 });
@@ -170,6 +175,7 @@ export const contentStyle: SxProps<Theme> =(theme) => ({
     fontWeight: 'bold',
     fontSize: '1rem',
     marginTop: '0.8rem',
+    marginRight: '1rem',
     borderRadius: '8px', // cantos arredondados
     backgroundColor: '#E3EDF4',
     display: 'inline-block', // Faz o fundo colorido se ajustar ao tamanho do conteúdo
@@ -177,10 +183,12 @@ export const contentStyle: SxProps<Theme> =(theme) => ({
     [theme.breakpoints.down('sm')]: {
         textAlign: 'right',
         fontSize: '0.8rem',
+        marginTop: '0.5rem',
     },
     [theme.breakpoints.down('md')]: {
         textAlign: 'right',
         fontSize: '0.8rem',
+        marginTop: '0.5rem',
     },
 });
 
@@ -188,15 +196,15 @@ export const contentPerfilStyle = (theme:Theme) => ({
     fontFamily: 'Roboto, monospace',
     color: '#0B2A40',
     textAlign: 'center',
-    marginTop: '0.5rem',
+    marginTop: '1rem',
     fontSize: '1.6rem',
     [theme.breakpoints.down('sm')]: {
         textAlign: 'center',
-        fontSize: '0.8rem',
+        fontSize: '1rem',
     },
     [theme.breakpoints.down('md')]: {
         textAlign: 'center',
-        fontSize: '0.8rem',
+        fontSize: '1rem',
     },
 
 });
@@ -213,11 +221,11 @@ export const contentResultStyle: SxProps<Theme> =(theme) => ({
     fontSize: '1.3rem',
     [theme.breakpoints.down('sm')]: {
         textAlign: 'center',
-        fontSize: '0.8rem',
+        fontSize: '1rem',
     },
     [theme.breakpoints.down('md')]: {
         textAlign: 'center',
-        fontSize: '0.8rem',
+        fontSize: '1rem',
     },
 
 });
@@ -229,13 +237,13 @@ export const paperResultStyles: SxProps<Theme> = (theme) => ({
     backgroundColor: '#A4BFD2',
     [theme.breakpoints.down('sm')]: {
         backgroundColor: '#A4BFD2',
-        width: '17rem',
-        height: '10rem',
+        width: '18rem',
+        height: '11rem',
     },
     [theme.breakpoints.down('md')]: {
         backgroundColor: '#A4BFD2',
-        width: '17rem',
-        height: '10rem',
+        width: '18rem',
+        height: '11rem',
     },
 });
 
@@ -250,14 +258,14 @@ export const boxResultStyles: SxProps<Theme> = (theme) => ({
     [theme.breakpoints.down('sm')]: {
         flexDirection: 'column',
         alignItems: 'center',
-        width: '12rem',
-        height: '10rem',
+        width: '15rem',
+        height: '11rem',
     },
     [theme.breakpoints.down('md')]: {
         flexDirection: 'column',
         alignItems: 'center',
-        width: '12rem',
-        height: '10rem',
+        width: '15rem',
+        height: '11rem',
     },
 });
 
@@ -308,6 +316,7 @@ export const paperImgStyles: SxProps<Theme> = (theme) => ({
     width: '9rem',
     height: '14.5rem',
     marginLeft: '0.3rem',
+    boxShadow: 'none',
     // marginRight:'0.5rem',
     // marginTop: '0.5rem',
     [theme.breakpoints.down(1116)]: {
@@ -333,7 +342,6 @@ export const paperImgStyles: SxProps<Theme> = (theme) => ({
 
 export const paperTestStyles: SxProps<Theme> = (theme) => ({
     backgroundColor: '#6B9ABC',
-    gap:'1rem',
     padding: '2%',
     flexDirection: 'column',
     display:'flex',
@@ -342,52 +350,67 @@ export const paperTestStyles: SxProps<Theme> = (theme) => ({
     justifyContent: 'left',
     width: '70rem',
     height: '15rem',
-    marginBottom: '0.5rem',
-    marginTop: '2rem',
+    marginBottom: '1rem',
+    marginTop: '2.5rem',
+    border: '2px solid #0B2A40', // 2px de espessura, sólida, cor #0B2A40
     [theme.breakpoints.down(1116)]: {
         width: '30rem',
         height: '15rem',
-        gap: '0.5rem'
+        gap: '0.5rem',
+        '& .your-image-container img': {
+            display: 'none' // Oculta a imagem
+        }
     },
     [theme.breakpoints.down('md')]: {
-        width: '17rem',
-        height: '8rem',
-        gap: '0.5rem'
+        width: '18rem',
+        height: '9rem',
+        gap: '0.5rem',
+        marginBottom: '1rem',
+        '& .your-image-container img': {
+            display: 'none' // Oculta a imagem
+        }
     },
     [theme.breakpoints.down('sm')]: {
-        width: '17rem',
-        height: '8rem',
-        gap: '0.5rem'
+        width: '18rem',
+        height: '9rem',
+        gap: '0.5rem',
+        marginBottom: '1rem',
+        '& .your-image-container img': {
+            display: 'none' // Oculta a imagem
+        }
     },
 });
 
 export const paperBannerStyles: SxProps<Theme> = (theme) => ({
     backgroundImage: `url(${banner})`,
-    // backgroundColor: '#99b9ff',
+    backgroundSize: 'cover', // Ajusta a imagem para cobrir todo o Paper
+    backgroundPosition: 'center', // Centraliza a imagem no Paper
     padding: '5%',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
     textAlign: 'center',
     width: '70rem',
-    height: '2rem',
-    // margin: '0.5rem',
+    height: '2rem', // Ajusta a altura inicial
     marginTop: '2rem',
     marginBottom: '3rem',
-    [theme.breakpoints.down('sm')]: {
-        flexDirection: 'column',
-        alignItems: 'center',
-        width: '17rem',
-        height: '8rem',
-    },
+    borderRadius: '8px', // Opcional: arredondar bordas
+
+    // Responsividade para telas menores
     [theme.breakpoints.down('md')]: {
-        flexDirection: 'column',
-        alignItems: 'center',
-        width: '17rem',
-        height: '8rem',
+        width: '18rem', // Diminui a largura para telas médias
+        height: '4rem', // Diminui a altura para telas médias
+        marginTop: '1.5rem',
+        marginBottom: '2rem',
+    },
+    [theme.breakpoints.down('sm')]: {
+        width: '18rem', // Diminui a largura para telas pequenas
+        height: '4rem', // Diminui a altura para telas pequenas
+        padding: '2%', // Ajusta o padding para telas pequenas
+        marginTop: '1.5rem',
+        marginBottom: '2rem',
     },
 });
-
 export const TestButton: SxProps<Theme> = (theme) => ({
     mr: 2,
     fontFamily: 'Roboto, monospace',
@@ -404,7 +427,7 @@ export const TestButton: SxProps<Theme> = (theme) => ({
     maxWidth: '100%',
     minWidth: '250px',
     whiteSpace: 'nowrap',
-    marginTop: '1rem',
+    marginTop: '1.5rem',
     transition: 'transform 0.3s ease-in-out',
     '&:hover': {
         backgroundColor: '#C0E3FF',
@@ -415,15 +438,26 @@ export const TestButton: SxProps<Theme> = (theme) => ({
 
     [theme.breakpoints.down('md')]: {
         padding: '0.3rem 2rem', // Padding ajustado para médio
-        fontSize: '0.5rem',
+        fontSize: '0.7rem',
         minWidth: '180px',
-        marginTop: '0.3rem',
+        marginTop: '0.5rem',
     },
     [theme.breakpoints.down('sm')]: {
         padding: '0.3rem 1rem', // Padding menor para telas pequenas
-        fontSize: '0.5rem', // Tamanho de fonte menor
+        fontSize: '0.7rem', // Tamanho de fonte menor
         minWidth: '100px', // Largura mínima reduzida para telas pequenas
-        marginTop: '0.3rem',
+        marginTop: '0.5rem',
+    },
+});
+
+export const IconStyles: SxProps<Theme> = (theme) => ({
+    fontSize: '2.5rem',
+    marginTop: '1rem',
+    [theme.breakpoints.down('sm')]: {
+        fontSize: '1rem',
+    },
+    [theme.breakpoints.down('md')]: {
+        fontSize: '1rem',
     },
 });
 
