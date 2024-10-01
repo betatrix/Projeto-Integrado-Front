@@ -20,7 +20,6 @@ import { InstitutionProvider } from '../context/institutionContext';
 import ResultadoTeste from '../containers/student/resultTest';
 import { AuthProvider } from '../contexts/auth';
 import PrivateRoute from '../components/routes/privateRoutes';
-import CustomDrawer from '../containers/student/studentDashboard/CustomDrawer';
 
 export const AppRoutes = () => {
     return (
