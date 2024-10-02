@@ -1,5 +1,5 @@
 import { Typography, Container } from '@mui/material';
-import { FooterStyle } from './styles';
+import { FooterStyle } from './testestyle';
 
 const StudentFooter = () => {
     return (

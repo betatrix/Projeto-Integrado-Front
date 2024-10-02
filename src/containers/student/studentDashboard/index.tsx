@@ -79,7 +79,7 @@ const StudentDashboard: React.FC = () => {
     const [recorrentes, setRecorrentes] = useState<string[]>([]);
     const [sliderRef, setSliderRef] = useState<Slider | null>(null);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [recorrenteImage, setRecorrenteImage] = useState<string | null>(null);
+    // const [recorrenteImage, setRecorrenteImage] = useState<string | null>(null);
 
     const authContext = useContext(AuthContext);
     const userData = authContext?.user ? decryptData(authContext.user) : null;
@@ -136,14 +136,14 @@ const StudentDashboard: React.FC = () => {
     };
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const generateChartData = (result: ResultItem[]) => {
-        const profileCounts = result.reduce((counts: { [key: string]: number }, item) => {
-            counts[item.perfil] = (counts[item.perfil] || 0) + 1;
-            return counts;
-        }, {});
+    // const generateChartData = (result: ResultItem[]) => {
+    //     const profileCounts = result.reduce((counts: { [key: string]: number }, item) => {
+    //         counts[item.perfil] = (counts[item.perfil] || 0) + 1;
+    //         return counts;
+    //     }, {});
 
-        return Object.entries(profileCounts).map(([name, value]) => ({ name, value }));
-    };
+    //     return Object.entries(profileCounts).map(([name, value]) => ({ name, value }));
+    // };
 
     if (!authContext) {
         return <div>Não conseguiu pegar o contexto.</div>;
