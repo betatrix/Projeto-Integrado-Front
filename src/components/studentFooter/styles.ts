@@ -1,6 +1,7 @@
 import { SxProps, Theme } from '@mui/material';
 
-export const footerContainer: SxProps<Theme> = () => ({
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const footerContainer: SxProps<Theme> = (_theme) => ({
     backgroundColor: '#0B2A40',
     color: '#A4BFD2',
     padding: '40px 0',
@@ -62,12 +63,14 @@ export const footerLink: SxProps<Theme> = (theme) => ({
     },
 });
 
-export const socialIcons: SxProps<Theme> = () => ({
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const socialIcons: SxProps<Theme> = (_theme) => ({
     display: 'flex',
     gap: '10px',
 });
 
-export const footerBottom: SxProps<Theme> = () => ({
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const footerBottom: SxProps<Theme> = (_theme) => ({
     textAlign: 'right',
     padding: '20px 20px 0px',
     color: '#6B9ABC',

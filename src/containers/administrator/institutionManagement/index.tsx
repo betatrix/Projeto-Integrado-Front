@@ -110,7 +110,7 @@ const InstitutionManagement: React.FC = () => {
         setInstitutionsToDeleteMultiple([]);
         setDeleteMultipleModalOpen(false);
     };
-    
+
     // search API datas
     const [searchValue, setSearchValue] = useState<string>('');
 
@@ -127,22 +127,22 @@ const InstitutionManagement: React.FC = () => {
         <>
             <AdminHeader />
 
-            <Box sx={{ marginTop: '20px', marginBottom: '60px'}}>
+            <Box sx={{ marginTop: '20px', marginBottom: '60px' }}>
 
                 <Link to='/admin'>
                     <BackButton></BackButton>
                 </Link>
 
-                <Typography variant="h5" sx={{ marginBottom: 2, textAlign: 'center'}}>
-                Gerenciamento de Instituições
+                <Typography variant="h5" sx={{ marginBottom: 2, textAlign: 'center' }}>
+                    Gerenciamento de Instituições
                 </Typography>
 
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 5, paddingLeft:5, paddingRight:5 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 5, paddingLeft: 5, paddingRight: 5 }}>
 
                     <TextField
                         label="Pesquisar instituição"
                         variant="outlined"
-                        sx={{width: '70%'}}
+                        sx={{ width: '70%' }}
                         onChange={(e) => setSearchValue(e.target.value)}
                     />
 
@@ -156,12 +156,12 @@ const InstitutionManagement: React.FC = () => {
                         disabled={isDeleteButtonDisabled}
                         onClick={handleDeleteMultipleModalOpen}
                     >
-                    Excluir instituições
+                        Excluir instituições
                     </Button>
 
                 </Box>
 
-                <Box sx={{ paddingTop: 10, paddingLeft: 5, paddingRight: 5}}>
+                <Box sx={{ paddingTop: 10, paddingLeft: 45, paddingRight: 45 }}>
 
                     <Table>
 
@@ -169,11 +169,12 @@ const InstitutionManagement: React.FC = () => {
 
                             <TableRow>
 
-                                <TableCell align="left"></TableCell>
-                                <TableCell>ID</TableCell>
-                                <TableCell>Nome</TableCell>
-                                <TableCell>Ativo</TableCell>
-                                <TableCell align="right"></TableCell>
+                                <TableCell sx={{ borderRight: '1px solid #ddd', textAlign: 'center' }}>
+                                    <Checkbox/> Excluir
+                                </TableCell>
+                                <TableCell sx={{ borderRight: '1px solid #ddd', textAlign: 'center' }}>Identificador</TableCell>
+                                <TableCell sx={{ borderRight: '1px solid #ddd' }}>Nome</TableCell>
+                                <TableCell sx={{ textAlign: 'center' }}>Estado</TableCell>
 
                             </TableRow>
 
@@ -188,22 +189,14 @@ const InstitutionManagement: React.FC = () => {
 
                                     <TableRow key={institution.id} onClick={() => handleDetailModalOpen(institution)}>
 
-                                        <TableCell align="left">
+                                        <TableCell align="left" sx={{ borderRight: '1px solid #ddd' }}>
                                             <Checkbox
                                                 onClick={(e) => e.stopPropagation()}
                                                 checked={selectedInstitutions.includes(institution.id)}
                                                 onChange={() => handleCheckboxChange(institution.id)}
                                             />
-                                        </TableCell>
-
-                                        <TableCell>{institution.id}</TableCell>
-                                        <TableCell>{institution.nome}</TableCell>
-                                        <TableCell>{institution.ativo ? 'Ativo' : 'Inativo'}</TableCell>
-
-                                        <TableCell align="right">
-
                                             <IconButton>
-                                                <EditIcon onClick={(e) => { e.stopPropagation(); handleEditModalOpen(institution);}}/>
+                                                <EditIcon onClick={(e) => { e.stopPropagation(); handleEditModalOpen(institution); }} />
                                             </IconButton>
 
                                             <IconButton onClick={(e) => { e.stopPropagation(); handleDeleteModalOpen(institution); }}>
@@ -211,6 +204,10 @@ const InstitutionManagement: React.FC = () => {
                                             </IconButton>
 
                                         </TableCell>
+
+                                        <TableCell sx={{ borderRight: '1px solid #ddd', textAlign: 'center' }}>{institution.id}</TableCell>
+                                        <TableCell sx={{ borderRight: '1px solid #ddd' }}>{institution.nome}</TableCell>
+                                        <TableCell sx={{ textAlign: 'center' }}>{institution.ativo ? 'Ativo' : 'Inativo'}</TableCell>
 
                                     </TableRow>
                                 ) : null
@@ -231,8 +228,10 @@ const InstitutionManagement: React.FC = () => {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
-                    bgcolor: 'background.paper', boxShadow: 24, p: 4, width: '80%', maxWidth: 600 }}>
+                <Box sx={{
+                    position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+                    bgcolor: 'background.paper', boxShadow: 24, p: 4, width: '80%', maxWidth: 600
+                }}>
                     {selectedDetailInstitutionWithAddress && (
 
                         <Grid container spacing={3}>
@@ -244,7 +243,7 @@ const InstitutionManagement: React.FC = () => {
                             <Grid item xs={6}>
 
                                 <Typography variant="h6" gutterBottom>
-                            Dados Gerais
+                                    Dados Gerais
                                 </Typography>
 
                                 <Typography>ID: {selectedDetailInstitutionWithAddress.id}</Typography>
@@ -259,7 +258,7 @@ const InstitutionManagement: React.FC = () => {
                             <Grid item xs={6}>
 
                                 <Typography variant="h6" gutterBottom>
-                            Endereço
+                                    Endereço
                                 </Typography>
 
                                 <Typography>Rua: {selectedDetailInstitutionWithAddress.endereco.logradouro}</Typography>
@@ -390,8 +389,10 @@ const InstitutionManagement: React.FC = () => {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
-                    bgcolor: 'background.paper', boxShadow: 24, p: 4, maxWidth: 400, width: '90%' }}>
+                <Box sx={{
+                    position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+                    bgcolor: 'background.paper', boxShadow: 24, p: 4, maxWidth: 400, width: '90%'
+                }}>
 
                     <Typography id="modal-modal-title" variant="h6" component="h2">
                         Confirmar exclusão
@@ -435,8 +436,10 @@ const InstitutionManagement: React.FC = () => {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
-                    bgcolor: 'background.paper', boxShadow: 24, p: 4, maxWidth: 400, width: '90%' }}>
+                <Box sx={{
+                    position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+                    bgcolor: 'background.paper', boxShadow: 24, p: 4, maxWidth: 400, width: '90%'
+                }}>
                     <Typography id="modal-modal-title" variant="h6" component="h2">
                         Confirmar exclusão de múltiplas instituições
                     </Typography>

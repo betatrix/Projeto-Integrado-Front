@@ -61,10 +61,9 @@ interface ResultItem {
 
 const StudentDashboard: React.FC = () => {
     const theme = useTheme();
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
-    const isMediumScreen = useMediaQuery(theme.breakpoints.between('sm', 'md'));
-    //const isLargeScreen = useMediaQuery(theme.breakpoints.up('md'));
+    const isMediumScreen = useMediaQuery(theme.breakpoints.down(1400));
+    const isLargeScreen = useMediaQuery(theme.breakpoints.up('md'));
     const [open, setOpen] = React.useState(false);
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -78,7 +77,6 @@ const StudentDashboard: React.FC = () => {
     const [testHistory, setTestHistory] = useState<{ date: string, result: ResultItem[] }[]>([]);
     const [recorrentes, setRecorrentes] = useState<string[]>([]);
     const [sliderRef, setSliderRef] = useState<Slider | null>(null);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     // const [recorrenteImage, setRecorrenteImage] = useState<string | null>(null);
 
     const authContext = useContext(AuthContext);
@@ -135,7 +133,6 @@ const StudentDashboard: React.FC = () => {
         arrows: false,
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     // const generateChartData = (result: ResultItem[]) => {
     //     const profileCounts = result.reduce((counts: { [key: string]: number }, item) => {
     //         counts[item.perfil] = (counts[item.perfil] || 0) + 1;
@@ -150,14 +147,13 @@ const StudentDashboard: React.FC = () => {
     }
     const showLockIcon = testHistory.length === 0;
 
-    // Regras para breakpoints
     const chartConfig = {
-        outerRadius: isSmallScreen ? 60 : isMediumScreen ? 80 : 95,
-        cx: isSmallScreen ? 70 : isMediumScreen ? 100 : 130,
-        cy: isSmallScreen ? 60 : isMediumScreen ? 80 : 90,
-        width: isSmallScreen ? 150 : isMediumScreen ? 250 : 260,
-        height: isSmallScreen ? 130 : isMediumScreen ? 180 : 200,
-        ArrowBackIosIcon: isSmallScreen ? 60 : isMediumScreen ? 80 : 95,
+        outerRadius: isSmallScreen ? 60 : isMediumScreen ? 83.125 : isLargeScreen ? 118.75 : 95,
+        cx: isSmallScreen ? 70 : isMediumScreen ? 113.75 : isLargeScreen ? 162.5 : 130,
+        cy: isSmallScreen ? 60 : isMediumScreen ? 79.45 : isLargeScreen ? 113.5 : 90,
+        width: isSmallScreen ? 150 : isMediumScreen ? 227.5 : isLargeScreen ? 325 : 260,
+        height: isSmallScreen ? 130 : isMediumScreen ? 175 : isLargeScreen ? 250 : 200,
+        ArrowBackIosIcon: isSmallScreen ? 60 : isMediumScreen ? 83.125 : isLargeScreen ? 118.75 : 95,
     };
 
     return (
@@ -169,10 +165,9 @@ const StudentDashboard: React.FC = () => {
                 </Box>
                 <Box sx={{ paddingLeft: open ? { xs: '0px', sm: '215px' } : '0px' }} >
                     <StudentHeader />
-                    {/* Card Principal////////////////////////////////////////////////////////////////////////////// */}
                     <Grid display="flex" justifyContent="center">
                         <Paper sx={paperTestStyles}>
-                            <Box sx={{ display: 'flex' }}> {/* Container Flex */}
+                            <Box sx={{ display: 'flex'}}>
                                 <Box>
                                     <Typography sx={cardTitleStyle} component="div">
                                         {t('dashboardTitle')}
@@ -190,13 +185,12 @@ const StudentDashboard: React.FC = () => {
                                     <img
                                         src={vocco}
                                         alt="Logo"
-                                        style={{ width: '210px' }}
+                                        style={{ width: '260px' }}
                                     />
                                 </Box>
                             </Box>
                         </Paper>
                     </Grid>
-                    {/* Container Meio////////////////////////////////////////////////////////////////////////////// */}
                     <Grid container sx={gridContainerStyles}>
                         <Box>
                             <Typography sx={titlePerfilStyle} component="div">
@@ -208,32 +202,36 @@ const StudentDashboard: React.FC = () => {
                                     display: 'flex',
                                     justifyContent: 'center',
                                     alignItems: 'center',
-                                    width: '27.5rem',
-                                    height: '16rem',
+                                    width: '34.375rem',
+                                    height: '20rem',
+
                                     backgroundColor: '#D7E6F1',
-                                    [theme.breakpoints.down('sm')]: { // Responsividade no Paper interno também
+                                    [theme.breakpoints.down('sm')]: {
                                         width: '18rem',
                                         height: '11rem',
                                         marginBottom: '1rem',
                                     },
-                                    [theme.breakpoints.down('md')]: { // Responsividade no Paper interno também
+                                    [theme.breakpoints.down('md')]: {
                                         width: '18rem',
                                         height: '11rem',
                                         marginBottom: '1rem',
                                     },
                                 }}>
                                     {showLockIcon ? (
-                                        // Se não houver testes, exibe um único Paper com o cadeado
                                         <Paper sx={{
-                                            display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '2rem', width: '25rem',
-                                            height: '16rem', backgroundColor: '#D7E6F1', boxShadow: 'none', [theme.breakpoints.down('sm')]: {
+                                            display: 'flex', justifyContent: 'center', alignItems: 'center',
+                                            padding: '2.5rem',
+                                            width: '31.25rem',
+                                            height: '20rem',
+                                            backgroundColor: '#D7E6F1', boxShadow: 'none', [theme.breakpoints.down('sm')]: {
                                                 height: '11rem',
                                             }, [theme.breakpoints.down('md')]: {
                                                 height: '11rem',
                                             },
+
                                         }}>
                                             <LockIcon sx={{
-                                                fontSize: 100,
+                                                fontSize: 125,
                                                 color: '#0B2A40',
                                                 [theme.breakpoints.down('sm')]: {
                                                     fontSize: 70,
@@ -250,7 +248,7 @@ const StudentDashboard: React.FC = () => {
                                                     src={perfil}
                                                     alt="Perfil"
                                                     sx={{
-                                                        width: '125px',
+                                                        width: '156.25px',
                                                         [theme.breakpoints.down('sm')]: {
                                                             width: '80px',
                                                         },
@@ -265,7 +263,7 @@ const StudentDashboard: React.FC = () => {
                                                     <Paper key={index} sx={paperPerfisStyles}>
                                                         <Box display="flex" alignItems="center">
                                                             <Box sx={{ fontSize: 'small' }}>
-                                                                {PROFILE_DETAILS[profile].icon} {/* Ícone estilizado */}
+                                                                {PROFILE_DETAILS[profile].icon}
                                                             </Box>
                                                             <Typography sx={contentPerfilStyle(theme)} >
                                                                 {profile}
@@ -279,7 +277,9 @@ const StudentDashboard: React.FC = () => {
                                 </Paper>
                             </Grid>
                         </Box>
-                        <Box sx={{ width: '12.3rem' }}></Box>
+                        <Box sx={{
+                            width: '15.8rem'
+                        }}></Box>
                         <Grid item sx={gridItem2Styles}>
                             <Box sx={{ alignItems: 'center', textAlign: 'center' }}>
                                 <Typography sx={titleResultStyle} component="div">
@@ -287,17 +287,17 @@ const StudentDashboard: React.FC = () => {
                                 </Typography>
 
                                 <Paper sx={paperResultStyles}>
-                                    {/* Exibe o botão anterior apenas se houver mais de um teste */}
                                     {testHistory.length > 1 && (
                                         <IconButton onClick={() => sliderRef?.slickPrev()}>
                                             <ArrowBackIosIcon sx={{
-                                                fontSize: 25,
+                                                fontSize: 31.25,
                                                 color: '#0B2A40',
                                                 [theme.breakpoints.down('sm')]: {
                                                     fontSize: 10,
                                                 }, [theme.breakpoints.down('md')]: {
                                                     fontSize: 10,
                                                 },
+
                                             }} />
                                         </IconButton>
                                     )}
@@ -311,7 +311,6 @@ const StudentDashboard: React.FC = () => {
                                                             {test.date}
                                                         </Typography>
                                                         <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                                                            {/* Gráfico de pizza */}
                                                             <Box sx={{ display: 'flex', alignItems: 'center' }} >
                                                                 <PieChart
                                                                     series={[
@@ -335,27 +334,27 @@ const StudentDashboard: React.FC = () => {
                                                                     height={chartConfig.height}
                                                                 />
                                                             </Box>
-
-                                                            {/* Legenda ao lado do gráfico */}
-                                                            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: '40px' }}>
+                                                            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: '20px' }}>
                                                                 {test.result.map((entry, index) => (
                                                                     <Box
                                                                         key={index}
                                                                         sx={{
                                                                             display: 'flex',
                                                                             alignItems: 'center',
-                                                                            marginBottom: '10px', // Espaçamento entre os itens da legenda
+                                                                            marginBottom: '0.5rem'
                                                                         }}
                                                                     >
                                                                         <Box
                                                                             sx={{
                                                                                 width: '15px',
                                                                                 height: '15px',
+                                                                                marginRight: '2px',
+                                                                                border: '1px solid #FFFFFF',
                                                                                 backgroundColor: PROFILE_DETAILS[entry.perfil].color,
                                                                             }}
                                                                         />
                                                                         <Typography variant="body2" sx={{
-                                                                            fontSize: 16,
+                                                                            fontSize: 20,
                                                                             fontFamily: 'Roboto, monospace',
                                                                             color: '#0B2A40',
                                                                             fontWeight: 'bold',
@@ -381,12 +380,10 @@ const StudentDashboard: React.FC = () => {
                                             </Typography>
                                         )}
                                     </Paper>
-
-                                    {/* Exibe o botão próximo apenas se houver mais de um teste */}
                                     {testHistory.length > 1 && (
                                         <IconButton onClick={() => sliderRef?.slickNext()}>
                                             <ArrowForwardIosIcon sx={{
-                                                fontSize: 25,
+                                                fontSize: 31.25,
                                                 color: '#0B2A40',
                                                 [theme.breakpoints.down('sm')]: {
                                                     fontSize: 10,
@@ -401,8 +398,6 @@ const StudentDashboard: React.FC = () => {
                             </Box>
                         </Grid>
                     </Grid>
-                    {/* Container Meio/
-                  ///////////////////////////////////////////////////////////////////////////// */}
                     <Grid display="flex" justifyContent="center">
                         <Paper sx={paperBannerStyles}></Paper>
                     </Grid>

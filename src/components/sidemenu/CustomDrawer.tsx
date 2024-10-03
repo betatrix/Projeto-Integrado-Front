@@ -18,7 +18,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
-const drawerWidth = 240;
+const drawerWidth = 245;
 
 const openedMixin = (theme: Theme): CSSObject => ({
     width: drawerWidth,
@@ -69,12 +69,12 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 const iconMap: { [key: string]: { icon: React.ReactNode, link: string } } = {
-    'dashboard': { icon: <DashboardIcon />, link: '/estudante' },
-    'test': { icon: <AssignmentRoundedIcon />, link: '/teste-vocacional' },
-    'myAccount': { icon: <AccountBoxRoundedIcon />, link: '/minha-conta' },
-    'courses': { icon: <LocalLibraryRoundedIcon />, link: '/cursos' },
-    'university': { icon: <SchoolRoundedIcon />, link: '/instituicao' },
-    'logout': { icon: <LogoutRoundedIcon />, link: '/logout' },
+    'dashboard': { icon: <DashboardIcon sx={{fontSize: '1.8rem'}}/>, link: '/estudante' },
+    'test': { icon: <AssignmentRoundedIcon sx={{fontSize: '1.8rem'}} />, link: '/teste-vocacional' },
+    'myAccount': { icon: <AccountBoxRoundedIcon sx={{fontSize: '1.8rem'}}/>, link: '/minha-conta' },
+    'courses': { icon: <LocalLibraryRoundedIcon sx={{fontSize: '1.8rem'}} />, link: '/cursos' },
+    'university': { icon: <SchoolRoundedIcon sx={{fontSize: '1.8rem'}}/>, link: '/instituicao' },
+    'logout': { icon: <LogoutRoundedIcon sx={{fontSize: '1.8rem'}}/>, link: '/logout' },
 };
 
 interface CustomDrawerProps {
@@ -87,32 +87,14 @@ const CustomDrawer: React.FC<CustomDrawerProps> = ({ open, handleDrawerOpen, han
     const isMobile = useMediaQuery('(max-width:600px)');
     const { t } = useTranslation();
 
-    // // Desabilita o scroll do body e rola para o topo quando o Drawer está aberto
-    // useEffect(() => {
-    //     if (open) {
-    //         // Desabilita o scroll do body
-    //         document.body.style.overflow = 'hidden';
-    //         // Rola para o topo
-    //         window.scrollTo(0, 0);
-    //     } else {
-    //         // Habilita o scroll do body
-    //         document.body.style.overflow = 'auto';
-    //     }
-
-    //     // Limpeza quando o componente for desmontado
-    //     return () => {
-    //         document.body.style.overflow = 'auto'; // Garante que o scroll seja reabilitado
-    //     };
-    // }, [open]);
-
     return (
         <>
             <Drawer
                 variant={isMobile ? 'temporary' : 'permanent'}
                 open={open}
-                onClose={handleDrawerClose} // Garante que o Drawer feche ao clicar fora
+                onClose={handleDrawerClose}
                 ModalProps={{
-                    keepMounted: true, // Mantém o Drawer montado para melhor performance
+                    keepMounted: true,
                 }}
             >
                 <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
@@ -137,7 +119,7 @@ const CustomDrawer: React.FC<CustomDrawerProps> = ({ open, handleDrawerOpen, han
                                     <img
                                         src={vocco}
                                         alt="Logo"
-                                        style={{ width: '35px' }}
+                                        style={{ width: '45px' }}
                                     />
                                 </ListItemIcon>
                                 <ListItemText
@@ -146,7 +128,7 @@ const CustomDrawer: React.FC<CustomDrawerProps> = ({ open, handleDrawerOpen, han
                                             variant="h6"
                                             sx={{
                                                 fontFamily: 'Poppins',
-                                                fontSize: '25px',
+                                                fontSize: '30px',
                                                 fontWeight: 'bold',
                                                 color: '#185D8E',
                                                 opacity: open ? 1 : 0,
@@ -179,7 +161,10 @@ const CustomDrawer: React.FC<CustomDrawerProps> = ({ open, handleDrawerOpen, han
 
                                             primary={
                                                 <Typography
-                                                    sx={[{ fontFamily: 'Roboto, monospace', color: '#185D8E' }, open ? { opacity: 1 } : { opacity: 0 }]}
+                                                    sx={[{
+                                                        fontFamily: 'Roboto, monospace',
+                                                        color: '#185D8E', fontSize: '1.2rem'
+                                                    }, open ? { opacity: 1 } : { opacity: 0 }]}
                                                 >
                                                     {t(key)}
                                                 </Typography>
@@ -208,7 +193,12 @@ const CustomDrawer: React.FC<CustomDrawerProps> = ({ open, handleDrawerOpen, han
                                 <ListItemText
                                     primary={
                                         <Typography
-                                            sx={[{ fontFamily: 'Roboto, monospace', color: '#185D8E', fontWeight: 'bold' }, open ? { opacity: 1 } : { opacity: 0 }]}
+                                            sx={[{
+                                                fontFamily: 'Roboto, monospace',
+                                                fontSize: '1.2rem',
+                                                color: '#185D8E',
+                                                fontWeight: 'bold'
+                                            }, open ? { opacity: 1 } : { opacity: 0 }]}
                                         >
                                             {t('logout')}
                                         </Typography>
