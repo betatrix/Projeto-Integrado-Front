@@ -67,6 +67,9 @@ export const containerStyles: SxProps<Theme> = (theme) => ({
     alignItems: 'center',
     height: '100vh',
     [theme.breakpoints.down('md')]: {
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
         backgroundImage: `url(${backgorundImage})`,
     },
 });

@@ -1,90 +1,210 @@
 import { SxProps, Theme } from '@mui/material';
+import backgorundImage from '../../../assets/img/background.png';
 
-export const GlobalStyles: SxProps<Theme> = () => ({
-    minHeight: '90vh',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    backgroundColor: '#caddff',
-});
-
-export const BackButton: SxProps<Theme> = () => ({
-    position: 'absolute',
-    top: 20,
-    left: 20,
-    color: '#3533cd',
-    '&:hover': {
-        backgroundColor: 'rgba(89,87,230,0.1) !important',
+export const globalStyle: SxProps<Theme> = () => ({
+    body: {
+        margin: 0,
+        padding: 0,
+        boxSizing: 'border-box',
+        fontFamily: 'Poppins, sans-serif',
+        display: 'flex',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        height: '100vh',
     },
 });
 
-export const LoginContainer: SxProps<Theme> = () => ({
+export const container: SxProps<Theme> = (theme) => ({
     display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
     justifyContent: 'center',
-    minHeight: '100vh',
-    padding: '20px',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    backgroundColor: '#caddff',
+    alignItems: 'center',
+    height: '100vh',
+    [theme.breakpoints.down('md')]: {
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        backgroundImage: `url(${backgorundImage})`,
+    },
 });
 
-export const FormContainer: SxProps<Theme> = () => ({
+export const headerRegister: SxProps<Theme> = (theme) => ({
+    position: 'absolute',
+    top: '5rem',
+    right: '6rem',
+    [theme.breakpoints.down('lg')]: {
+        top: '4rem',
+        right: '2rem',
+    },
+    [theme.breakpoints.down('sm')]: {
+        top: '4rem',
+        right: '2rem',
+    },
+});
+
+export const backButton: SxProps<Theme> = (theme) => ({
+    color: '#185D8E',
+    marginRight: '20px',
+    '&:hover': {
+        color: '#0B2A40',
+        backgroundColor: '#D9EEFF !important',
+    },
+    [theme.breakpoints.down('lg')]: {
+        marginRight: '2rem',
+    },
+    [theme.breakpoints.down('sm')]: {
+        marginRight: '6rem',
+    },
+});
+
+export const registerContainer: SxProps<Theme> = (theme) => ({
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    width: '100%',
+    maxWidth: '800px',
+    margin: '0 auto',
+    marginTop: '4rem',
+    padding: '0 2rem',
+    borderRadius: '10px',
+    zIndex: 1,
+    [theme.breakpoints.down('lg')]: {
+        marginTop: '15rem',
+        padding: '1.5rem',
+        marginRight: '2rem',
+        marginLeft: '2rem',
+    },
+    [theme.breakpoints.down('sm')]: {
+        marginTop: '15rem',
+        padding: '1rem',
+    },
+});
+
+export const formContainer: SxProps<Theme> = (theme) => ({
+    fontFamily: 'Poppins, sans-serif',
     display: 'grid',
     gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' },
     gap: '20px',
     width: '100%',
-    maxWidth: '700px',
-    background: 'white',
-    padding: '30px',
-    borderRadius: '10px',
-    boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
-});
-
-export const Header: SxProps<Theme> = () => ({
-    fontWeight: 700,
-    marginBottom: '10px',
-});
-
-export const SubText: SxProps<Theme> = () => ({
-    color: '#474d66',
-    textDecoration: 'none',
-    textAlign: 'left',
-});
-
-export const CustomLink: SxProps<Theme> = () => ({
-    textDecoration: 'none',
-    fontWeight: 600,
-    color: '#735FE4',
-    transition: '0.3s',
-    '&:hover': {
-        color: '#452DCB',
+    [theme.breakpoints.down('md')]: {
+        gap: '20px',
+        display: 'flex',
+        flexDirection: 'column',
+        gridTemplateColumns: 'none',
+    },
+    [theme.breakpoints.down('sm')]: {
+        gap: '10px',
+        display: 'flex',
+        flexDirection: 'column',
+        gridTemplateColumns: 'none',
     },
 });
 
-export const CustomField: SxProps<Theme> = () => ({
+export const header: SxProps<Theme> = (theme) => ({
+    fontFamily: 'Poppins, sans-serif',
+    fontWeight: 800,
+    fontSize: '2.4rem',
+    color: '#1b1f27',
+    [theme.breakpoints.down('lg')]: {
+        fontSize: '2rem',
+    },
+    [theme.breakpoints.down('sm')]: {
+        fontSize: '1.7rem',
+    },
+});
+
+export const paragraph: SxProps<Theme> = (theme) => ({
+    fontFamily: 'Poppins, sans-serif',
+    color: '#1b1f27',
+    padding: '10px 0 ',
+    fontSize: '1.1rem',
+    [theme.breakpoints.down('md')]: {
+        fontSize: '1rem',
+    },
+    [theme.breakpoints.down('sm')]: {
+        fontSize: '0.8rem',
+    },
+});
+
+export const subText: SxProps<Theme> = (theme) => ({
+    color: '#474d66',
+    textDecoration: 'none',
+    textAlign: 'right',
+    marginTop: '5px',
+    [theme.breakpoints.down('sm')]: {
+        fontSize: '0.9rem',
+    },
+});
+
+export const customLink: SxProps<Theme> = (theme) => ({
+    fontFamily: 'Poppins, sans-serif',
+    fontWeight: '600',
+    textDecoration: 'none',
+    color: '#185D8E',
+    transition: '0.3s',
+    '&:hover': {
+        color: '#0B2A40',
+    },
+    [theme.breakpoints.down('sm')]: {
+        fontSize: '0.9rem',
+    },
+});
+
+export const customField: SxProps<Theme> = {
     backgroundColor: '#E6E6E6',
     borderRadius: '10px',
+    marginBottom: '6px',
     '&:hover': {
         backgroundColor: '#edeff5',
     },
     '&.Mui-focused': {
         backgroundColor: '#edeff5',
     },
-    '&::before, &:hover::before, &::after': {
+    '&::before': {
+        borderBottom: 'none',
+    },
+    '&:hover::before': {
         borderBottom: 'none !important',
     },
-    '&.Mui-error': {
-        backgroundColor: '#F9DADA',
+    '&::after': {
+        borderBottom: 'none',
     },
-});
+};
 
-export const CustomInputLabel: SxProps<Theme> = () => ({
+export const customAutocomplete: SxProps<Theme> = {
+    backgroundColor: '#E6E6E6',
+    borderRadius: '10px',
+    '& .MuiOutlinedInput-notchedOutline': {
+        border: 'none',
+    },
+    '& .MuiAutocomplete-inputRoot': {
+        padding: '10px',
+        '& fieldset': {
+            border: 'none',
+        },
+    },
+    '& .MuiFilledInput-root': {
+        backgroundColor: 'white',
+        '&:before, &:after': {
+            borderBottom: 'none',
+        },
+    },
+    '& .MuiAutocomplete-input': {
+        padding: '10px',
+        color: '#696f8c',
+    },
+    '& .MuiAutocomplete-root.Mui-focused': {
+        padding: '10px',
+        color: '#696f8c',
+    },
+};
+
+export const customInputLabel: SxProps<Theme> = {
     color: '#696f8c',
+    fontFamily: 'Poppins, sans-serif',
     '&.Mui-focused': {
         color: '#696f8c',
     },
-});
+};
 
 export const MessageError: SxProps<Theme> = () => ({
     color: 'red',
@@ -92,12 +212,12 @@ export const MessageError: SxProps<Theme> = () => ({
     marginTop: '0.25rem',
 });
 
-export const loginButton: SxProps<Theme> = (theme) => ({
-    mr: 2,
-    marginTop: '1rem',
+export const registerButton: SxProps<Theme> = (theme) => ({
+    mr: 0,
+    margin: '1rem 0',
     fontFamily: 'Roboto, monospace',
     fontSize: '1.3rem',
-    padding: '0.4rem 13.5rem',
+    padding: '0.7rem',
     backgroundColor: '#D9EEFF',
     color: '#185D8E',
     fontWeight: 700,
@@ -116,18 +236,32 @@ export const loginButton: SxProps<Theme> = (theme) => ({
         transform: 'scale(1.02)',
     },
     [theme.breakpoints.down('lg')]: {
-        padding: '0.3rem 10rem',
+        padding: '0.5rem',
         fontSize: '1rem',
         minWidth: '200px',
     },
     [theme.breakpoints.down('md')]: {
-        padding: '0.3rem 15rem',
+        margin: '0.5rem',
+        padding: '0.5rem',
         fontSize: '1rem',
         minWidth: '200px',
     },
     [theme.breakpoints.down('sm')]: {
-        padding: '0.3rem 8rem',
+        margin: '0.5rem',
+        padding: '0.8rem',
         fontSize: '1rem',
         minWidth: '200px',
+    },
+});
+
+export const sidePanel: SxProps<Theme> = (theme) => ({
+    width: '50%',
+    height: '100%',
+    backgroundColor: '#0B2A40',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    [theme.breakpoints.down('md')]: {
+        display: 'none',
     },
 });
