@@ -1,6 +1,7 @@
 import { Box, CardMedia, Grid, IconButton, Typography, useMediaQuery } from '@mui/material';
 import React, { useState } from 'react';
 import { useSwipeable } from 'react-swipeable'; // Importar a biblioteca de swipe
+import Voquinho from '../../../assets/img/polvo-voquinho-de-oculos.png';
 import Realista from '../../../assets/img/Realista.png';
 import Investigativo from '../../../assets/img/Investigativo.png';
 import Artistico from '../../../assets/img/Artistico.png';
@@ -16,12 +17,13 @@ import { BoxCardHollandStyles,
     TestInfoTitle,
     IndicatorContainerStyles,
     IndicatorStyles,
-    ActiveIndicatorStyles } from './styles';
+    ActiveIndicatorStyles
+} from './styles';
 import { useTranslation } from 'react-i18next';
 
 const data = [
     {
-        src: Realista,
+        src: Voquinho,
         title: 'jonhHollandTitle',
         content: 'jonhHollandContent',
         content2: 'jonhHollandContent2'
@@ -113,7 +115,13 @@ export const TestInformation: React.FC = () => {
                                 height="auto"
                                 image={data[index].src}
                                 alt={t(data[index].title)}
+                                sx={{
+                                    objectFit: 'contain',
+                                    maxWidth: '40%',
+                                    height: 'auto',
+                                }}
                             />
+
                         )}
                         <IconButton onClick={handleNextClick}>
                             <ArrowForwardIosIcon />

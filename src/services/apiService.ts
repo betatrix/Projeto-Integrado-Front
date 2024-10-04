@@ -58,7 +58,7 @@ export const buscarPerfisRecorrentes = async (estudanteId: number) => {
 // Cadastrar estudante
 export const cadastrarEstudante = async (entidade: string, data: object) => {
     const response = await axios.post(`${API_URL}/${entidade}/cadastro`, data);
-    return response.data;
+    return { data: response.data, status: response.status };
 };
 
 // Enviar email para recuperação de senha

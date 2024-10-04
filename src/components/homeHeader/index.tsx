@@ -146,7 +146,7 @@ const InitialPageHeader = () => {
                                 anchor="right"
                                 open={drawerOpen}
                                 onClose={toggleDrawer(false)}
-                                sx={{ '& .MuiDrawer-paper': { backgroundColor: '#D9EEFF', width: '250px', padding: '2rem 1rem'} }}
+                                sx={{ '& .MuiDrawer-paper': { backgroundColor: '#D9EEFF', width: '250px', padding: '2rem 0.5rem'} }}
                             >
                                 {menuItems}
                             </Drawer>

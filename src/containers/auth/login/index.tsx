@@ -59,7 +59,6 @@ const Login: React.FC = () => {
         try {
             const isAdmin = values.login.endsWith('@vocco.com');
             const response = isAdmin ? await loginAdministrador(values) : await loginEstudante(values);
-
             if (response.status === 200) {
                 const role = isAdmin ? 'ADMIN' : 'ESTUDANTE';
 
