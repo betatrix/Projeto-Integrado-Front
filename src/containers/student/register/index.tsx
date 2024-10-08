@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import FormControl from '@mui/material/FormControl';
 import CircularProgress from '@mui/material/CircularProgress';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -7,11 +7,32 @@ import TextField from '@mui/material/TextField';
 import { StudentRegisterForm } from '../../../types/studentTypes';
 import { cadastroEstudante } from '../../../services/studentService';
 import { useNavigate } from 'react-router-dom';
-import * as Yup from 'yup';
+import * as yup from 'yup';
+import 'yup-phone-lite';
 import { Formik, Form } from 'formik';
-import { Box, Button, Typography, Link } from '@mui/material';
+import { Alert, Box, Button, FilledInput, IconButton, InputAdornment, InputLabel, Snackbar, Typography } from '@mui/material';
+import { Link as RouterLink } from 'react-router-dom';
 import { ErrorMessage } from 'formik';
-import vocacionalTestImg from '../../../assets/img/vocacionaTest.png';
+import {
+    backButton,
+    container,
+    customAutocomplete,
+    customField,
+    customInputLabel,
+    customLink,
+    formContainer,
+    globalStyle,
+    header,
+    headerRegister,
+    paragraph,
+    registerButton,
+    registerContainer,
+    sidePanel,
+    subText
+} from './styles';
+import { useTranslation } from 'react-i18next';
+import LanguageMenu from '../../../components/translationButton';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 const nivelEducacao = [
     { label: 'Ensino Fundamental', value: 'ENSINO_FUNDAMENTAL' },
@@ -29,18 +50,18 @@ const initialValues: StudentRegisterForm = {
     nivelEscolar: '',
 };
 
-const validationSchema = Yup.object().shape({
-    nome: Yup.string().required('Nome é obrigatório'),
-    email: Yup.string().email('E-mail inválido').required('E-mail é obrigatório'),
-    senha: Yup.string().required('Senha é obrigatória')
+const validationSchema = yup.object().shape({
+    nome: yup.string().required('Nome é obrigatório'),
+    email: yup.string().email('E-mail inválido').required('E-mail é obrigatório'),
+    senha: yup.string().required('Senha é obrigatória')
         .min(5, 'A senha deve ter no mínimo 5 caracteres!'),
-    confirmarSenha: Yup.string().required('Confirmação de senha é obrigatória')
-        .oneOf([Yup.ref('senha'), ''], 'As senhas precisam ser iguais'),
-    dataNascimento: Yup.date().required('Data de nascimento é obrigatória')
+    confirmarSenha: yup.string().required('Confirmação de senha é obrigatória')
+        .oneOf([yup.ref('senha'), ''], 'As senhas precisam ser iguais'),
+    dataNascimento: yup.date().required('Data de nascimento é obrigatória')
         .max(new Date(new Date().setFullYear(new Date().getFullYear() - 14)), 'Você deve ter pelo menos 14 anos.'),
-    celular: Yup.string().required('Celular é obrigatório')
-        .max(15, 'O celular deve ter no máximo 15 caracteres!'),
-    nivelEscolar: Yup.string().required('Nível de escolaridade é obrigatório'),
+    celular: yup.string().phone('BR', 'Insira um número de celular válido').required('Celular é obrigatório')
+        .min(15, 'Insira um número de celular válido'),
+    nivelEscolar: yup.string().required('Nível de escolaridade é obrigatório'),
 });
 
 const formatarCelular = (value: string) => {
@@ -56,19 +77,44 @@ const formatarCelular = (value: string) => {
 
 export const StudentRegister = () => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
+
+    const [showErrorMessageMail, setShowErrorMessageMail] = useState(false);
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = React.useState(false);
 
+    const handleCloseErrorMessageMail = () => {
+        setShowErrorMessageMail(false);
+    };
+
+    const handleCloseSuccess = () => {
+        setShowSuccessMessage(false);
+    };
+
     const handleNavigateForward = () => navigate('/login');
+
+    const handleClickShowPassword = () => setShowPassword(prev => !prev);
+    const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+    };
 
     const handleSubmit = async (values: StudentRegisterForm, { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }) => {
         setLoading(true);
         setSubmitting(true);
         try {
             await new Promise((resolve) => setTimeout(resolve, 2000));
-            await cadastroEstudante(values);
-            handleNavigateForward();
+            const response = await cadastroEstudante(values);
+
+            if (response.status === 200) {
+                setShowSuccessMessage(true);
+                await new Promise((resolve) => setTimeout(resolve, 3000));
+                handleNavigateForward();
+            } else if (response.data === 'Já existe uma conta cadastrada com esse email!') {
+                setShowErrorMessageMail(true);
+            }
         } catch (error) {
-            console.error('Erro ao cadastrar estudante:', error);
+            setShowErrorMessageMail(true);
         } finally {
             setLoading(false);
             setSubmitting(false);
@@ -77,100 +123,88 @@ export const StudentRegister = () => {
 
     return (
         <>
-            <Box sx={{
-                backgroundImage: `url(${vocacionalTestImg})`,
-                minHeight: '90vh',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundColor: '#caddff',
-            }}>
-                <Button
-                    startIcon={<ArrowBackIcon />}
-                    sx={{
-                        position: 'absolute',
-                        top: '20px',
-                        left: '20px',
-                        color: '#3533cd',
-                        '&:hover': {
-                            backgroundColor: 'rgba(89,87,230,0.1) !important',
-                        }
-                    }}
-                >
-                    <Link href="/pagina-inicial" sx={{ textDecoration: 'none', color: 'inherit' }}>Página inicial</Link>
-                </Button>
-                <Box sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    minHeight: '100vh',
-                    padding: '20px',
-                    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-                }}>
-                    <Typography variant="h4" sx={{ fontWeight: 700, marginBottom: '10px' }}>
-                        É novo? Cadastre-se aqui.
-                    </Typography>
+            <Box sx={globalStyle} />
+            <Box sx={container}>
+                <Box sx={sidePanel}>
+                    {/* <img src="" alt="Imagem ilustrativa" style={{ width: '100%' }} /> */}
+                </Box>
+                <Box sx={headerRegister}>
+                    <Button sx={backButton} startIcon={<ArrowBackIcon />}>
+                        <Typography component="a" href="/login" sx={customLink}>
+                            {t('backButton')}
+                        </Typography>
+                    </Button>
+                    <LanguageMenu />
+                </Box>
+                <Box sx={registerContainer}>
+                    <Typography variant="h4" sx={header}>É novo? Cadastre-se aqui!</Typography>
+                    <Typography sx={paragraph}>Ao preencher o formulário abaixo você concorda com os nossos Termos de uso e nossa Política de privacidade.</Typography>
 
                     <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
-                        {({ isSubmitting, setFieldValue, errors, touched }) => (
-                            <Box
-                                component={Form}
-                                sx={{
-                                    display: 'grid',
-                                    gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' },
-                                    gap: '20px',
-                                    width: '100%',
-                                    maxWidth: '700px',
-                                    background: 'white',
-                                    padding: '30px',
-                                    borderRadius: '10px',
-                                    boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
-                                }}
-                            >
+                        {({ handleChange, handleBlur, handleSubmit, isSubmitting, setFieldValue, errors, touched, values }) => (
+                            <Box component={Form} sx={formContainer} onSubmit={handleSubmit}>
                                 <FormControl variant="filled">
-                                    <TextField
-                                        label="Nome"
-                                        name="nome"
+                                    <InputLabel htmlFor="nome" sx={customInputLabel}>Nome</InputLabel>
+                                    <FilledInput
+                                        id="nome"
                                         type="text"
-                                        variant="filled"
+                                        name="nome"
+                                        value={values.nome}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        required
+                                        sx={customField}
                                         error={touched.nome && Boolean(errors.nome)}
                                     />
                                     <ErrorMessage name="nome" component="div" />
                                 </FormControl>
 
                                 <FormControl variant="filled">
-                                    <TextField
-                                        label="E-mail"
-                                        name="email"
+                                    <InputLabel htmlFor="email" sx={customInputLabel}>E-mail</InputLabel>
+                                    <FilledInput
+                                        id="email"
                                         type="email"
-                                        variant="filled"
+                                        name="email"
+                                        value={values.email}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        required
+                                        sx={customField}
                                         error={touched.email && Boolean(errors.email)}
                                     />
                                     <ErrorMessage name="email" component="div" />
                                 </FormControl>
 
                                 <FormControl variant="filled">
-                                    <TextField
-                                        label="Data de nascimento"
-                                        name="dataNascimento"
+                                    <InputLabel shrink sx={customInputLabel}>Data de Nascimento</InputLabel>
+                                    <FilledInput
+                                        id="dataNascimento"
                                         type="date"
-                                        InputLabelProps={{ shrink: true }}
-                                        variant="filled"
+                                        name="dataNascimento"
+                                        value={values.dataNascimento}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        required
+                                        sx={customField}
                                         error={touched.dataNascimento && Boolean(errors.dataNascimento)}
                                     />
                                     <ErrorMessage name="dataNascimento" component="div" />
                                 </FormControl>
 
                                 <FormControl variant="filled">
-                                    <TextField
-                                        label="Celular"
-                                        name="celular"
+                                    <InputLabel htmlFor="celular" sx={customInputLabel}>Celular</InputLabel>
+                                    <FilledInput
+                                        id="celular"
                                         type="tel"
+                                        name="celular"
+                                        value={values.celular}
                                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                             const formattedValue = formatarCelular(e.target.value);
                                             setFieldValue('celular', formattedValue);
                                         }}
-                                        variant="filled"
+                                        onBlur={handleBlur}
+                                        required
+                                        sx={customField}
                                         error={touched.celular && Boolean(errors.celular)}
                                     />
                                     <ErrorMessage name="celular" component="div" />
@@ -184,58 +218,95 @@ export const StudentRegister = () => {
                                         getOptionLabel={(option) => option.label}
                                         onChange={(_, value) => setFieldValue('nivelEscolar', value ? value.value : '')}
                                         renderInput={(params) => (
-                                            <TextField {...params} label="Nível de escolaridade" variant="filled" />
+                                            <TextField {...params} label="Nível de escolaridade" sx={customAutocomplete} />
                                         )}
+                                        sx={customField}
                                     />
                                     <ErrorMessage name="nivelEscolar" component="div" />
                                 </FormControl>
 
                                 <FormControl variant="filled">
-                                    <TextField
-                                        label="Senha"
+                                    <InputLabel htmlFor="senha" sx={customInputLabel}>Senha</InputLabel>
+                                    <FilledInput
+                                        id="senha"
+                                        type={showPassword ? 'text' : 'password'}
                                         name="senha"
-                                        type="password"
-                                        variant="filled"
+                                        value={values.senha}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
                                         error={touched.senha && Boolean(errors.senha)}
+                                        required
+                                        endAdornment={
+                                            <InputAdornment position="end">
+                                                <IconButton
+                                                    aria-label="toggle password visibility"
+                                                    onClick={handleClickShowPassword}
+                                                    onMouseDown={handleMouseDownPassword}
+                                                    edge="end"
+                                                    sx={{color: '#185D8E'}}
+                                                >
+                                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                                </IconButton>
+                                            </InputAdornment>
+                                        }
+                                        sx={customField}
                                     />
                                     <ErrorMessage name="senha" component="div" />
                                 </FormControl>
 
                                 <FormControl variant="filled">
-                                    <TextField
-                                        label="Confirme sua senha"
-                                        name="confirmarSenha"
+                                    <InputLabel htmlFor="confirmarSenha" sx={customInputLabel}>Confirme sua senha</InputLabel>
+                                    <FilledInput
+                                        id="confirmarSenha"
                                         type="password"
-                                        variant="filled"
+                                        name="confirmarSenha"
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        required
+                                        sx={customField}
                                     />
                                     <ErrorMessage name="confirmarSenha" component="div" />
                                 </FormControl>
 
-                                <Button
-                                    variant="contained"
-                                    size="large"
-                                    type="submit"
-                                    disabled={isSubmitting}
-                                    sx={{
-                                        gridColumn: 'span 2',
-                                        backgroundColor: '#3533cd',
-                                        color: '#fff',
-                                        '&:hover': {
-                                            backgroundColor: '#101840',
-                                        },
-                                        padding: '10px 0',
-                                        borderRadius: '10px',
-                                    }}
-                                >
-                                    {loading ? <CircularProgress size={24} color="inherit" /> : 'Enviar'}
-                                </Button>
-
-                                <Typography sx={{ gridColumn: 'span 2', textAlign: 'center', color: '#474d66' }}>
-                                    Já possui uma conta? Faça o <Link href="/login">login!</Link>
-                                </Typography>
+                                <FormControl sx={{ gridColumn: 'span 2' }}>
+                                    <Box component="button" sx={registerButton} type="submit" disabled={isSubmitting}>
+                                        {loading ? <CircularProgress size={24} color="inherit" /> : t('forgotButton')}
+                                    </Box>
+                                </FormControl>
                             </Box>
                         )}
                     </Formik>
+                    <Typography variant="body1" sx={subText}>
+                        {t('loginRegister1')}<Typography sx={customLink} component={RouterLink} to="/login"> {t('loginRegister2')}</Typography>
+                    </Typography>
+
+                    <Snackbar
+                        anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                        }}
+                        open={showSuccessMessage}
+                        autoHideDuration={6000}
+                        onClose={handleCloseSuccess}
+                    >
+                        <Alert onClose={handleCloseSuccess} severity="success" sx={{ width: '100%', fontFamily: 'Poppins, sans-serif', fontSize: '1.1rem' }}>
+                            Conta criada com sucesso!
+                        </Alert>
+                    </Snackbar>
+
+                    <Snackbar
+                        anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                        }}
+                        open={showErrorMessageMail}
+                        autoHideDuration={6000}
+                        onClose={handleCloseErrorMessageMail}
+                    >
+                        <Alert onClose={handleCloseErrorMessageMail} severity="error" sx={{ width: '100%', fontFamily: 'Poppins, sans-serif', fontSize: '1.1rem' }}>
+                            Já existe uma conta cadastrada com esse email!
+                        </Alert>
+                    </Snackbar>
                 </Box>
             </Box>
         </>

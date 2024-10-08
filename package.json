@@ -34,7 +34,8 @@
     "recharts": "^2.12.7",
     "slick-carousel": "^1.8.1",
     "styled-components": "^6.1.8",
-    "yup": "^1.4.0"
+    "yup": "^1.4.0",
+    "yup-phone-lite": "^2.0.1"
   },
   "devDependencies": {
     "@types/crypto-js": "^4.2.2",
