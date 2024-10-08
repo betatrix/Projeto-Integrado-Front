@@ -35,8 +35,8 @@ import CardTravelIcon from '@mui/icons-material/CardTravel';
 import PsychologyIcon from '@mui/icons-material/Psychology';
 import CustomDrawer from '../../../components/sidemenu/CustomDrawer';
 import Footer from '../../../components/homeFooter';
-import vocco from '../../../assets/img/vocco.png';
-import perfil from '../../../assets/img/perfil.png';
+import polvo_voquinho from '../../../assets/img/polvo_voquinho.png';
+import perfilArtistico from '../../../assets/img/perfilArtistico.png';
 
 const PROFILE_DETAILS: { [key: string]: { color: string; icon: React.ReactNode } } = {
     'Artistico': { color: '#FF69B4', icon: <ColorLensIcon sx={IconStyles} /> },
@@ -167,8 +167,8 @@ const StudentDashboard: React.FC = () => {
                     <StudentHeader />
                     <Grid display="flex" justifyContent="center">
                         <Paper sx={paperTestStyles}>
-                            <Box sx={{ display: 'flex'}}>
-                                <Box>
+                            <Box sx={{ display: 'flex' }}>
+                                <Box sx={{ flexGrow: 1 }}>
                                     <Typography sx={cardTitleStyle} component="div">
                                         {t('dashboardTitle')}
                                     </Typography>
@@ -183,7 +183,7 @@ const StudentDashboard: React.FC = () => {
                                 </Box>
                                 <Box sx={{ display: 'flex' }} ml={1} className="your-image-container">
                                     <img
-                                        src={vocco}
+                                        src={polvo_voquinho}
                                         alt="Logo"
                                         style={{ width: '260px' }}
                                     />
@@ -245,10 +245,10 @@ const StudentDashboard: React.FC = () => {
                                             <Paper sx={paperImgStyles}>
                                                 <Box
                                                     component="img"
-                                                    src={perfil}
+                                                    src={perfilArtistico}
                                                     alt="Perfil"
                                                     sx={{
-                                                        width: '156.25px',
+                                                        width: '139.25px',
                                                         [theme.breakpoints.down('sm')]: {
                                                             width: '80px',
                                                         },
@@ -399,7 +399,9 @@ const StudentDashboard: React.FC = () => {
                         </Grid>
                     </Grid>
                     <Grid display="flex" justifyContent="center">
-                        <Paper sx={paperBannerStyles}></Paper>
+                        <a href="https://www.curso-objetivo.br/vestibular/" target="_blank" rel="Objetivo Vestibulares" style={{ textDecoration: 'none' }}>
+                            <Paper sx={paperBannerStyles}></Paper>
+                        </a>
                     </Grid>
                     <Footer />
                 </Box>

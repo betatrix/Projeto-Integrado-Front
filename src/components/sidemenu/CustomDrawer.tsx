@@ -6,17 +6,19 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded';
-import AccountBoxRoundedIcon from '@mui/icons-material/AccountBoxRounded';
 import LocalLibraryRoundedIcon from '@mui/icons-material/LocalLibraryRounded';
-import SchoolRoundedIcon from '@mui/icons-material/SchoolRounded';
-import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
-import vocco from '../../assets/img/vocco.png';
+import polvo_voquinho from '../../assets/img/polvo_voquinho.png';
 import { Typography, Box } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import {
+    DashboardOutlined,
+    AssignmentOutlined,
+    AccountBoxOutlined,
+    SchoolOutlined,
+    LogoutOutlined,
+} from '@mui/icons-material';
 
 const drawerWidth = 245;
 
@@ -69,12 +71,12 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 const iconMap: { [key: string]: { icon: React.ReactNode, link: string } } = {
-    'dashboard': { icon: <DashboardIcon sx={{fontSize: '1.8rem'}}/>, link: '/estudante' },
-    'test': { icon: <AssignmentRoundedIcon sx={{fontSize: '1.8rem'}} />, link: '/teste-vocacional' },
-    'myAccount': { icon: <AccountBoxRoundedIcon sx={{fontSize: '1.8rem'}}/>, link: '/minha-conta' },
+    'dashboard': { icon: <DashboardOutlined sx={{fontSize: '1.8rem'}}/>, link: '/estudante' },
+    'test': { icon: <AssignmentOutlined sx={{fontSize: '1.8rem'}} />, link: '/teste-vocacional' },
+    'myAccount': { icon: <AccountBoxOutlined sx={{fontSize: '1.8rem'}}/>, link: '/minha-conta' },
     'courses': { icon: <LocalLibraryRoundedIcon sx={{fontSize: '1.8rem'}} />, link: '/cursos' },
-    'university': { icon: <SchoolRoundedIcon sx={{fontSize: '1.8rem'}}/>, link: '/instituicao' },
-    'logout': { icon: <LogoutRoundedIcon sx={{fontSize: '1.8rem'}}/>, link: '/logout' },
+    'institution': { icon: <SchoolOutlined sx={{fontSize: '1.8rem'}}/>, link: '/instituicao' },
+    'logout': { icon: <LogoutOutlined sx={{fontSize: '1.8rem'}}/>, link: '/logout' },
 };
 
 interface CustomDrawerProps {
@@ -117,7 +119,7 @@ const CustomDrawer: React.FC<CustomDrawerProps> = ({ open, handleDrawerOpen, han
                                     }}
                                 >
                                     <img
-                                        src={vocco}
+                                        src={polvo_voquinho}
                                         alt="Logo"
                                         style={{ width: '45px' }}
                                     />
@@ -153,7 +155,7 @@ const CustomDrawer: React.FC<CustomDrawerProps> = ({ open, handleDrawerOpen, han
                                         ]}
                                     >
                                         <ListItemIcon
-                                            sx={[{ minWidth: 0, justifyContent: 'center', color: '#0B2A40' }, open ? { mr: 1.5 } : { mr: 'auto' }]}
+                                            sx={[{ minWidth: 0, justifyContent: 'center', color: '#185D8E' }, open ? { mr: 1.5 } : { mr: 'auto' }]}
                                         >
                                             {iconMap[key]?.icon}
                                         </ListItemIcon>
@@ -186,7 +188,7 @@ const CustomDrawer: React.FC<CustomDrawerProps> = ({ open, handleDrawerOpen, han
                                 ]}
                             >
                                 <ListItemIcon
-                                    sx={[{ minWidth: 0, justifyContent: 'center', color: '#0B2A40' }, open ? { mr: 1.5 } : { mr: 'auto' }]}
+                                    sx={[{ minWidth: 0, justifyContent: 'center', color: '#185D8E' }, open ? { mr: 1.5 } : { mr: 'auto' }]}
                                 >
                                     {iconMap['logout']?.icon}
                                 </ListItemIcon>
@@ -197,7 +199,6 @@ const CustomDrawer: React.FC<CustomDrawerProps> = ({ open, handleDrawerOpen, han
                                                 fontFamily: 'Roboto, monospace',
                                                 fontSize: '1.2rem',
                                                 color: '#185D8E',
-                                                fontWeight: 'bold'
                                             }, open ? { opacity: 1 } : { opacity: 0 }]}
                                         >
                                             {t('logout')}
