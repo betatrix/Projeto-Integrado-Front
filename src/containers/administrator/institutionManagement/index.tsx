@@ -12,16 +12,16 @@ import {
     IconButton,
     Grid,
     TableRow,
+    InputAdornment,
     TextField
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import BackButton from '../../../components/backPageButton';
+import Footer from '../../../components/homeFooter';
 import { Link } from 'react-router-dom';
 import AdminHeader from '../../../components/adminHeader';
-import Footer from '../../../components/adminFooter';
 import { Endereco } from '../../../types/institutionTypes';
-
+import SearchIcon from '@mui/icons-material/Search';
 interface Institution {
     id: number;
     nome: string;
@@ -127,41 +127,38 @@ const InstitutionManagement: React.FC = () => {
         <>
             <AdminHeader />
 
-            <Box sx={{ marginTop: '20px', marginBottom: '60px' }}>
+            <Box sx={{ marginTop: '20px', minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: '#F3F3F3' }}>
 
-                <Link to='/admin'>
-                    <BackButton></BackButton>
-                </Link>
-
-                <Typography variant="h5" sx={{ marginBottom: 2, textAlign: 'center' }}>
-                    Gerenciamento de Instituições
-                </Typography>
-
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 5, paddingLeft: 5, paddingRight: 5 }}>
-
+                <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', marginTop: 20, gap: 2, paddingLeft: 65 }}>
                     <TextField
-                        label="Pesquisar instituição"
+                        label="Pesquisar Instituição"
                         variant="outlined"
-                        sx={{ width: '70%' }}
+                        sx={{ width: '55%', fontFamily: 'Roboto, monospace', }}
                         onChange={(e) => setSearchValue(e.target.value)}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <SearchIcon />
+                                </InputAdornment>
+                            ),
+                        }}
                     />
-
                     <Link to="/cadastro">
-                        <Button variant="contained" color="primary">Cadastrar instituição</Button>
+                        <Button sx={{
+                            height: '50px',
+                            fontSize: '17px',
+                            fontFamily: 'Roboto, monospace',
+                            color: 'white',
+                            backgroundColor: '#185D8E',
+                            fontWeight: 'bold',
+                            '&:hover': {
+                                backgroundColor: '#104A6F',
+                            },
+                        }}>Cadastrar</Button>
                     </Link>
-
-                    <Button
-                        variant="contained"
-                        color="secondary"
-                        disabled={isDeleteButtonDisabled}
-                        onClick={handleDeleteMultipleModalOpen}
-                    >
-                        Excluir instituições
-                    </Button>
-
                 </Box>
 
-                <Box sx={{ paddingTop: 10, paddingLeft: 45, paddingRight: 45 }}>
+                <Box sx={{ paddingTop: 10, paddingLeft: 45, paddingRight: 45, marginBottom: 10 }}>
 
                     <Table>
 
@@ -169,12 +166,25 @@ const InstitutionManagement: React.FC = () => {
 
                             <TableRow>
 
-                                <TableCell sx={{ borderRight: '1px solid #ddd', textAlign: 'center' }}>
-                                    <Checkbox/> Excluir
+                                <TableCell align="center" sx={{ borderRight: '1px solid #ddd' }}>
+                                    <Button
+                                        variant="contained"
+                                        color="secondary"
+                                        sx={{
+                                            color: 'white',
+                                            backgroundColor: '#185D8E',
+                                            fontWeight: 'bold',
+                                            fontFamily: 'Roboto, monospace',
+                                        }}
+                                        disabled={isDeleteButtonDisabled}
+                                        onClick={handleDeleteMultipleModalOpen}
+                                    >
+                                        Excluir
+                                    </Button>
                                 </TableCell>
-                                <TableCell sx={{ borderRight: '1px solid #ddd', textAlign: 'center' }}>Identificador</TableCell>
-                                <TableCell sx={{ borderRight: '1px solid #ddd' }}>Nome</TableCell>
-                                <TableCell sx={{ textAlign: 'center' }}>Estado</TableCell>
+                                <TableCell sx={{ borderRight: '1px solid #ddd', textAlign: 'center', fontWeight: 'bold', color: '#757575' }}>ID</TableCell>
+                                <TableCell sx={{ borderRight: '1px solid #ddd', fontWeight: 'bold', color: '#757575' }}>NOME</TableCell>
+                                <TableCell sx={{ textAlign: 'center', fontWeight: 'bold', color: '#757575' }}>STATUS</TableCell>
 
                             </TableRow>
 
@@ -189,24 +199,42 @@ const InstitutionManagement: React.FC = () => {
 
                                     <TableRow key={institution.id} onClick={() => handleDetailModalOpen(institution)}>
 
-                                        <TableCell align="left" sx={{ borderRight: '1px solid #ddd' }}>
+                                        <TableCell align="center" sx={{ borderRight: '1px solid #ddd' }}>
                                             <Checkbox
                                                 onClick={(e) => e.stopPropagation()}
                                                 checked={selectedInstitutions.includes(institution.id)}
                                                 onChange={() => handleCheckboxChange(institution.id)}
+                                                sx={{ '& .MuiSvgIcon-root': { fontSize: 18 } }}
                                             />
                                             <IconButton>
-                                                <EditIcon onClick={(e) => { e.stopPropagation(); handleEditModalOpen(institution); }} />
+                                                <EditIcon onClick={(e) => { e.stopPropagation(); handleEditModalOpen(institution); }} sx={{ fontSize: 18 }} />
                                             </IconButton>
 
-                                            <IconButton onClick={(e) => { e.stopPropagation(); handleDeleteModalOpen(institution); }}>
-                                                <DeleteIcon />
+                                            <IconButton onClick={(e) => { e.stopPropagation(); handleDeleteModalOpen(institution); }} >
+                                                <DeleteIcon sx={{ fontSize: 18 }} />
                                             </IconButton>
 
                                         </TableCell>
 
                                         <TableCell sx={{ borderRight: '1px solid #ddd', textAlign: 'center' }}>{institution.id}</TableCell>
-                                        <TableCell sx={{ borderRight: '1px solid #ddd' }}>{institution.nome}</TableCell>
+                                        <TableCell sx={{ borderRight: '1px solid #ddd' }}>
+                                            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                <Typography sx={{
+                                                    fontSize: '15px', color: '#757575',
+                                                }}>{institution.nome}</Typography>
+                                                <Button
+                                                    variant="text"
+                                                    size="small"
+                                                    onClick={(e) => { e.stopPropagation(); handleDetailModalOpen(institution); }}
+                                                    sx={{
+                                                        fontSize: '20px', color: '#185D8E',
+                                                        fontWeight: 'bold'
+                                                    }}
+                                                >
+                                                    +
+                                                </Button>
+                                            </Box>
+                                        </TableCell>
                                         <TableCell sx={{ textAlign: 'center' }}>{institution.ativo ? 'Ativo' : 'Inativo'}</TableCell>
 
                                     </TableRow>
@@ -218,8 +246,8 @@ const InstitutionManagement: React.FC = () => {
                     </Table>
 
                 </Box>
-
             </Box>
+            <Footer/>
 
             {/*details modal*/}
             <Modal
@@ -477,8 +505,6 @@ const InstitutionManagement: React.FC = () => {
                     <Button onClick={handleDeleteMultipleModalClose}>Não</Button>
                 </Box>
             </Modal>
-
-            <Footer />
         </>
 
     );

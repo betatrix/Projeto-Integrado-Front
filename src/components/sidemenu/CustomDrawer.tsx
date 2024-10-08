@@ -20,7 +20,7 @@ import {
     LogoutOutlined,
 } from '@mui/icons-material';
 
-const drawerWidth = 245;
+const drawerWidth = 265;
 
 const openedMixin = (theme: Theme): CSSObject => ({
     width: drawerWidth,
@@ -165,7 +165,7 @@ const CustomDrawer: React.FC<CustomDrawerProps> = ({ open, handleDrawerOpen, han
                                                 <Typography
                                                     sx={[{
                                                         fontFamily: 'Roboto, monospace',
-                                                        color: '#185D8E', fontSize: '1.2rem'
+                                                        color: '#185D8E', fontSize: '1.1rem'
                                                     }, open ? { opacity: 1 } : { opacity: 0 }]}
                                                 >
                                                     {t(key)}
@@ -197,7 +197,7 @@ const CustomDrawer: React.FC<CustomDrawerProps> = ({ open, handleDrawerOpen, han
                                         <Typography
                                             sx={[{
                                                 fontFamily: 'Roboto, monospace',
-                                                fontSize: '1.2rem',
+                                                fontSize: '1.1rem',
                                                 color: '#185D8E',
                                             }, open ? { opacity: 1 } : { opacity: 0 }]}
                                         >

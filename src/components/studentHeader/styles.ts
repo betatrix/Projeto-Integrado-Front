@@ -71,7 +71,7 @@ export const linkButton: SxProps<Theme> = (_theme) => ({
 
 export const linkButtonMobile: SxProps<Theme> = (_theme) => ({
     fontFamily: 'Roboto, monospace',
-    fontSize: '15px',
+    fontSize: '14px',
     color: '#185D8E',
     fontWeight: 500,
     textDecoration: 'none',

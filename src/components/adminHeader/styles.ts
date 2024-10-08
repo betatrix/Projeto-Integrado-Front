@@ -1,4 +1,6 @@
-import { Typography, Menu } from '@mui/material';
+
+import { SxProps, Theme } from '@mui/material';
+import { Typography, Menu} from '@mui/material';
 import styled from 'styled-components';
 
 export const HeaderStyle = styled.div`
@@ -22,3 +24,14 @@ export const WelcomeText = styled(Typography)`
     margin-right: 2;
     color: 'white';
 `;
+export const ButtonMenu: SxProps<Theme> = (theme) => ({
+    fontFamily: 'Roboto, monospace',
+    fontSize: '15px',
+    color: '#185D8E',
+    fontWeight: 700,
+    textDecoration: 'none',
+    marginRight: '10px',
+    cursor: 'pointer',
+    [theme.breakpoints.down('md')]: {
+    },
+});

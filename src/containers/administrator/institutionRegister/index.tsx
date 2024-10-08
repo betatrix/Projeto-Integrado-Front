@@ -1,8 +1,7 @@
-
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
-import { TextField } from 'formik-mui';
-import { Button, Box, Typography, Grid, Paper, Stepper, StepLabel } from '@mui/material';
+import { TextField, Select } from 'formik-mui';
+import { Button, Box, Typography, Grid, Paper, MenuItem, Stepper, StepLabel } from '@mui/material';
 import Step from '@mui/material/Step';
 import axios from 'axios';
 import * as Yup from 'yup';
@@ -10,7 +9,7 @@ import { useInstitution } from '../../../context/institutionContext';
 import { useNavigate } from 'react-router-dom';
 import { cadastrarInstituicao } from '../../../services/institutionService';
 import AdminHeader from '../../../components/adminHeader';
-import Footer from '../../../components/adminFooter';
+import Footer from '../../../components/homeFooter';
 
 interface FormValues {
     nome: string;
@@ -18,6 +17,7 @@ interface FormValues {
     formaIngresso: string;
     notaMec: number | null;
     sigla: string;
+    tipo: string; // Adicionando o campo tipo
     endereco: {
         logradouro: string;
         numero: string;
@@ -44,6 +44,7 @@ export const CadastroInstituicao: React.FC = () => {
         formaIngresso: '',
         notaMec: null,
         sigla: '',
+        tipo: '', // Campo adicionado
         endereco: {
             logradouro: '',
             numero: '',
@@ -70,6 +71,7 @@ export const CadastroInstituicao: React.FC = () => {
         sigla: Yup.string()
             .matches(/^[A-Z]+$/, 'A sigla deve estar em letras maiúsculas')
             .required('A sigla é obrigatória'),
+        tipo: Yup.string().required('O tipo de instituição é obrigatório'), // Validação do tipo
         endereco: Yup.object().shape({
             cep: Yup.string()
                 .max(8, 'O CEP deve ter no máximo 8 caracteres')
@@ -100,6 +102,7 @@ export const CadastroInstituicao: React.FC = () => {
             }
         }
     };
+
     const handleSubmit = async (values: FormValues, { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }) => {
         try {
             const response = await cadastrarInstituicao(values);
@@ -111,25 +114,23 @@ export const CadastroInstituicao: React.FC = () => {
             console.log(values);
             console.error('Erro ao cadastrar instituição:', error);
         }
-        console.log(values);
         setSubmitting(false);
-        console.log(values);
     };
+
     return (
         <>
             <AdminHeader />
-            <Box>
-                <Box sx={{ marginTop: '20px' }}>
-                    <Box sx={{ width: '100%' }}>
-                        <Stepper activeStep={0} alternativeLabel>
-                            {steps.map((label) => (
-                                <Step key={label}>
-                                    <StepLabel>{label}</StepLabel>
-                                </Step>
-                            ))}
-                        </Stepper>
-                    </Box>
-                    <Box sx={{ marginTop: '20px', marginBottom: '40px' }}>
+            <Box sx={{ backgroundColor: '#F3F3F3' }}>
+                <Box sx={{ height: 50 }}></Box>
+                <Box sx={{ backgroundColor: '#F3F3F3', marginTop: 10 }}>
+                    <Stepper activeStep={0} alternativeLabel>
+                        {steps.map((label) => (
+                            <Step key={label}>
+                                <StepLabel>{label}</StepLabel>
+                            </Step>
+                        ))}
+                    </Stepper>
+                    <Box sx={{ marginTop: 5 }}>
                         <Formik
                             initialValues={initialValues}
                             validationSchema={validationSchema}
@@ -147,7 +148,7 @@ export const CadastroInstituicao: React.FC = () => {
                                 >
                                     <Form>
                                         <Box sx={{ '& .MuiTextField-root': { m: 1 } }}>
-                                            <Paper sx={{ marginTop: '30px', marginBottom: '30px' }}>
+                                            <Paper sx={{ marginTop: '30px', marginBottom: '30px', backgroundColor: 'white', paddingBottom: 3 }}>
                                                 <Grid
                                                     container
                                                     spacing={2}
@@ -158,7 +159,12 @@ export const CadastroInstituicao: React.FC = () => {
                                                         paddingBottom: '30px',
                                                     }}
                                                 >
-                                                    <Typography variant="h6" sx={{ textAlign: 'left' }}>
+                                                    <Typography variant="h6" sx={{
+                                                        fontSize: '25px', textAlign: 'left',
+                                                        fontFamily: 'Roboto, monospace',
+                                                        color: '#757575',
+                                                        fontWeight: 'bold',
+                                                    }}>
                                                         Dados Gerais
                                                     </Typography>
                                                     <Grid item xs={12}>
@@ -192,6 +198,7 @@ export const CadastroInstituicao: React.FC = () => {
                                                             size="small"
                                                             fullWidth
                                                             required
+                                                            sx={{ marginBottom: 80 }}
                                                         />
                                                     </Grid>
                                                     <Grid item xs={6}>
@@ -218,11 +225,34 @@ export const CadastroInstituicao: React.FC = () => {
                                                             required
                                                         />
                                                     </Grid>
+                                                    {/* Novo Campo - Tipo de Instituição */}
+                                                    <Grid item xs={12}>
+                                                        <Field
+                                                            component={Select}
+                                                            name="tipo"
+                                                            fullWidth
+                                                            variant="standard"
+                                                            required
+                                                            size="large"
+                                                            displayEmpty
+                                                            inputProps={{ 'aria-label': 'Tipo de Instituição' }}
+                                                            sx={{ color: 'grey', marginLeft: '3px'}}
+                                                        >
+                                                            <MenuItem value="" disabled>
+                                                                Selecione o Tipo de Instituição*
+                                                            </MenuItem>
+                                                            <MenuItem value="SUPERIOR"> Ensino Superior</MenuItem>
+                                                            <MenuItem value="TECNICO"> Ensino Técnico </MenuItem>
+                                                            <MenuItem value="AMBOS"> Ensino Técnico e Superior </MenuItem>
+                                                        </Field>
+                                                    </Grid>
+
                                                 </Grid>
                                             </Paper>
                                         </Box>
+
                                         <Box sx={{ '& .MuiTextField-root': { m: 1 } }}>
-                                            <Paper sx={{ marginTop: '20px', marginBottom: '20px' }}>
+                                            <Paper sx={{ marginTop: '20px', marginBottom: '20px', backgroundColor: 'white', paddingBottom: 3 }}>
                                                 <Grid
                                                     container
                                                     spacing={2}
@@ -236,7 +266,12 @@ export const CadastroInstituicao: React.FC = () => {
                                                     <Grid item xs={12}>
                                                         <Typography
                                                             variant="h6"
-                                                            sx={{ textAlign: 'left' }}
+                                                            sx={{
+                                                                fontSize: '25px', textAlign: 'left',
+                                                                fontFamily: 'Roboto, monospace',
+                                                                color: '#757575',
+                                                                fontWeight: 'bold',
+                                                            }}
                                                         >
                                                             Endereço
                                                         </Typography>
@@ -327,6 +362,7 @@ export const CadastroInstituicao: React.FC = () => {
                                                 container
                                                 spacing={2}
                                                 justifyContent="space-between"
+                                                sx={{ marginBottom: 10 }}
                                             >
                                                 <Grid
                                                     item
@@ -338,6 +374,13 @@ export const CadastroInstituicao: React.FC = () => {
                                                         type="button"
                                                         variant="outlined"
                                                         onClick={() => navigate('/admin')}
+                                                        sx={{
+                                                            fontSize: '17px',
+                                                            fontFamily: 'Roboto, monospace',
+                                                            color: 'white',
+                                                            backgroundColor: '#185D8E',
+                                                            fontWeight: 'bold',
+                                                        }}
                                                     >
                                                         Voltar
                                                     </Button>
@@ -352,6 +395,13 @@ export const CadastroInstituicao: React.FC = () => {
                                                         type="submit"
                                                         disabled={isSubmitting}
                                                         variant="contained"
+                                                        sx={{
+                                                            fontSize: '17px',
+                                                            fontFamily: 'Roboto, monospace',
+                                                            color: 'white',
+                                                            backgroundColor: '#185D8E',
+                                                            fontWeight: 'bold',
+                                                        }}
                                                     >
                                                         Avançar
                                                     </Button>
