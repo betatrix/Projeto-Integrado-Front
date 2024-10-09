@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
     AppBar,
     Box,
@@ -34,6 +34,7 @@ import { Link as ScrollLink } from 'react-scroll';
 import { linkButtonMobile, logo } from './styles';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import { recuperarImagem } from '../../services/apiService';
 
 const styles = {
     logo: {
@@ -62,9 +63,11 @@ const styles = {
 };
 
 function StudentHeader() {
+
     const { t } = useTranslation();
     const isMobile = useMediaQuery('(max-width:600px)');
     const [drawerOpen, setDrawerOpen] = useState(false);
+    const [imagem, setImagem] = useState('/static/images/avatar/2.jpg');
 
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
     // const [anchorElTeste, setAnchorElTeste] = useState<null | HTMLElement>(null);
@@ -76,6 +79,23 @@ function StudentHeader() {
     const { logout } = authContext;
     const studentData = authContext.student ? decryptData(authContext.student) : null;
     const student = studentData ? JSON.parse(studentData) : null;
+
+    const userData = authContext.user ? decryptData(authContext.user) : null;
+    const user = userData ? JSON.parse(userData) : null;
+
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useEffect(() => {
+        const fetchData = async () => {
+            console.log('aaaaaaaaaaaaaaaaa', user.fotoDePerfil);
+            try {
+                const fetchedImage = await recuperarImagem(user.fotoDePerfil);
+                setImagem(fetchedImage || '/static/images/avatar/2.jpg');
+            } catch (error) {
+                console.error('Erro ao buscar foto:', error);
+            }
+        };
+        fetchData();
+    }, [user?.fotoDePerfil]);
 
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElUser(event.currentTarget);
@@ -100,6 +120,10 @@ function StudentHeader() {
     const handleCloseDrawer = () => {
         setDrawerOpen(false);
     };
+
+    console.log('bbbbbbbbbbbbbbb', user);
+
+    console.log('ccccccccc', user?.fotoDePerfil);
 
     const menuItems = (
         <List>
@@ -210,7 +234,7 @@ function StudentHeader() {
                                     {/* Menu de Logout e Avatar para telas maiores */}
                                     <Tooltip title="Opções de Perfil">
                                         <IconButton onClick={handleOpenUserMenu} sx={styles.avatarButton}>
-                                            <Avatar alt={student ? student.nome : 'User Avatar'} src="/static/images/avatar/2.jpg" />
+                                            <Avatar alt={student ? student.nome : 'User Avatar'} src={imagem}/>
                                         </IconButton>
                                     </Tooltip>
 

@@ -25,7 +25,7 @@ export const WelcomeText = styled(Typography)`
     color: 'white';
     font-family: 'Poppins', sans-serif;
 `;
-export const logo: SxProps<Theme> = (_theme) => ({
+export const logo: SxProps<Theme> = () => ({
     fontFamily: 'Poppins, sans-serif',
     fontWeight: 700,
     letterSpacing: '.3rem',
@@ -33,7 +33,7 @@ export const logo: SxProps<Theme> = (_theme) => ({
     textDecoration: 'none',
 });
 
-export const LoginText: SxProps<Theme> = (_theme) => ({
+export const LoginText: SxProps<Theme> = () => ({
     mr: 2,
     marginLeft: '10px',
     fontFamily: 'Roboto, monospace',
@@ -55,11 +55,11 @@ export const LoginText: SxProps<Theme> = (_theme) => ({
     },
 });
 
-export const menu: SxProps<Theme> = (_theme) => ({
+export const menu: SxProps<Theme> = () => ({
     mt: '45px',
 });
 
-export const linkButton: SxProps<Theme> = (_theme) => ({
+export const linkButton: SxProps<Theme> = () => ({
     fontFamily: 'Roboto, monospace',
     fontSize: '15px',
     color: '#232235',
@@ -69,7 +69,7 @@ export const linkButton: SxProps<Theme> = (_theme) => ({
     cursor: 'pointer',
 });
 
-export const linkButtonMobile: SxProps<Theme> = (_theme) => ({
+export const linkButtonMobile: SxProps<Theme> = () => ({
     fontFamily: 'Roboto, monospace',
     fontSize: '14px',
     color: '#185D8E',

@@ -8,7 +8,7 @@ import StudentDashboard from '../containers/student/studentDashboard';
 import InstitutionList from '../containers/student/studentDashboard/searchInstitution';
 import About from '../containers/student/homePage/about';
 import CourseList from '../containers/administrator/courseManagement';
-import DataStudent from '../containers/student/studentDashboard/perfilStudent';
+import PerfilStudent from '../containers/student/studentDashboard/perfilStudent';
 import VocacionalTest from '../containers/student/vocacionalTest';
 import Login from '../containers/auth/login/index';
 import Register from '../containers/student/register/index';
@@ -42,7 +42,7 @@ export const AppRoutes = () => {
                             <Route path='/teste-vocacional' element={<VocacionalTest />} />
                             <Route path='/estudante' element={<StudentDashboard />} />
                             <Route path="/resultado" element={<ResultadoTeste />} />
-                            <Route path='/perfil' element={<DataStudent />} />
+                            <Route path='/minha-conta' element={<PerfilStudent />} />
                         </Route>
                         {/* Private Routes - Admin */}
                         <Route element={<PrivateRoute requiredRole="ADMIN" />}>
