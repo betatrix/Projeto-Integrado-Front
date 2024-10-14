@@ -35,8 +35,8 @@ import CardTravelIcon from '@mui/icons-material/CardTravel';
 import PsychologyIcon from '@mui/icons-material/Psychology';
 import CustomDrawer from '../../../components/sidemenu/CustomDrawer';
 import Footer from '../../../components/homeFooter';
-import polvo_voquinho from '../../../assets/img/polvo_voquinho.png';
 import perfilArtistico from '../../../assets/img/perfilArtistico.png';
+import Voquinho from '../../../assets/img/polvo-voquinho-de-oculos.png';
 
 const PROFILE_DETAILS: { [key: string]: { color: string; icon: React.ReactNode } } = {
     'Artistico': { color: '#FF69B4', icon: <ColorLensIcon sx={IconStyles} /> },
@@ -147,9 +147,22 @@ const StudentDashboard: React.FC = () => {
     }
     const showLockIcon = testHistory.length === 0;
 
+    const legendStyle = {
+        itemMarkHeight: isSmallScreen ? 10 : isMediumScreen ? 18 : 18,
+        itemMarkWidth: isSmallScreen ? 10 : isMediumScreen ? 18 : 18,
+        itemGap: isSmallScreen ? 5 : isMediumScreen ? 8 : 10,
+        padding: isSmallScreen ? -55 : isMediumScreen ? -70 : -80, // Ajusta o padding conforme o tamanho da tela
+        labelStyle: {
+            fontFamily: 'Roboto, monospace',
+            fontSize: isSmallScreen ? 12 : isMediumScreen ? 16 : 20, // Tamanhos de fonte responsivos
+            fontWeight: 'bold',
+            fill: '#0B2A40',
+        },
+    };
+
     const chartConfig = {
         outerRadius: isSmallScreen ? 60 : isMediumScreen ? 83.125 : isLargeScreen ? 118.75 : 95,
-        cx: isSmallScreen ? 70 : isMediumScreen ? 113.75 : isLargeScreen ? 162.5 : 130,
+        cx: isSmallScreen ? 18 : isMediumScreen ? 113.75 : isLargeScreen ? 80 : 180,
         cy: isSmallScreen ? 60 : isMediumScreen ? 79.45 : isLargeScreen ? 113.5 : 90,
         width: isSmallScreen ? 150 : isMediumScreen ? 227.5 : isLargeScreen ? 325 : 260,
         height: isSmallScreen ? 130 : isMediumScreen ? 175 : isLargeScreen ? 250 : 200,
@@ -183,7 +196,7 @@ const StudentDashboard: React.FC = () => {
                                 </Box>
                                 <Box sx={{ display: 'flex' }} ml={1} className="your-image-container">
                                     <img
-                                        src={polvo_voquinho}
+                                        src={Voquinho}
                                         alt="Logo"
                                         style={{ width: '260px' }}
                                     />
@@ -205,7 +218,7 @@ const StudentDashboard: React.FC = () => {
                                     width: '34.375rem',
                                     height: '20rem',
 
-                                    backgroundColor: '#D7E6F1',
+                                    backgroundColor: 'rgb(141, 169, 189)',
                                     [theme.breakpoints.down('sm')]: {
                                         width: '18rem',
                                         height: '11rem',
@@ -223,7 +236,7 @@ const StudentDashboard: React.FC = () => {
                                             padding: '2.5rem',
                                             width: '31.25rem',
                                             height: '20rem',
-                                            backgroundColor: '#D7E6F1', boxShadow: 'none', [theme.breakpoints.down('sm')]: {
+                                            backgroundColor: ' rgb(141, 169, 189)', boxShadow: 'none', [theme.breakpoints.down('sm')]: {
                                                 height: '11rem',
                                             }, [theme.breakpoints.down('md')]: {
                                                 height: '11rem',
@@ -292,104 +305,110 @@ const StudentDashboard: React.FC = () => {
                                             <ArrowBackIosIcon sx={{
                                                 fontSize: 31.25,
                                                 color: '#0B2A40',
-                                                [theme.breakpoints.down('sm')]: {
-                                                    fontSize: 10,
-                                                }, [theme.breakpoints.down('md')]: {
-                                                    fontSize: 10,
-                                                },
-
+                                                [theme.breakpoints.down('sm')]: { fontSize: 10 },
+                                                [theme.breakpoints.down('md')]: { fontSize: 10 },
                                             }} />
                                         </IconButton>
                                     )}
 
                                     <Paper sx={boxResultStyles}>
                                         {testHistory.length > 0 ? (
-                                            <Slider ref={setSliderRef} {...carouselSettings}>
-                                                {testHistory.map((test, index) => (
-                                                    <Box key={index} sx={{ textAlign: 'right' }} >
-                                                        <Typography sx={contentStyle}>
-                                                            {test.date}
-                                                        </Typography>
-                                                        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                                                            <Box sx={{ display: 'flex', alignItems: 'center' }} >
-                                                                <PieChart
-                                                                    series={[
-                                                                        {
-                                                                            data: test.result.map(item => ({
-                                                                                id: item.perfil,
-                                                                                value: item.compatibilidade,
-                                                                                color: PROFILE_DETAILS[item.perfil]?.color || '#CCCCCC',
-                                                                            })),
-                                                                            innerRadius: 3,
-                                                                            outerRadius: chartConfig.outerRadius,
-                                                                            paddingAngle: 5,
-                                                                            cornerRadius: 5,
-                                                                            startAngle: -360,
-                                                                            endAngle: 225,
-                                                                            cx: chartConfig.cx,
-                                                                            cy: chartConfig.cy,
-                                                                        },
-                                                                    ]}
-                                                                    width={chartConfig.width}
-                                                                    height={chartConfig.height}
-                                                                />
-                                                            </Box>
-                                                            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: '20px' }}>
-                                                                {test.result.map((entry, index) => (
-                                                                    <Box
-                                                                        key={index}
-                                                                        sx={{
-                                                                            display: 'flex',
-                                                                            alignItems: 'center',
-                                                                            marginBottom: '0.5rem'
-                                                                        }}
-                                                                    >
-                                                                        <Box
-                                                                            sx={{
-                                                                                width: '15px',
-                                                                                height: '15px',
-                                                                                marginRight: '2px',
-                                                                                border: '1px solid #FFFFFF',
-                                                                                backgroundColor: PROFILE_DETAILS[entry.perfil].color,
-                                                                            }}
-                                                                        />
-                                                                        <Typography variant="body2" sx={{
-                                                                            fontSize: 20,
-                                                                            fontFamily: 'Roboto, monospace',
-                                                                            color: '#0B2A40',
-                                                                            fontWeight: 'bold',
-                                                                            [theme.breakpoints.down('sm')]: {
-                                                                                fontSize: 10,
-                                                                            }, [theme.breakpoints.down('md')]: {
-                                                                                fontSize: 10,
-                                                                            },
-                                                                        }} >
-                                                                            {entry.perfil}
-                                                                        </Typography>
-                                                                    </Box>
-                                                                ))}
-                                                            </Box>
-                                                        </Box>
+                                            testHistory.length === 1 ? (
+                                                <Box sx={{ textAlign: 'right' }}>
+                                                    <Typography sx={contentStyle}>
+                                                        {testHistory[0].date}
+                                                    </Typography>
+
+                                                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                                        <PieChart
+                                                            series={[{
+                                                                data: testHistory[0].result.map(item => ({
+                                                                    id: item.perfil,
+                                                                    value: item.compatibilidade,
+                                                                    label: item.perfil,
+                                                                    color: PROFILE_DETAILS[item.perfil]?.color || '#CCCCCC',
+                                                                })),
+                                                                innerRadius: 3,
+                                                                outerRadius: chartConfig.outerRadius,
+                                                                paddingAngle: 5,
+                                                                cornerRadius: 5,
+                                                                startAngle: -360,
+                                                                endAngle: 225,
+                                                                cx: chartConfig.cx,
+                                                                cy: chartConfig.cy,
+                                                            }]}
+                                                            width={chartConfig.width}
+                                                            height={chartConfig.height}
+                                                            slotProps={{
+                                                                legend: {
+                                                                    position: { vertical: 'middle', horizontal: 'right' },
+                                                                    ...legendStyle,
+                                                                },
+
+                                                            }}
+
+                                                        />
                                                     </Box>
 
-                                                ))}
-                                            </Slider>
+                                                </Box>
+                                            ) : (
+
+                                                <Slider ref={setSliderRef} {...carouselSettings}>
+                                                    {testHistory.map((test, index) => (
+                                                        <Box key={index} sx={{ textAlign: 'right' }}>
+                                                            <Typography sx={contentStyle}>
+                                                                {test.date}
+                                                            </Typography>
+                                                            <Box sx={{ display: 'flex' }}>
+
+                                                                <PieChart
+                                                                    series={[{
+                                                                        data: test.result.map(item => ({
+                                                                            id: item.perfil,
+                                                                            value: item.compatibilidade,
+                                                                            label: item.perfil,
+                                                                            color: PROFILE_DETAILS[item.perfil]?.color || '#CCCCCC',
+                                                                        })),
+                                                                        innerRadius: 3,
+                                                                        outerRadius: chartConfig.outerRadius,
+                                                                        paddingAngle: 5,
+                                                                        cornerRadius: 5,
+                                                                        startAngle: -360,
+                                                                        endAngle: 225,
+                                                                        cx: chartConfig.cx,
+                                                                        cy: chartConfig.cy,
+                                                                    }]}
+                                                                    width={chartConfig.width}
+                                                                    height={chartConfig.height}
+
+                                                                    slotProps={{
+                                                                        legend: {
+                                                                            position: { vertical: 'middle', horizontal: 'right' },
+                                                                            ...legendStyle,
+                                                                        },
+
+                                                                    }}
+
+                                                                />
+                                                            </Box>
+                                                        </Box>
+                                                    ))}
+                                                </Slider>
+                                            )
                                         ) : (
                                             <Typography sx={contentResultStyle}>
                                                 {t('dashboardCard3Text')}
                                             </Typography>
                                         )}
                                     </Paper>
+
                                     {testHistory.length > 1 && (
                                         <IconButton onClick={() => sliderRef?.slickNext()}>
                                             <ArrowForwardIosIcon sx={{
                                                 fontSize: 31.25,
                                                 color: '#0B2A40',
-                                                [theme.breakpoints.down('sm')]: {
-                                                    fontSize: 10,
-                                                }, [theme.breakpoints.down('md')]: {
-                                                    fontSize: 10,
-                                                },
+                                                [theme.breakpoints.down('sm')]: { fontSize: 10 },
+                                                [theme.breakpoints.down('md')]: { fontSize: 10 },
                                             }} />
                                         </IconButton>
                                     )}

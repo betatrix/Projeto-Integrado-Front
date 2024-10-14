@@ -7,7 +7,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import LocalLibraryRoundedIcon from '@mui/icons-material/LocalLibraryRounded';
-import polvo_voquinho from '../../assets/img/polvo_voquinho.png';
+// import polvo_voquinho from '../../assets/img/polvo_voquinho.png';
 import { Typography, Box } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTranslation } from 'react-i18next';
@@ -19,6 +19,7 @@ import {
     SchoolOutlined,
     LogoutOutlined,
 } from '@mui/icons-material';
+import logo from '../../assets/img/logo-azul-claro.png';
 
 const drawerWidth = 265;
 
@@ -119,7 +120,7 @@ const CustomDrawer: React.FC<CustomDrawerProps> = ({ open, handleDrawerOpen, han
                                     }}
                                 >
                                     <img
-                                        src={polvo_voquinho}
+                                        src={logo}
                                         alt="Logo"
                                         style={{ width: '45px' }}
                                     />

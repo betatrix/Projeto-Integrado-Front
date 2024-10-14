@@ -142,12 +142,32 @@ export const contentStyle: SxProps<Theme> = (theme) => ({
     },
 });
 
+export const IconStyles: SxProps<Theme> = (theme) => ({
+    fontSize: '2.5rem',
+    paddingTop: '0.8rem',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    height: '100%',
+    textAlign: 'center',
+    [theme.breakpoints.down('sm')]: {
+        fontSize: '1.5rem',
+    },
+    [theme.breakpoints.down('md')]: {
+        fontSize: '1.5rem',
+    },
+});
+
 export const contentPerfilStyle = (theme: Theme) => ({
     fontFamily: 'Roboto, monospace',
-    color: '#0B2A40',
-    textAlign: 'center',
-    marginTop: '1rem',
     fontSize: '2rem',
+    paddingTop: '0.8rem',
+    color: '#0B2A40',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    height: '100%',
+    textAlign: 'center',
     [theme.breakpoints.down('md')]: {
         textAlign: 'center',
         fontSize: '1rem',
@@ -233,12 +253,13 @@ export const pieChartStyles: SxProps<Theme> = (theme) => ({
 export const paperPerfisStyles: SxProps<Theme> = (theme) => ({
     fontFamily: 'Roboto, monospace',
     color: '#0B2A40',
-    backgroundColor: '#D7E6F1',
+    backgroundColor: 'rgb(215, 230, 241)',
+    boxShadow: 'rgba(10, 41, 81, 0.2) 5px 5px 0px 1.25px',
+    border: '3px solid rgb(11, 42, 64)',
+    borderRadius: '9px',
     padding: '6.25%',
+    display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    textAlign: 'center',
     width: '21.25rem',
     height: '8.75rem',
     margin: '0.475rem',
@@ -253,7 +274,7 @@ export const paperPerfisStyles: SxProps<Theme> = (theme) => ({
 });
 
 export const paperImgStyles: SxProps<Theme> = (theme) => ({
-    backgroundColor: '#D7E6F1',
+    backgroundColor: ' rgb(141, 169, 189)',
     alignItems: 'center',
     justifyContent: 'center',
     textAlign: 'center',
@@ -376,18 +397,6 @@ export const TestButton: SxProps<Theme> = (theme) => ({
         fontSize: '0.7rem',
         minWidth: '100px',
         marginTop: '0.5rem',
-    },
-});
-
-export const IconStyles: SxProps<Theme> = (theme) => ({
-    fontSize: '2.5rem',
-    marginTop: '1rem',
-    marginRight: '0.3rem',
-    [theme.breakpoints.down('sm')]: {
-        fontSize: '1.5rem',
-    },
-    [theme.breakpoints.down('md')]: {
-        fontSize: '1.5rem',
     },
 });
 
