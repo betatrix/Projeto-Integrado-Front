@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { cadastrarInstituicao } from '../../../services/institutionService';
 import AdminHeader from '../../../components/adminHeader';
 import Footer from '../../../components/homeFooter';
+import { TipoInstituicaoCurso } from '../../../types/institutionTypes';
 
 interface FormValues {
     nome: string;
@@ -17,7 +18,7 @@ interface FormValues {
     formaIngresso: string;
     notaMec: number | null;
     sigla: string;
-    tipo: string; // Adicionando o campo tipo
+    tipoInstituicaoCurso: TipoInstituicaoCurso;
     endereco: {
         logradouro: string;
         numero: string;
@@ -44,7 +45,7 @@ export const CadastroInstituicao: React.FC = () => {
         formaIngresso: '',
         notaMec: null,
         sigla: '',
-        tipo: '', // Campo adicionado
+        tipoInstituicaoCurso: TipoInstituicaoCurso.SUPERIOR, // Usando um valor do enum
         endereco: {
             logradouro: '',
             numero: '',
@@ -71,7 +72,9 @@ export const CadastroInstituicao: React.FC = () => {
         sigla: Yup.string()
             .matches(/^[A-Z]+$/, 'A sigla deve estar em letras maiúsculas')
             .required('A sigla é obrigatória'),
-        tipo: Yup.string().required('O tipo de instituição é obrigatório'), // Validação do tipo
+        tipoInstituicaoCurso: Yup.string()
+            .oneOf([TipoInstituicaoCurso.SUPERIOR, TipoInstituicaoCurso.TECNICO, TipoInstituicaoCurso.AMBOS], 'Selecione um tipo válido')
+            .required('O tipo de instituição é obrigatório'),
         endereco: Yup.object().shape({
             cep: Yup.string()
                 .max(8, 'O CEP deve ter no máximo 8 caracteres')
@@ -227,24 +230,36 @@ export const CadastroInstituicao: React.FC = () => {
                                                     </Grid>
                                                     {/* Novo Campo - Tipo de Instituição */}
                                                     <Grid item xs={12}>
-                                                        <Field
-                                                            component={Select}
-                                                            name="tipo"
-                                                            fullWidth
-                                                            variant="standard"
-                                                            required
-                                                            size="large"
-                                                            displayEmpty
-                                                            inputProps={{ 'aria-label': 'Tipo de Instituição' }}
-                                                            sx={{ color: 'grey', marginLeft: '3px'}}
-                                                        >
-                                                            <MenuItem value="" disabled>
-                                                                Selecione o Tipo de Instituição*
-                                                            </MenuItem>
-                                                            <MenuItem value="SUPERIOR"> Ensino Superior</MenuItem>
-                                                            <MenuItem value="TECNICO"> Ensino Técnico </MenuItem>
-                                                            <MenuItem value="AMBOS"> Ensino Técnico e Superior </MenuItem>
-                                                        </Field>
+                                                        <Grid container alignItems="center">
+                                                            {/* Texto de instrução ao lado */}
+                                                            <Grid item xs={4}>
+                                                                <Typography variant="body1" color="textSecondary">
+                                                                Tipo de Instituição*
+                                                                </Typography>
+                                                            </Grid>
+
+                                                            {/* Campo de seleção */}
+                                                            <Grid item xs={8}>
+                                                                <Field
+                                                                    component={Select}
+                                                                    name="tipoInstituicaoCurso"
+                                                                    fullWidth
+                                                                    variant="standard"
+                                                                    required
+                                                                    size="large"
+                                                                    displayEmpty
+                                                                    inputProps={{ 'aria-label': 'Tipo de Instituição' }}
+                                                                    sx={{ color: 'grey', marginLeft: '3px' }}
+                                                                >
+                                                                    <MenuItem value="" disabled>
+                                                                        Selecione
+                                                                    </MenuItem>
+                                                                    <MenuItem value="SUPERIOR">Ensino Superior</MenuItem>
+                                                                    <MenuItem value="TECNICO">Ensino Técnico</MenuItem>
+                                                                    <MenuItem value="AMBOS">Ensino Técnico e Superior</MenuItem>
+                                                                </Field>
+                                                            </Grid>
+                                                        </Grid>
                                                     </Grid>
 
                                                 </Grid>
