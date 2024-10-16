@@ -14,7 +14,7 @@ import { Alert, Autocomplete,
 import Footer from '../../../components/homeFooter';
 import StudentHeader from '../../../components/studentHeader';
 import CustomDrawer from '../../../components/sidemenu/CustomDrawer';
-// import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import React, { useContext, useRef, useState } from 'react';
 import { atualizaEstudante, fotoEstudante } from '../../../services/studentService';
 import { AuthContext } from '../../../contexts/auth';
@@ -62,7 +62,7 @@ const formatarCelular = (value: string) => {
 };
 
 const PerfilStudent: React.FC = () => {
-    // const { t } = useTranslation();
+    const { t } = useTranslation();
 
     const authContext = useContext(AuthContext);
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -228,17 +228,21 @@ const PerfilStudent: React.FC = () => {
                             />
                             <CameraAltOutlined sx={{ verticalAlign: 'middle', marginRight: '0.5rem' }} />
                             <Typography sx={{ fontFamily: 'Poppins, monospace', fontSize: '15px'}}>
-                                Selecionar foto
+                                {t('studentAccountButton1')}
                             </Typography>
                         </Button>
                     </Box>
                     <Box>
-                        <Typography variant="h4" sx={header}>Edite o seu perfil</Typography>
+                        <Typography variant="h4" sx={header}>
+                            {t('studentAccountTitle')}
+                        </Typography>
                         <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
                             {({ handleChange, handleBlur, handleSubmit, isSubmitting, setFieldValue, errors, touched, values }) => (
                                 <Box component={Form} sx={formContainer} onSubmit={handleSubmit}>
                                     <FormControl variant="filled" >
-                                        <InputLabel htmlFor="nome" sx={customInputLabel}>Nome</InputLabel>
+                                        <InputLabel htmlFor="nome" sx={customInputLabel}>
+                                            {t('studentAccountField1')}
+                                        </InputLabel>
                                         <FilledInput
                                             id="nome"
                                             type="text"
@@ -254,7 +258,9 @@ const PerfilStudent: React.FC = () => {
                                     </FormControl>
 
                                     <FormControl variant="filled">
-                                        <InputLabel htmlFor="email" sx={customInputLabel}>E-mail</InputLabel>
+                                        <InputLabel htmlFor="email" sx={customInputLabel}>
+                                            {t('studentAccountField2')}
+                                        </InputLabel>
                                         <FilledInput
                                             id="email"
                                             type="email"
@@ -270,7 +276,9 @@ const PerfilStudent: React.FC = () => {
                                     </FormControl>
 
                                     <FormControl variant="filled">
-                                        <InputLabel shrink sx={customInputLabel}>Data de Nascimento</InputLabel>
+                                        <InputLabel shrink sx={customInputLabel}>
+                                            {t('studentAccountField3')}
+                                        </InputLabel>
                                         <FilledInput
                                             id="dataNascimento"
                                             type="date"
@@ -286,7 +294,9 @@ const PerfilStudent: React.FC = () => {
                                     </FormControl>
 
                                     <FormControl variant="filled">
-                                        <InputLabel htmlFor="celular" sx={customInputLabel}>Celular</InputLabel>
+                                        <InputLabel htmlFor="celular" sx={customInputLabel}>
+                                            {t('studentAccountField4')}
+                                        </InputLabel>
                                         <FilledInput
                                             id="celular"
                                             type="tel"
@@ -313,7 +323,7 @@ const PerfilStudent: React.FC = () => {
                                             value={nivelEducacao.find((option) => option.value === values.nivelEscolar) || null}
                                             onChange={(_, value) => setFieldValue('nivelEscolar', value ? value.value : '')}
                                             renderInput={(params) => (
-                                                <TextField {...params} label="Nível de escolaridade" sx={customAutocomplete} />
+                                                <TextField {...params} label={t('studentAccountField5')} sx={customAutocomplete} />
                                             )}
                                             sx={customField}
                                         />
@@ -322,7 +332,9 @@ const PerfilStudent: React.FC = () => {
 
                                     <Box sx={passwordContainer}>
                                         <FormControl variant="filled" sx={{ flex: 1 }}>
-                                            <InputLabel htmlFor="senha" sx={customInputLabel}>Nova senha</InputLabel>
+                                            <InputLabel htmlFor="senha" sx={customInputLabel}>
+                                                {t('studentAccountField6')}
+                                            </InputLabel>
                                             <FilledInput
                                                 id="senha"
                                                 type={showPassword ? 'text' : 'password'}
@@ -349,7 +361,9 @@ const PerfilStudent: React.FC = () => {
                                             <ErrorMessage name="senha" component="div" />
                                         </FormControl>
                                         <FormControl variant="filled" sx={{ flex: 1 }}>
-                                            <InputLabel htmlFor="confirmarSenha" sx={customInputLabel}>Confirme sua nova senha</InputLabel>
+                                            <InputLabel htmlFor="confirmarSenha" sx={customInputLabel}>
+                                                {t('studentAccountField7')}
+                                            </InputLabel>
                                             <FilledInput
                                                 id="confirmarSenha"
                                                 type="password"
@@ -370,7 +384,7 @@ const PerfilStudent: React.FC = () => {
                                         }}
                                     >
                                         <Button sx={registerButton} type="submit" disabled={isSubmitting}>
-                                            {loading ? <CircularProgress size={24} color="inherit" /> : 'SALVAR'}
+                                            {loading ? <CircularProgress size={24} color="inherit" /> : t('studentAccountButton2')}
                                         </Button>
                                     </Box>
 

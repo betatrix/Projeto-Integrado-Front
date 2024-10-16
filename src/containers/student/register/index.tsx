@@ -137,14 +137,20 @@ export const StudentRegister = () => {
                     <LanguageMenu />
                 </Box>
                 <Box sx={registerContainer}>
-                    <Typography variant="h4" sx={header}>É novo? Cadastre-se aqui!</Typography>
-                    <Typography sx={paragraph}>Ao preencher o formulário abaixo você concorda com os nossos Termos de uso e nossa Política de privacidade.</Typography>
+                    <Typography variant="h4" sx={header}>
+                        {t('studentRegisterTitle')}
+                    </Typography>
+                    <Typography sx={paragraph}>
+                        {t('studentRegisterText1')}
+                    </Typography>
 
                     <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
                         {({ handleChange, handleBlur, handleSubmit, isSubmitting, setFieldValue, errors, touched, values }) => (
                             <Box component={Form} sx={formContainer} onSubmit={handleSubmit}>
                                 <FormControl variant="filled">
-                                    <InputLabel htmlFor="nome" sx={customInputLabel}>Nome</InputLabel>
+                                    <InputLabel htmlFor="nome" sx={customInputLabel}>
+                                        {t('studentRegisterField1')}
+                                    </InputLabel>
                                     <FilledInput
                                         id="nome"
                                         type="text"
@@ -160,7 +166,9 @@ export const StudentRegister = () => {
                                 </FormControl>
 
                                 <FormControl variant="filled">
-                                    <InputLabel htmlFor="email" sx={customInputLabel}>E-mail</InputLabel>
+                                    <InputLabel htmlFor="email" sx={customInputLabel}>
+                                        {t('studentRegisterField2')}
+                                    </InputLabel>
                                     <FilledInput
                                         id="email"
                                         type="email"
@@ -176,7 +184,9 @@ export const StudentRegister = () => {
                                 </FormControl>
 
                                 <FormControl variant="filled">
-                                    <InputLabel shrink sx={customInputLabel}>Data de Nascimento</InputLabel>
+                                    <InputLabel shrink sx={customInputLabel}>
+                                        {t('studentRegisterField3')}
+                                    </InputLabel>
                                     <FilledInput
                                         id="dataNascimento"
                                         type="date"
@@ -192,7 +202,9 @@ export const StudentRegister = () => {
                                 </FormControl>
 
                                 <FormControl variant="filled">
-                                    <InputLabel htmlFor="celular" sx={customInputLabel}>Celular</InputLabel>
+                                    <InputLabel htmlFor="celular" sx={customInputLabel}>
+                                        {t('studentRegisterField4')}
+                                    </InputLabel>
                                     <FilledInput
                                         id="celular"
                                         type="tel"
@@ -218,7 +230,7 @@ export const StudentRegister = () => {
                                         getOptionLabel={(option) => option.label}
                                         onChange={(_, value) => setFieldValue('nivelEscolar', value ? value.value : '')}
                                         renderInput={(params) => (
-                                            <TextField {...params} label="Nível de escolaridade" sx={customAutocomplete} />
+                                            <TextField {...params} label={t('studentRegisterField5')} sx={customAutocomplete} />
                                         )}
                                         sx={customField}
                                     />
@@ -226,7 +238,9 @@ export const StudentRegister = () => {
                                 </FormControl>
 
                                 <FormControl variant="filled">
-                                    <InputLabel htmlFor="senha" sx={customInputLabel}>Senha</InputLabel>
+                                    <InputLabel htmlFor="senha" sx={customInputLabel}>
+                                        {t('studentRegisterField6')}
+                                    </InputLabel>
                                     <FilledInput
                                         id="senha"
                                         type={showPassword ? 'text' : 'password'}
@@ -255,7 +269,9 @@ export const StudentRegister = () => {
                                 </FormControl>
 
                                 <FormControl variant="filled">
-                                    <InputLabel htmlFor="confirmarSenha" sx={customInputLabel}>Confirme sua senha</InputLabel>
+                                    <InputLabel htmlFor="confirmarSenha" sx={customInputLabel}>
+                                        {t('studentRegisterField7')}
+                                    </InputLabel>
                                     <FilledInput
                                         id="confirmarSenha"
                                         type="password"
@@ -270,14 +286,14 @@ export const StudentRegister = () => {
 
                                 <FormControl sx={{ gridColumn: 'span 2' }}>
                                     <Box component="button" sx={registerButton} type="submit" disabled={isSubmitting}>
-                                        {loading ? <CircularProgress size={24} color="inherit" /> : t('forgotButton')}
+                                        {loading ? <CircularProgress size={24} color="inherit" /> : t('studentRegisterButton')}
                                     </Box>
                                 </FormControl>
                             </Box>
                         )}
                     </Formik>
                     <Typography variant="body1" sx={subText}>
-                        {t('loginRegister1')}<Typography sx={customLink} component={RouterLink} to="/login"> {t('loginRegister2')}</Typography>
+                        {t('studentRegisterLogin1')}<Typography sx={customLink} component={RouterLink} to="/login"> {t('studentRegisterLogin2')}</Typography>
                     </Typography>
 
                     <Snackbar
