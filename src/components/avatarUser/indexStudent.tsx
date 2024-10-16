@@ -6,7 +6,8 @@ import { AuthContext } from '../../contexts/auth';
 import { decryptData } from '../../services/encryptionService';
 import { recuperarImagem } from '../../services/apiService';
 
-const AvatarUserStudent = () => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const AvatarUserStudent = ({ sx, selectedImage }: { sx?: any, selectedImage?: string }) => {
     const [imagem, setImagem] = useState('/static/images/avatar/2.jpg');
 
     const authContext = useContext(AuthContext);
@@ -32,8 +33,10 @@ const AvatarUserStudent = () => {
         fetchData();
     }, [user?.fotoDePerfil]);
 
+    const displayImage = selectedImage || imagem;
+
     return (
-        <Avatar alt={student ? student.nome : 'User Avatar'} src={imagem}/>
+        <Avatar sx={{ ...sx }} alt={student ? student.nome : 'User Avatar'} src={displayImage} />
     );
 };
 

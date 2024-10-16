@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ReactNode, useState, useEffect, createContext } from 'react';
 import { decryptData, encryptData } from '../services/encryptionService';
+import { StudentUpdateForm } from '../types/studentTypes';
 
 interface AuthContextType {
     isAuthenticated: boolean;
@@ -11,6 +12,7 @@ interface AuthContextType {
     login: (token: string, user: any, role: string, student: any, admin: any) => void;
     logout: () => void;
     updateUserPhoto: (fotoUrl: string) => void;
+    updateStudentInfo: (data: StudentUpdateForm) => void;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -79,6 +81,34 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         });
     };
 
+    const updateStudentInfo = (data: StudentUpdateForm) => {
+        setUser((prevStudentEncrypted: any) => {
+            const prevStudentData = decryptData(prevStudentEncrypted);
+
+            if (!prevStudentData) {
+                console.error('Erro: Usuário anterior não encontrado');
+                return null;
+            }
+
+            const prevStudent = JSON.parse(prevStudentData);
+
+            const updatedStudent = {
+                ...prevStudent,
+                nome: data.nome,
+                email: data.email,
+                dataNascimento: data.dataNascimento,
+                celular: data.celular,
+                nivelEscolar: data.nivelEscolar,
+            };
+
+            const updatedStudentEncrypted = encryptData(JSON.stringify(updatedStudent));
+
+            localStorage.setItem('student', JSON.stringify(updatedStudentEncrypted));
+
+            return updatedStudentEncrypted;
+        });
+    };
+
     const checkTokenExpiration = () => {
         const tokenExpiration = localStorage.getItem('tokenExpiration');
         if (tokenExpiration && Date.now() > parseInt(tokenExpiration)) {
@@ -122,7 +152,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, user, student, admin, role, login, logout, updateUserPhoto }}>
+        <AuthContext.Provider value={{ isAuthenticated, user, student, admin, role, login, logout, updateUserPhoto, updateStudentInfo }}>
             {children}
         </AuthContext.Provider>
     );
