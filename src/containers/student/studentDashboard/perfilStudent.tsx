@@ -194,7 +194,7 @@ const PerfilStudent: React.FC = () => {
                                 sx={{
                                     width: '200px',
                                     height: '200px',
-                                    borderRadius: '10%',
+                                    borderRadius: { lg: '10%', md: '10%', sm: '100%'},
                                     overflow: 'hidden',
                                     border: '6px solid #0B2A40',
                                     boxShadow: '3px 3px 0px 1px #6B9ABC',

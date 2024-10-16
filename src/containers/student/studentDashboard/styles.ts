@@ -458,25 +458,24 @@ export const GridContainer = styled(Box)`
 
 // Style perfil do estudante-------------------------------------------------------
 
-export const container: SxProps<Theme> = () => ({
+export const container: SxProps<Theme> = (theme) => ({
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
+    backgroundRepeat: 'repeat',
     backgroundImage: `url(${backgorundImage})`,
     height: '100vh',
+    [theme.breakpoints.down('lg')]: {
+        backgroundImage: 'none',
+    },
 });
 
-export const header: SxProps<Theme> = (theme) => ({
+export const header: SxProps<Theme> = () => ({
     fontFamily: 'Poppins, sans-serif',
     fontWeight: 800,
     fontSize: '2.4rem',
+    textAlign: 'center',
     color: '#1b1f27',
-    [theme.breakpoints.down('lg')]: {
-        fontSize: '2rem',
-    },
-    [theme.breakpoints.down('sm')]: {
-        fontSize: '1.7rem',
-    },
+
 });
 
 export const registerContainer: SxProps<Theme> = (theme) => ({
@@ -494,9 +493,17 @@ export const registerContainer: SxProps<Theme> = (theme) => ({
         marginRight: '2rem',
         marginLeft: '2rem',
     },
+    [theme.breakpoints.down('md')]: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: '3rem',
+        margin: '7rem 2rem',
+    },
     [theme.breakpoints.down('sm')]: {
-        marginTop: '15rem',
-        padding: '1rem',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: '3rem',
+        margin: '7rem 0rem',
     },
 });
 
@@ -509,9 +516,11 @@ export const formContainer: SxProps<Theme> = (theme) => ({
     width: '100%',
     [theme.breakpoints.down('md')]: {
         gap: '20px',
+        width: '40rem',
     },
     [theme.breakpoints.down('sm')]: {
-        gap: '10px',
+        gap: '15px',
+        width: '20rem',
     },
 });
 
@@ -522,13 +531,13 @@ export const passwordContainer: SxProps<Theme> = (theme) => ({
     width: '100%',
     [theme.breakpoints.down('sm')]: {
         flexDirection: 'column',
-        gap: '10px',
+        gap: '15px',
     },
 });
 
-export const customField: SxProps<Theme> = {
+export const customField: SxProps<Theme> = () => ({
     backgroundColor: '#CFD9E3',
-    padding: '3px 8px',
+    padding: '3px 9px',
     borderRadius: '8px',
     '&:hover': {
         backgroundColor: '#E0E6EC',
@@ -542,9 +551,9 @@ export const customField: SxProps<Theme> = {
     '&::after': {
         borderBottom: 'none',
     },
-};
+});
 
-export const customAutocomplete: SxProps<Theme> = {
+export const customAutocomplete: SxProps<Theme> = () => ({
     backgroundColor: '#CFD9E3',
     borderRadius: '10px',
     '& .MuiOutlinedInput-notchedOutline': {
@@ -569,15 +578,15 @@ export const customAutocomplete: SxProps<Theme> = {
         padding: '10px',
         color: '#696f8c',
     },
-};
+});
 
-export const customInputLabel: SxProps<Theme> = {
+export const customInputLabel: SxProps<Theme> = () => ({
     color: '#696f8c',
     fontFamily: 'Poppins, sans-serif',
     '&.Mui-focused': {
         color: '#696f8c',
     },
-};
+});
 
 export const MessageError: SxProps<Theme> = () => ({
     color: 'red',
