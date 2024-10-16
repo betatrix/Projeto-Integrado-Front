@@ -60,6 +60,11 @@ export const cadastrarEstudante = async (entidade: string, data: object) => {
     const response = await axios.post(`${API_URL}/${entidade}/cadastro`, data);
     return { data: response.data, status: response.status };
 };
+// Atualizar estudante
+export const atualizarEstudante = async (entidade: string, data: object) => {
+    const response = await axios.put(`${API_URL}/${entidade}`, data);
+    return { data: response.data, status: response.status };
+};
 
 // Enviar email para recuperação de senha
 export const recuperarSenha = async (email: string) => {

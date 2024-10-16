@@ -51,7 +51,8 @@ const styles = {
     },
     welcomeText: {
         mr: 2,
-        color: 'white',
+        color: 'black',
+        fontFamily: 'Poppins, sans-serif',
     },
     linkButton: {
         color: 'white',
@@ -67,7 +68,6 @@ function StudentHeader() {
     const [drawerOpen, setDrawerOpen] = useState(false);
 
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-    // const [anchorElTeste, setAnchorElTeste] = useState<null | HTMLElement>(null);
     const authContext = useContext(AuthContext);
 
     if (!authContext) {
@@ -160,7 +160,7 @@ function StudentHeader() {
 
     return (
         <>
-            <AppBar style={{ backgroundColor: '#F3F3F3', boxShadow: 'none'}}>
+            <AppBar style={{ backgroundColor: '#F3F3F3', boxShadow: 'none', padding: '0.6rem 2rem',}}>
                 <Container maxWidth={isMobile ? 'md' : 'xl'} disableGutters>
                     <Toolbar sx={{ display: 'flex', justifyContent: isMobile ? 'space-between' : 'flex-end', width: '100%'}}>
                         {isMobile && (
@@ -208,7 +208,14 @@ function StudentHeader() {
                                     {/* Menu de Logout e Avatar para telas maiores */}
                                     <Tooltip title="Opções de Perfil">
                                         <IconButton onClick={handleOpenUserMenu} sx={styles.avatarButton}>
-                                            <AvatarUserStudent />
+                                            <AvatarUserStudent
+                                                sx={{
+                                                    width: '50px',
+                                                    height: '50px',
+                                                    overflow: 'hidden',
+                                                    objectFit: 'cover'
+                                                }}
+                                            />
                                         </IconButton>
                                     </Tooltip>
 

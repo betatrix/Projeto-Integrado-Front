@@ -1,15 +1,21 @@
 import { LoginForm } from '../types/loginTypes';
-import { StudentRegisterForm } from '../types/studentTypes';
+import { StudentRegisterForm, StudentUpdateForm } from '../types/studentTypes';
 import {
     cadastrarEstudante,
     recuperarSenha,
     redefinirSenha,
     loginConta,
-    adicionarImagem
+    adicionarImagem,
+    atualizarEstudante
 } from './apiService';
 
 export const cadastroEstudante = async (estudanteData: StudentRegisterForm) => {
     const response = await cadastrarEstudante('estudante', estudanteData);
+    return response;
+};
+
+export const atualizaEstudante = async (estudanteData: StudentUpdateForm) => {
+    const response = await atualizarEstudante('estudante', estudanteData);
     return response;
 };
 
