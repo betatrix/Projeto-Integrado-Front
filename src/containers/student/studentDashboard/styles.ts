@@ -1,6 +1,7 @@
 import { Box, SxProps, TextField, Theme } from '@mui/material';
 import styled from 'styled-components';
 import banner from '../../../assets/img/banner.png';
+import backgorundImage from '../../../assets/img/background.png';
 
 export const gridContainerStyles: SxProps<Theme> = (theme) => ({
     justifyContent:'center',
@@ -467,3 +468,184 @@ export const GridContainer = styled(Box)`
     flex-direction: column;
     gap: 0.8rem;  
 `;
+
+// Style perfil do estudante-------------------------------------------------------
+
+export const container: SxProps<Theme> = (theme) => ({
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'repeat',
+    backgroundImage: `url(${backgorundImage})`,
+    height: '100vh',
+    [theme.breakpoints.down('lg')]: {
+        backgroundImage: 'none',
+    },
+});
+
+export const header: SxProps<Theme> = (theme) => ({
+    fontFamily: 'Poppins, sans-serif',
+    fontWeight: 800,
+    fontSize: '2.4rem',
+    color: '#1b1f27',
+    [theme.breakpoints.down('md')]: {
+        textAlign: 'center',
+    },
+});
+
+export const registerContainer: SxProps<Theme> = (theme) => ({
+    display: 'flex',
+    flexDirection: 'grid',
+    justifyContent: 'center',
+    width: '100%',
+    marginTop: '10rem',
+    marginBottom: '7rem',
+    gap: '6rem',
+    zIndex: 1,
+    [theme.breakpoints.down('lg')]: {
+        marginTop: '15rem',
+        padding: '1.5rem',
+        marginRight: '2rem',
+        marginLeft: '2rem',
+    },
+    [theme.breakpoints.down('md')]: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: '3rem',
+        margin: '7rem 2rem',
+    },
+    [theme.breakpoints.down('sm')]: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: '3rem',
+        margin: '7rem 0rem',
+    },
+});
+
+export const formContainer: SxProps<Theme> = (theme) => ({
+    fontFamily: 'Poppins, sans-serif',
+    display: 'flex',
+    flexDirection: 'column',
+    marginTop: '2rem',
+    gap: '20px',
+    width: '100%',
+    [theme.breakpoints.down('md')]: {
+        gap: '20px',
+        width: '40rem',
+    },
+    [theme.breakpoints.down('sm')]: {
+        gap: '15px',
+        width: '20rem',
+    },
+});
+
+export const passwordContainer: SxProps<Theme> = (theme) => ({
+    display: 'flex',
+    flexDirection: 'row',
+    gap: '20px',
+    width: '100%',
+    [theme.breakpoints.down('sm')]: {
+        flexDirection: 'column',
+        gap: '15px',
+    },
+});
+
+export const customField: SxProps<Theme> = () => ({
+    backgroundColor: '#CFD9E3',
+    padding: '3px 9px',
+    borderRadius: '8px',
+    '&:hover': {
+        backgroundColor: '#E0E6EC',
+    },
+    '&::before': {
+        borderBottom: 'none',
+    },
+    '&:hover::before': {
+        borderBottom: 'none !important',
+    },
+    '&::after': {
+        borderBottom: 'none',
+    },
+});
+
+export const customAutocomplete: SxProps<Theme> = () => ({
+    backgroundColor: '#CFD9E3',
+    borderRadius: '10px',
+    '& .MuiOutlinedInput-notchedOutline': {
+        border: 'none',
+    },
+    '& .MuiAutocomplete-inputRoot': {
+        padding: '10px',
+        '& fieldset': {
+            border: 'none',
+        },
+    },
+    '& .MuiFilledInput-root': {
+        backgroundColor: 'white',
+        '&:before, &:after': {
+            borderBottom: 'none',
+        },
+    },
+    '& .MuiAutocomplete-input': {
+        padding: '10px',
+    },
+    '& .MuiAutocomplete-root.Mui-focused': {
+        padding: '10px',
+        color: '#696f8c',
+    },
+});
+
+export const customInputLabel: SxProps<Theme> = () => ({
+    color: '#696f8c',
+    fontFamily: 'Poppins, sans-serif',
+    '&.Mui-focused': {
+        color: '#696f8c',
+    },
+});
+
+export const MessageError: SxProps<Theme> = () => ({
+    color: 'red',
+    fontSize: '0.875rem',
+    marginTop: '0.25rem',
+});
+
+export const registerButton: SxProps<Theme> = (theme) => ({
+    mr: 0,
+    margin: '1rem 0',
+    fontFamily: 'Roboto, monospace',
+    fontSize: '1.3rem',
+    padding: '0.5rem',
+    backgroundColor: '#D9EEFF',
+    color: '#185D8E',
+    fontWeight: 700,
+    border: 'solid 2px #185D8E',
+    borderRadius: '7px',
+    boxShadow: '4px 4px 0px 1px rgba(0, 111, 255, 0.2)',
+    textAlign: 'center',
+    width: '100%',
+    maxWidth: '150px',
+    whiteSpace: 'nowrap',
+    transition: 'transform 0.3s ease-in-out',
+    '&:hover': {
+        backgroundColor: '#C0E3FF',
+        borderColor: '#185D8E',
+        borderWidth: '2px',
+        transform: 'scale(1.02)',
+    },
+    [theme.breakpoints.down('lg')]: {
+        padding: '0.5rem',
+        fontSize: '1rem',
+        minWidth: '200px',
+    },
+    [theme.breakpoints.down('md')]: {
+        margin: '0.5rem',
+        padding: '0.5rem',
+        fontSize: '1rem',
+        minWidth: '200px',
+    },
+    [theme.breakpoints.down('sm')]: {
+        margin: '0.5rem',
+        padding: '0.8rem',
+        fontSize: '1rem',
+        minWidth: '200px',
+    },
+});

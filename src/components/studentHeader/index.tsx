@@ -7,7 +7,6 @@ import {
     IconButton,
     Drawer,
     Tooltip,
-    Avatar,
     Menu,
     MenuItem,
     List,
@@ -28,12 +27,12 @@ import {
 } from '@mui/icons-material';
 import { AuthContext } from '../../contexts/auth';
 import { useMediaQuery } from '@mui/material';
-import { decryptData } from '../../services/encryptionService';
 import LanguageMenu from '../translationButton';
 import { Link as ScrollLink } from 'react-scroll';
 import { linkButtonMobile, logo } from './styles';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import AvatarUserStudent from '../avatarUser/indexStudent';
 
 const styles = {
     logo: {
@@ -52,7 +51,8 @@ const styles = {
     },
     welcomeText: {
         mr: 2,
-        color: 'white',
+        color: 'black',
+        fontFamily: 'Poppins, sans-serif',
     },
     linkButton: {
         color: 'white',
@@ -62,20 +62,18 @@ const styles = {
 };
 
 function StudentHeader() {
+
     const { t } = useTranslation();
     const isMobile = useMediaQuery('(max-width:600px)');
     const [drawerOpen, setDrawerOpen] = useState(false);
 
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-    // const [anchorElTeste, setAnchorElTeste] = useState<null | HTMLElement>(null);
     const authContext = useContext(AuthContext);
 
     if (!authContext) {
         return null;
     }
     const { logout } = authContext;
-    const studentData = authContext.student ? decryptData(authContext.student) : null;
-    const student = studentData ? JSON.parse(studentData) : null;
 
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElUser(event.currentTarget);
@@ -210,7 +208,14 @@ function StudentHeader() {
                                     {/* Menu de Logout e Avatar para telas maiores */}
                                     <Tooltip title="Opções de Perfil">
                                         <IconButton onClick={handleOpenUserMenu} sx={styles.avatarButton}>
-                                            <Avatar alt={student ? student.nome : 'User Avatar'} src="/static/images/avatar/2.jpg" />
+                                            <AvatarUserStudent
+                                                sx={{
+                                                    width: '50px',
+                                                    height: '50px',
+                                                    overflow: 'hidden',
+                                                    objectFit: 'cover'
+                                                }}
+                                            />
                                         </IconButton>
                                     </Tooltip>
 

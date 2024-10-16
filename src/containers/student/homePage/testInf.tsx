@@ -2,12 +2,12 @@ import { Box, CardMedia, Grid, IconButton, Typography, useMediaQuery } from '@mu
 import React, { useState } from 'react';
 import { useSwipeable } from 'react-swipeable'; // Importar a biblioteca de swipe
 import Voquinho from '../../../assets/img/polvo-voquinho-de-oculos.png';
-import Realista from '../../../assets/img/Realista.png';
+import Realista from '../../../assets/img/perfil-realista.png';
 import Investigativo from '../../../assets/img/Investigativo.png';
-import Artistico from '../../../assets/img/Artistico.png';
+import Artistico from '../../../assets/img/perfil-artistico.png';
 import Social from '../../../assets/img/Social.png';
-import Empreendedor from '../../../assets/img/Empreendedor.png';
-import Convencional from '../../../assets/img/Convencional.png';
+import Empreendedor from '../../../assets/img/perfil-empreendedor.png';
+import Convencional from '../../../assets/img/perfil-convencional.png';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { BoxCardHollandStyles,
@@ -110,17 +110,18 @@ export const TestInformation: React.FC = () => {
                             </Grid>
                         </Grid>
                         {!isMobile && (
-                            <CardMedia
-                                component="img"
-                                height="auto"
-                                image={data[index].src}
-                                alt={t(data[index].title)}
-                                sx={{
-                                    objectFit: 'contain',
-                                    maxWidth: '40%',
-                                    height: 'auto',
-                                }}
-                            />
+                            <Box sx={{ width: '500px', height: '400px', overflow: 'hidden' }}>
+                                <CardMedia
+                                    component="img"
+                                    image={data[index].src}
+                                    alt={t(data[index].title)}
+                                    sx={{
+                                        objectFit: 'contain',
+                                        width: '100%',
+                                        height: '100%',
+                                    }}
+                                />
+                            </Box>
 
                         )}
                         <IconButton onClick={handleNextClick}>

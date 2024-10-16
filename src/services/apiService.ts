@@ -60,6 +60,11 @@ export const cadastrarEstudante = async (entidade: string, data: object) => {
     const response = await axios.post(`${API_URL}/${entidade}/cadastro`, data);
     return { data: response.data, status: response.status };
 };
+// Atualizar estudante
+export const atualizarEstudante = async (entidade: string, data: object) => {
+    const response = await axios.put(`${API_URL}/${entidade}`, data);
+    return { data: response.data, status: response.status };
+};
 
 // Enviar email para recuperação de senha
 export const recuperarSenha = async (email: string) => {
@@ -77,4 +82,21 @@ export const redefinirSenha = async (token: string, senha:string) => {
 export const loginConta = async (entidade: string, data: object) => {
     const response = await axios.post(`${API_URL}/auth/${entidade}/login`, data);
     return { data: response.data, status: response.status };
+};
+
+// Fazer o upload de foto
+export const adicionarImagem = async (entidade: string, estudanteId:number, arquivo: FormData) => {
+    const response = await axios.post(`${API_URL}/${entidade}/adicionarFoto?id=${encodeURIComponent(estudanteId)}`, arquivo, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    });
+    return { data: response.data, status: response.status };
+};
+
+// Recuperar foto
+export const recuperarImagem = async (nomeArquivo: string) => {
+    const response = await axios.get(`${API_URL}/arquivos/download/${nomeArquivo}`, { responseType: 'blob' });
+    const imageUrl = URL.createObjectURL(new Blob([response.data]));
+    return imageUrl;
 };

@@ -1,5 +1,6 @@
 import { SxProps, Theme } from '@mui/material';
-import backgorundImage from '../../../assets/img/background.png';
+import backgorundImage1 from '../../../assets/img/imagem-principal2.png';
+import backgorundImage2 from '../../../assets/img/background.png';
 
 const globalBoxStyles: SxProps<Theme> = (theme) => ({
     minHeight: '100vh',
@@ -31,7 +32,10 @@ const globalBoxStyles: SxProps<Theme> = (theme) => ({
 export const homePageBoxStyles: SxProps<Theme> = (theme) => ({
     //TODO(beatriz.andrade): adicionar backgorund
     ...globalBoxStyles(theme),
-    backgroundImage: `url(${backgorundImage})`,
+    backgroundImage: `url(${backgorundImage1})`,
+    [theme.breakpoints.down('lg')]: {
+        backgroundImage: `url(${backgorundImage2})`,
+    },
 });
 
 export const gridIndexContainerStyles: SxProps<Theme> = (theme) => ({
@@ -117,15 +121,22 @@ export const buttonStyles: SxProps<Theme> = (theme) => ({
 
 // Style About-----------------------------------------------------
 export const aboutBoxStyles: SxProps<Theme> = (theme) => ({
-    //TODO(beatriz.andrade): adicionar backgorund
     ...globalBoxStyles(theme),
+});
+
+export const container: SxProps<Theme> = () => ({
+    display: 'flex',
+    flexDirection: 'grid',
+    alignItems: 'center',
+    gap: '2rem',
 });
 
 export const gridAboutContainerStyles: SxProps<Theme> = (theme) => ({
     width: '100%',
     textAlign: 'left',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
         alignItems: 'center',
+        padding: '0rem 3rem',
     },
 });
 
@@ -174,7 +185,7 @@ export const typographyBodyStyles: SxProps<Theme> = (theme) => ({
 export const faqBoxStyles: SxProps<Theme> = (theme) => ({
     //TODO(beatriz.andrade): adicionar backgorund
     ...globalBoxStyles(theme),
-    backgroundImage: `url(${backgorundImage})`,
+    backgroundImage: `url(${backgorundImage2})`,
     paddingTop: '3rem',
     paddingBottom: '5rem',
 });
