@@ -18,7 +18,9 @@ import {
     StepLabel,
     Grid,
     Modal,
+    InputAdornment,
 } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
 
 import { useInstitution } from '../../../context/institutionContext';
 import { buscarCursos } from '../../../services/courseService';
@@ -27,7 +29,7 @@ import Step from '@mui/material/Step';
 import { CourseForm } from '../../../types/courseTypes';
 import { useNavigate } from 'react-router-dom';
 import AdminHeader from '../../../components/adminHeader';
-import Footer from '../../../components/adminFooter';
+import Footer from '../../../components/homeFooter';
 import * as yup from 'yup';
 
 const notaMecSchema = yup
@@ -60,7 +62,7 @@ export const BuscaCurso: React.FC = () => {
 
     useEffect(() => {
         if (!institutionId) {
-            navigate('/cadastro');
+            // navigate('/cadastro');
         } else {
             const fetchCourses = async () => {
                 setLoading(true);
@@ -76,6 +78,21 @@ export const BuscaCurso: React.FC = () => {
             fetchCourses();
         }
     }, [institutionId, navigate]);
+
+    // useEffect(() => {
+    //     const fetchCourses = async () => {
+    //         setLoading(true);
+    //         try {
+    //             const fetchedCourses = await buscarCursos(); // Busca cursos independentemente de institutionId
+    //             setCourses(fetchedCourses);
+    //             setFilteredCourses(fetchedCourses);
+    //         } catch (error) {
+    //             console.error('Failed to fetch courses:', error);
+    //         }
+    //         setLoading(false);
+    //     };
+    //     fetchCourses();
+    // }, []);
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
@@ -164,7 +181,8 @@ export const BuscaCurso: React.FC = () => {
     return (
         <>
             <AdminHeader />
-            <Box sx={{ marginTop: '20px' }}>
+            <Box sx={{ marginTop: '20px', minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: '#F3F3F3' }}>
+                <Box sx={{ height: 90 }}></Box>
                 <Box sx={{ width: '100%' }}>
                     <Stepper activeStep={1} alternativeLabel>
                         {steps.map((label) => (
@@ -186,18 +204,48 @@ export const BuscaCurso: React.FC = () => {
                             marginBottom: '40px',
                         }}
                     >
-                        <Typography variant="h4" sx={{ mb: 2 }}>
-                            Cursos da Instituição
-                        </Typography>
-                        <TextField
-                            label="Pesquisar Curso"
-                            variant="standard"
-                            value={searchTerm}
-                            onChange={handleSearchChange}
-                            fullWidth
-                        />
+                        <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', marginTop: 5, gap: 2, marginBottom: '30px' }}>
+                            <TextField
+                                label="Pesquisar Curso"
+                                variant="outlined"
+                                sx={{ width: '100%', fontFamily: 'Roboto, monospace', }}
+
+                                value={searchTerm}
+                                onChange={handleSearchChange}
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <SearchIcon />
+                                        </InputAdornment>
+                                    ),
+                                }}
+
+                            />
+                            <Button variant="contained" sx={{
+                                height: '50px',
+                                fontSize: '17px',
+                                fontFamily: 'Roboto, monospace',
+                                color: 'white',
+                                backgroundColor: '#185D8E',
+                                fontWeight: 'bold',
+                                '&:hover': {
+                                    backgroundColor: '#104A6F',
+                                },
+                            }} onClick={handleOpenConfirmModal}>
+                                Adicionar
+                            </Button>
+                        </Box>
                         {loading ? (
-                            <CircularProgress />
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    height: '80vh', // Altura de toda a tela
+                                }}
+                            >
+                                <CircularProgress />
+                            </Box>
                         ) : (
                             <List>
                                 {filteredCourses.map((course) => (
@@ -242,21 +290,6 @@ export const BuscaCurso: React.FC = () => {
                                 ))}
                             </List>
                         )}
-                        <Grid container spacing={2} justifyContent="space-between">
-                            <Grid item xs={6} display="flex" justifyContent="flex-start">
-                                <Button
-                                    variant="outlined"
-                                    onClick={() => navigate('/cadastro')}
-                                >
-                                    Voltar
-                                </Button>
-                            </Grid>
-                            <Grid item xs={6} display="flex" justifyContent="flex-end">
-                                <Button variant="contained" onClick={handleOpenConfirmModal}>
-                                    Avançar
-                                </Button>
-                            </Grid>
-                        </Grid>
                     </Box>
                 </Box>
             </Box>
@@ -281,24 +314,39 @@ export const BuscaCurso: React.FC = () => {
                         maxWidth: 400,
                     }}
                 >
-                    <Typography variant="h6" gutterBottom>
+                    <Typography variant="h6" gutterBottom sx={{ textAlign: 'center', fontWeight: 'bold' }}>
                         Confirmação
                     </Typography>
-                    <Typography variant="body1" gutterBottom>
+                    <Typography variant="body1" gutterBottom sx={{ marginBottom: '20px', textAlign: 'center' }}>
                         Você está prestes a adicionar os cursos selecionados à instituição.
                         Deseja continuar?
                     </Typography>
                     <Grid container spacing={2} justifyContent="space-between">
-                        <Grid item xs={6} display="flex" justifyContent="flex-start">
-                            <Button variant="outlined" onClick={handleCloseConfirmModal}>
-                                Cancelar
+                        <Grid item xs={6} display="flex" justifyContent="center">
+                            <Button variant="contained" onClick={handleConfirmCourses} sx={{
+                                height: '35px',
+                                fontSize: '17px',
+                                fontFamily: 'Roboto, monospace',
+                                color: 'white',
+                                backgroundColor: '#185D8E',
+                                fontWeight: 'bold'
+                            }}>
+                                Sim
                             </Button>
                         </Grid>
-                        <Grid item xs={6} display="flex" justifyContent="flex-end">
-                            <Button variant="contained" onClick={handleConfirmCourses}>
-                                Confirmar
+                        <Grid item xs={6} display="flex" justifyContent="center">
+                            <Button variant="contained" onClick={handleCloseConfirmModal} sx={{
+                                height: '35px',
+                                fontSize: '17px',
+                                fontFamily: 'Roboto, monospace',
+                                color: 'white',
+                                backgroundColor: '#185D8E',
+                                fontWeight: 'bold'
+                            }}>
+                                Não
                             </Button>
                         </Grid>
+
                     </Grid>
                 </Box>
             </Modal>

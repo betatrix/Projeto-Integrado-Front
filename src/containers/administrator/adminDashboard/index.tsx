@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Subtitle, SquareDisplay, SquareButton, TextButton } from './styles';
-import { Grid, Box } from '@mui/material';
+import { Grid, Box} from '@mui/material';
 import AdminHeader from '../../../components/adminHeader';
 import Footer from '../../../components/adminFooter';
 import { Link } from 'react-router-dom';
@@ -108,7 +108,7 @@ const Dashboard = () => {
                             <Link to="/gerenciamento-curso" style={{ textDecoration: 'none' }}>
                                 <SquareButton>
                                     <TextButton>
-                                    Cursos
+                                        Cursos
                                     </TextButton>
                                     <MyIcon />
                                 </SquareButton>

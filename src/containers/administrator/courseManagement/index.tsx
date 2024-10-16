@@ -17,20 +17,16 @@ import {
     TableCell,
     TableContainer,
     TableRow,
+    InputAdornment,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AdminHeader from '../../../components/adminHeader';
-import Footer from '../../../components/adminFooter';
-import {
-    buscarCursosListaCompleta,
-    editarCurso,
-    buscarAreas,
-    excluirCurso,
-} from '../../../services/courseService';
+import Footer from '../../../components/homeFooter';
+import { buscarCursosListaCompleta, editarCurso, buscarAreas, excluirCurso } from '../../../services/courseService';
 import { CourseForm, Area } from '../../../types/courseTypes';
+import SearchIcon from '@mui/icons-material/Search';
 import { Link } from 'react-router-dom';
-import BackButton from '../../../components/backPageButton';
 
 const CourseList: React.FC = () => {
     const [courses, setCourses] = useState<CourseForm[]>([]);
@@ -112,16 +108,12 @@ const CourseList: React.FC = () => {
 
             try {
                 await editarCurso(updatedCourse);
-                setCourses(
-                    courses.map((course) =>
-                        course.id === updatedCourse.id ? updatedCourse : course
-                    )
-                );
-                setFilteredCourses(
-                    filteredCourses.map((course) =>
-                        course.id === updatedCourse.id ? updatedCourse : course
-                    )
-                );
+                setCourses(courses.map((course) =>
+                    course.id === updatedCourse.id ? updatedCourse : course
+                ));
+                setFilteredCourses(filteredCourses.map((course) =>
+                    course.id === updatedCourse.id ? updatedCourse : course
+                ));
                 handleEditModalClose();
             } catch (error) {
                 console.error('Erro ao atualizar curso:', error);
@@ -149,54 +141,72 @@ const CourseList: React.FC = () => {
     return (
         <>
             <AdminHeader />
-            <Box
-                sx={{
-                    marginTop: '20px',
-                    marginBottom: '60px',
-                }}
-            >
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 5, paddingLeft: 20, paddingRight: 5 }}>
-                    <Link to='/admin'>
-                        <BackButton></BackButton>
-                    </Link>
-                </Box>
-                <Typography variant="h5" sx={{ marginBottom: 2, textAlign: 'center' }}>
-                    Gerenciamento de Cursos
-                </Typography>
-                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 5, paddingLeft: 20, paddingRight: 5 }}>
+            <Box sx={{ marginTop: '20px', minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: '#F3F3F3' }}>
+                <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', marginTop: 20, gap: 2, paddingLeft: 65 }}>
                     <TextField
                         label="Pesquisar cursos"
                         variant="outlined"
-                        sx={{ width: '70%' }}
+                        sx={{ width: '55%', fontFamily: 'Roboto, monospace', }}
                         value={searchTerm}
                         onChange={handleSearchChange}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <SearchIcon />
+                                </InputAdornment>
+                            ),
+                        }}
                     />
+                    <Link to="/cadastro-curso">
+                        <Button sx={{
+                            height: '50px',
+                            fontSize: '17px',
+                            fontFamily: 'Roboto, monospace',
+                            color: 'white',
+                            backgroundColor: '#185D8E',
+                            fontWeight: 'bold',
+                            '&:hover': {
+                                backgroundColor: '#104A6F',
+                            },
+                        }}>Cadastrar</Button>
+                    </Link>
                 </Box>
-                <Box sx={{ paddingTop: 10, paddingLeft: 20, paddingRight: 20 }}>
+                <Box sx={{ paddingTop: 10, paddingLeft: 45, paddingRight: 45, marginBottom: 10 }}>
                     {loading ? (
-                        <CircularProgress />
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                marginTop: '60px'
+                            }}
+                        >
+                            <CircularProgress />
+                        </Box>
                     ) : (
                         <TableContainer >
                             <Table>
                                 <TableRow>
-                                    <TableCell>Cursos</TableCell>
-                                    <TableCell>Status</TableCell>
-                                    <TableCell align="right">Ações</TableCell>
+                                    <TableCell sx={{ borderRight: '1px solid #ddd', textAlign: 'center', fontWeight: 'bold', color: '#757575' }}>AÇÕES</TableCell>
+                                    <TableCell sx={{ borderRight: '1px solid #ddd', fontWeight: 'bold', color: '#757575' }}>CURSOS</TableCell>
+                                    <TableCell sx={{ textAlign: 'center', fontWeight: 'bold', color: '#757575' }}>STATUS</TableCell>
                                 </TableRow>
 
                                 <TableBody>
                                     {filteredCourses.map((course) => (
                                         <TableRow key={course.id}>
-                                            <TableCell>{course.descricao}</TableCell>
-                                            <TableCell>{course.ativo ? 'Ativo' : 'Inativo'}</TableCell>
-                                            <TableCell align="right">
+
+                                            <TableCell align="center" sx={{borderRight: '1px solid #ddd'}}>
                                                 <IconButton onClick={() => handleEditModalOpen(course)}>
-                                                    <EditIcon />
+                                                    <EditIcon sx={{ fontSize: 18 }} />
                                                 </IconButton>
                                                 <IconButton onClick={() => handleDeleteModalOpen(course)}>
-                                                    <DeleteIcon />
+                                                    <DeleteIcon sx={{ fontSize: 18 }} />
                                                 </IconButton>
                                             </TableCell>
+
+                                            <TableCell sx={{ borderRight: '1px solid #ddd' }}>{course.descricao}</TableCell>
+                                            <TableCell sx={{ textAlign: 'center' }}>{course.ativo ? 'Ativo' : 'Inativo'}</TableCell>
                                         </TableRow>
                                     ))}
                                 </TableBody>

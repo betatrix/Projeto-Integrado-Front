@@ -21,7 +21,8 @@ export type InstituicaoForm = {
   };
 
 export enum TipoInstituicaoCurso {
-    SUPERIOR = 'SUPERIOR',
-    TECNICO = 'TECNICO',
-    AMBOS = 'AMBOS'
+  INDEFINIDO = 'Selecione o Tipo de Ensino',
+  SUPERIOR = 'SUPERIOR',
+  TECNICO = 'TECNICO',
+  AMBOS = 'AMBOS',
 }

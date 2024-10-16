@@ -171,7 +171,7 @@ const StudentDashboard: React.FC = () => {
 
     return (
         <>
-            <Box component="main" sx={{ flexGrow: 1, backgroundColor: '#F3F3F3', minHeight: '80vh' }}>
+            <Box component="main" sx={{ flexGrow: 1, backgroundColor: 'white', minHeight: '80vh' }}>
                 <DrawerHeader />
                 <Box>
                     <CustomDrawer open={open} handleDrawerOpen={handleDrawerOpen} handleDrawerClose={handleDrawerClose} />
@@ -217,17 +217,20 @@ const StudentDashboard: React.FC = () => {
                                     alignItems: 'center',
                                     width: '34.375rem',
                                     height: '20rem',
+                                    borderRadius: '10px',
 
                                     backgroundColor: 'rgb(141, 169, 189)',
                                     [theme.breakpoints.down('sm')]: {
                                         width: '18rem',
                                         height: '11rem',
                                         marginBottom: '1rem',
+                                        borderRadius: '5px',
                                     },
                                     [theme.breakpoints.down('md')]: {
                                         width: '18rem',
                                         height: '11rem',
                                         marginBottom: '1rem',
+                                        borderRadius: '5px',
                                     },
                                 }}>
                                     {showLockIcon ? (

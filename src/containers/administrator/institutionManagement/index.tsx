@@ -13,7 +13,8 @@ import {
     Grid,
     TableRow,
     InputAdornment,
-    TextField
+    TextField,
+    CircularProgress
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -113,12 +114,19 @@ const InstitutionManagement: React.FC = () => {
 
     // search API datas
     const [searchValue, setSearchValue] = useState<string>('');
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         const searchInstitution = async () => {
-            const response = await fetch(`${apiUrl}/instituicao?nome=${searchValue}`);
-            const data = await response.json();
-            setInstitutions(data);
+            setLoading(true); // Ativa o estado de carregamento
+            try {
+                const response = await fetch(`${apiUrl}/instituicao?nome=${searchValue}`);
+                const data = await response.json();
+                setInstitutions(data);
+            } catch (error) {
+                console.error('Erro ao buscar instituições:', error);
+            }
+            setLoading(false); // Desativa o estado de carregamento
         };
         searchInstitution();
     }, [searchValue]);
@@ -160,94 +168,109 @@ const InstitutionManagement: React.FC = () => {
 
                 <Box sx={{ paddingTop: 10, paddingLeft: 45, paddingRight: 45, marginBottom: 10 }}>
 
-                    <Table>
+                    {loading ? (
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                marginTop: '60px'
+                            }}
+                        >
+                            <CircularProgress />
+                        </Box>
+                    ) : (
 
-                        <TableHead>
+                        <Table>
 
-                            <TableRow>
+                            <TableHead>
 
-                                <TableCell align="center" sx={{ borderRight: '1px solid #ddd' }}>
-                                    <Button
-                                        variant="contained"
-                                        color="secondary"
-                                        sx={{
-                                            color: 'white',
-                                            backgroundColor: '#185D8E',
-                                            fontWeight: 'bold',
-                                            fontFamily: 'Roboto, monospace',
-                                        }}
-                                        disabled={isDeleteButtonDisabled}
-                                        onClick={handleDeleteMultipleModalOpen}
-                                    >
-                                        Excluir
-                                    </Button>
-                                </TableCell>
-                                <TableCell sx={{ borderRight: '1px solid #ddd', textAlign: 'center', fontWeight: 'bold', color: '#757575' }}>ID</TableCell>
-                                <TableCell sx={{ borderRight: '1px solid #ddd', fontWeight: 'bold', color: '#757575' }}>NOME</TableCell>
-                                <TableCell sx={{ textAlign: 'center', fontWeight: 'bold', color: '#757575' }}>STATUS</TableCell>
+                                <TableRow>
 
-                            </TableRow>
+                                    <TableCell align="center" sx={{ borderRight: '1px solid #ddd' }}>
+                                        <Button
+                                            variant="contained"
+                                            color="secondary"
+                                            sx={{
+                                                color: 'white',
+                                                backgroundColor: '#185D8E',
+                                                fontWeight: 'bold',
+                                                fontFamily: 'Roboto, monospace',
+                                            }}
+                                            disabled={isDeleteButtonDisabled}
+                                            onClick={handleDeleteMultipleModalOpen}
+                                        >
+                                            Excluir
+                                        </Button>
+                                    </TableCell>
+                                    <TableCell sx={{ borderRight: '1px solid #ddd', textAlign: 'center', fontWeight: 'bold', color: '#757575' }}>ID</TableCell>
+                                    <TableCell sx={{ borderRight: '1px solid #ddd', fontWeight: 'bold', color: '#757575' }}>NOME</TableCell>
+                                    <TableCell sx={{ textAlign: 'center', fontWeight: 'bold', color: '#757575' }}>STATUS</TableCell>
 
-                        </TableHead>
+                                </TableRow>
 
-                        <TableBody>
+                            </TableHead>
 
-                            {institutions.map((institution) => (
+                            <TableBody>
 
-                                searchValue.trim() === '' || institution.nome.toLowerCase().includes(searchValue.toLowerCase()) ? (
-                                    console.log('Valor de ativo:', institution.ativo),
+                                {institutions.map((institution) => (
 
-                                    <TableRow key={institution.id} onClick={() => handleDetailModalOpen(institution)}>
+                                    searchValue.trim() === '' || institution.nome.toLowerCase().includes(searchValue.toLowerCase()) ? (
+                                        console.log('Valor de ativo:', institution.ativo),
 
-                                        <TableCell align="center" sx={{ borderRight: '1px solid #ddd' }}>
-                                            <Checkbox
-                                                onClick={(e) => e.stopPropagation()}
-                                                checked={selectedInstitutions.includes(institution.id)}
-                                                onChange={() => handleCheckboxChange(institution.id)}
-                                                sx={{ '& .MuiSvgIcon-root': { fontSize: 18 } }}
-                                            />
-                                            <IconButton>
-                                                <EditIcon onClick={(e) => { e.stopPropagation(); handleEditModalOpen(institution); }} sx={{ fontSize: 18 }} />
-                                            </IconButton>
+                                        <TableRow key={institution.id} onClick={() => handleDetailModalOpen(institution)}>
 
-                                            <IconButton onClick={(e) => { e.stopPropagation(); handleDeleteModalOpen(institution); }} >
-                                                <DeleteIcon sx={{ fontSize: 18 }} />
-                                            </IconButton>
+                                            <TableCell align="center" sx={{ borderRight: '1px solid #ddd' }}>
+                                                <Checkbox
+                                                    onClick={(e) => e.stopPropagation()}
+                                                    checked={selectedInstitutions.includes(institution.id)}
+                                                    onChange={() => handleCheckboxChange(institution.id)}
+                                                    sx={{ '& .MuiSvgIcon-root': { fontSize: 18 } }}
+                                                />
+                                                <IconButton>
+                                                    <EditIcon onClick={(e) => { e.stopPropagation(); handleEditModalOpen(institution); }} sx={{ fontSize: 18 }} />
+                                                </IconButton>
 
-                                        </TableCell>
+                                                <IconButton onClick={(e) => { e.stopPropagation(); handleDeleteModalOpen(institution); }} >
+                                                    <DeleteIcon sx={{ fontSize: 18 }} />
+                                                </IconButton>
 
-                                        <TableCell sx={{ borderRight: '1px solid #ddd', textAlign: 'center' }}>{institution.id}</TableCell>
-                                        <TableCell sx={{ borderRight: '1px solid #ddd' }}>
-                                            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                                <Typography sx={{
-                                                    fontSize: '15px', color: '#757575',
-                                                }}>{institution.nome}</Typography>
-                                                <Button
-                                                    variant="text"
-                                                    size="small"
-                                                    onClick={(e) => { e.stopPropagation(); handleDetailModalOpen(institution); }}
-                                                    sx={{
-                                                        fontSize: '20px', color: '#185D8E',
-                                                        fontWeight: 'bold'
-                                                    }}
-                                                >
-                                                    +
-                                                </Button>
-                                            </Box>
-                                        </TableCell>
-                                        <TableCell sx={{ textAlign: 'center' }}>{institution.ativo ? 'Ativo' : 'Inativo'}</TableCell>
+                                            </TableCell>
 
-                                    </TableRow>
-                                ) : null
-                            ))}
+                                            <TableCell sx={{ borderRight: '1px solid #ddd', textAlign: 'center' }}>{institution.id}</TableCell>
+                                            <TableCell sx={{ borderRight: '1px solid #ddd' }}>
+                                                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                    <Typography sx={{
+                                                        fontSize: '15px', color: '#757575',
+                                                    }}>{institution.nome}</Typography>
+                                                    <Button
+                                                        variant="text"
+                                                        size="small"
+                                                        onClick={(e) => { e.stopPropagation(); handleDetailModalOpen(institution); }}
+                                                        sx={{
+                                                            fontSize: '20px', color: '#185D8E',
+                                                            fontWeight: 'bold'
+                                                        }}
+                                                    >
+                                                        +
+                                                    </Button>
+                                                </Box>
+                                            </TableCell>
+                                            <TableCell sx={{ textAlign: 'center' }}>{institution.ativo ? 'Ativo' : 'Inativo'}</TableCell>
 
-                        </TableBody>
+                                        </TableRow>
+                                    ) : null
+                                ))}
 
-                    </Table>
+                            </TableBody>
+
+                        </Table>
+                    )}
 
                 </Box>
+
             </Box>
-            <Footer/>
+            <Footer />
 
             {/*details modal*/}
             <Modal

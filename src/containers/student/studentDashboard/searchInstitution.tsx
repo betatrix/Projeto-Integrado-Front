@@ -13,7 +13,8 @@ import {
     InputLabel,
     FormControl,
     Button,
-    IconButton
+    IconButton,
+    InputAdornment
 } from '@mui/material';
 import { FilterList } from '@mui/icons-material'; // Ícone de filtro
 import Footer from '../../../components/homeFooter';
@@ -23,6 +24,7 @@ import { DetailTypography, GridContainer, ListBox, SearchBox, StyledBox, StyledM
 import { useTranslation } from 'react-i18next';
 import CustomDrawer from '../../../components/sidemenu/CustomDrawer';
 import StudentHeader from '../../../components/studentHeader';
+import SearchIcon from '@mui/icons-material/Search';
 import styled from 'styled-components';
 
 interface Curso {
@@ -148,7 +150,7 @@ const InstitutionList: React.FC = () => {
 
     return (
         <>
-            <Box component="main" sx={{ flexGrow: 1, p: 3, backgroundColor: '#F3F3F3', minHeight: '100vh' }}>
+            <Box component="main" sx={{ flexGrow: 1, p: 3, backgroundColor: 'white', minHeight: '100vh' }}>
                 <CustomDrawer open={open} handleDrawerOpen={handleDrawerOpen} handleDrawerClose={handleDrawerClose} />
                 <StudentHeader />
                 <DrawerHeader />
@@ -158,12 +160,19 @@ const InstitutionList: React.FC = () => {
                             {t('listInstitutionTitle')}
                         </Typography>
                     </StyledTypography> */}
-                    <SearchBox sx={{ display: 'flex', alignItems: 'center' }}>
+                    <SearchBox sx={{ display: 'flex', alignItems: 'center', marginTop: 10 }}>
                         <TextField
                             label={t('listInstitutionSearch')}
-                            variant='standard'
+                            variant='outlined'
                             sx={{ flexGrow: 1 }}
                             onChange={(e) => setSearchValue(e.target.value)}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <SearchIcon />
+                                    </InputAdornment>
+                                ),
+                            }}
                         />
                         <IconButton onClick={handleFilterModalOpen} sx={{ ml: 2 }}>
                             <FilterList />

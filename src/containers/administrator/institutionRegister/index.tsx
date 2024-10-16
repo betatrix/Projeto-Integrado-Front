@@ -11,7 +11,6 @@ import { cadastrarInstituicao } from '../../../services/institutionService';
 import AdminHeader from '../../../components/adminHeader';
 import Footer from '../../../components/homeFooter';
 import { TipoInstituicaoCurso } from '../../../types/institutionTypes';
-
 interface FormValues {
     nome: string;
     site: string;
@@ -45,7 +44,7 @@ export const CadastroInstituicao: React.FC = () => {
         formaIngresso: '',
         notaMec: null,
         sigla: '',
-        tipoInstituicaoCurso: TipoInstituicaoCurso.SUPERIOR, // Usando um valor do enum
+        tipoInstituicaoCurso: TipoInstituicaoCurso.INDEFINIDO, // Usando um valor do enum
         endereco: {
             logradouro: '',
             numero: '',
@@ -73,7 +72,10 @@ export const CadastroInstituicao: React.FC = () => {
             .matches(/^[A-Z]+$/, 'A sigla deve estar em letras maiúsculas')
             .required('A sigla é obrigatória'),
         tipoInstituicaoCurso: Yup.string()
-            .oneOf([TipoInstituicaoCurso.SUPERIOR, TipoInstituicaoCurso.TECNICO, TipoInstituicaoCurso.AMBOS], 'Selecione um tipo válido')
+            .oneOf(
+                [TipoInstituicaoCurso.SUPERIOR, TipoInstituicaoCurso.TECNICO, TipoInstituicaoCurso.AMBOS],
+                'Selecione um tipo válido'
+            )
             .required('O tipo de instituição é obrigatório'),
         endereco: Yup.object().shape({
             cep: Yup.string()
@@ -151,7 +153,7 @@ export const CadastroInstituicao: React.FC = () => {
                                 >
                                     <Form>
                                         <Box sx={{ '& .MuiTextField-root': { m: 1 } }}>
-                                            <Paper sx={{ marginTop: '30px', marginBottom: '30px', backgroundColor: 'white', paddingBottom: 3 }}>
+                                            <Paper sx={{ marginTop: '30px', marginBottom: '25px', backgroundColor: 'white', paddingBottom: 3 }}>
                                                 <Grid
                                                     container
                                                     spacing={2}
@@ -196,7 +198,7 @@ export const CadastroInstituicao: React.FC = () => {
                                                         <Field
                                                             component={TextField}
                                                             name="formaIngresso"
-                                                            label="Forma de Ingresso "
+                                                            label="Forma de Ingresso"
                                                             variant="standard"
                                                             size="small"
                                                             fullWidth
@@ -229,17 +231,14 @@ export const CadastroInstituicao: React.FC = () => {
                                                         />
                                                     </Grid>
                                                     {/* Novo Campo - Tipo de Instituição */}
-                                                    <Grid item xs={12}>
-                                                        <Grid container alignItems="center">
+                                                    <Grid item xs={12} >
+                                                        <Grid container alignItems="center" >
                                                             {/* Texto de instrução ao lado */}
-                                                            <Grid item xs={4}>
-                                                                <Typography variant="body1" color="textSecondary">
-                                                                Tipo de Instituição*
-                                                                </Typography>
-                                                            </Grid>
 
-                                                            {/* Campo de seleção */}
-                                                            <Grid item xs={8}>
+                                                            <Typography variant="body1" color="textSecondary" sx={{ marginLeft: '5px', marginTop: '20px' }}>
+                                                                Selecione o Tipo de Ensino*
+                                                            </Typography>
+                                                            <Box sx={{marginLeft: '13px'}}>
                                                                 <Field
                                                                     component={Select}
                                                                     name="tipoInstituicaoCurso"
@@ -252,22 +251,22 @@ export const CadastroInstituicao: React.FC = () => {
                                                                     sx={{ color: 'grey', marginLeft: '3px' }}
                                                                 >
                                                                     <MenuItem value="" disabled>
-                                                                        Selecione
+                                                                        Selecione o Tipo de Ensino
                                                                     </MenuItem>
-                                                                    <MenuItem value="SUPERIOR">Ensino Superior</MenuItem>
-                                                                    <MenuItem value="TECNICO">Ensino Técnico</MenuItem>
-                                                                    <MenuItem value="AMBOS">Ensino Técnico e Superior</MenuItem>
+                                                                    <MenuItem value="SUPERIOR">Superior</MenuItem>
+                                                                    <MenuItem value="TECNICO">Técnico</MenuItem>
+                                                                    <MenuItem value="AMBOS">Técnico e Superior</MenuItem>
                                                                 </Field>
-                                                            </Grid>
+                                                            </Box>
+
                                                         </Grid>
                                                     </Grid>
-
                                                 </Grid>
                                             </Paper>
                                         </Box>
 
                                         <Box sx={{ '& .MuiTextField-root': { m: 1 } }}>
-                                            <Paper sx={{ marginTop: '20px', marginBottom: '20px', backgroundColor: 'white', paddingBottom: 3 }}>
+                                            <Paper sx={{ marginTop: '20px', marginBottom: '15px', backgroundColor: 'white', paddingBottom: 3 }}>
                                                 <Grid
                                                     container
                                                     spacing={2}
@@ -379,7 +378,7 @@ export const CadastroInstituicao: React.FC = () => {
                                                 justifyContent="space-between"
                                                 sx={{ marginBottom: 10 }}
                                             >
-                                                <Grid
+                                                {/* <Grid
                                                     item
                                                     xs={6}
                                                     display="flex"
@@ -399,23 +398,25 @@ export const CadastroInstituicao: React.FC = () => {
                                                     >
                                                         Voltar
                                                     </Button>
-                                                </Grid>
+                                                </Grid> */}
                                                 <Grid
                                                     item
-                                                    xs={6}
+                                                    xs={12}
                                                     display="flex"
-                                                    justifyContent="flex-end"
+                                                    justifyContent="center"
                                                 >
                                                     <Button
                                                         type="submit"
                                                         disabled={isSubmitting}
                                                         variant="contained"
                                                         sx={{
-                                                            fontSize: '17px',
+                                                            fontSize: '20px',
                                                             fontFamily: 'Roboto, monospace',
                                                             color: 'white',
                                                             backgroundColor: '#185D8E',
                                                             fontWeight: 'bold',
+                                                            width: '100%',
+                                                            height: '45px',
                                                         }}
                                                     >
                                                         Avançar

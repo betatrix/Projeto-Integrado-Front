@@ -162,7 +162,7 @@ function StudentHeader() {
 
     return (
         <>
-            <AppBar style={{ backgroundColor: '#F3F3F3', boxShadow: 'none'}}>
+            <AppBar style={{ backgroundColor: 'white', boxShadow: 'none'}}>
                 <Container maxWidth={isMobile ? 'md' : 'xl'} disableGutters>
                     <Toolbar sx={{ display: 'flex', justifyContent: isMobile ? 'space-between' : 'flex-end', width: '100%'}}>
                         {isMobile && (

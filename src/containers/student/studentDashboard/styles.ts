@@ -203,15 +203,18 @@ export const paperResultStyles: SxProps<Theme> = (theme) => ({
     alignItems: 'center',
     display: 'flex',
     backgroundColor: '#A4BFD2',
+    borderRadius: '10px',
     [theme.breakpoints.down('sm')]: {
         backgroundColor: '#A4BFD2',
         width: '18rem',
         height: '11rem',
+        borderRadius: '5px',
     },
     [theme.breakpoints.down('md')]: {
         backgroundColor: '#A4BFD2',
         width: '18rem',
         height: '11rem',
+        borderRadius: '5px',
     },
 });
 
@@ -223,17 +226,20 @@ export const boxResultStyles: SxProps<Theme> = (theme) => ({
     width: '31.25rem',
     height: '20rem',
     boxShadow: 'none',
+    borderRadius: '10px',
     [theme.breakpoints.down('md')]: {
         flexDirection: 'column',
         alignItems: 'center',
         width: '15rem',
         height: '11rem',
+        borderRadius: '5px',
     },
     [theme.breakpoints.down('sm')]: {
         flexDirection: 'column',
         alignItems: 'center',
         width: '15rem',
         height: '11rem',
+        borderRadius: '5px',
     },
 });
 
@@ -266,10 +272,12 @@ export const paperPerfisStyles: SxProps<Theme> = (theme) => ({
     [theme.breakpoints.down('md')]: {
         width: '10.5rem',
         height: '4.7rem',
+        border: '2px solid rgb(11, 42, 64)',
     },
     [theme.breakpoints.down('sm')]: {
         width: '10.5rem',
         height: '4.7rem',
+        border: '2px solid rgb(11, 42, 64)',
     },
 });
 
@@ -311,11 +319,13 @@ export const paperTestStyles: SxProps<Theme> = (theme) => ({
     marginBottom: '1.25rem',
     marginTop: '3.3rem',
     border: '3px solid #0B2A40',
+    borderRadius: '10px',
     [theme.breakpoints.down('md')]: {
         width: '18rem',
         height: '9rem',
         gap: '0.5rem',
         marginBottom: '1rem',
+        borderRadius: '5px',
         border: '2px solid #0B2A40',
         '& .your-image-container img': {
             display: 'none'
@@ -326,6 +336,7 @@ export const paperTestStyles: SxProps<Theme> = (theme) => ({
         height: '9rem',
         gap: '0.5rem',
         marginBottom: '1rem',
+        borderRadius: '5px',
         border: '2px solid #0B2A40',
         '& .your-image-container img': {
             display: 'none'
@@ -352,6 +363,7 @@ export const paperBannerStyles: SxProps<Theme> = (theme) => ({
         height: '4rem',
         marginTop: '1.5rem',
         marginBottom: '2rem',
+        borderRadius: '5px',
     },
     [theme.breakpoints.down('sm')]: {
         width: '18rem',
@@ -359,6 +371,7 @@ export const paperBannerStyles: SxProps<Theme> = (theme) => ({
         padding: '2%',
         marginTop: '1.5rem',
         marginBottom: '2rem',
+        borderRadius: '5px',
     },
 });
 

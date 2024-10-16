@@ -20,6 +20,7 @@ import { InstitutionProvider } from '../context/institutionContext';
 import ResultadoTeste from '../containers/student/resultTest';
 import { AuthProvider } from '../contexts/auth';
 import PrivateRoute from '../components/routes/privateRoutes';
+import CadastroCurso from '../containers/administrator/courseRegister';
 
 export const AppRoutes = () => {
     return (
@@ -47,6 +48,7 @@ export const AppRoutes = () => {
                         {/* Private Routes - Admin */}
                         <Route element={<PrivateRoute requiredRole="ADMIN" />}>
                             <Route path="/cadastro" element={<CadastroInstituicao />} />
+                            <Route path="/cadastro-curso" element={<CadastroCurso />} />
                             <Route path="/cursos" element={<BuscaCurso />} />
                             <Route path='/politicas' element={<BuscaPoliticas />} />
                             <Route path='/gerenciamento-curso' element={<CourseList />} />
