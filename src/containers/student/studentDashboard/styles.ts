@@ -469,13 +469,14 @@ export const container: SxProps<Theme> = (theme) => ({
     },
 });
 
-export const header: SxProps<Theme> = () => ({
+export const header: SxProps<Theme> = (theme) => ({
     fontFamily: 'Poppins, sans-serif',
     fontWeight: 800,
     fontSize: '2.4rem',
-    textAlign: 'center',
     color: '#1b1f27',
-
+    [theme.breakpoints.down('md')]: {
+        textAlign: 'center',
+    },
 });
 
 export const registerContainer: SxProps<Theme> = (theme) => ({
