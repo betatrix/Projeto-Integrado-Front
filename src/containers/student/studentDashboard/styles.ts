@@ -444,18 +444,6 @@ export const ListBox = styled(Box)`
     padding-top: 0.4rem;  
 `;
 
-export const StyledModal = styled(Box)`
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    box-shadow: 1.2rem;  
-    padding: 1.6rem;  
-    width: 80%;
-    max-width: 30rem;  
-`;
-
 export const DetailTypography = styled(Box)`
     margin-top: 0.8rem;  
     text-align: center;
@@ -468,6 +456,143 @@ export const GridContainer = styled(Box)`
     flex-direction: column;
     gap: 0.8rem;  
 `;
+
+export const styledInput: SxProps<Theme> = () => ({
+    '& .MuiOutlinedInput-root': {
+        '& fieldset': {
+            borderColor: '#185D8E',
+
+        },
+        '&:hover fieldset': {
+            borderColor: '#185D8E'
+        },
+        '&.Mui-focused fieldset': {
+            borderColor: '#185D8E',
+        },
+    },
+    input: {
+        color: '#185D8E',
+    },
+    label: {
+        color: '#185D8E',
+        fontWeight: '600',
+        fontFamily: 'Poppins, sans-serif'
+    },
+});
+
+export const styledSelect: SxProps<Theme> = {
+    '& .MuiOutlinedInput-root': {
+        '& fieldset': {
+            borderColor: '#185D8E',
+        },
+        '&:hover fieldset': {
+            borderColor: '#185D8E',
+        },
+        '&.Mui-focused fieldset': {
+            borderColor: '#185D8E',
+        },
+    },
+    '.MuiSelect-select': {
+        color: '#185D8E',
+    },
+};
+
+export const styledModal: SxProps<Theme> = () => ({
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    padding: '2rem',
+    maxWidth: '30rem',
+    width: '100%',
+    backgroundColor: '#E3EDF4',
+    border: 'solid 3px #185D8E',
+    borderRadius: '12px',
+    boxShadow: '4px 4px 0px 1px rgba(0, 111, 255, 0.2)',
+});
+
+export const searchButton: SxProps<Theme> = (theme) => ({
+    mr: 0,
+    margin: '1rem 0',
+    fontFamily: 'Roboto, monospace',
+    fontSize: '1.2rem',
+    padding: '0.5rem',
+    backgroundColor: '#D9EEFF',
+    color: '#185D8E',
+    fontWeight: 700,
+    border: 'solid 2px #185D8E',
+    borderRadius: '7px',
+    boxShadow: '4px 4px 0px 1px rgba(0, 111, 255, 0.2)',
+    textAlign: 'center',
+    width: '100%',
+    maxWidth: '150px',
+    whiteSpace: 'nowrap',
+    transition: 'transform 0.3s ease-in-out',
+    '&:hover': {
+        backgroundColor: '#C0E3FF',
+        borderColor: '#185D8E',
+        borderWidth: '2px',
+        transform: 'scale(1.02)',
+    },
+    [theme.breakpoints.down('lg')]: {
+        padding: '0.5rem',
+        fontSize: '1rem',
+        minWidth: '200px',
+    },
+    [theme.breakpoints.down('md')]: {
+        margin: '0.5rem',
+        padding: '0.5rem',
+        fontSize: '1rem',
+        minWidth: '200px',
+    },
+    [theme.breakpoints.down('sm')]: {
+        margin: '0.5rem',
+        padding: '0.8rem',
+        fontSize: '1rem',
+        minWidth: '200px',
+    },
+});
+
+export const clearFilterButton: SxProps<Theme> = (theme) => ({
+    mr: 0,
+    margin: '1rem 0',
+    fontFamily: 'Roboto, monospace',
+    fontSize: '1.2rem',
+    padding: '0.5rem',
+    backgroundColor: '#F4BABB',
+    color: '#A80E11',
+    fontWeight: 700,
+    border: 'solid 2px #E82F32',
+    borderRadius: '7px',
+    boxShadow: '4px 4px 0px 1px rgba(0, 111, 255, 0.2)',
+    textAlign: 'center',
+    width: '100%',
+    maxWidth: '180px',
+    whiteSpace: 'nowrap',
+    transition: 'transform 0.3s ease-in-out',
+    '&:hover': {
+        backgroundColor: '#F1A8A9',
+        borderWidth: '2px',
+        transform: 'scale(1.02)',
+    },
+    [theme.breakpoints.down('lg')]: {
+        padding: '0.5rem',
+        fontSize: '1rem',
+        minWidth: '200px',
+    },
+    [theme.breakpoints.down('md')]: {
+        margin: '0.5rem',
+        padding: '0.5rem',
+        fontSize: '1rem',
+        minWidth: '200px',
+    },
+    [theme.breakpoints.down('sm')]: {
+        margin: '0.5rem',
+        padding: '0.8rem',
+        fontSize: '1rem',
+        minWidth: '200px',
+    },
+});
 
 // Style perfil do estudante-------------------------------------------------------
 
