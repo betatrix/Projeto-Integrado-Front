@@ -457,6 +457,48 @@ export const GridContainer = styled(Box)`
     gap: 0.8rem;  
 `;
 
+export const cardContent: SxProps<Theme> = (theme) => ({
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    height: '100%',
+    padding: '1.5rem',
+    backgroundColor: '#E3EDF4',
+    border: 'solid 3px #185D8E',
+    borderRadius: '14px',
+    boxShadow: '4px 4px 0px 1px rgba(0, 111, 255, 0.2)',
+    transition: 'transform 0.3s ease-in-out',
+    '&:hover': {
+        backgroundColor: '#A4BFD2',
+        transform: 'scale(1.02)',
+        cursor:'pointer',
+    },
+    [theme.breakpoints.down('md')]: {
+        margin: '2rem 0rem',
+    },
+});
+
+export const cardTitle: SxProps<Theme> = () => ({
+    fontFamily: 'Poppins, sans-serif',
+    fontWeight: 600,
+    fontSize: '1.4rem',
+    marginBottom: '1rem',
+    color: '#0B2A40',
+});
+
+export const cardText: SxProps<Theme> = () => ({
+    fontFamily: 'Poppins, sans-serif',
+    fontSize: '1rem',
+    color: '#0B2A40',
+});
+
+export const gridContainer: SxProps<Theme> = (theme) => ({
+    margin: '3rem 18rem',
+    [theme.breakpoints.down('md')]: {
+        margin: '2rem 0rem',
+    },
+});
+
 export const styledInput: SxProps<Theme> = () => ({
     '& .MuiOutlinedInput-root': {
         '& fieldset': {
@@ -505,8 +547,8 @@ export const styledModal: SxProps<Theme> = () => ({
     padding: '2rem',
     maxWidth: '30rem',
     width: '100%',
-    backgroundColor: '#E3EDF4',
-    border: 'solid 3px #185D8E',
+    backgroundColor: '#F6F6F6',
+    border: 'solid 3px #0B2A40',
     borderRadius: '12px',
     boxShadow: '4px 4px 0px 1px rgba(0, 111, 255, 0.2)',
 });
@@ -593,6 +635,35 @@ export const clearFilterButton: SxProps<Theme> = (theme) => ({
         minWidth: '200px',
     },
 });
+
+export const searchBox: SxProps<Theme> = () => ({
+    display: 'flex',
+    alignItems: 'center',
+    marginTop: 10
+});
+
+export const styledSearchSelect: SxProps<Theme> = {
+    '& .MuiOutlinedInput-root': {
+        '& fieldset': {
+            borderColor: '#185D8E',
+
+        },
+        '&:hover fieldset': {
+            borderColor: '#185D8E'
+        },
+        '&.Mui-focused fieldset': {
+            borderColor: '#185D8E',
+        },
+    },
+    input: {
+        color: '#185D8E',
+    },
+    label: {
+        color: '#185D8E',
+        fontWeight: '600',
+        fontFamily: 'Poppins, sans-serif'
+    },
+};
 
 // Style perfil do estudante-------------------------------------------------------
 
