@@ -14,18 +14,41 @@ import {
     FormControl,
     Button,
     IconButton,
-    InputAdornment
+    InputAdornment,
+    Card,
+    CardContent,
+    CardActions,
+    Pagination,
+    CircularProgress
 } from '@mui/material';
-import { Close, FilterList } from '@mui/icons-material'; // Ícone de filtro
+import { Add, Close, FilterList } from '@mui/icons-material';
 import Footer from '../../../components/homeFooter';
 import { Endereco, TipoInstituicaoCurso } from '../../../types/institutionTypes';
-import { buscarEntidades, buscarEntidadePorId, buscarCursosPorInstituicao } from '../../../services/apiService';
-import { clearFilterButton, DetailTypography, GridContainer, ListBox, SearchBox, searchButton, StyledBox, styledModal, styledInput, styledSelect } from './styles';
+import {
+    buscarEntidades,
+    buscarEntidadePorId,
+    buscarCursosPorInstituicao
+} from '../../../services/apiService';
+import {
+    clearFilterButton,
+    DetailTypography,
+    GridContainer,
+    SearchBox,
+    searchButton,
+    StyledBox,
+    styledModal,
+    styledInput,
+    styledSelect,
+    gridContainer,
+    cardContent,
+    cardTitle,
+    cardText,
+    searchBox,
+} from './styles';
 import { useTranslation } from 'react-i18next';
 import CustomDrawer from '../../../components/sidemenu/CustomDrawer';
 import StudentHeader from '../../../components/studentHeader';
 import SearchIcon from '@mui/icons-material/Search';
-import styled from 'styled-components';
 
 interface Curso {
     id: number;
@@ -110,6 +133,7 @@ const InstitutionList: React.FC = () => {
     const [detailModalOpen, setDetailModalOpen] = useState(false);
     const [selectedInstitution, setSelectedInstitution] = useState<Institution | null>(null);
     const [open, setOpen] = React.useState(false);
+    const [loading, setLoading] = useState(false);
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -133,6 +157,7 @@ const InstitutionList: React.FC = () => {
     // Ao carregar a página, busca as instituições e seus detalhes
     useEffect(() => {
         const fetchInstitutions = async () => {
+            setLoading(true);
             try {
                 const institutionList = await buscarEntidades('instituicao');
 
@@ -147,6 +172,9 @@ const InstitutionList: React.FC = () => {
                 setInstitutions(institutionsWithDetails);
             } catch (error) {
                 console.error('Erro ao buscar instituições:', error);
+            }
+            finally{
+                setLoading(false);
             }
         };
         fetchInstitutions();
@@ -183,10 +211,11 @@ const InstitutionList: React.FC = () => {
         setTipoInstituicaoValue(tempTipoInstituicaoValue);
         setEstadoValue(tempEstadoValue);
         setCursoValue(tempCursoValue);
+        setCurrentPage(1);
         handleFilterModalClose();
     };
 
-    // Função para limpar os filtros
+    // --------------------- Função para limpar os filtros ----------------------------
     const handleClearFilters = () => {
         setNotaMecValue(null);
         setFormaIngressoValue('');
@@ -218,25 +247,31 @@ const InstitutionList: React.FC = () => {
         setSelectedInstitution(null);
     };
 
-    const DrawerHeader = styled('div')(() => ({
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'flex-end',
-        minHeight: '5px',
-    }));
+    // ---------------------------- Paginação dos cards ----------------------------
+    const [currentPage, setCurrentPage] = useState(1);
+    const institutionsPerPage = 6;
+
+    // Calcular índices de paginação
+    const indexOfLastInstitution = currentPage * institutionsPerPage;
+    const indexOfFirstInstitution = indexOfLastInstitution - institutionsPerPage;
+    const currentInstitutions = filteredInstitutions.slice(indexOfFirstInstitution, indexOfLastInstitution);
+    const totalPages = Math.ceil(filteredInstitutions.length / institutionsPerPage);
+
+    // Funções de navegação
+    const handleChangePage = (_event: React.ChangeEvent<unknown>, value: number) => {
+        setCurrentPage(value);
+    };
 
     return (
         <>
             <Box component="main" sx={{ flexGrow: 1, p: 3, backgroundColor: 'white', minHeight: '100vh' }}>
                 <CustomDrawer open={open} handleDrawerOpen={handleDrawerOpen} handleDrawerClose={handleDrawerClose} />
                 <StudentHeader />
-                <DrawerHeader />
                 <StyledBox>
-                    <SearchBox sx={{ display: 'flex', alignItems: 'center', marginTop: 10 }}>
+                    <SearchBox sx={searchBox}>
                         <TextField
                             label={t('listInstitutionSearch')}
                             variant='outlined'
-                            sx={{ flexGrow: 1 }}
                             onChange={(e) => setSearchValue(e.target.value)}
                             InputProps={{
                                 endAdornment: (
@@ -248,6 +283,7 @@ const InstitutionList: React.FC = () => {
                         />
                         <IconButton onClick={handleFilterModalOpen} sx={{ ml: 2 }}>
                             <FilterList />
+                            Filtro
                         </IconButton>
                     </SearchBox>
 
@@ -266,7 +302,7 @@ const InstitutionList: React.FC = () => {
                                     position: 'absolute',
                                     top: 8,
                                     right: 8,
-                                    color: '#185D8E',
+                                    color: '#0B2A40',
                                 }}
                             >
                                 <Close />
@@ -346,17 +382,50 @@ const InstitutionList: React.FC = () => {
                             </Grid>
                         </Box>
                     </Modal>
-
-                    <ListBox>
-                        <List>
-                            {filteredInstitutions.map((institution) => (
-                                <ListItem key={institution.id} button onClick={() => handleDetailModalOpen(institution)}>
-                                    <ListItemText primary={institution.nome} />
-                                </ListItem>
-                            ))}
-                        </List>
-                    </ListBox>
                 </StyledBox>
+
+                {loading ? (
+                    <Box sx={{ display: 'flex', justifyContent: 'center', mt: 5 }}>
+                        <CircularProgress />
+                    </Box>
+                ) : (
+                    <Box sx={gridContainer}>
+                        <Grid container spacing={4}>
+                            {currentInstitutions.map((institution) => (
+                                <Grid item xs={12} sm={6} md={6} key={institution.id}>
+                                    <Card sx={cardContent}>
+                                        <CardContent onClick={() => handleDetailModalOpen(institution)}>
+                                            <Typography variant="h5" sx={cardTitle}>{institution.nome}</Typography>
+                                            <Typography variant="body2" sx={cardText}><b>Sigla:</b> {institution.sigla}</Typography>
+                                            <Typography variant="body2" sx={cardText}><b>Site:</b> {institution.site || 'Não disponível'}</Typography>
+                                            <Typography variant="body2" sx={cardText}><b>Nota MEC | INDEB:</b> {institution.notaMec || 'Não disponível'}</Typography>
+                                            <Typography variant="body2" sx={cardText}><b>Tipo:</b> {institution.tipo || 'Não disponível'}</Typography>
+                                            <Typography variant="body2" sx={cardText}><b>Forma de Ingresso:</b> {institution.formaIngresso || 'Não disponível'}</Typography>
+                                        </CardContent>
+                                        <CardActions sx={{ justifyContent: 'flex-end' }}>
+                                            <IconButton
+                                                aria-label="Add"
+                                                onClick={() => handleDetailModalOpen(institution)}
+                                                sx={{ color: '#185D8E' }}
+                                            >
+                                                <Add />
+                                            </IconButton>
+                                        </CardActions>
+                                    </Card>
+                                </Grid>
+                            ))}
+                        </Grid>
+                        <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 7 }}>
+                            <Pagination
+                                count={totalPages}
+                                page={currentPage}
+                                onChange={handleChangePage}
+                                color="primary"
+                            />
+                        </Box>
+                    </Box>
+                )}
+
                 {/* Details Modal */}
                 <Modal
                     open={detailModalOpen}
