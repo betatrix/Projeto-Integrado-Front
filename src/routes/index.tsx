@@ -21,7 +21,6 @@ import ResultadoTeste from '../containers/student/resultTest';
 import { AuthProvider } from '../contexts/auth';
 import PrivateRoute from '../components/routes/privateRoutes';
 import CadastroCurso from '../containers/administrator/courseRegister';
-import EditInstitutionPage from '../containers/administrator/institutionManagement/institutionEdit';
 
 export const AppRoutes = () => {
     return (
@@ -54,7 +53,6 @@ export const AppRoutes = () => {
                             <Route path='/politicas' element={<BuscaPoliticas />} />
                             <Route path='/gerenciamento-curso' element={<CourseList />} />
                             <Route path="/gerenciamento-instituicao" element={<InstitutionManagement />} />
-                            <Route path="/editar-instituicao" element={<EditInstitutionPage />} />
                             <Route path='/admin' element={<Dashboard />} />
                         </Route>
 
