@@ -17,10 +17,11 @@ import NovaSenha from '../containers/auth/newPassword';
 import RecuperarSenha from '../containers/auth/recoverPassword';
 import { BuscaPoliticas } from '../containers/administrator/institutionRegister/searchPolicies';
 import { InstitutionProvider } from '../context/institutionContext';
-import ResultadoTeste from '../containers/student/resultTest';
+// import ResultadoTeste from '../containers/student/resultTest';
 import { AuthProvider } from '../contexts/auth';
 import PrivateRoute from '../components/routes/privateRoutes';
 import CadastroCurso from '../containers/administrator/courseRegister';
+import ResultScreen from '../containers/student/resultTest/new-index';
 
 export const AppRoutes = () => {
     return (
@@ -42,7 +43,7 @@ export const AppRoutes = () => {
                         <Route element={<PrivateRoute requiredRole="ESTUDANTE" />}>
                             <Route path='/teste-vocacional' element={<VocacionalTest />} />
                             <Route path='/estudante' element={<StudentDashboard />} />
-                            <Route path="/resultado" element={<ResultadoTeste />} />
+                            <Route path="/resultado" element={<ResultScreen />} />
                             <Route path='/minha-conta' element={<PerfilStudent />} />
                         </Route>
                         {/* Private Routes - Admin */}
