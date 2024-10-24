@@ -14,18 +14,41 @@ import {
     FormControl,
     Button,
     IconButton,
-    InputAdornment
+    InputAdornment,
+    Card,
+    CardContent,
+    CardActions,
+    Pagination,
+    CircularProgress
 } from '@mui/material';
-import { FilterList } from '@mui/icons-material'; // Ícone de filtro
+import { Add, Close, FilterList } from '@mui/icons-material';
 import Footer from '../../../components/homeFooter';
 import { Endereco, TipoInstituicaoCurso } from '../../../types/institutionTypes';
-import { buscarEntidades, buscarEntidadePorId, buscarCursosPorInstituicao } from '../../../services/apiService';
-import { DetailTypography, GridContainer, ListBox, SearchBox, StyledBox, StyledModal } from './styles';
+import {
+    buscarEntidades,
+    buscarEntidadePorId,
+    buscarCursosPorInstituicao
+} from '../../../services/apiService';
+import {
+    clearFilterButton,
+    DetailTypography,
+    GridContainer,
+    SearchBox,
+    searchButton,
+    StyledBox,
+    styledModal,
+    styledInput,
+    styledSelect,
+    gridContainer,
+    cardContent,
+    cardTitle,
+    cardText,
+    searchBox,
+} from './styles';
 import { useTranslation } from 'react-i18next';
 import CustomDrawer from '../../../components/sidemenu/CustomDrawer';
 import StudentHeader from '../../../components/studentHeader';
 import SearchIcon from '@mui/icons-material/Search';
-import styled from 'styled-components';
 
 interface Curso {
     id: number;
@@ -44,6 +67,59 @@ interface Institution {
     cursos: Curso[];
 }
 
+const brasilStates = [
+    { sigla: 'AC', nome: 'Acre' },
+    { sigla: 'AL', nome: 'Alagoas' },
+    { sigla: 'AP', nome: 'Amapá' },
+    { sigla: 'AM', nome: 'Amazonas' },
+    { sigla: 'BA', nome: 'Bahia' },
+    { sigla: 'CE', nome: 'Ceará' },
+    { sigla: 'DF', nome: 'Distrito Federal' },
+    { sigla: 'ES', nome: 'Espírito Santo' },
+    { sigla: 'GO', nome: 'Goiás' },
+    { sigla: 'MA', nome: 'Maranhão' },
+    { sigla: 'MT', nome: 'Mato Grosso' },
+    { sigla: 'MS', nome: 'Mato Grosso do Sul' },
+    { sigla: 'MG', nome: 'Minas Gerais' },
+    { sigla: 'PA', nome: 'Pará' },
+    { sigla: 'PB', nome: 'Paraíba' },
+    { sigla: 'PR', nome: 'Paraná' },
+    { sigla: 'PE', nome: 'Pernambuco' },
+    { sigla: 'PI', nome: 'Piauí' },
+    { sigla: 'RJ', nome: 'Rio de Janeiro' },
+    { sigla: 'RN', nome: 'Rio Grande do Norte' },
+    { sigla: 'RS', nome: 'Rio Grande do Sul' },
+    { sigla: 'RO', nome: 'Rondônia' },
+    { sigla: 'RR', nome: 'Roraima' },
+    { sigla: 'SC', nome: 'Santa Catarina' },
+    { sigla: 'SP', nome: 'São Paulo' },
+    { sigla: 'SE', nome: 'Sergipe' },
+    { sigla: 'TO', nome: 'Tocantins' },
+];
+
+const entryMethods = [
+    { description: 'SISU' },
+    { description: 'SISU e ENEM' },
+    { description: 'SISU e ENEM + Vestibular próprio' },
+    { description: 'SISU e PAS' },
+    { description: 'SISU e PAVE' },
+    { description: 'SISU e Pism' },
+    { description: 'SISU e Prosel' },
+    { description: 'SISU e PSC' },
+    { description: 'SISU E PSVO' },
+    { description: 'SISU e Vagas Olímpicas' },
+    { description: 'SISU e Vestibular próprio' },
+    { description: 'SISU, ENEM e Vestibular próprio' },
+    { description: 'SISU, PAS e Vestibular próprio' },
+    { description: 'SISU, Vestibular próprio' },
+    { description: 'SISU, Vestibular próprio e PSS' },
+    { description: 'SISU, Vestibular próprio e PASSE' },
+    { description: 'SISU, Vestibular próprio, PSEnem e PSAC' },
+    { description: 'Vestibular próprio' },
+    { description: 'Vestibular próprio e PSS' },
+    { description: 'Vestibulinho' },
+];
+
 const InstitutionList: React.FC = () => {
     const { t } = useTranslation();
     const [institutions, setInstitutions] = useState<Institution[]>([]);
@@ -52,10 +128,12 @@ const InstitutionList: React.FC = () => {
     const [formaIngressoValue, setFormaIngressoValue] = useState<string>(''); // Filtro de forma de ingresso
     const [tipoInstituicaoValue, setTipoInstituicaoValue] = useState<TipoInstituicaoCurso | ''>(''); // Filtro de tipo
     const [estadoValue, setEstadoValue] = useState<string>(''); // Filtro de estado
-    const [filterModalOpen, setFilterModalOpen] = useState(false); // Controla o modal de filtros
+    const [cursoValue, setCursoValue] = useState<string>(''); // Filtro de curso
+    const [filterModalOpen, setFilterModalOpen] = useState(false);
     const [detailModalOpen, setDetailModalOpen] = useState(false);
     const [selectedInstitution, setSelectedInstitution] = useState<Institution | null>(null);
     const [open, setOpen] = React.useState(false);
+    const [loading, setLoading] = useState(false);
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -79,20 +157,24 @@ const InstitutionList: React.FC = () => {
     // Ao carregar a página, busca as instituições e seus detalhes
     useEffect(() => {
         const fetchInstitutions = async () => {
+            setLoading(true);
             try {
                 const institutionList = await buscarEntidades('instituicao');
 
-                // Busca os detalhes de cada instituição usando buscarEntidadePorId
                 const institutionsWithDetails = await Promise.all(
                     institutionList.map(async (institution: { id: number; }) => {
                         const institutionDetails = await fetchInstitutionDetails(institution.id);
-                        return { ...institution, ...institutionDetails };
+                        const institutionCourses = await buscarCursosPorInstituicao(institution.id);
+                        return { ...institutionDetails, cursos: institutionCourses };
                     })
                 );
 
                 setInstitutions(institutionsWithDetails);
             } catch (error) {
                 console.error('Erro ao buscar instituições:', error);
+            }
+            finally{
+                setLoading(false);
             }
         };
         fetchInstitutions();
@@ -104,24 +186,48 @@ const InstitutionList: React.FC = () => {
         const matchesNotaMec = notaMecValue === null || institution.notaMec === notaMecValue;
         const matchesFormaIngresso = formaIngressoValue === '' || institution.formaIngresso?.toLowerCase().includes(formaIngressoValue.toLowerCase());
         const matchesTipo = tipoInstituicaoValue === '' || institution.tipo === tipoInstituicaoValue;
-
-        // Verifica se o estado existe antes de aplicar o filtro
         const matchesEstado = estadoValue === '' || (institution.endereco?.estado && institution.endereco.estado.toUpperCase() === estadoValue.toUpperCase());
+        const matchesCurso = cursoValue === '' || Array.isArray(institution.cursos) && institution.cursos.some(curso =>
+            curso.descricao.toLowerCase().includes(cursoValue.toLowerCase())
+        );
 
-        return matchesSearchValue && matchesNotaMec && matchesFormaIngresso && matchesTipo && matchesEstado;
+        return matchesSearchValue && matchesNotaMec && matchesFormaIngresso && matchesTipo && matchesEstado && matchesCurso;
     });
 
     // Funções para abrir/fechar o modal de filtros
     const handleFilterModalOpen = () => setFilterModalOpen(true);
     const handleFilterModalClose = () => setFilterModalOpen(false);
 
-    // Função para limpar filtros
+    // Estados temporários para os filtros no modal
+    const [tempNotaMecValue, setTempNotaMecValue] = useState<number | null>(null);
+    const [tempFormaIngressoValue, setTempFormaIngressoValue] = useState<string>('');
+    const [tempTipoInstituicaoValue, setTempTipoInstituicaoValue] = useState<TipoInstituicaoCurso | ''>('');
+    const [tempEstadoValue, setTempEstadoValue] = useState<string>('');
+    const [tempCursoValue, setTempCursoValue] = useState<string>('');
+
+    const handleApplyFilters = () => {
+        setNotaMecValue(tempNotaMecValue);
+        setFormaIngressoValue(tempFormaIngressoValue);
+        setTipoInstituicaoValue(tempTipoInstituicaoValue);
+        setEstadoValue(tempEstadoValue);
+        setCursoValue(tempCursoValue);
+        setCurrentPage(1);
+        handleFilterModalClose();
+    };
+
+    // --------------------- Função para limpar os filtros ----------------------------
     const handleClearFilters = () => {
         setNotaMecValue(null);
         setFormaIngressoValue('');
         setTipoInstituicaoValue('');
         setEstadoValue('');
-        setSearchValue('');
+        setCursoValue('');
+
+        setTempNotaMecValue(null);
+        setTempFormaIngressoValue('');
+        setTempTipoInstituicaoValue('');
+        setTempEstadoValue('');
+        setTempCursoValue('');
         handleFilterModalClose();
     };
 
@@ -141,30 +247,31 @@ const InstitutionList: React.FC = () => {
         setSelectedInstitution(null);
     };
 
-    const DrawerHeader = styled('div')(() => ({
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'flex-end',
-        minHeight: '5px',
-    }));
+    // ---------------------------- Paginação dos cards ----------------------------
+    const [currentPage, setCurrentPage] = useState(1);
+    const institutionsPerPage = 6;
+
+    // Calcular índices de paginação
+    const indexOfLastInstitution = currentPage * institutionsPerPage;
+    const indexOfFirstInstitution = indexOfLastInstitution - institutionsPerPage;
+    const currentInstitutions = filteredInstitutions.slice(indexOfFirstInstitution, indexOfLastInstitution);
+    const totalPages = Math.ceil(filteredInstitutions.length / institutionsPerPage);
+
+    // Funções de navegação
+    const handleChangePage = (_event: React.ChangeEvent<unknown>, value: number) => {
+        setCurrentPage(value);
+    };
 
     return (
         <>
             <Box component="main" sx={{ flexGrow: 1, p: 3, backgroundColor: 'white', minHeight: '100vh' }}>
                 <CustomDrawer open={open} handleDrawerOpen={handleDrawerOpen} handleDrawerClose={handleDrawerClose} />
                 <StudentHeader />
-                <DrawerHeader />
                 <StyledBox>
-                    {/* <StyledTypography>
-                        <Typography variant="h6">
-                            {t('listInstitutionTitle')}
-                        </Typography>
-                    </StyledTypography> */}
-                    <SearchBox sx={{ display: 'flex', alignItems: 'center', marginTop: 10 }}>
+                    <SearchBox sx={searchBox}>
                         <TextField
                             label={t('listInstitutionSearch')}
                             variant='outlined'
-                            sx={{ flexGrow: 1 }}
                             onChange={(e) => setSearchValue(e.target.value)}
                             InputProps={{
                                 endAdornment: (
@@ -176,6 +283,7 @@ const InstitutionList: React.FC = () => {
                         />
                         <IconButton onClick={handleFilterModalOpen} sx={{ ml: 2 }}>
                             <FilterList />
+                            Filtro
                         </IconButton>
                     </SearchBox>
 
@@ -186,16 +294,29 @@ const InstitutionList: React.FC = () => {
                         aria-labelledby="modal-modal-title"
                         aria-describedby="modal-modal-description"
                     >
-                        <StyledModal sx={{ width: 500, p: 4, margin: '100px auto', backgroundColor: 'white' }}>
+                        <Box sx={styledModal}>
+                            <IconButton
+                                aria-label="close"
+                                onClick={handleFilterModalClose}
+                                sx={{
+                                    position: 'absolute',
+                                    top: 8,
+                                    right: 8,
+                                    color: '#0B2A40',
+                                }}
+                            >
+                                <Close />
+                            </IconButton>
                             <Grid container spacing={3}>
-                                <Grid item xs={12}>
+                                <Grid item xs={12} sx={{marginTop: 4}}>
                                     <TextField
                                         label={t('Nota MEC')}
                                         type="number"
                                         fullWidth
-                                        variant='standard'
-                                        value={notaMecValue || ''}
-                                        onChange={(e) => setNotaMecValue(e.target.value ? Math.min(Math.max(parseFloat(e.target.value), 1), 6) : null)}
+                                        variant='outlined'
+                                        sx={styledInput}
+                                        value={tempNotaMecValue || ''}
+                                        onChange={(e) => setTempNotaMecValue(e.target.value ? Math.min(Math.max(parseFloat(e.target.value), 1), 6) : null)}
                                         inputProps={{
                                             min: 1,
                                             max: 6,
@@ -204,19 +325,34 @@ const InstitutionList: React.FC = () => {
                                 </Grid>
                                 <Grid item xs={12}>
                                     <TextField
-                                        label={t('Forma de Ingresso')}
+                                        label={t('Curso')}
                                         fullWidth
-                                        variant='standard'
-                                        value={formaIngressoValue}
-                                        onChange={(e) => setFormaIngressoValue(e.target.value)}
+                                        variant='outlined'
+                                        sx={styledInput}
+                                        value={tempCursoValue || ''}
+                                        onChange={(e) => setTempCursoValue(e.target.value)}
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <FormControl variant='standard' fullWidth>
-                                        <InputLabel>{t('Tipo de Instituição')}</InputLabel>
+                                    <FormControl variant='outlined' sx={styledSelect} fullWidth>
+                                        <InputLabel sx={{color: '#185D8E', fontWeight: '600', fontFamily: 'Poppins, sans-serif'}}>{t('Forma de Ingresso')}</InputLabel>
                                         <Select
-                                            value={tipoInstituicaoValue}
-                                            onChange={(e) => setTipoInstituicaoValue(e.target.value as TipoInstituicaoCurso)}
+                                            value={tempFormaIngressoValue}
+                                            onChange={(e) => setTempFormaIngressoValue(e.target.value)}
+                                        >
+                                            <MenuItem value={''}>Todos</MenuItem>
+                                            {entryMethods.map(i => (
+                                                <MenuItem key={i.description} value={i.description}>{i.description}</MenuItem>
+                                            ))}
+                                        </Select>
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <FormControl variant='outlined' sx={styledSelect} fullWidth>
+                                        <InputLabel sx={{color: '#185D8E', fontWeight: '600', fontFamily: 'Poppins, sans-serif'}}>{t('Tipo de Instituição')}</InputLabel>
+                                        <Select
+                                            value={tempTipoInstituicaoValue}
+                                            onChange={(e) => setTempTipoInstituicaoValue(e.target.value as TipoInstituicaoCurso)}
                                         >
                                             <MenuItem value={''}>Todos</MenuItem>
                                             <MenuItem value={TipoInstituicaoCurso.SUPERIOR}>Superior</MenuItem>
@@ -226,32 +362,70 @@ const InstitutionList: React.FC = () => {
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <TextField
-                                        label={t('Estado')}
-                                        fullWidth
-                                        variant='standard'
-                                        value={estadoValue}
-                                        onChange={(e) => setEstadoValue(e.target.value)}
-                                    />
+                                    <FormControl variant='outlined' sx={styledSelect} fullWidth>
+                                        <InputLabel sx={{color: '#185D8E', fontWeight: '600', fontFamily: 'Poppins, sans-serif'}}>{t('Estado')}</InputLabel>
+                                        <Select
+                                            value={tempEstadoValue}
+                                            onChange={(e) => setTempEstadoValue(e.target.value)}
+                                        >
+                                            <MenuItem value={''}>Todos</MenuItem>
+                                            {brasilStates.map(estado => (
+                                                <MenuItem key={estado.sigla} value={estado.sigla}>{estado.nome}</MenuItem>
+                                            ))}
+                                        </Select>
+                                    </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                                    <Button variant="outlined" onClick={handleClearFilters}>Limpar Filtros</Button>
-                                    <Button variant="contained" onClick={handleFilterModalClose}>Pesquisar</Button>
+                                    <Button sx={clearFilterButton} onClick={handleClearFilters}>Limpar Filtros</Button>
+                                    <Button sx={searchButton} onClick={handleApplyFilters}>Pesquisar</Button>
                                 </Grid>
                             </Grid>
-                        </StyledModal>
+                        </Box>
                     </Modal>
-
-                    <ListBox>
-                        <List>
-                            {filteredInstitutions.map((institution) => (
-                                <ListItem key={institution.id} button onClick={() => handleDetailModalOpen(institution)}>
-                                    <ListItemText primary={institution.nome} />
-                                </ListItem>
-                            ))}
-                        </List>
-                    </ListBox>
                 </StyledBox>
+
+                {loading ? (
+                    <Box sx={{ display: 'flex', justifyContent: 'center', mt: 5 }}>
+                        <CircularProgress />
+                    </Box>
+                ) : (
+                    <Box sx={gridContainer}>
+                        <Grid container spacing={4}>
+                            {currentInstitutions.map((institution) => (
+                                <Grid item xs={12} sm={6} md={6} key={institution.id}>
+                                    <Card sx={cardContent}>
+                                        <CardContent onClick={() => handleDetailModalOpen(institution)}>
+                                            <Typography variant="h5" sx={cardTitle}>{institution.nome}</Typography>
+                                            <Typography variant="body2" sx={cardText}><b>Sigla:</b> {institution.sigla}</Typography>
+                                            <Typography variant="body2" sx={cardText}><b>Site:</b> {institution.site || 'Não disponível'}</Typography>
+                                            <Typography variant="body2" sx={cardText}><b>Nota MEC | INDEB:</b> {institution.notaMec || 'Não disponível'}</Typography>
+                                            <Typography variant="body2" sx={cardText}><b>Tipo:</b> {institution.tipo || 'Não disponível'}</Typography>
+                                            <Typography variant="body2" sx={cardText}><b>Forma de Ingresso:</b> {institution.formaIngresso || 'Não disponível'}</Typography>
+                                        </CardContent>
+                                        <CardActions sx={{ justifyContent: 'flex-end' }}>
+                                            <IconButton
+                                                aria-label="Add"
+                                                onClick={() => handleDetailModalOpen(institution)}
+                                                sx={{ color: '#185D8E' }}
+                                            >
+                                                <Add />
+                                            </IconButton>
+                                        </CardActions>
+                                    </Card>
+                                </Grid>
+                            ))}
+                        </Grid>
+                        <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 7 }}>
+                            <Pagination
+                                count={totalPages}
+                                page={currentPage}
+                                onChange={handleChangePage}
+                                color="primary"
+                            />
+                        </Box>
+                    </Box>
+                )}
+
                 {/* Details Modal */}
                 <Modal
                     open={detailModalOpen}
@@ -259,7 +433,7 @@ const InstitutionList: React.FC = () => {
                     aria-labelledby="modal-modal-title"
                     aria-describedby="modal-modal-description"
                 >
-                    <StyledModal>
+                    <Box sx={styledModal}>
                         <GridContainer>
                             {selectedInstitution && (
                                 <>
@@ -316,7 +490,7 @@ const InstitutionList: React.FC = () => {
                                 </>
                             )}
                         </GridContainer>
-                    </StyledModal>
+                    </Box>
                 </Modal>
             </Box>
             <Footer />
