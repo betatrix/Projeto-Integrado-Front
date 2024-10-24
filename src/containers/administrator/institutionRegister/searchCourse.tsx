@@ -241,7 +241,7 @@ export const BuscaCurso: React.FC = () => {
                                     display: 'flex',
                                     justifyContent: 'center',
                                     alignItems: 'center',
-                                    height: '80vh', // Altura de toda a tela
+                                    height: '80vh',
                                 }}
                             >
                                 <CircularProgress />
@@ -312,6 +312,7 @@ export const BuscaCurso: React.FC = () => {
                         p: 4,
                         width: '80%',
                         maxWidth: 400,
+                        borderRadius: '5px'
                     }}
                 >
                     <Typography variant="h6" gutterBottom sx={{ textAlign: 'center', fontWeight: 'bold' }}>
@@ -329,7 +330,11 @@ export const BuscaCurso: React.FC = () => {
                                 fontFamily: 'Roboto, monospace',
                                 color: 'white',
                                 backgroundColor: '#185D8E',
-                                fontWeight: 'bold'
+                                fontWeight: 'bold',
+                                '&:hover': {
+                                    backgroundColor: '#104A6F',
+                                    color: 'white',
+                                }
                             }}>
                                 Sim
                             </Button>
@@ -341,7 +346,11 @@ export const BuscaCurso: React.FC = () => {
                                 fontFamily: 'Roboto, monospace',
                                 color: 'white',
                                 backgroundColor: '#185D8E',
-                                fontWeight: 'bold'
+                                fontWeight: 'bold',
+                                '&:hover': {
+                                    backgroundColor: '#104A6F',
+                                    color: 'white',
+                                }
                             }}>
                                 Não
                             </Button>

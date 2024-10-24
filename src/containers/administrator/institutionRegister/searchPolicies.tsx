@@ -238,7 +238,7 @@ export const BuscaPoliticas: React.FC = () => {
             >
                 <Box sx={{
                     position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
-                    bgcolor: 'background.paper', boxShadow: 24, p: 4, width: '80%', maxWidth: 400
+                    bgcolor: 'background.paper', boxShadow: 24, p: 4, width: '80%', maxWidth: 400, borderRadius: '5px'
                 }}>
                     <Typography variant="h6" gutterBottom sx={{ textAlign: 'center', fontWeight: 'bold' }}>
                         Confirmação
@@ -254,7 +254,11 @@ export const BuscaPoliticas: React.FC = () => {
                                 fontFamily: 'Roboto, monospace',
                                 color: 'white',
                                 backgroundColor: '#185D8E',
-                                fontWeight: 'bold'
+                                fontWeight: 'bold',
+                                '&:hover': {
+                                    backgroundColor: '#104A6F',
+                                    color: 'white',
+                                }
                             }}>Sim</Button>
                         </Grid>
                         <Grid item xs={6} display="flex" justifyContent="center">
@@ -264,7 +268,11 @@ export const BuscaPoliticas: React.FC = () => {
                                 fontFamily: 'Roboto, monospace',
                                 color: 'white',
                                 backgroundColor: '#185D8E',
-                                fontWeight: 'bold'
+                                fontWeight: 'bold',
+                                '&:hover': {
+                                    backgroundColor: '#104A6F',
+                                    color: 'white',
+                                }
                             }}>Não</Button>
                         </Grid>
                     </Grid>

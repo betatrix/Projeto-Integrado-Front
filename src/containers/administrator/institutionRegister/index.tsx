@@ -10,14 +10,14 @@ import { useNavigate } from 'react-router-dom';
 import { cadastrarInstituicao } from '../../../services/institutionService';
 import AdminHeader from '../../../components/adminHeader';
 import Footer from '../../../components/homeFooter';
-import { TipoInstituicaoCurso } from '../../../types/institutionTypes';
+// import { TipoInstituicaoCurso } from '../../../types/institutionTypes';
 interface FormValues {
     nome: string;
     site: string;
     formaIngresso: string;
     notaMec: number | null;
+    tipo: string;
     sigla: string;
-    tipoInstituicaoCurso: TipoInstituicaoCurso;
     endereco: {
         logradouro: string;
         numero: string;
@@ -28,6 +28,11 @@ interface FormValues {
         cep: string;
     };
 }
+const tipoInstituicao = [
+    { label: 'Ensino Superior', value: 'SUPERIOR' },
+    { label: 'Ensino Técnico', value: 'TECNICO' },
+    { label: 'Ensino Técnico e Superior', value: 'AMBOS' },
+];
 
 export const CadastroInstituicao: React.FC = () => {
     const navigate = useNavigate();
@@ -44,7 +49,7 @@ export const CadastroInstituicao: React.FC = () => {
         formaIngresso: '',
         notaMec: null,
         sigla: '',
-        tipoInstituicaoCurso: TipoInstituicaoCurso.INDEFINIDO, // Usando um valor do enum
+        tipo: '', // Usando um valor do enum
         endereco: {
             logradouro: '',
             numero: '',
@@ -71,12 +76,8 @@ export const CadastroInstituicao: React.FC = () => {
         sigla: Yup.string()
             .matches(/^[A-Z]+$/, 'A sigla deve estar em letras maiúsculas')
             .required('A sigla é obrigatória'),
-        tipoInstituicaoCurso: Yup.string()
-            .oneOf(
-                [TipoInstituicaoCurso.SUPERIOR, TipoInstituicaoCurso.TECNICO, TipoInstituicaoCurso.AMBOS],
-                'Selecione um tipo válido'
-            )
-            .required('O tipo de instituição é obrigatório'),
+        tipo: Yup.string()
+            .required('Selecione um tipo'),
         endereco: Yup.object().shape({
             cep: Yup.string()
                 .max(8, 'O CEP deve ter no máximo 8 caracteres')
@@ -109,6 +110,9 @@ export const CadastroInstituicao: React.FC = () => {
     };
 
     const handleSubmit = async (values: FormValues, { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }) => {
+        console.log(values); // Adicione este console.log
+        console.log('Tipo de Instituição:', values.tipo);
+
         try {
             const response = await cadastrarInstituicao(values);
             console.log(values);
@@ -234,28 +238,35 @@ export const CadastroInstituicao: React.FC = () => {
                                                     <Grid item xs={12} >
                                                         <Grid container alignItems="center" >
                                                             {/* Texto de instrução ao lado */}
-
-                                                            <Typography variant="body1" color="textSecondary" sx={{ marginLeft: '5px', marginTop: '20px' }}>
+                                                            {/* <Typography variant="body1" color="textSecondary" sx={{ marginLeft: '5px', marginTop: '20px' }}>
                                                                 Selecione o Tipo de Ensino*
-                                                            </Typography>
-                                                            <Box sx={{marginLeft: '13px'}}>
+                                                            </Typography> */}
+                                                            <Box sx={{
+                                                                display: 'grid',
+                                                                gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' },
+                                                                gap: '20px',
+                                                                width: '100%',
+                                                                marginLeft: '9px',
+                                                            }}>
+
+                                                                {/* <FormControl fullWidth variant="" sx={{ marginTop: '15px' }}> */}
                                                                 <Field
-                                                                    component={Select}
-                                                                    name="tipoInstituicaoCurso"
-                                                                    fullWidth
                                                                     variant="standard"
-                                                                    required
-                                                                    size="large"
+                                                                    component={Select}
+                                                                    name="tipo"
+                                                                    // label="Tipo de Ensino"
                                                                     displayEmpty
+                                                                    fullWidth
                                                                     inputProps={{ 'aria-label': 'Tipo de Instituição' }}
-                                                                    sx={{ color: 'grey', marginLeft: '3px' }}
                                                                 >
-                                                                    <MenuItem value="" disabled>
-                                                                        Selecione o Tipo de Ensino
+                                                                    <MenuItem value="" disabled sx={{color: '#757575'}}>
+                                                                       Tipo de Ensino*
                                                                     </MenuItem>
-                                                                    <MenuItem value="SUPERIOR">Superior</MenuItem>
-                                                                    <MenuItem value="TECNICO">Técnico</MenuItem>
-                                                                    <MenuItem value="AMBOS">Técnico e Superior</MenuItem>
+                                                                    {tipoInstituicao.map((option) => (
+                                                                        <MenuItem key={option.value} value={option.value} sx={{color: '#757575',}}>
+                                                                            {option.label}
+                                                                        </MenuItem>
+                                                                    ))}
                                                                 </Field>
                                                             </Box>
 
@@ -378,27 +389,6 @@ export const CadastroInstituicao: React.FC = () => {
                                                 justifyContent="space-between"
                                                 sx={{ marginBottom: 10 }}
                                             >
-                                                {/* <Grid
-                                                    item
-                                                    xs={6}
-                                                    display="flex"
-                                                    justifyContent="flex-start"
-                                                >
-                                                    <Button
-                                                        type="button"
-                                                        variant="outlined"
-                                                        onClick={() => navigate('/admin')}
-                                                        sx={{
-                                                            fontSize: '17px',
-                                                            fontFamily: 'Roboto, monospace',
-                                                            color: 'white',
-                                                            backgroundColor: '#185D8E',
-                                                            fontWeight: 'bold',
-                                                        }}
-                                                    >
-                                                        Voltar
-                                                    </Button>
-                                                </Grid> */}
                                                 <Grid
                                                     item
                                                     xs={12}

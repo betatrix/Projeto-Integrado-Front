@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Subtitle, SquareDisplay, SquareButton, TextButton } from './styles';
-import { Grid, Box} from '@mui/material';
+import { Grid, Box } from '@mui/material';
 import AdminHeader from '../../../components/adminHeader';
-import Footer from '../../../components/adminFooter';
+import Footer from '../../../components/homeFooter';
 import { Link } from 'react-router-dom';
 
 const MyIcon = () => (
@@ -86,46 +86,50 @@ const QuantidadesCadastradas = () => {
 const Dashboard = () => {
     return (
         <>
-            <AdminHeader />
-            <QuantidadesCadastradas />
-            <Box sx={{ marginTop: '40px' }}>
-                <Grid container justifyContent="center">
-                    <Subtitle>
-                        Ferramentas de Gerenciamento
-                    </Subtitle>
-                    <Grid container spacing={2} justifyContent="center">
-                        <Grid item>
-                            <Link to="/gerenciamento-instituicao" style={{ textDecoration: 'none' }}>
-                                <SquareButton>
+            <Box sx={{ minHeight: '95vh', display: 'flex', flexDirection: 'column', backgroundColor: '#F3F3F3' }}>
+                <AdminHeader />
+                <Box sx={{ height: 90 }}></Box>
+                <QuantidadesCadastradas />
+                <Box sx={{ marginTop: '40px' }}>
+                    <Grid container justifyContent="center">
+                        <Subtitle>
+                            Ferramentas de Gerenciamento
+                        </Subtitle>
+                        <Grid container spacing={2} justifyContent="center">
+                            <Grid item>
+                                <Link to="/gerenciamento-instituicao" style={{ textDecoration: 'none' }}>
+                                    <SquareButton>
+                                        <TextButton>
+                                            Instituições
+                                        </TextButton>
+                                        <MyIcon />
+                                    </SquareButton>
+                                </Link>
+                            </Grid>
+                            <Grid item>
+                                <Link to="/gerenciamento-curso" style={{ textDecoration: 'none' }}>
+                                    <SquareButton>
+                                        <TextButton>
+                                            Cursos
+                                        </TextButton>
+                                        <MyIcon />
+                                    </SquareButton>
+                                </Link>
+                            </Grid>
+                            <Grid item>
+                                <SquareButton href="/page3">
                                     <TextButton>
-                                        Instituições
+                                        Teste Vocacional
                                     </TextButton>
                                     <MyIcon />
                                 </SquareButton>
-                            </Link>
-                        </Grid>
-                        <Grid item>
-                            <Link to="/gerenciamento-curso" style={{ textDecoration: 'none' }}>
-                                <SquareButton>
-                                    <TextButton>
-                                        Cursos
-                                    </TextButton>
-                                    <MyIcon />
-                                </SquareButton>
-                            </Link>
-                        </Grid>
-                        <Grid item>
-                            <SquareButton href="/page3">
-                                <TextButton>
-                                    Teste Vocacional
-                                </TextButton>
-                                <MyIcon />
-                            </SquareButton>
+                            </Grid>
                         </Grid>
                     </Grid>
-                </Grid>
-                <Footer />
+
+                </Box>
             </Box>
+            <Footer />
         </>
     );
 };

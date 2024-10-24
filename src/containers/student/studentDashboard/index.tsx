@@ -294,7 +294,13 @@ const StudentDashboard: React.FC = () => {
                             </Grid>
                         </Box>
                         <Box sx={{
-                            width: '15.8rem'
+                            width: '15.8rem',
+                            [theme.breakpoints.down('sm')]: {
+                                width: '0px',
+                            },
+                            [theme.breakpoints.down('md')]: {
+                                width: '0px',
+                            },
                         }}></Box>
                         <Grid item sx={gridItem2Styles}>
                             <Box sx={{ alignItems: 'center', textAlign: 'center' }}>
