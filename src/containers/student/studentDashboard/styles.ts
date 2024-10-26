@@ -416,24 +416,9 @@ export const TestButton: SxProps<Theme> = (theme) => ({
 
 // Style SearchInstitution
 
-export const StyledBox = styled(Box)`
-    margin-bottom: 3rem;  
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;  
-    max-width: 35rem;  
-    margin: auto;
-    margin-top: 1.6rem;  
-`;
-
 export const StyledTypography = styled(Box)`
     margin-bottom: 0.8rem;  
     text-align: center;
-`;
-
-export const SearchBox = styled(Box)`
-    display: flex;
-    justify-content: center;
 `;
 
 export const StyledTextField = styled(TextField)`
@@ -457,12 +442,79 @@ export const GridContainer = styled(Box)`
     gap: 0.8rem;  
 `;
 
+export const tabContent: SxProps<Theme> = (theme) => ({
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%',
+    padding: '2rem',
+    backgroundColor: '#ABC4D7',
+    border: 'solid 3px #0B2A40',
+    borderRadius: '14px',
+    boxShadow: '4px 4px 0px 1px #8DAEC5',
+    transition: 'transform 0.3s ease-in-out',
+    [theme.breakpoints.down('md')]: {
+        margin: '2rem 0rem',
+    },
+});
+
+export const tabStyle: SxProps<Theme> = (theme) => ({
+    color: '#366586',
+    fontFamily: 'Poppins, sans-serif',
+    fontWeight: 800,
+    fontSize: '0.9rem',
+    margin: '0rem 3rem',
+    '&.Mui-selected': {
+        color: '#0B2A40',
+    },
+    [theme.breakpoints.down('md')]: {
+        margin: '0rem 2rem',
+    },
+    [theme.breakpoints.down('sm')]: {
+        margin: '0rem 1rem',
+    },
+});
+
+export const tabTitle: SxProps<Theme> = (theme) => ({
+    fontFamily: 'Poppins, sans-serif',
+    fontWeight: 600,
+    fontSize: '1.8rem',
+    textAlign:'center',
+    marginBottom: '2rem',
+    color: '#0B2A40',
+    [theme.breakpoints.down('md')]: {
+        fontSize: '1.6rem',
+    },
+    [theme.breakpoints.down('sm')]: {
+        fontSize: '1.5rem',
+    },
+});
+
+export const tabSubTitle1: SxProps<Theme> = () => ({
+    fontFamily: 'Poppins, sans-serif',
+    fontWeight: 700,
+    fontSize: '1.4rem',
+    color: '#0B2A40',
+});
+
+export const tabSubTitle2: SxProps<Theme> = () => ({
+    fontFamily: 'Poppins, sans-serif',
+    fontWeight: 600,
+    fontSize: '1rem',
+    color: '#2C5674',
+});
+
+export const tabText: SxProps<Theme> = () => ({
+    fontFamily: 'Poppins, sans-serif',
+    fontSize: '1rem',
+    color: '#0B2A40',
+});
+
 export const cardContent: SxProps<Theme> = (theme) => ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
     height: '100%',
-    padding: '1.5rem',
+    padding: '0.8rem',
     backgroundColor: '#E3EDF4',
     border: 'solid 3px #185D8E',
     borderRadius: '14px',
@@ -473,8 +525,14 @@ export const cardContent: SxProps<Theme> = (theme) => ({
         transform: 'scale(1.02)',
         cursor:'pointer',
     },
+    [theme.breakpoints.down('lg')]: {
+        margin: '0rem 0rem',
+    },
     [theme.breakpoints.down('md')]: {
-        margin: '2rem 0rem',
+        margin: '0rem 2rem 2rem 5rem',
+    },
+    [theme.breakpoints.down('sm')]: {
+        margin: '1rem 0rem',
     },
 });
 
@@ -494,6 +552,9 @@ export const cardText: SxProps<Theme> = () => ({
 
 export const gridContainer: SxProps<Theme> = (theme) => ({
     margin: '3rem 18rem',
+    [theme.breakpoints.down('lg')]: {
+        margin: '2rem 0rem 2rem 6rem',
+    },
     [theme.breakpoints.down('md')]: {
         margin: '2rem 0rem',
     },
@@ -514,6 +575,7 @@ export const styledInput: SxProps<Theme> = () => ({
     },
     input: {
         color: '#185D8E',
+        backgroundColor: '#D6E5F0',
     },
     label: {
         color: '#185D8E',
@@ -536,6 +598,7 @@ export const styledSelect: SxProps<Theme> = {
     },
     '.MuiSelect-select': {
         color: '#185D8E',
+        backgroundColor: '#D6E5F0',
     },
 };
 
@@ -544,8 +607,8 @@ export const styledModal: SxProps<Theme> = () => ({
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    padding: '2rem',
-    maxWidth: '30rem',
+    padding: '3rem',
+    maxWidth: '35rem',
     width: '100%',
     backgroundColor: '#F6F6F6',
     border: 'solid 3px #0B2A40',
@@ -553,15 +616,41 @@ export const styledModal: SxProps<Theme> = () => ({
     boxShadow: '4px 4px 0px 1px rgba(0, 111, 255, 0.2)',
 });
 
+export const styledModalDetails: SxProps<Theme> = (theme) => ({
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    padding: '3rem 3rem 10rem 3rem',
+    maxWidth: '60rem',
+    maxHeight: '45rem',
+    width: '100%',
+    height:'100%',
+    backgroundColor: '#F6F6F6',
+    border: 'solid 3px #0B2A40',
+    borderRadius: '12px',
+    boxShadow: '4px 4px 0px 1px rgba(0, 111, 255, 0.2)',
+    [theme.breakpoints.down('md')]: {
+        padding: '3rem 3rem 10rem 3rem',
+        maxWidth: '60rem',
+        maxHeight: '45rem',
+    },
+    [theme.breakpoints.down('sm')]: {
+        padding: '3rem 1rem 10rem 1rem',
+        maxWidth: '65rem',
+        maxHeight: '55rem',
+    },
+});
+
 export const searchButton: SxProps<Theme> = (theme) => ({
     mr: 0,
     margin: '1rem 0',
-    fontFamily: 'Roboto, monospace',
-    fontSize: '1.2rem',
+    fontFamily: 'Poppins, sans-serif',
+    fontSize: '1.1rem',
     padding: '0.5rem',
     backgroundColor: '#D9EEFF',
     color: '#185D8E',
-    fontWeight: 700,
+    fontWeight: 600,
     border: 'solid 2px #185D8E',
     borderRadius: '7px',
     boxShadow: '4px 4px 0px 1px rgba(0, 111, 255, 0.2)',
@@ -598,12 +687,12 @@ export const searchButton: SxProps<Theme> = (theme) => ({
 export const clearFilterButton: SxProps<Theme> = (theme) => ({
     mr: 0,
     margin: '1rem 0',
-    fontFamily: 'Roboto, monospace',
-    fontSize: '1.2rem',
+    fontFamily: 'Poppins, sans-serif',
+    fontSize: '1.1rem',
     padding: '0.5rem',
     backgroundColor: '#F4BABB',
     color: '#A80E11',
-    fontWeight: 700,
+    fontWeight: 600,
     border: 'solid 2px #E82F32',
     borderRadius: '7px',
     boxShadow: '4px 4px 0px 1px rgba(0, 111, 255, 0.2)',
@@ -636,12 +725,52 @@ export const clearFilterButton: SxProps<Theme> = (theme) => ({
     },
 });
 
-export const searchBox: SxProps<Theme> = () => ({
+export const styledBox: SxProps<Theme> = () => ({
+    marginBottom: '2rem',
     display: 'flex',
-    alignItems: 'center',
-    marginTop: 10
+    flexDirection: 'column',
+    margin: 'auto',
+    marginTop: '1.6rem',
+    width: '100%',
+    alignItems: 'flex-start',
 });
 
+export const searchBox: SxProps<Theme> = (theme) => ({
+    flexGrow: 1,
+    display: 'flex',
+    gap: '1rem',
+    width: '100%',
+    maxWidth: '35rem',
+    margin: '2rem 0rem 0rem 18.5rem',
+    '& .MuiOutlinedInput-root': {
+        backgroundColor: '#EFEFEF',
+        borderRadius: '7px',
+        '& fieldset': {
+            borderColor: '#EFEFEF',
+        },
+        '&:hover fieldset': {
+            borderColor: '#EFEFEF',
+        },
+        '&.Mui-focused fieldset': {
+            borderColor: '#EFEFEF',
+        },
+    },
+    '& .MuiOutlinedInput-input': {
+        color: '#185D8E',
+    },
+    '& .MuiInputAdornment-root .MuiSvgIcon-root': {
+        color: '#185D8E',
+    },
+    [theme.breakpoints.down('lg')]: {
+        margin: '2rem 2rem 0rem 6rem',
+    },
+    [theme.breakpoints.down('md')]: {
+        margin: '2rem 2rem 0rem 5rem',
+    },
+    [theme.breakpoints.down('sm')]: {
+        margin: '2rem 0rem 0rem 0rem',
+    },
+});
 export const styledSearchSelect: SxProps<Theme> = {
     '& .MuiOutlinedInput-root': {
         '& fieldset': {
