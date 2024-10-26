@@ -37,6 +37,11 @@ export const buscarCursosPorInstituicao = async (instituicaoId: number) => {
     return response.data;
 };
 
+export const buscarPoliticasPorInstituicao = async (instituicaoId: number) => {
+    const response = await axios.get(`${API_URL}/politicaInstituicao/instituicao/${instituicaoId}`);
+    return response.data;
+};
+
 // Função para buscar a lista de testes de um estudante
 export const buscarTestesDeEstudante = async (estudanteId: number) => {
     const response = await axios.get(`${API_URL}/estudanteTeste/teste/${estudanteId}`);

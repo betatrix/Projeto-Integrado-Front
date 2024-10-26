@@ -19,23 +19,33 @@ import {
     CardContent,
     CardActions,
     Pagination,
-    CircularProgress
+    CircularProgress,
+    Tabs,
+    Tab,
+    ListItemIcon,
+    Stack
 } from '@mui/material';
-import { Add, Close, FilterList } from '@mui/icons-material';
+import {
+    Add,
+    BookOutlined,
+    Circle,
+    Close,
+    FilterList,
+    InfoOutlined,
+    MapOutlined,
+    PolicyOutlined
+} from '@mui/icons-material';
 import Footer from '../../../components/homeFooter';
 import { Endereco, TipoInstituicaoCurso } from '../../../types/institutionTypes';
 import {
     buscarEntidades,
     buscarEntidadePorId,
-    buscarCursosPorInstituicao
+    buscarCursosPorInstituicao,
+    buscarPoliticasPorInstituicao
 } from '../../../services/apiService';
 import {
     clearFilterButton,
-    DetailTypography,
-    GridContainer,
-    SearchBox,
     searchButton,
-    StyledBox,
     styledModal,
     styledInput,
     styledSelect,
@@ -44,15 +54,30 @@ import {
     cardTitle,
     cardText,
     searchBox,
+    styledBox,
+    tabContent,
+    tabTitle,
+    styledModalDetails,
+    tabText,
+    tabSubTitle1,
+    tabSubTitle2,
+    tabStyle,
 } from './styles';
 import { useTranslation } from 'react-i18next';
 import CustomDrawer from '../../../components/sidemenu/CustomDrawer';
 import StudentHeader from '../../../components/studentHeader';
 import SearchIcon from '@mui/icons-material/Search';
+import * as changeCase from 'change-case';
 
 interface Curso {
     id: number;
     descricao: string;
+}
+
+interface Politica {
+    id: number;
+    descricao: string;
+    tipo: string;
 }
 interface Institution {
     id: number;
@@ -65,6 +90,7 @@ interface Institution {
     site: string;
     endereco: Endereco;
     cursos: Curso[];
+    politicas: Politica[]
 }
 
 const brasilStates = [
@@ -98,25 +124,23 @@ const brasilStates = [
 ];
 
 const entryMethods = [
-    { description: 'SISU' },
     { description: 'SISU e ENEM' },
-    { description: 'SISU e ENEM + Vestibular próprio' },
     { description: 'SISU e PAS' },
     { description: 'SISU e PAVE' },
     { description: 'SISU e Pism' },
     { description: 'SISU e Prosel' },
     { description: 'SISU e PSC' },
-    { description: 'SISU E PSVO' },
+    { description: 'SISU e PSVO' },
     { description: 'SISU e Vagas Olímpicas' },
     { description: 'SISU e Vestibular próprio' },
     { description: 'SISU, ENEM e Vestibular próprio' },
     { description: 'SISU, PAS e Vestibular próprio' },
-    { description: 'SISU, Vestibular próprio' },
-    { description: 'SISU, Vestibular próprio e PSS' },
     { description: 'SISU, Vestibular próprio e PASSE' },
+    { description: 'SISU, Vestibular próprio e PSS' },
     { description: 'SISU, Vestibular próprio, PSEnem e PSAC' },
-    { description: 'Vestibular próprio' },
+    { description: 'SISU' },
     { description: 'Vestibular próprio e PSS' },
+    { description: 'Vestibular próprio' },
     { description: 'Vestibulinho' },
 ];
 
@@ -124,11 +148,11 @@ const InstitutionList: React.FC = () => {
     const { t } = useTranslation();
     const [institutions, setInstitutions] = useState<Institution[]>([]);
     const [searchValue, setSearchValue] = useState<string>('');
-    const [notaMecValue, setNotaMecValue] = useState<number | null>(null); // Filtro de nota MEC
-    const [formaIngressoValue, setFormaIngressoValue] = useState<string>(''); // Filtro de forma de ingresso
-    const [tipoInstituicaoValue, setTipoInstituicaoValue] = useState<TipoInstituicaoCurso | ''>(''); // Filtro de tipo
-    const [estadoValue, setEstadoValue] = useState<string>(''); // Filtro de estado
-    const [cursoValue, setCursoValue] = useState<string>(''); // Filtro de curso
+    const [notaMecValue, setNotaMecValue] = useState<number | null>(null);
+    const [formaIngressoValue, setFormaIngressoValue] = useState<string>('');
+    const [tipoInstituicaoValue, setTipoInstituicaoValue] = useState<TipoInstituicaoCurso | ''>('');
+    const [estadoValue, setEstadoValue] = useState<string>('');
+    const [cursoValue, setCursoValue] = useState<string>('');
     const [filterModalOpen, setFilterModalOpen] = useState(false);
     const [detailModalOpen, setDetailModalOpen] = useState(false);
     const [selectedInstitution, setSelectedInstitution] = useState<Institution | null>(null);
@@ -182,7 +206,7 @@ const InstitutionList: React.FC = () => {
 
     // Função de filtro
     const filteredInstitutions = institutions.filter(institution => {
-        const matchesSearchValue = institution.nome?.toLowerCase().includes(searchValue.toLowerCase());
+        const matchesSearchValue = institution.nome?.toLowerCase().includes(searchValue.toLowerCase()) || institution.sigla?.toLowerCase().includes(searchValue.toLowerCase());
         const matchesNotaMec = notaMecValue === null || institution.notaMec === notaMecValue;
         const matchesFormaIngresso = formaIngressoValue === '' || institution.formaIngresso?.toLowerCase().includes(formaIngressoValue.toLowerCase());
         const matchesTipo = tipoInstituicaoValue === '' || institution.tipo === tipoInstituicaoValue;
@@ -235,7 +259,8 @@ const InstitutionList: React.FC = () => {
         try {
             const institutionDetails = await buscarEntidadePorId('instituicao', institution.id);
             const institutionCourses = await buscarCursosPorInstituicao(institution.id);
-            setSelectedInstitution({ ...institutionDetails, cursos: institutionCourses });
+            const institutionPolicies = await buscarPoliticasPorInstituicao(institution.id);
+            setSelectedInstitution({ ...institutionDetails, cursos: institutionCourses, politicas: institutionPolicies });
             setDetailModalOpen(true);
         } catch (error) {
             console.error('Erro ao obter detalhes da instituição:', error);
@@ -247,9 +272,31 @@ const InstitutionList: React.FC = () => {
         setSelectedInstitution(null);
     };
 
+    const [activeTab, setActiveTab] = useState(0);
+    const handleTabChange = (_event: unknown, newValue: React.SetStateAction<number>) => {
+        setActiveTab(newValue);
+    };
+
     // ---------------------------- Paginação dos cards ----------------------------
     const [currentPage, setCurrentPage] = useState(1);
-    const institutionsPerPage = 6;
+    const [institutionsPerPage, setInstitutionsPerPage] = useState(6);
+
+    useEffect(() => {
+        const updateInstitutionsPerPage = () => {
+            if (window.innerWidth < 600) {
+                setInstitutionsPerPage(4);
+            } else {
+                setInstitutionsPerPage(6);
+            }
+        };
+
+        updateInstitutionsPerPage();
+        window.addEventListener('resize', updateInstitutionsPerPage);
+
+        return () => {
+            window.removeEventListener('resize', updateInstitutionsPerPage);
+        };
+    }, []);
 
     // Calcular índices de paginação
     const indexOfLastInstitution = currentPage * institutionsPerPage;
@@ -267,12 +314,34 @@ const InstitutionList: React.FC = () => {
             <Box component="main" sx={{ flexGrow: 1, p: 3, backgroundColor: 'white', minHeight: '100vh' }}>
                 <CustomDrawer open={open} handleDrawerOpen={handleDrawerOpen} handleDrawerClose={handleDrawerClose} />
                 <StudentHeader />
-                <StyledBox>
-                    <SearchBox sx={searchBox}>
+                <Box sx={styledBox}>
+                    <Typography sx={{
+                        fontFamily: 'Poppins, sans-serif',
+                        fontWeight: 800,
+                        fontSize: '2.4rem',
+                        color: '#1b1f27',
+                        margin: '6rem 0rem 0rem 18.5rem',
+                        '@media (max-width: 1200px)': {
+                            fontSize: '2rem',
+                            margin: '4rem 0rem 0rem 6rem',
+                        },
+                        '@media (max-width: 900px)': {
+                            fontSize: '2rem',
+                            margin: '4rem 0rem 0rem 5rem',
+                        },
+                        '@media (max-width: 600px)': {
+                            fontSize: '2rem',
+                            margin: '4rem 0rem 0rem 0rem',
+                        },
+                    }}>
+                        Instituições
+                    </Typography>
+                    <Box sx={searchBox}>
                         <TextField
                             label={t('listInstitutionSearch')}
                             variant='outlined'
                             onChange={(e) => setSearchValue(e.target.value)}
+                            sx={{width:'100%'}}
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment position="end">
@@ -281,11 +350,20 @@ const InstitutionList: React.FC = () => {
                                 ),
                             }}
                         />
-                        <IconButton onClick={handleFilterModalOpen} sx={{ ml: 2 }}>
-                            <FilterList />
-                            Filtro
-                        </IconButton>
-                    </SearchBox>
+                        <Button onClick={handleFilterModalOpen}>
+                            <FilterList sx={{ color: '#185D8E' }} />
+                            <Typography
+                                variant="h6"
+                                sx={{
+                                    color: '#185D8E',
+                                    fontWeight: '500',
+                                    marginLeft: '0.5rem',
+                                    fontFamily: 'Poppins, sans-serif'
+                                }}>
+                                    Filtros
+                            </Typography>
+                        </Button>
+                    </Box>
 
                     {/* Modal de Filtros */}
                     <Modal
@@ -309,6 +387,7 @@ const InstitutionList: React.FC = () => {
                             </IconButton>
                             <Grid container spacing={3}>
                                 <Grid item xs={12} sx={{marginTop: 4}}>
+                                    <Typography variant="h5" sx={cardTitle}>Filtros da Instituição</Typography>
                                     <TextField
                                         label={t('Nota MEC')}
                                         type="number"
@@ -382,24 +461,29 @@ const InstitutionList: React.FC = () => {
                             </Grid>
                         </Box>
                     </Modal>
-                </StyledBox>
+                </Box>
 
+                {/* Cards Instituições */}
                 {loading ? (
                     <Box sx={{ display: 'flex', justifyContent: 'center', mt: 5 }}>
-                        <CircularProgress />
+                        <CircularProgress sx={{ color: '#185D8E' }} />
                     </Box>
                 ) : (
                     <Box sx={gridContainer}>
                         <Grid container spacing={4}>
                             {currentInstitutions.map((institution) => (
-                                <Grid item xs={12} sm={6} md={6} key={institution.id}>
+                                <Grid item xs={12} sm={12} md={6} key={institution.id}>
                                     <Card sx={cardContent}>
                                         <CardContent onClick={() => handleDetailModalOpen(institution)}>
-                                            <Typography variant="h5" sx={cardTitle}>{institution.nome}</Typography>
-                                            <Typography variant="body2" sx={cardText}><b>Sigla:</b> {institution.sigla}</Typography>
+                                            <Typography variant="h5" sx={cardTitle}>
+                                                {institution.nome ? changeCase.capitalCase(institution.nome) : 'Nome não disponível'}
+                                            </Typography>
+                                            <Typography variant="body2" sx={cardText}><b>Sigla:</b> {institution.sigla || 'Não disponível'}</Typography>
                                             <Typography variant="body2" sx={cardText}><b>Site:</b> {institution.site || 'Não disponível'}</Typography>
                                             <Typography variant="body2" sx={cardText}><b>Nota MEC | INDEB:</b> {institution.notaMec || 'Não disponível'}</Typography>
-                                            <Typography variant="body2" sx={cardText}><b>Tipo:</b> {institution.tipo || 'Não disponível'}</Typography>
+                                            <Typography variant="body2" sx={cardText}>
+                                                <b>Tipo:</b> {institution.tipo ? changeCase.capitalCase(institution.tipo) : 'Não disponível'}
+                                            </Typography>
                                             <Typography variant="body2" sx={cardText}><b>Forma de Ingresso:</b> {institution.formaIngresso || 'Não disponível'}</Typography>
                                         </CardContent>
                                         <CardActions sx={{ justifyContent: 'flex-end' }}>
@@ -413,6 +497,7 @@ const InstitutionList: React.FC = () => {
                                         </CardActions>
                                     </Card>
                                 </Grid>
+
                             ))}
                         </Grid>
                         <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 7 }}>
@@ -420,7 +505,21 @@ const InstitutionList: React.FC = () => {
                                 count={totalPages}
                                 page={currentPage}
                                 onChange={handleChangePage}
-                                color="primary"
+                                sx={{
+                                    '& .MuiPaginationItem-root': {
+                                        color: '#0B2A40',
+                                    },
+                                    '& .Mui-selected': {
+                                        backgroundColor: '#185D8E',
+                                        color: '#FFFFFF'
+                                    },
+                                    '& .MuiPaginationItem-root.Mui-selected:hover': {
+                                        backgroundColor: '#A4BFD2',
+                                    },
+                                    '& .MuiPaginationItem-root:hover': {
+                                        backgroundColor: '#E0E9F0',
+                                    },
+                                }}
                             />
                         </Box>
                     </Box>
@@ -433,63 +532,228 @@ const InstitutionList: React.FC = () => {
                     aria-labelledby="modal-modal-title"
                     aria-describedby="modal-modal-description"
                 >
-                    <Box sx={styledModal}>
-                        <GridContainer>
+                    <Box sx={styledModalDetails}>
+                        <IconButton
+                            aria-label="close"
+                            onClick={handleDetailModalClose}
+                            sx={{
+                                position: 'absolute',
+                                top: 8,
+                                right: 8,
+                                color: '#0B2A40',
+                            }}
+                        >
+                            <Close fontSize="large" />
+                        </IconButton>
+                        <Typography variant="h6" sx={tabTitle}>{selectedInstitution?.nome}</Typography>
+                        <Box sx={tabContent}>
+                            <Tabs
+                                value={activeTab}
+                                onChange={handleTabChange}
+                                centered
+                                variant="scrollable"
+                                scrollButtons
+                                allowScrollButtonsMobile
+                                sx={{
+                                    '& .MuiTabs-indicator': {
+                                        backgroundColor: '#0B2A40',
+                                        height: '4px',
+                                    },
+                                    borderBottom: '2px solid #6B9ABC',
+                                }}
+                            >
+                                <Tab sx={tabStyle} label="Informações" />
+                                <Tab sx={tabStyle} label="Cursos" />
+                                <Tab sx={tabStyle} label="Políticas Públicas " />
+                            </Tabs>
+
                             {selectedInstitution && (
-                                <>
-                                    <DetailTypography>
-                                        <Typography variant="h6" gutterBottom>
-                                            {selectedInstitution.nome}
-                                        </Typography>
-                                    </DetailTypography>
-                                    <Grid container spacing={3}>
-                                        <Grid item xs={6}>
-                                            <Typography variant="subtitle1" gutterBottom>
-                                                Dados Gerais
-                                            </Typography>
-                                            <Typography variant="body2">Nome: {selectedInstitution.nome}</Typography>
-                                            <Typography variant="body2">Sigla: {selectedInstitution.sigla}</Typography>
-                                            <Typography variant="body2">Site: {selectedInstitution.site || 'Não disponível'}</Typography>
-                                            <Typography variant="body2">Nota MEC: {selectedInstitution.notaMec || 'Não disponível'}</Typography>
-                                            <Typography variant="body2">Tipo: {selectedInstitution.tipo || 'Não disponível'}</Typography>
-                                            <Typography variant="body2">Forma de Ingresso: {selectedInstitution.formaIngresso || 'Não disponível'}</Typography>
-                                        </Grid>
+                                <Box sx={{ marginTop: '2rem', alignItems: 'center' }}>
 
-                                        {/* Endereço */}
-                                        <Grid item xs={6}>
-                                            <Typography variant="subtitle1" gutterBottom>
-                                                Endereço
-                                            </Typography>
-                                            <Typography variant="body2">Rua: {selectedInstitution.endereco?.logradouro || 'Não disponível'}</Typography>
-                                            <Typography variant="body2">Número: {selectedInstitution.endereco?.numero || 'Não disponível'}</Typography>
-                                            <Typography variant="body2">Cidade: {selectedInstitution.endereco?.cidade || 'Não disponível'}</Typography>
-                                            <Typography variant="body2">Estado: {selectedInstitution.endereco?.estado || 'Não disponível'}</Typography>
-                                            <Typography variant="body2">CEP: {selectedInstitution.endereco?.cep || 'Não disponível'}</Typography>
-                                        </Grid>
-
-                                        {/* Cursos */}
-                                        <Grid item xs={12}>
-                                            <Typography variant="subtitle1" gutterBottom>
-                                                Cursos
-                                            </Typography>
-                                            <List dense style={{ maxHeight: 200, overflow: 'auto' }}>
-                                                {selectedInstitution.cursos?.length > 0 ? (
-                                                    selectedInstitution.cursos.map((curso) => (
-                                                        <ListItem key={curso.id}>
-                                                            <ListItemText primary={curso.descricao} />
-                                                        </ListItem>
-                                                    ))
-                                                ) : (
-                                                    <Typography variant="body2" color="textSecondary">
-                                                        Não há cursos na instituição.
+                                    {/* Dados Gerais */}
+                                    {activeTab === 0 && (
+                                        <Grid
+                                            container
+                                            spacing={3}
+                                            sx={{ margin: '0rem 0.5rem' }}
+                                        >
+                                            <Grid item xs={12} sm={6}>
+                                                <Stack direction="row" alignItems="center" spacing={1}>
+                                                    <InfoOutlined fontSize="small" sx={{ color: '#0B2A40' }} />
+                                                    <Typography variant="subtitle1" sx={tabSubTitle1} gutterBottom>Dados Gerais</Typography>
+                                                </Stack>
+                                                <Box
+                                                    sx={{
+                                                        margin: '0.5rem 2rem',
+                                                        '@media (max-width: 600px)': {
+                                                            margin: '0.5rem 0rem',
+                                                        },
+                                                    }}>
+                                                    <Typography variant="body2" sx={tabText}><b>Sigla:</b> {selectedInstitution.sigla}</Typography>
+                                                    <Typography variant="body2" sx={tabText}><b>Site:</b> {selectedInstitution.site || 'Não disponível'}</Typography>
+                                                    <Typography variant="body2" sx={tabText}><b>Nota MEC | INDEB:</b> {selectedInstitution.notaMec || 'Não disponível'}</Typography>
+                                                    <Typography variant="body2" sx={tabText}>
+                                                        <b>Tipo:</b> {selectedInstitution.tipo ? changeCase.capitalCase(selectedInstitution.tipo) : 'Não disponível'}
                                                     </Typography>
-                                                )}
-                                            </List>
+                                                    <Typography variant="body2" sx={tabText}>
+                                                        <b>Forma de Ingresso:</b> {selectedInstitution.formaIngresso || 'Não disponível'}
+                                                    </Typography>
+                                                </Box>
+                                            </Grid>
+
+                                            <Grid item xs={12} sm={6}>
+                                                <Stack direction="row" alignItems="center" spacing={1}>
+                                                    <MapOutlined fontSize="small" sx={{ color: '#0B2A40' }} />
+                                                    <Typography variant="subtitle1" sx={tabSubTitle1} gutterBottom>Endereço</Typography>
+                                                </Stack>
+                                                <Box
+                                                    sx={{
+                                                        margin: '0.5rem 2rem',
+                                                        '@media (max-width: 600px)': {
+                                                            margin: '0.5rem 0rem',
+                                                        },
+                                                    }}>
+                                                    <Typography variant="body2" sx={tabText}><b>Rua:</b> {selectedInstitution.endereco?.logradouro || 'Não disponível'}</Typography>
+                                                    <Typography variant="body2" sx={tabText}><b>Número:</b> {selectedInstitution.endereco?.numero || 'Não disponível'}</Typography>
+                                                    <Typography variant="body2" sx={tabText}><b>Cidade:</b> {selectedInstitution.endereco?.cidade || 'Não disponível'}</Typography>
+                                                    <Typography variant="body2" sx={tabText}><b>Estado:</b> {selectedInstitution.endereco?.estado || 'Não disponível'}</Typography>
+                                                    <Typography variant="body2" sx={tabText}><b>CEP:</b> {selectedInstitution.endereco?.cep || 'Não disponível'}</Typography>
+                                                </Box>
+                                            </Grid>
                                         </Grid>
-                                    </Grid>
-                                </>
+                                    )}
+
+                                    {/* Cursos */}
+                                    {activeTab === 1 && (
+                                        <Grid container>
+                                            <Grid item xs={12}>
+                                                <Stack direction="row" alignItems="center" spacing={1}>
+                                                    <BookOutlined fontSize="small" sx={{color: '#0B2A40'}} />
+                                                    <Typography variant="subtitle1" sx={tabSubTitle1} gutterBottom>Cursos</Typography>
+                                                </Stack>
+                                                <Grid
+                                                    container
+                                                    columns={{ xs: 1, sm: 2, md: 2, lg: 2 }}
+                                                    sx={{
+                                                        maxHeight: 300,
+                                                        overflow: 'auto',
+                                                        margin:'0.5rem 1rem',
+                                                        '@media (max-width: 600px)': {
+                                                            margin: '0.5rem 0rem',
+                                                            maxHeight: 450,
+                                                        },
+                                                    }}
+                                                >
+                                                    {selectedInstitution.cursos?.length > 0 ? (
+                                                        selectedInstitution.cursos.map((curso) => (
+                                                            <Grid item xs={0.9} key={curso.id}>
+                                                                <List disablePadding>
+                                                                    <ListItem alignItems="flex-start">
+                                                                        <ListItemIcon sx={{ minWidth: '24px', marginTop: '0.7rem' }}>
+                                                                            <Circle sx={{ fontSize: '7px', color: '#185D8E' }} />
+                                                                        </ListItemIcon>
+                                                                        <ListItemText sx={tabText} primary={curso.descricao} />
+                                                                    </ListItem>
+                                                                </List>
+                                                            </Grid>
+                                                        ))
+                                                    ) : (
+                                                        <Typography variant="body2" color="textSecondary">
+                                                            Não há cursos cadastrados na instituição.
+                                                        </Typography>
+                                                    )}
+                                                </Grid>
+                                            </Grid>
+                                        </Grid>
+                                    )}
+
+                                    {/* Políticas Públicas  */}
+                                    {activeTab === 2 && (
+                                        <Grid container spacing={3}>
+                                            <Grid item xs={12}>
+                                                <Stack direction="row" alignItems="center" spacing={1}>
+                                                    <PolicyOutlined fontSize="small" sx={{color: '#0B2A40'}} />
+                                                    <Typography variant="subtitle1" sx={tabSubTitle1} gutterBottom>Políticas Públicas</Typography>
+                                                </Stack>
+                                            </Grid>
+                                            <Grid
+                                                container
+                                                sx={{
+                                                    margin:'0.5rem 2rem',
+                                                    gap: '3rem',
+                                                    '@media (max-width: 600px)': {
+                                                        margin: '0.5rem 0rem 0rem 1rem',
+                                                        gap: '2rem',
+                                                        maxHeight: 500,
+                                                        overflow: 'auto',
+                                                    },
+                                                }}
+                                            >
+                                                <Grid item xs={12} sm={6} md={7} lg={7}>
+                                                    <Typography variant="subtitle1" sx={tabSubTitle2} gutterBottom>Entrada (Vagas reservadas)</Typography>
+                                                    <List
+                                                        sx={{
+                                                            maxHeight: 270,
+                                                            overflow: 'auto',
+                                                            '@media (max-width: 600px)': {
+                                                                maxHeight: 180,
+                                                            }
+                                                        }}
+                                                    >
+                                                        {selectedInstitution.politicas?.filter((politica) => politica.tipo === 'POLITICA_ENTRADA').length > 0 ? (
+                                                            selectedInstitution.politicas
+                                                                .filter((politica) => politica.tipo === 'POLITICA_ENTRADA')
+                                                                .map((politica) => (
+                                                                    <ListItem key={politica.id} alignItems="flex-start">
+                                                                        <ListItemIcon sx={{ minWidth: '24px', marginTop: '0.8rem' }}>
+                                                                            <Circle sx={{fontSize:'7px', color:'#185D8E'}}/>
+                                                                        </ListItemIcon>
+                                                                        <ListItemText sx={tabText} primary={politica.descricao} />
+                                                                    </ListItem>
+                                                                ))
+                                                        ) : (
+                                                            <Typography variant="body2" color="textSecondary">
+                                                                Não há políticas de entrada cadastradas na instituição.
+                                                            </Typography>
+                                                        )}
+                                                    </List>
+                                                </Grid>
+                                                <Grid item xs={12} sm={5} md={4} lg={4}>
+                                                    <Typography variant="subtitle1" sx={tabSubTitle2} gutterBottom>Permanência</Typography>
+                                                    <List
+                                                        sx={{
+                                                            maxHeight: 270,
+                                                            overflow: 'auto',
+                                                            '@media (max-width: 600px)': {
+                                                                maxHeight: 180,
+                                                            }
+                                                        }}
+                                                    >
+                                                        {selectedInstitution.politicas?.filter((politica) => politica.tipo === 'POLITICA_PERMANENCIA').length > 0 ? (
+                                                            selectedInstitution.politicas
+                                                                .filter((politica) => politica.tipo === 'POLITICA_PERMANENCIA')
+                                                                .map((politica) => (
+                                                                    <ListItem key={politica.id}>
+                                                                        <ListItemIcon sx={{ minWidth: '24px'}}>
+                                                                            <Circle sx={{fontSize:'7px', color:'#185D8E'}}/>
+                                                                        </ListItemIcon>
+                                                                        <ListItemText sx={tabText} primary={politica.descricao} />
+                                                                    </ListItem>
+                                                                ))
+                                                        ) : (
+                                                            <Typography variant="body2" color="textSecondary">
+                                                                Não há políticas de permanência cadastradas na instituição.
+                                                            </Typography>
+                                                        )}
+                                                    </List>
+                                                </Grid>
+                                            </Grid>
+                                        </Grid>
+                                    )}
+                                </Box>
                             )}
-                        </GridContainer>
+
+                        </Box>
                     </Box>
                 </Modal>
             </Box>

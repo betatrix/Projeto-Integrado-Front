@@ -34,16 +34,15 @@ export const AppRoutes = () => {
                         <Route path="/recuperar-senha" element={<RecuperarSenha />} />
                         <Route path="/nova-senha" element={<NovaSenha />} />
                         <Route path="/success-change-password" element={<SucessPassword />} />
-                        <Route path="/register" element={<Register />} />
                         <Route path='/sobre' element={<About />} />
                         <Route path='/pagina-inicial' element={<HomePage />} />
-                        <Route path='/instituicao' element={<InstitutionList />} />
                         {/* Private Routes - Student */}
                         <Route element={<PrivateRoute requiredRole="ESTUDANTE" />}>
                             <Route path='/teste-vocacional' element={<VocacionalTest />} />
                             <Route path='/estudante' element={<StudentDashboard />} />
                             <Route path="/resultado" element={<ResultadoTeste />} />
                             <Route path='/minha-conta' element={<PerfilStudent />} />
+                            <Route path='/instituicao' element={<InstitutionList />} />
                         </Route>
                         {/* Private Routes - Admin */}
                         <Route element={<PrivateRoute requiredRole="ADMIN" />}>
