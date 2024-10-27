@@ -37,14 +37,14 @@ export const CourseCard = styled(Box)`
   justify-content: space-between; /* Garante que o botão fique no final */
   background-color: #F6F6F6;
   padding: 27px;
-  padding-left: 50px;
+  padding-left: 35px;
   padding-right: 40px;
   border-radius: 23px;
-  box-shadow: 10px 10px 5px rgba(172, 200, 220, 0.5);
+  box-shadow: 10px 10px 1px rgba(172, 200, 220, 0.5);
   text-align: center;
-  height: 600px;
+  height: 580px;
   width: 100%; /* Defina a largura dos cards */
-  max-width: 450px;
+  max-width: 420px;
 `;
 
 // TITLES ****************************************************************************************************
@@ -78,5 +78,5 @@ export const DetailsResult = styled(Typography)`
 
 export const CareerListItem = styled(ListItem)`
   color: rgba(0, 0, 0, 0.5);
-  margin-left: 10px;
+  margin-left: 15px;
 `;
