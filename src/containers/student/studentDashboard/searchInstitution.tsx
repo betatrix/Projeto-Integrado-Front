@@ -611,6 +611,7 @@ const InstitutionList: React.FC = () => {
                                                         margin: '0.5rem 2rem',
                                                         '@media (max-width: 600px)': {
                                                             margin: '0.5rem 0rem',
+                                                            maxHeight: 400,
                                                         },
                                                     }}>
                                                     <Typography variant="body2" sx={tabText}><b>Rua:</b> {selectedInstitution.endereco?.logradouro || 'Não disponível'}</Typography>
@@ -640,7 +641,7 @@ const InstitutionList: React.FC = () => {
                                                         margin:'0.5rem 1rem',
                                                         '@media (max-width: 600px)': {
                                                             margin: '0.5rem 0rem',
-                                                            maxHeight: 450,
+                                                            maxHeight: 390,
                                                         },
                                                     }}
                                                 >
@@ -684,7 +685,7 @@ const InstitutionList: React.FC = () => {
                                                     '@media (max-width: 600px)': {
                                                         margin: '0.5rem 0rem 0rem 1rem',
                                                         gap: '2rem',
-                                                        maxHeight: 500,
+                                                        maxHeight: 400,
                                                         overflow: 'auto',
                                                     },
                                                 }}
