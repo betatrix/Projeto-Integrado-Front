@@ -1,10 +1,16 @@
 /* eslint-disable max-len */
-import React from 'react';
-import { Grid, CardContent, List, Box, Button, Typography } from '@mui/material';
+import React, { useState } from 'react';
+import { Grid, CardContent, List, Box, Button, Typography, Modal, TextField, IconButton, ListItem } from '@mui/material';
 import Header from '../../../components/resultTestHeader';
-import { DetailsResult, Global, CourseTitle, CareerListItem, PageTile, CourseCard } from './new-styles';
+import { DetailsResult, Global, CourseTitle, CareerListItem, PageTile, CourseCard, BackButton, CustomLink, ScrollableList, ModalContent } from './new-styles';
 import { useLocation } from 'react-router-dom';
 import Footer from '../../../components/homeFooter';
+import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
+import SearchIcon from '@mui/icons-material/Search';
+import CloseIcon from '@mui/icons-material/Close';
+import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
+import PaidIcon from '@mui/icons-material/Paid';
+import BookIcon from '@mui/icons-material/Book';
 
 interface ResultData {
     id: number;
@@ -33,22 +39,59 @@ interface ResultData {
     }>;
 }
 
+interface Institution {
+    id: number;
+    nome: string;
+    sigla: string;
+    site: string;
+    notaMec: number;
+}
+
 const ResultScreen: React.FC = () => {
+    const apiUrl = import.meta.env.VITE_API_URL;
+
     const location = useLocation();
     const { resultado } = location.state as { resultado: ResultData };
 
-    // const perfilPrimarioDescricao = resultado.perfis[0]?.descricao || 'Perfil Primário';
-    // const perfilSecundarioDescricao = resultado.perfis[1]?.descricao || 'Perfil Secundário';
+    const [openModal, setOpenModal] = useState(false);
+    const [institutions, setInstitutions] = useState<Institution[]>([]);
+    const [selectedCourse, setSelectedCourse] = useState<{ id: number, descricao: string } | null>(null);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [filteredInstitutions, setFilteredInstitutions] = useState<Institution[]>([]);
 
-    // const allCourses = [
-    //     ...resultado.cursos.cursosPerfilPrimario.map(curso => ({ ...curso, perfil: perfilPrimarioDescricao })),
-    //     ...resultado.cursos.cursosPerfilSecundario.map(curso => ({ ...curso, perfil: perfilSecundarioDescricao }))
-    // ];
+    const handleOpenModal = async (cursoId: number, descricao: string) => {
+        setSelectedCourse({ id: cursoId, descricao });
+        try {
+            const response = await fetch(`${apiUrl}/cursoInstituicao/curso/mec/${cursoId}`);
+            const data: Institution[] = await response.json();
+            setInstitutions(data);
+            setFilteredInstitutions(data);
+            setOpenModal(true);
+        } catch (error) {
+            console.error('Erro ao buscar instituições:', error);
+        }
+    };
+
+    const handleCloseModal = () => {
+        setOpenModal(false);
+    };
+
+    const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const term = event.target.value.toLowerCase();
+        setSearchTerm(term);
+        setFilteredInstitutions(institutions.filter(inst =>
+            inst.nome.toLowerCase().includes(term) || inst.sigla.toLowerCase().includes(term)
+        ));
+    };
 
     return (
         <>
             <Global />
             <Header />
+            <BackButton startIcon={<ArrowCircleLeftIcon />}>
+                <CustomLink to={'/estudante'}> Voltar
+                </CustomLink>
+            </BackButton>
             <Box
                 display={'flex'}
                 alignItems={'center'}
@@ -62,10 +105,9 @@ const ResultScreen: React.FC = () => {
                 </PageTile>
                 {/* Grid para o texto e a imagem */}
                 <Grid container spacing={2} style={{ maxWidth: '80%', alignItems: 'center', marginBottom: '2%' }}>
-                    <Grid item xs={12} md={9} style={{maxWidth: '80%', width: '100%'}}>
-                        <Typography style={{ fontSize: '22px', textAlign: 'left' }}>
+                    <Grid item xs={12} md={9} style={{maxWidth: '75%', width: '100%'}}>
+                        <Typography style={{ fontSize: '20px', textAlign: 'left' }}>
                             {resultado.mensagem}
-
                         </Typography>
                     </Grid>
                     <Grid item xs={12} md={3} >
@@ -74,7 +116,7 @@ const ResultScreen: React.FC = () => {
                                 src="src/assets/img/polvo_voquinho.png"
                                 alt="Polvo Voquinho"
                                 style={{
-                                    marginLeft: '12px',
+                                    marginLeft: '70px',
                                     height: '380px',
                                 }}
                             />
@@ -84,7 +126,7 @@ const ResultScreen: React.FC = () => {
 
                 {/* Cursos para o perfil primário */}
                 <Box display="flex" justifyContent="flex-start" width="80%" marginBottom="2%">
-                    <Typography variant="h5" style={{ fontWeight: 'bold', color: '#185D8E' }}>
+                    <Typography variant="h5" style={{ fontWeight: 'bold', color: '#0B2A40' }}>
         Cursos recomendados para o perfil {resultado.perfis[0].descricao}
                     </Typography>
                 </Box>
@@ -103,7 +145,7 @@ const ResultScreen: React.FC = () => {
                                 <CardContent>
                                     <CourseTitle
                                         style={{
-                                            fontSize: '25px',
+                                            fontSize: '23px',
                                             color: '#185D8E',
                                             fontWeight: 'bold',
                                             marginBottom: '25px'
@@ -112,95 +154,96 @@ const ResultScreen: React.FC = () => {
                                     </CourseTitle>
                                     <DetailsResult
                                         style={{
-                                            fontSize: '20px',
+                                            fontSize: '18px',
                                             color: 'black',
-                                            textAlign: 'justify',
+                                            textAlign: 'left',
                                             marginBottom: '12px'
                                         }}>
                                         <strong
                                             style={{
-                                                fontSize: '22px',
+                                                fontSize: '20px',
                                                 fontWeight: 'bold',
                                                 color: 'black',
                                                 marginBottom: '17px'
                                             }}>
-                                            <img
-                                                src="src/assets/livro.png"
-                                                alt="Ícone de Livro"
-                                                style={{
-                                                    width: '20px',
-                                                    height: '20px',
-                                                    marginRight: '8px'
-                                                }} />
+
+                                            <BookIcon style={{
+                                                width: '20px',
+                                                height: '20px',
+                                                marginRight: '8px',
+                                                color: '#185D8E'
+                                            }}></BookIcon>
                                             Área:
                                         </strong> {curso.area}
                                     </DetailsResult>
                                     <DetailsResult
                                         style={{
-                                            fontSize: '20px',
+                                            fontSize: '18px',
                                             color: 'black',
-                                            textAlign: 'justify',
+                                            textAlign: 'left',
                                             marginBottom: '12px'
                                         }}>
                                         <strong
                                             style={{
-                                                fontSize: '22px',
+                                                fontSize: '20px',
                                                 fontWeight: 'bold',
                                                 color: 'black'
                                             }}>
-                                            <img
-                                                src="src/assets/bolsa-de-dinheiro.png"
-                                                alt="Ícone de Empregabilidade"
-                                                style={{ width: '24px',
-                                                    height: '24px',
-                                                    marginRight: '7px'
-                                                }} />
+                                            <PaidIcon style={{
+                                                width: '20px',
+                                                height: '20px',
+                                                marginRight: '8px',
+                                                color: '#185D8E'
+                                            }}></PaidIcon>
+
                                             Empregabilidade:
                                         </strong> {curso.empregabilidade}
                                     </DetailsResult>
                                     <DetailsResult
                                         style={{
-                                            fontSize: '20px',
+                                            fontSize: '18px',
                                             color: 'black',
-                                            textAlign: 'justify',
+                                            textAlign: 'left',
                                             marginBottom: '10px'
                                         }}>
                                         <strong
                                             style={{
-                                                fontSize: '22px',
+                                                fontSize: '20px',
                                                 fontWeight: 'bold',
                                                 color: 'black'
                                             }}>
-                                            <img
-                                                src="src/assets/mala.png"
-                                                alt="Ícone de Carreira"
-                                                style={{
-                                                    width: '24px',
-                                                    height: '24px',
-                                                    marginRight: '7px'
-                                                }} />
+                                            <BusinessCenterIcon style={{
+                                                width: '20px',
+                                                height: '20px',
+                                                marginRight: '8px',
+                                                color: '#185D8E'
+                                            }}></BusinessCenterIcon>
+
                                             Possíveis Carreiras:
                                         </strong>
                                     </DetailsResult>
-                                    <List>
-                                        {curso.possiveisCarreiras.map((carreira, i) => (
-                                            <CareerListItem key={i}
-                                                style={{ fontSize: '20px',
+
+                                    <ScrollableList>
+                                        <List>
+                                            {curso.possiveisCarreiras.map((carreira, i) => (
+                                                <CareerListItem style={{
+                                                    fontSize: '18px',
                                                     color: 'black',
-                                                    textAlign: 'left'
-                                                }}>
-                                                <strong
-                                                    style={{
-                                                        fontSize: '22px',
+                                                    textAlign: 'left',
+                                                }} key={i}>
+                                                    <strong style={{
+                                                        fontSize: '20px',
                                                         fontWeight: 'bold',
-                                                        color: 'black'
-                                                    }}>• </strong> <span style={{ fontWeight: 'normal' }}>{carreira}</span>
-                                            </CareerListItem>
-                                        ))}
-                                    </List>
+                                                        color: 'black',
+
+                                                    }}> •<strong style={{fontWeight: 'normal', textAlign: 'left'}} > { carreira }</strong></strong>
+                                                </CareerListItem>
+                                            ))}
+                                        </List>
+                                    </ScrollableList>
                                 </CardContent>
                                 <Box display="flex" justifyContent="center" marginTop="1rem">
-                                    <Button
+                                    <Button onClick={() => handleOpenModal(curso.id, curso.descricao)}
                                         sx={{
                                             color: '#185D8E',
                                             border: 'solid',
@@ -210,10 +253,10 @@ const ResultScreen: React.FC = () => {
                                             borderRadius: '10px',
                                             boxShadow: '5px 5px 0px 1px #B9D4F8',
                                             width: '300px',
-                                            transition: 'transform 0.8s ease', // Adiciona a transição suave
+                                            transition: 'transform 0.8s ease',
                                             '&:hover': {
                                                 backgroundColor: '#a7cae3',
-                                                transform: 'scale(1.1)', // Aumenta o botão em 10%
+                                                transform: 'scale(1.1)',
                                             } }}>
                                         Ver Instituições
                                     </Button>
@@ -225,46 +268,135 @@ const ResultScreen: React.FC = () => {
 
                 {/* Cursos recomendados para o perfil secundario */}
                 <Box display="flex" justifyContent="flex-start" width="80%" marginBottom="2%" marginTop='6%'>
-                    <Typography variant="h5" style={{ fontWeight: 'bold', color: '#185D8E' }}>
+                    <Typography variant="h5" style={{ fontWeight: 'bold', color: '#0B2A40' }}>
         Cursos recomendados para o perfil {resultado.perfis[1].descricao}
                     </Typography>
                 </Box>
-                <Grid container spacing={6} style={{ maxWidth: '80%', alignItems: 'center' }} justifyContent="center">
+
+                <Grid container spacing={6}
+                    style={{
+                        maxWidth: '80%',
+                        alignItems: 'center' }}
+                    justifyContent="center">
                     {resultado.cursos.cursosPerfilSecundario.map((curso, index) => (
                         <Grid item lg={4} key={index}>
-                            <CourseCard style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                            <CourseCard
+                                style={{ display: 'flex',
+                                    flexDirection: 'column',
+                                    justifyContent: 'space-between' }}>
                                 <CardContent>
-                                    <CourseTitle style={{ fontSize: '25px', color: '#185D8E', fontWeight: 'bold', marginBottom: '25px' }}>
+                                    <CourseTitle
+                                        style={{
+                                            fontSize: '23px',
+                                            color: '#185D8E',
+                                            fontWeight: 'bold',
+                                            marginBottom: '25px'
+                                        }}>
                                         {curso.descricao}
                                     </CourseTitle>
-                                    <DetailsResult style={{ fontSize: '20px', color: 'black', textAlign: 'justify', marginBottom: '12px' }}>
-                                        <strong style={{ fontSize: '22px', fontWeight: 'bold', color: 'black', marginBottom: '17px' }}>
-                                            <img src="src/assets/livro.png" alt="Ícone de Livro" style={{ width: '20px', height: '20px', marginRight: '8px' }} />
+                                    <DetailsResult
+                                        style={{
+                                            fontSize: '18px',
+                                            color: 'black',
+                                            textAlign: 'left',
+                                            marginBottom: '12px'
+                                        }}>
+                                        <strong
+                                            style={{
+                                                fontSize: '20px',
+                                                fontWeight: 'bold',
+                                                color: 'black',
+                                                marginBottom: '17px'
+                                            }}>
+                                            <BookIcon style={{
+                                                width: '20px',
+                                                height: '20px',
+                                                marginRight: '8px',
+                                                color: '#185D8E'
+                                            }}></BookIcon>
                                             Área:
                                         </strong> {curso.area}
                                     </DetailsResult>
-                                    <DetailsResult style={{ fontSize: '20px', color: 'black', textAlign: 'justify', marginBottom: '12px' }}>
-                                        <strong style={{ fontSize: '22px', fontWeight: 'bold', color: 'black' }}>
-                                            <img src="src/assets/bolsa-de-dinheiro.png" alt="Ícone de Empregabilidade" style={{ width: '24px', height: '24px', marginRight: '7px' }} />
+                                    <DetailsResult
+                                        style={{
+                                            fontSize: '18px',
+                                            color: 'black',
+                                            textAlign: 'left',
+                                            marginBottom: '12px'
+                                        }}>
+                                        <strong
+                                            style={{
+                                                fontSize: '20px',
+                                                fontWeight: 'bold',
+                                                color: 'black'
+                                            }}>
+                                            <PaidIcon style={{
+                                                width: '20px',
+                                                height: '20px',
+                                                marginRight: '8px',
+                                                color: '#185D8E'
+                                            }}></PaidIcon>
                                             Empregabilidade:
                                         </strong> {curso.empregabilidade}
                                     </DetailsResult>
-                                    <DetailsResult style={{ fontSize: '20px', color: 'black', textAlign: 'justify', marginBottom: '10px' }}>
-                                        <strong style={{ fontSize: '22px', fontWeight: 'bold', color: 'black' }}>
-                                            <img src="src/assets/mala.png" alt="Ícone de Carreira" style={{ width: '24px', height: '24px', marginRight: '7px' }} />
+                                    <DetailsResult
+                                        style={{
+                                            fontSize: '18px',
+                                            color: 'black',
+                                            textAlign: 'left',
+                                            marginBottom: '10px'
+                                        }}>
+                                        <strong
+                                            style={{
+                                                fontSize: '20px',
+                                                fontWeight: 'bold',
+                                                color: 'black'
+                                            }}>
+                                            <BusinessCenterIcon style={{
+                                                width: '20px',
+                                                height: '20px',
+                                                marginRight: '8px',
+                                                color: '#185D8E'
+                                            }}></BusinessCenterIcon>
                                             Possíveis Carreiras:
                                         </strong>
                                     </DetailsResult>
-                                    <List>
-                                        {curso.possiveisCarreiras.map((carreira, i) => (
-                                            <CareerListItem key={i} style={{ fontSize: '20px', color: 'black', textAlign: 'left' }}>
-                                                <strong style={{ fontSize: '22px', fontWeight: 'bold', color: 'black' }}> • </strong> <strong> </strong> <span style={{ fontWeight: 'normal' }}> {carreira}</span>
-                                            </CareerListItem>
-                                        ))}
-                                    </List>
+
+                                    <ScrollableList>
+                                        <List>
+                                            {curso.possiveisCarreiras.map((carreira, i) => (
+                                                <CareerListItem style={{
+                                                    fontSize: '18px',
+                                                    color: 'black',
+                                                    textAlign: 'left',
+                                                }} key={i}>
+                                                    <strong style={{
+                                                        fontSize: '20px',
+                                                        fontWeight: 'bold',
+                                                        color: 'black',
+
+                                                    }}> •<strong style={{fontWeight: 'normal', textAlign: 'left'}} > { carreira }</strong></strong>
+                                                </CareerListItem>
+                                            ))}
+                                        </List>
+                                    </ScrollableList>
                                 </CardContent>
                                 <Box display="flex" justifyContent="center" marginTop="1rem">
-                                    <Button sx={{ color: '#185D8E', border: 'solid', fontWeight: 'bold', backgroundColor: '#D9EEFF', padding: '0.7rem 1.05rem', borderRadius: '10px', boxShadow: '5px 5px 0px 1px #B9D4F8', width: '300px', '&:hover': { backgroundColor: '#a7cae3' } }}>
+                                    <Button onClick={() => handleOpenModal(curso.id, curso.descricao)}
+                                        sx={{
+                                            color: '#185D8E',
+                                            border: 'solid',
+                                            fontWeight: 'bold',
+                                            backgroundColor: '#D9EEFF',
+                                            padding: '0.7rem 1.05rem',
+                                            borderRadius: '10px',
+                                            boxShadow: '5px 5px 0px 1px #B9D4F8',
+                                            width: '300px',
+                                            transition: 'transform 0.8s ease',
+                                            '&:hover': {
+                                                backgroundColor: '#a7cae3',
+                                                transform: 'scale(1.1)',
+                                            } }}>
                                         Ver Instituições
                                     </Button>
                                 </Box>
@@ -272,154 +404,79 @@ const ResultScreen: React.FC = () => {
                         </Grid>
                     ))}
                 </Grid>
-
-                {/* <Grid container spacing={6} style={{ maxWidth: '80%', alignItems: 'center' }} justifyContent="center">
-                    {allCourses.map((curso, index) => (
-                        <Grid item lg={4} key={index}>
-                            <CourseCard style={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                justifyContent: 'space-between',
-                                position: 'relative', // Adiciona posição relativa ao card
-                            }}>
-                                <CardContent>
-
-                                    <CourseTitle style={{
-                                        fontSize: '25px',
-                                        color:  '#185D8E',
-                                        fontWeight: 'bold',
-                                        marginBottom: '25px',
-                                    }}>
-                                        {curso.descricao}
-                                    </CourseTitle>
-                                    <DetailsResult style={{
-                                        fontSize: '20px',
-                                        color: 'black',
-                                        textAlign: 'justify',
-                                        marginBottom: '12px',
-                                    }}>
-                                        <strong style={{
-                                            fontSize: '22px',
-                                            fontWeight: 'bold',
-                                            color: 'black',
-                                            marginBottom: '17px',
-                                        }}
-
-                                        >
-                                            <img
-                                                src="src\assets\livro.png" // Altere para o caminho correto da imagem
-                                                alt="Ícone de Livro"
-                                                style={{
-                                                    width: '20px', // Ajuste o tamanho conforme necessário
-                                                    height: '20px',
-                                                    marginRight: '8px',
-                                                }}
-                                            />
-
-                                            Área:</strong> {curso.area}
-                                    </DetailsResult>
-                                    <DetailsResult style={{
-                                        fontSize: '20px',
-                                        color: 'black',
-                                        textAlign: 'justify',
-                                        marginBottom: '12px',
-                                    }}>
-                                        <strong style={{
-                                            fontSize: '22px',
-                                            fontWeight: 'bold',
-                                            color: 'black',
-
-                                        }}>
-                                            <img
-                                                src="src\assets\bolsa-de-dinheiro.png" // Altere para o caminho correto da imagem
-                                                alt="Ícone de Livro"
-                                                style={{
-                                                    width: '24px', // Ajuste o tamanho conforme necessário
-                                                    height: '24px',
-                                                    marginRight: '7px',
-                                                }}
-                                            />
-
-                                            Empregabilidade:</strong> {curso.empregabilidade}
-                                    </DetailsResult>
-                                    <DetailsResult style={{
-                                        fontSize: '20px',
-                                        color: 'black',
-                                        textAlign: 'justify',
-                                        marginBottom: '10px',
-                                    }}>
-                                        <strong style={{
-                                            fontSize: '22px',
-                                            fontWeight: 'bold',
-                                            color: 'black',
-
-                                        }}>
-                                            <img
-                                                src="src\assets\mala.png" // Altere para o caminho correto da imagem
-                                                alt="Ícone de Livro"
-                                                style={{
-                                                    width: '24px', // Ajuste o tamanho conforme necessário
-                                                    height: '24px',
-                                                    marginRight: '7px',
-                                                }}
-                                            />
-                                            Possíveis Carreiras:</strong>
-                                    </DetailsResult>
-                                    <List>
-                                        {curso.possiveisCarreiras.map((carreira, i) => (
-                                            <CareerListItem style={{
-                                                fontSize: '20px',
-                                                color: 'black',
-                                                textAlign: 'left',
-                                            }} key={i}>
-                                                <strong style={{
-                                                    fontSize: '22px',
-                                                    fontWeight: 'bold',
-                                                    color: 'black',
-
-                                                }}> •<strong style={{fontWeight: 'normal', textAlign: 'left'}} > { carreira }</strong></strong>
-                                            </CareerListItem>
-                                        ))}
-                                    </List>
-
-                                </CardContent>
-                                <Box display="flex"
-                                    justifyContent="center"
-                                    position="absolute" // Posiciona o box de forma absoluta
-                                    bottom="20px" // Fixa o box no final do card
-                                    left="50%"
-                                    sx={{
-                                        transform: 'translateX(-50%)', // Centraliza horizontalmente o botão
-                                        padding: '20px',
-                                    }}>
-                                    <Button sx={{
-                                        bottom: '20px',
-                                        top: '0px',
-                                        color: '#185D8E',
-                                        border: 'solid',
-                                        fontWeight: 'bold',
-                                        backgroundColor: '#D9EEFF',
-                                        marginTop: '1rem',
-                                        padding: '0.7rem 1.05rem',
-                                        borderRadius: '10px',
-                                        boxShadow: '5px 5px 0px 1px #B9D4F8',
-                                        textAlign: 'center',
-                                        width: '300px',
-                                        zIndex: 1,
-                                        transition: 'transform 0.8s ease', // Adiciona a transição suave
-                                        '&:hover': {
-                                            backgroundColor: '#a7cae3',
-                                            transform: 'scale(1.1)', // Aumenta o botão em 10%
-                                        },
-                                    }}>
-                                        Ver Instituições
-                                    </Button>
-                                </Box>
-                            </CourseCard>
-                        </Grid>
-                    ))}
-                </Grid> */}
             </Box>
+
+            {/*Modal de instituições*/}
+            <Modal open={openModal} onClose={handleCloseModal}>
+                <ModalContent
+                    sx={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        width: '80%',
+                        maxWidth: '600px',
+                        maxHeight: '60vh',
+                        overflowY: 'auto',
+                        bgcolor: 'background.paper',
+                        borderRadius: '20px',
+                        boxShadow: 24,
+                        p: 4,
+                    }}
+                >
+                    <IconButton
+                        onClick={handleCloseModal}
+                        sx={{
+                            position: 'absolute',
+                            top: 15,
+                            right: 15,
+                            color: '#185D8E',
+                        }}
+                    >
+                        <CloseIcon />
+                    </IconButton>
+
+                    <Typography variant="h6" gutterBottom style={{textAlign: 'center', fontWeight: 'bold', color: '#0B2A40', marginTop: '15px', marginBottom: '15px'}}>
+                            Instituições que oferecem o curso de {selectedCourse?.descricao}
+                    </Typography>
+                    <TextField
+                        variant="outlined"
+                        placeholder="Pesquisar instituições..."
+                        fullWidth
+                        style={{ marginBottom: '15px' }}
+                        InputProps={{
+                            endAdornment: (
+                                <IconButton>
+                                    <SearchIcon />
+                                </IconButton>
+                            ),
+                        }}
+                        value={searchTerm}
+                        onChange={handleSearch}
+                    />
+                    {institutions.length > 0 ? (
+                        <List>
+                            {filteredInstitutions.map((inst) => (
+                                <ListItem key={inst.id}>
+                                    <Typography variant="body1" style={{textAlign: 'justify', }}>
+                                        <Typography style={{fontWeight: 'bold', color: '#185D8E'}}>
+                                            {inst.nome} ({inst.sigla}):
+                                        </Typography>
+                                        <Typography style={{marginLeft: '8px'}}>
+                                            <strong style={{fontWeight: 'bold'}}>Site:</strong>  {inst.site}
+                                        </Typography>
+                                        <Typography style={{marginLeft: '8px'}}>
+                                            <strong style={{fontWeight: 'bold'}}>Nota MEC do Curso:</strong>  {inst.notaMec}
+                                        </Typography>
+                                    </Typography>
+                                </ListItem>
+                            ))}
+                        </List>
+                    ) : (
+                        <Typography variant="body1" style={{textAlign: 'justify'}}>Nenhuma instituição encontrada.</Typography>
+                    )}
+                </ModalContent>
+            </Modal>
             <Footer/>
         </>
     );

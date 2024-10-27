@@ -30,7 +30,7 @@ export const logo: SxProps<Theme> = () => ({
     fontWeight: 700,
     letterSpacing: '.3rem',
     color: 'black',
-    textDecoration: 'none',
+    textDecoration: 'none'
 });
 
 export const LoginText: SxProps<Theme> = () => ({
