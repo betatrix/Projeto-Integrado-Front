@@ -68,16 +68,21 @@ import CustomDrawer from '../../../components/sidemenu/CustomDrawer';
 import StudentHeader from '../../../components/studentHeader';
 import SearchIcon from '@mui/icons-material/Search';
 import * as changeCase from 'change-case';
+import { deburr } from 'lodash';
 
 interface Curso {
-    id: number;
-    descricao: string;
+    curso: {
+        id: number;
+        descricao: string;
+    }
 }
 
 interface Politica {
-    id: number;
-    descricao: string;
-    tipo: string;
+    politica: {
+        id: number;
+        descricao: string;
+        tipo: string;
+    }
 }
 interface Institution {
     id: number;
@@ -206,13 +211,14 @@ const InstitutionList: React.FC = () => {
 
     // Função de filtro
     const filteredInstitutions = institutions.filter(institution => {
-        const matchesSearchValue = institution.nome?.toLowerCase().includes(searchValue.toLowerCase()) || institution.sigla?.toLowerCase().includes(searchValue.toLowerCase());
+        const matchesSearchValue = deburr(institution.nome ?? '')
+            .toLowerCase().includes(deburr(searchValue.toLowerCase())) || institution.sigla?.toLowerCase().includes(searchValue.toLowerCase());
         const matchesNotaMec = notaMecValue === null || institution.notaMec === notaMecValue;
         const matchesFormaIngresso = formaIngressoValue === '' || institution.formaIngresso?.toLowerCase().includes(formaIngressoValue.toLowerCase());
         const matchesTipo = tipoInstituicaoValue === '' || institution.tipo === tipoInstituicaoValue;
         const matchesEstado = estadoValue === '' || (institution.endereco?.estado && institution.endereco.estado.toUpperCase() === estadoValue.toUpperCase());
-        const matchesCurso = cursoValue === '' || Array.isArray(institution.cursos) && institution.cursos.some(curso =>
-            curso.descricao.toLowerCase().includes(cursoValue.toLowerCase())
+        const matchesCurso = cursoValue === '' || Array.isArray(institution.cursos) && institution.cursos.some(cursoInstituicao =>
+            deburr(cursoInstituicao.curso.descricao).toLowerCase().includes(deburr(cursoValue.toLowerCase()))
         );
 
         return matchesSearchValue && matchesNotaMec && matchesFormaIngresso && matchesTipo && matchesEstado && matchesCurso;
@@ -334,11 +340,11 @@ const InstitutionList: React.FC = () => {
                             margin: '4rem 0rem 0rem 0rem',
                         },
                     }}>
-                        Instituições
+                        {t('institutionTitle')}
                     </Typography>
                     <Box sx={searchBox}>
                         <TextField
-                            label={t('listInstitutionSearch')}
+                            label={t('institutionTitleSearch')}
                             variant='outlined'
                             onChange={(e) => setSearchValue(e.target.value)}
                             sx={{width:'100%'}}
@@ -360,7 +366,7 @@ const InstitutionList: React.FC = () => {
                                     marginLeft: '0.5rem',
                                     fontFamily: 'Poppins, sans-serif'
                                 }}>
-                                    Filtros
+                                {t('institutionFilterTitle1')}
                             </Typography>
                         </Button>
                     </Box>
@@ -387,9 +393,9 @@ const InstitutionList: React.FC = () => {
                             </IconButton>
                             <Grid container spacing={3}>
                                 <Grid item xs={12} sx={{marginTop: 4}}>
-                                    <Typography variant="h5" sx={cardTitle}>Filtros da Instituição</Typography>
+                                    <Typography variant="h5" sx={cardTitle}>{t('institutionFilterTitle2')}</Typography>
                                     <TextField
-                                        label={t('Nota MEC')}
+                                        label={t('institutionFilter1')}
                                         type="number"
                                         fullWidth
                                         variant='outlined'
@@ -404,7 +410,7 @@ const InstitutionList: React.FC = () => {
                                 </Grid>
                                 <Grid item xs={12}>
                                     <TextField
-                                        label={t('Curso')}
+                                        label={t('institutionFilter2')}
                                         fullWidth
                                         variant='outlined'
                                         sx={styledInput}
@@ -414,7 +420,15 @@ const InstitutionList: React.FC = () => {
                                 </Grid>
                                 <Grid item xs={12}>
                                     <FormControl variant='outlined' sx={styledSelect} fullWidth>
-                                        <InputLabel sx={{color: '#185D8E', fontWeight: '600', fontFamily: 'Poppins, sans-serif'}}>{t('Forma de Ingresso')}</InputLabel>
+                                        <InputLabel
+                                            sx={{
+                                                color: '#185D8E',
+                                                fontWeight: '600',
+                                                fontFamily: 'Poppins, sans-serif'
+                                            }}
+                                        >
+                                            {t('institutionFilter3')}
+                                        </InputLabel>
                                         <Select
                                             value={tempFormaIngressoValue}
                                             onChange={(e) => setTempFormaIngressoValue(e.target.value)}
@@ -428,7 +442,15 @@ const InstitutionList: React.FC = () => {
                                 </Grid>
                                 <Grid item xs={12}>
                                     <FormControl variant='outlined' sx={styledSelect} fullWidth>
-                                        <InputLabel sx={{color: '#185D8E', fontWeight: '600', fontFamily: 'Poppins, sans-serif'}}>{t('Tipo de Instituição')}</InputLabel>
+                                        <InputLabel
+                                            sx={{
+                                                color: '#185D8E',
+                                                fontWeight: '600',
+                                                fontFamily: 'Poppins, sans-serif'
+                                            }}
+                                        >
+                                            {t('institutionFilter4')}
+                                        </InputLabel>
                                         <Select
                                             value={tempTipoInstituicaoValue}
                                             onChange={(e) => setTempTipoInstituicaoValue(e.target.value as TipoInstituicaoCurso)}
@@ -442,7 +464,15 @@ const InstitutionList: React.FC = () => {
                                 </Grid>
                                 <Grid item xs={12}>
                                     <FormControl variant='outlined' sx={styledSelect} fullWidth>
-                                        <InputLabel sx={{color: '#185D8E', fontWeight: '600', fontFamily: 'Poppins, sans-serif'}}>{t('Estado')}</InputLabel>
+                                        <InputLabel
+                                            sx={{
+                                                color: '#185D8E',
+                                                fontWeight: '600',
+                                                fontFamily: 'Poppins, sans-serif'
+                                            }}
+                                        >
+                                            {t('institutionFilter5')}
+                                        </InputLabel>
                                         <Select
                                             value={tempEstadoValue}
                                             onChange={(e) => setTempEstadoValue(e.target.value)}
@@ -454,9 +484,14 @@ const InstitutionList: React.FC = () => {
                                         </Select>
                                     </FormControl>
                                 </Grid>
-                                <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                                    <Button sx={clearFilterButton} onClick={handleClearFilters}>Limpar Filtros</Button>
-                                    <Button sx={searchButton} onClick={handleApplyFilters}>Pesquisar</Button>
+                                <Grid item xs={12}
+                                    sx={{
+                                        display: 'flex',
+                                        justifyContent: 'space-between'
+                                    }}
+                                >
+                                    <Button sx={clearFilterButton} onClick={handleClearFilters}>{t('institutionFilterClean')}</Button>
+                                    <Button sx={searchButton} onClick={handleApplyFilters}>{t('institutionFilterSearch')}</Button>
                                 </Grid>
                             </Grid>
                         </Box>
@@ -465,7 +500,13 @@ const InstitutionList: React.FC = () => {
 
                 {/* Cards Instituições */}
                 {loading ? (
-                    <Box sx={{ display: 'flex', justifyContent: 'center', mt: 5 }}>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            mt: 5
+                        }}
+                    >
                         <CircularProgress sx={{ color: '#185D8E' }} />
                     </Box>
                 ) : (
@@ -478,15 +519,27 @@ const InstitutionList: React.FC = () => {
                                             <Typography variant="h5" sx={cardTitle}>
                                                 {institution.nome ? changeCase.capitalCase(institution.nome) : 'Nome não disponível'}
                                             </Typography>
-                                            <Typography variant="body2" sx={cardText}><b>Sigla:</b> {institution.sigla || 'Não disponível'}</Typography>
-                                            <Typography variant="body2" sx={cardText}><b>Site:</b> {institution.site || 'Não disponível'}</Typography>
-                                            <Typography variant="body2" sx={cardText}><b>Nota MEC | INDEB:</b> {institution.notaMec || 'Não disponível'}</Typography>
                                             <Typography variant="body2" sx={cardText}>
-                                                <b>Tipo:</b> {institution.tipo ? changeCase.capitalCase(institution.tipo) : 'Não disponível'}
+                                                <b>{t('institutionCardSigla')}:</b> {institution.sigla || 'Não disponível'}
                                             </Typography>
-                                            <Typography variant="body2" sx={cardText}><b>Forma de Ingresso:</b> {institution.formaIngresso || 'Não disponível'}</Typography>
+                                            <Typography variant="body2" sx={cardText}>
+                                                <b>{t('institutionCardSite')}:</b> {institution.site || 'Não disponível'}
+                                            </Typography>
+                                            <Typography variant="body2" sx={cardText}>
+                                                <b>{t('institutionCardNota')}:</b> {institution.notaMec || 'Não disponível'}
+                                            </Typography>
+                                            <Typography variant="body2" sx={cardText}>
+                                                <b>{t('institutionCardTipo')}:</b> {institution.tipo ? changeCase.capitalCase(institution.tipo) : 'Não disponível'}
+                                            </Typography>
+                                            <Typography variant="body2" sx={cardText}>
+                                                <b>{t('institutionCardIngresso')}:</b> {institution.formaIngresso || 'Não disponível'}
+                                            </Typography>
                                         </CardContent>
-                                        <CardActions sx={{ justifyContent: 'flex-end' }}>
+                                        <CardActions
+                                            sx={{
+                                                justifyContent: 'flex-end'
+                                            }}
+                                        >
                                             <IconButton
                                                 aria-label="Add"
                                                 onClick={() => handleDetailModalOpen(institution)}
@@ -500,7 +553,13 @@ const InstitutionList: React.FC = () => {
 
                             ))}
                         </Grid>
-                        <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 7 }}>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                marginTop: 7
+                            }}
+                        >
                             <Pagination
                                 count={totalPages}
                                 page={currentPage}
@@ -510,7 +569,7 @@ const InstitutionList: React.FC = () => {
                                         color: '#0B2A40',
                                     },
                                     '& .Mui-selected': {
-                                        backgroundColor: '#185D8E',
+                                        backgroundColor: '#0B2A40',
                                         color: '#FFFFFF'
                                     },
                                     '& .MuiPaginationItem-root.Mui-selected:hover': {
@@ -518,6 +577,12 @@ const InstitutionList: React.FC = () => {
                                     },
                                     '& .MuiPaginationItem-root:hover': {
                                         backgroundColor: '#E0E9F0',
+                                    },
+                                    '@media (max-width: 600px)': {
+                                        '& .MuiPaginationItem-root': {
+                                            margin: '0 2px',
+                                            fontSize: '0.75rem',
+                                        },
                                     },
                                 }}
                             />
@@ -562,9 +627,9 @@ const InstitutionList: React.FC = () => {
                                     borderBottom: '2px solid #6B9ABC',
                                 }}
                             >
-                                <Tab sx={tabStyle} label="Informações" />
-                                <Tab sx={tabStyle} label="Cursos" />
-                                <Tab sx={tabStyle} label="Políticas Públicas " />
+                                <Tab sx={tabStyle} label={t('institutionCardInformacoes')} />
+                                <Tab sx={tabStyle} label={t('institutionCardCursos')} />
+                                <Tab sx={tabStyle} label={t('institutionCardPoliticas')} />
                             </Tabs>
 
                             {selectedInstitution && (
@@ -580,23 +645,30 @@ const InstitutionList: React.FC = () => {
                                             <Grid item xs={12} sm={6}>
                                                 <Stack direction="row" alignItems="center" spacing={1}>
                                                     <InfoOutlined fontSize="small" sx={{ color: '#0B2A40' }} />
-                                                    <Typography variant="subtitle1" sx={tabSubTitle1} gutterBottom>Dados Gerais</Typography>
+                                                    <Typography variant="subtitle1" sx={tabSubTitle1} gutterBottom>{t('institutionCardDados')}</Typography>
                                                 </Stack>
                                                 <Box
                                                     sx={{
                                                         margin: '0.5rem 2rem',
                                                         '@media (max-width: 600px)': {
-                                                            margin: '0.5rem 0rem',
+                                                            margin: '0.2rem 0rem',
                                                         },
                                                     }}>
-                                                    <Typography variant="body2" sx={tabText}><b>Sigla:</b> {selectedInstitution.sigla}</Typography>
-                                                    <Typography variant="body2" sx={tabText}><b>Site:</b> {selectedInstitution.site || 'Não disponível'}</Typography>
-                                                    <Typography variant="body2" sx={tabText}><b>Nota MEC | INDEB:</b> {selectedInstitution.notaMec || 'Não disponível'}</Typography>
                                                     <Typography variant="body2" sx={tabText}>
-                                                        <b>Tipo:</b> {selectedInstitution.tipo ? changeCase.capitalCase(selectedInstitution.tipo) : 'Não disponível'}
+                                                        <b>{t('institutionCardSigla')}:</b> {selectedInstitution.sigla}
+                                                    </Typography>
+                                                    <Typography variant="body2" sx={tabText}><b>{t('institutionCardSite')}:
+                                                    </b> {selectedInstitution.site || 'Não disponível'}
                                                     </Typography>
                                                     <Typography variant="body2" sx={tabText}>
-                                                        <b>Forma de Ingresso:</b> {selectedInstitution.formaIngresso || 'Não disponível'}
+                                                        <b>{t('institutionCardNota')}:</b> {selectedInstitution.notaMec || 'Não disponível'}
+                                                    </Typography>
+                                                    <Typography variant="body2" sx={tabText}>
+                                                        <b>{t('institutionCardTipo')}:</b> {selectedInstitution.tipo
+                                                            ? changeCase.capitalCase(selectedInstitution.tipo) : 'Não disponível'}
+                                                    </Typography>
+                                                    <Typography variant="body2" sx={tabText}>
+                                                        <b>{t('institutionCardIngresso')}:</b> {selectedInstitution.formaIngresso || 'Não disponível'}
                                                     </Typography>
                                                 </Box>
                                             </Grid>
@@ -604,21 +676,31 @@ const InstitutionList: React.FC = () => {
                                             <Grid item xs={12} sm={6}>
                                                 <Stack direction="row" alignItems="center" spacing={1}>
                                                     <MapOutlined fontSize="small" sx={{ color: '#0B2A40' }} />
-                                                    <Typography variant="subtitle1" sx={tabSubTitle1} gutterBottom>Endereço</Typography>
+                                                    <Typography variant="subtitle1" sx={tabSubTitle1} gutterBottom>{t('institutionCardEndereco')}</Typography>
                                                 </Stack>
                                                 <Box
                                                     sx={{
                                                         margin: '0.5rem 2rem',
                                                         '@media (max-width: 600px)': {
-                                                            margin: '0.5rem 0rem',
+                                                            margin: '0.2rem 0rem',
                                                             maxHeight: 400,
                                                         },
                                                     }}>
-                                                    <Typography variant="body2" sx={tabText}><b>Rua:</b> {selectedInstitution.endereco?.logradouro || 'Não disponível'}</Typography>
-                                                    <Typography variant="body2" sx={tabText}><b>Número:</b> {selectedInstitution.endereco?.numero || 'Não disponível'}</Typography>
-                                                    <Typography variant="body2" sx={tabText}><b>Cidade:</b> {selectedInstitution.endereco?.cidade || 'Não disponível'}</Typography>
-                                                    <Typography variant="body2" sx={tabText}><b>Estado:</b> {selectedInstitution.endereco?.estado || 'Não disponível'}</Typography>
-                                                    <Typography variant="body2" sx={tabText}><b>CEP:</b> {selectedInstitution.endereco?.cep || 'Não disponível'}</Typography>
+                                                    <Typography variant="body2" sx={tabText}>
+                                                        <b>{t('institutionCardRua')}:</b> {selectedInstitution.endereco?.logradouro || 'Não disponível'}
+                                                    </Typography>
+                                                    <Typography variant="body2" sx={tabText}>
+                                                        <b>{t('institutionCardNumero')}:</b> {selectedInstitution.endereco?.numero || 'Não disponível'}
+                                                    </Typography>
+                                                    <Typography variant="body2" sx={tabText}>
+                                                        <b>{t('institutionCardCidade')}:</b> {selectedInstitution.endereco?.cidade || 'Não disponível'}
+                                                    </Typography>
+                                                    <Typography variant="body2" sx={tabText}>
+                                                        <b>{t('institutionCardEstado')}:</b> {selectedInstitution.endereco?.estado || 'Não disponível'}
+                                                    </Typography>
+                                                    <Typography variant="body2" sx={tabText}>
+                                                        <b>{t('institutionCardCep')}:</b> {selectedInstitution.endereco?.cep || 'Não disponível'}
+                                                    </Typography>
                                                 </Box>
                                             </Grid>
                                         </Grid>
@@ -630,37 +712,42 @@ const InstitutionList: React.FC = () => {
                                             <Grid item xs={12}>
                                                 <Stack direction="row" alignItems="center" spacing={1}>
                                                     <BookOutlined fontSize="small" sx={{color: '#0B2A40'}} />
-                                                    <Typography variant="subtitle1" sx={tabSubTitle1} gutterBottom>Cursos</Typography>
+                                                    <Typography variant="subtitle1" sx={tabSubTitle1} gutterBottom>{t('institutionCardCursos')}</Typography>
                                                 </Stack>
                                                 <Grid
                                                     container
-                                                    columns={{ xs: 1, sm: 2, md: 2, lg: 2 }}
+                                                    columns={{
+                                                        xs: 1,
+                                                        sm: 2,
+                                                        md: 2,
+                                                        lg: 2
+                                                    }}
                                                     sx={{
                                                         maxHeight: 300,
                                                         overflow: 'auto',
                                                         margin:'0.5rem 1rem',
                                                         '@media (max-width: 600px)': {
-                                                            margin: '0.5rem 0rem',
+                                                            margin: '0.2rem 0rem',
                                                             maxHeight: 390,
                                                         },
                                                     }}
                                                 >
                                                     {selectedInstitution.cursos?.length > 0 ? (
-                                                        selectedInstitution.cursos.map((curso) => (
-                                                            <Grid item xs={0.9} key={curso.id}>
+                                                        selectedInstitution.cursos.map((cursoInstituicao) => (
+                                                            <Grid item xs={0.9} key={cursoInstituicao.curso.id}>
                                                                 <List disablePadding>
                                                                     <ListItem alignItems="flex-start">
                                                                         <ListItemIcon sx={{ minWidth: '24px', marginTop: '0.7rem' }}>
                                                                             <Circle sx={{ fontSize: '7px', color: '#185D8E' }} />
                                                                         </ListItemIcon>
-                                                                        <ListItemText sx={tabText} primary={curso.descricao} />
+                                                                        <ListItemText sx={tabText} primary={cursoInstituicao.curso.descricao} />
                                                                     </ListItem>
                                                                 </List>
                                                             </Grid>
                                                         ))
                                                     ) : (
                                                         <Typography variant="body2" color="textSecondary">
-                                                            Não há cursos cadastrados na instituição.
+                                                            {t('institutionCardCursosError')}
                                                         </Typography>
                                                     )}
                                                 </Grid>
@@ -674,7 +761,7 @@ const InstitutionList: React.FC = () => {
                                             <Grid item xs={12}>
                                                 <Stack direction="row" alignItems="center" spacing={1}>
                                                     <PolicyOutlined fontSize="small" sx={{color: '#0B2A40'}} />
-                                                    <Typography variant="subtitle1" sx={tabSubTitle1} gutterBottom>Políticas Públicas</Typography>
+                                                    <Typography variant="subtitle1" sx={tabSubTitle1} gutterBottom>{t('institutionCardPoliticas')}</Typography>
                                                 </Stack>
                                             </Grid>
                                             <Grid
@@ -683,7 +770,7 @@ const InstitutionList: React.FC = () => {
                                                     margin:'0.5rem 2rem',
                                                     gap: '3rem',
                                                     '@media (max-width: 600px)': {
-                                                        margin: '0.5rem 0rem 0rem 1rem',
+                                                        margin: '0.3rem 0rem 0rem 2rem',
                                                         gap: '2rem',
                                                         maxHeight: 400,
                                                         overflow: 'auto',
@@ -691,7 +778,7 @@ const InstitutionList: React.FC = () => {
                                                 }}
                                             >
                                                 <Grid item xs={12} sm={6} md={7} lg={7}>
-                                                    <Typography variant="subtitle1" sx={tabSubTitle2} gutterBottom>Entrada (Vagas reservadas)</Typography>
+                                                    <Typography variant="subtitle1" sx={tabSubTitle2} gutterBottom>{t('institutionCardPoliticasEntrada')}</Typography>
                                                     <List
                                                         sx={{
                                                             maxHeight: 270,
@@ -701,26 +788,37 @@ const InstitutionList: React.FC = () => {
                                                             }
                                                         }}
                                                     >
-                                                        {selectedInstitution.politicas?.filter((politica) => politica.tipo === 'POLITICA_ENTRADA').length > 0 ? (
-                                                            selectedInstitution.politicas
-                                                                .filter((politica) => politica.tipo === 'POLITICA_ENTRADA')
-                                                                .map((politica) => (
-                                                                    <ListItem key={politica.id} alignItems="flex-start">
-                                                                        <ListItemIcon sx={{ minWidth: '24px', marginTop: '0.8rem' }}>
-                                                                            <Circle sx={{fontSize:'7px', color:'#185D8E'}}/>
-                                                                        </ListItemIcon>
-                                                                        <ListItemText sx={tabText} primary={politica.descricao} />
-                                                                    </ListItem>
-                                                                ))
-                                                        ) : (
-                                                            <Typography variant="body2" color="textSecondary">
-                                                                Não há políticas de entrada cadastradas na instituição.
-                                                            </Typography>
-                                                        )}
+                                                        {selectedInstitution.politicas?.filter((politicaInstituicao) =>
+                                                            politicaInstituicao.politica.tipo === 'POLITICA_ENTRADA').length > 0 ? (
+                                                                selectedInstitution.politicas
+                                                                    .filter((politicaInstituicao) => politicaInstituicao.politica.tipo === 'POLITICA_ENTRADA')
+                                                                    .map((politicaInstituicao) => (
+                                                                        <ListItem key={politicaInstituicao.politica.id} alignItems="flex-start">
+                                                                            <ListItemIcon
+                                                                                sx={{
+                                                                                    minWidth: '24px',
+                                                                                    marginTop: '0.8rem'
+                                                                                }}
+                                                                            >
+                                                                                <Circle
+                                                                                    sx={{
+                                                                                        fontSize:'7px',
+                                                                                        color:'#185D8E'
+                                                                                    }}
+                                                                                />
+                                                                            </ListItemIcon>
+                                                                            <ListItemText sx={tabText} primary={politicaInstituicao.politica.descricao} />
+                                                                        </ListItem>
+                                                                    ))
+                                                            ) : (
+                                                                <Typography variant="body2" color="textSecondary">
+                                                                    {t('institutionCardPoliticasError')}
+                                                                </Typography>
+                                                            )}
                                                     </List>
                                                 </Grid>
                                                 <Grid item xs={12} sm={5} md={4} lg={4}>
-                                                    <Typography variant="subtitle1" sx={tabSubTitle2} gutterBottom>Permanência</Typography>
+                                                    <Typography variant="subtitle1" sx={tabSubTitle2} gutterBottom>{t('institutionCardPoliticasPermanencia')}</Typography>
                                                     <List
                                                         sx={{
                                                             maxHeight: 270,
@@ -730,22 +828,23 @@ const InstitutionList: React.FC = () => {
                                                             }
                                                         }}
                                                     >
-                                                        {selectedInstitution.politicas?.filter((politica) => politica.tipo === 'POLITICA_PERMANENCIA').length > 0 ? (
-                                                            selectedInstitution.politicas
-                                                                .filter((politica) => politica.tipo === 'POLITICA_PERMANENCIA')
-                                                                .map((politica) => (
-                                                                    <ListItem key={politica.id}>
-                                                                        <ListItemIcon sx={{ minWidth: '24px'}}>
-                                                                            <Circle sx={{fontSize:'7px', color:'#185D8E'}}/>
-                                                                        </ListItemIcon>
-                                                                        <ListItemText sx={tabText} primary={politica.descricao} />
-                                                                    </ListItem>
-                                                                ))
-                                                        ) : (
-                                                            <Typography variant="body2" color="textSecondary">
-                                                                Não há políticas de permanência cadastradas na instituição.
-                                                            </Typography>
-                                                        )}
+                                                        {selectedInstitution.politicas?.filter((politicaInstituicao) =>
+                                                            politicaInstituicao.politica.tipo === 'POLITICA_PERMANENCIA').length > 0 ? (
+                                                                selectedInstitution.politicas
+                                                                    .filter((politicaInstituicao) => politicaInstituicao.politica.tipo === 'POLITICA_PERMANENCIA')
+                                                                    .map((politicaInstituicao) => (
+                                                                        <ListItem key={politicaInstituicao.politica.id}>
+                                                                            <ListItemIcon sx={{ minWidth: '24px'}}>
+                                                                                <Circle sx={{fontSize:'7px', color:'#185D8E'}}/>
+                                                                            </ListItemIcon>
+                                                                            <ListItemText sx={tabText} primary={politicaInstituicao.politica.descricao} />
+                                                                        </ListItem>
+                                                                    ))
+                                                            ) : (
+                                                                <Typography variant="body2" color="textSecondary">
+                                                                    {t('institutionCardPoliticasError')}
+                                                                </Typography>
+                                                            )}
                                                     </List>
                                                 </Grid>
                                             </Grid>

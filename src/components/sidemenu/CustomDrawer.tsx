@@ -75,7 +75,7 @@ const iconMap: { [key: string]: { icon: React.ReactNode, link: string } } = {
     'dashboard': { icon: <DashboardOutlined sx={{fontSize: '1.8rem'}}/>, link: '/estudante' },
     'test': { icon: <AssignmentOutlined sx={{fontSize: '1.8rem'}} />, link: '/teste-vocacional' },
     'myAccount': { icon: <AccountBoxOutlined sx={{fontSize: '1.8rem'}}/>, link: '/minha-conta' },
-    'courses': { icon: <LocalLibraryRoundedIcon sx={{fontSize: '1.8rem'}} />, link: '/cursos' },
+    'courses': { icon: <LocalLibraryRoundedIcon sx={{fontSize: '1.8rem'}} />, link: '/curso' },
     'institution': { icon: <SchoolOutlined sx={{fontSize: '1.8rem'}}/>, link: '/instituicao' },
     'logout': { icon: <LogoutOutlined sx={{fontSize: '1.8rem'}}/>, link: '/logout' },
 };

@@ -28,7 +28,7 @@ import { CourseForm, Area } from '../../../types/courseTypes';
 import SearchIcon from '@mui/icons-material/Search';
 import { Link } from 'react-router-dom';
 
-const CourseList: React.FC = () => {
+const CourseManagement: React.FC = () => {
     const [courses, setCourses] = useState<CourseForm[]>([]);
     const [filteredCourses, setFilteredCourses] = useState<CourseForm[]>([]);
     const [areas, setAreas] = useState<Area[]>([]);
@@ -388,4 +388,4 @@ const CourseList: React.FC = () => {
     );
 };
 
-export default CourseList;
+export default CourseManagement;

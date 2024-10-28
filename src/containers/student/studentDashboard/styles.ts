@@ -414,7 +414,31 @@ export const TestButton: SxProps<Theme> = (theme) => ({
     },
 });
 
-// Style SearchInstitution
+// Style SearchCourse ------------------------
+
+export const cardCourseContent: SxProps<Theme> = (theme) => ({
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    height: '100%',
+    padding: '0.8rem',
+    backgroundColor: '#E3EDF4',
+    border: 'solid 3px #185D8E',
+    borderRadius: '14px',
+    boxShadow: '4px 4px 0px 1px rgba(0, 111, 255, 0.2)',
+    transition: 'transform 0.3s ease-in-out',
+    [theme.breakpoints.down('lg')]: {
+        margin: '0rem 0rem',
+    },
+    [theme.breakpoints.down('md')]: {
+        margin: '0rem 2rem 2rem 5rem',
+    },
+    [theme.breakpoints.down('sm')]: {
+        margin: '1rem 0rem',
+    },
+});
+
+// Style SearchInstitution ------------------------
 
 export const StyledTypography = styled(Box)`
     margin-bottom: 0.8rem;  

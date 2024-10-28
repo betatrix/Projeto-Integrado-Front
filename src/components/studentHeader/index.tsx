@@ -127,7 +127,7 @@ function StudentHeader() {
             </ListItem>
             <ListItem>
                 <LocalLibraryRoundedIcon style={{ color: '#185D8E' }} />
-                <Link to="/cursos" onClick={toggleDrawer(false)}>
+                <Link to="/curso" onClick={toggleDrawer(false)}>
                     <Button color="inherit" sx={linkButtonMobile}>{t('courses')}</Button>
                 </Link>
             </ListItem>
