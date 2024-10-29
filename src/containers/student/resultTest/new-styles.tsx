@@ -73,7 +73,22 @@ export const CareerListItem = styled(ListItem)`
 export const BackButton = styled(Button)`
   &.MuiButton-root {
     position: absolute;
-    top: 90px;
+    left: 5%;
+    color: #0B2A40;
+    padding: 10px;
+    padding-left: 25px;
+    padding-right: 25px;
+    font-weight: bold;
+    
+    &:hover {
+      background-color: rgba(89,87,230,0.1) !important;
+    }
+  }
+`;
+
+export const MobileBackButton = styled(Button)`
+  &.MuiButton-root {
+    position: absolute;
     left: 5%;
     color: #0B2A40;
     padding: 10px;
@@ -95,6 +110,7 @@ export const CustomLink = styled(Link)`
 // SCROLLBAR
 
 export const ScrollableList = styled.div`
+  max-height: 170px;
   overflow-y: auto;
   overflow-x: hidden;
   

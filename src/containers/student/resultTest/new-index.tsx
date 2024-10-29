@@ -1,8 +1,8 @@
 /* eslint-disable max-len */
 import React, { useState } from 'react';
-import { Grid, CardContent, List, Box, Button, Typography, Modal, TextField, IconButton, ListItem } from '@mui/material';
+import { Grid, CardContent, List, Box, Button, Typography, Modal, TextField, IconButton, ListItem, useMediaQuery } from '@mui/material';
 import Header from '../../../components/resultTestHeader';
-import { DetailsResult, Global, CourseTitle, CareerListItem, PageTile, CourseCard, BackButton, CustomLink, ScrollableList, ModalContent } from './new-styles';
+import { DetailsResult, Global, CourseTitle, CareerListItem, PageTile, CourseCard, BackButton, CustomLink, ScrollableList, ModalContent, MobileBackButton } from './new-styles';
 import { useLocation } from 'react-router-dom';
 import Footer from '../../../components/homeFooter';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
@@ -52,6 +52,7 @@ const ResultScreen: React.FC = () => {
 
     const location = useLocation();
     const { resultado } = location.state as { resultado: ResultData };
+    const isMobile = useMediaQuery('(max-width:600px)');
 
     const [openModal, setOpenModal] = useState(false);
     const [institutions, setInstitutions] = useState<Institution[]>([]);
@@ -88,45 +89,78 @@ const ResultScreen: React.FC = () => {
         <>
             <Global />
             <Header />
-            <BackButton startIcon={<ArrowCircleLeftIcon />}>
-                <CustomLink to={'/estudante'}> Voltar
-                </CustomLink>
-            </BackButton>
+
+            {isMobile && (
+                <MobileBackButton
+                    startIcon={<ArrowCircleLeftIcon style={{width: '30px', height: '30px'}} />}
+
+                >   <CustomLink to={'/estudante'}>
+                    </CustomLink>
+                </MobileBackButton>
+            )}
+
+            {!isMobile && (
+                <BackButton
+                    startIcon={<ArrowCircleLeftIcon />}
+
+                >
+                    <CustomLink to={'/estudante'}> Voltar
+                    </CustomLink>
+                </BackButton>
+
+            )}
+
             <Box
                 display={'flex'}
                 alignItems={'center'}
                 justifyContent={'center'}
                 flexDirection={'column'}
-                marginTop={'5%'}
-                marginBottom={'5%'}
+                marginTop={isMobile ? '12%' : '5%'}
+                marginBottom={isMobile ? '12%' : '5%'}
                 width={'100%'}>
-                <PageTile variant="h4" gutterBottom style={{ fontWeight: 'bold' }}>
+                <PageTile variant="h4" gutterBottom
+                    style={{ fontWeight: 'bold' }}
+                    fontSize={isMobile ? '25px' : '30px'}
+                    marginTop={isMobile ? '8%' : '0'}
+                    marginBottom={isMobile ? '8%' : '0'}
+                >
                     Resultado do Teste
                 </PageTile>
                 {/* Grid para o texto e a imagem */}
                 <Grid container spacing={2} style={{ maxWidth: '80%', alignItems: 'center', marginBottom: '2%' }}>
-                    <Grid item xs={12} md={9} style={{maxWidth: '75%', width: '100%'}}>
-                        <Typography style={{ fontSize: '20px', textAlign: 'left' }}>
+                    <Grid item xs={12} md={9} style={{width: '100%'}}
+                        maxWidth={isMobile ? '90%' : '75%'}
+                    >
+                        <Typography style={{ fontSize: '20px' }}
+                            textAlign={isMobile ? 'justify' : 'left'}
+                            marginBottom={isMobile ? '8%' : '0'}
+                        >
                             {resultado.mensagem}
                         </Typography>
                     </Grid>
-                    <Grid item xs={12} md={3} >
-                        <Box display="flex" justifyContent="center">
-                            <img
-                                src="src/assets/img/polvo_voquinho.png"
-                                alt="Polvo Voquinho"
-                                style={{
-                                    marginLeft: '70px',
-                                    height: '380px',
-                                }}
-                            />
-                        </Box>
-                    </Grid>
+                    {!isMobile && (
+                        <Grid item xs={12} md={3} >
+                            <Box display="flex" justifyContent="center">
+                                <img
+                                    src="src/assets/img/polvo_voquinho.png"
+                                    alt="Polvo Voquinho"
+                                    style={{
+                                        marginLeft: '70px',
+                                        height: '380px',
+                                    }}
+                                />
+                            </Box>
+                        </Grid>
+                    )}
+
                 </Grid>
 
                 {/* Cursos para o perfil primário */}
                 <Box display="flex" justifyContent="flex-start" width="80%" marginBottom="2%">
-                    <Typography variant="h5" style={{ fontWeight: 'bold', color: '#0B2A40' }}>
+                    <Typography variant="h5" style={{ fontWeight: 'bold', color: '#0B2A40' }}
+                        fontSize={isMobile ? '20px' : '25px'}
+                        marginBottom={isMobile ? '5%' : '0'}
+                    >
         Cursos recomendados para o perfil {resultado.perfis[0].descricao}
                     </Typography>
                 </Box>
@@ -268,7 +302,11 @@ const ResultScreen: React.FC = () => {
 
                 {/* Cursos recomendados para o perfil secundario */}
                 <Box display="flex" justifyContent="flex-start" width="80%" marginBottom="2%" marginTop='6%'>
-                    <Typography variant="h5" style={{ fontWeight: 'bold', color: '#0B2A40' }}>
+                    <Typography variant="h5" style={{ fontWeight: 'bold', color: '#0B2A40' }}
+                        fontSize={isMobile ? '20px' : '25px'}
+                        marginBottom={isMobile ? '5%' : '0'}
+                        marginTop={isMobile ? '5%' : '0'}
+                    >
         Cursos recomendados para o perfil {resultado.perfis[1].descricao}
                     </Typography>
                 </Box>

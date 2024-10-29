@@ -163,23 +163,8 @@ function StudentHeader() {
             <AppBar style={{ backgroundColor: '#D9EEFF', boxShadow: 'none'}}>
                 <Container maxWidth={isMobile ? 'md' : 'xl'} disableGutters>
                     <Toolbar sx={{ display: 'flex', justifyContent:  'space-between' , width: '100%'}}>
-                        {isMobile && (
-                            <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
-                                <ScrollLink to="home" smooth={true} duration={500}>
-                                    <Typography
-                                        variant="h5"
-                                        noWrap
-                                        component="a"
-                                        href="/pagina-inicial"
-                                        sx={logo}
-                                    >
-                                        VOCCO
-                                    </Typography>
-                                </ScrollLink>
-                            </Box>
-                        )}
 
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }} marginLeft={isMobile ? '10%' : '5%'}>
                             <ScrollLink to="home" smooth={true} duration={500}>
                                 <Typography
                                     variant="h5"
