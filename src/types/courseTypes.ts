@@ -1,3 +1,4 @@
+
 export type Area = {
   id?:number;
   descricao: string;

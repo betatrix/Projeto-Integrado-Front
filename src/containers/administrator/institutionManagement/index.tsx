@@ -25,8 +25,11 @@ import {
     ListItemText,
     InputLabel,
     Input,
-    FormHelperText
+    FormHelperText,
 } from '@mui/material';
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Footer from '../../../components/homeFooter';
@@ -66,7 +69,7 @@ const notaMecSchema = yup
     .nullable()
     .typeError('A nota deve ser um número')
     .min(1, 'Nota mínima 1')
-    .max(5, 'Nota máxima 5')
+    .max(10, 'Nota máxima 10')
     .required('A nota é obrigatória');
 
 interface FormValues {
@@ -81,6 +84,52 @@ interface FormValues {
     endereco: Endereco;
 }
 
+export interface InstitutionCourseForm {
+    id: number;
+    notaMec: number;
+    curso: {
+        id: number;
+        descricao: string;
+        ativo: boolean;
+        area: string;
+        empregabilidade: string;
+        possiveisCarreiras: string[];
+        perfil: {
+            id: number;
+            descricao: string;
+            imagem: string;
+        };
+    };
+    instituicao: {
+        id: number;
+        nome: string;
+        sigla: string;
+        formaIngresso: string;
+        tipo: string;
+        site: string;
+        ativo: boolean;
+        notaMec: number | null;
+        endereco: Endereco;
+    };
+}
+
+export interface InstitutionPolicyForm {
+    id: number;
+    instituicao: {
+        id: number;
+        nome: string;
+        sigla: string;
+        site: string;
+        ativo: boolean;
+        notaMec: number | null;
+    };
+    politica: {
+        id: number;
+        tipo: 'POLITICA_ENTRADA' | string; // Pode ser uma string específica ou qualquer outra string
+        descricao: string;
+        ativo: boolean;
+    };
+}
 const tiposInstituicao = [
     { label: 'Superior', value: 'SUPERIOR' },
     { label: 'Técnico', value: 'TECNICO' },
@@ -93,7 +142,7 @@ const institutionValidationSchema = yup.object().shape({
     site: yup.string()
         .required('O site é obrigatório')
         .matches(/\./, 'O site deve conter pelo menos um ponto'),
-    notaMec: yup.number().min(0).max(5).nullable(),
+    notaMec: yup.number().min(0).max(10).nullable(),
     formaIngresso: yup.string().required('Forma de Ingresso é obrigatória'),
     tipo: yup
         .string()
@@ -139,8 +188,8 @@ const InstitutionManagement: React.FC = () => {
 
     // Estados para o modal de exclusão de cursos e políticas
     const [deletePolicyCourseModalOpen, setDeletePolicyCourseModalOpen] = useState(false);
-    const [institutionCourses, setInstitutionCourses] = useState<CourseForm[]>([]);
-    const [institutionPolicies, setInstitutionPolicies] = useState<PolicesInstitutionForm[]>([]);
+    const [institutionCourses, setInstitutionCourses] = useState<InstitutionCourseForm[]>([]);
+    const [institutionPolicies, setInstitutionPolicies] = useState<InstitutionPolicyForm[]>([]);
     const [selectedCoursesToDelete, setSelectedCoursesToDelete] = useState<number[]>([]);
     const [selectedPoliciesToDelete, setSelectedPoliciesToDelete] = useState<number[]>([]);
     const [loadingDeleteData, setLoadingDeleteData] = useState(false);
@@ -246,21 +295,38 @@ const InstitutionManagement: React.FC = () => {
 
     // Busca de cursos e políticas quando o modal é aberto
     useEffect(() => {
-        if (policyCourseModalOpen) {
+        if (policyCourseModalOpen && selectedEditInstitution) {
             const fetchData = async () => {
                 try {
+                    // Buscar todos os cursos e políticas
                     const fetchedCourses = await buscarCursos();
-                    setCourses(fetchedCourses);
-
                     const fetchedPolicies = await buscarPoliticas();
-                    setPolicies(fetchedPolicies);
+
+                    // Buscar cursos e políticas já associados à instituição
+                    const institutionCourses = await buscarCursosPorInstituicao(selectedEditInstitution.id);
+                    const institutionPolicies = await buscarPoliticasPorInstituicao(selectedEditInstitution.id);
+
+                    // Filtrar cursos e políticas que ainda não estão associados à instituição
+                    const availableCourses = fetchedCourses.filter(
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        (course: { id: any; }) => !institutionCourses.some((instCourse: { curso: { id: any; }; }) => instCourse.curso.id === course.id)
+                    );
+
+                    const availablePolicies = fetchedPolicies.filter(
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        (policy: { id: any; }) => !institutionPolicies.some((instPolicy: { politica: { id: any; }; }) => instPolicy.politica.id === policy.id)
+                    );
+
+                    // Atualizar os estados com os cursos e políticas disponíveis
+                    setCourses(availableCourses);
+                    setPolicies(availablePolicies);
                 } catch (error) {
-                    console.error('Failed to fetch courses and policies:', error);
+                    console.error('Erro ao buscar cursos e políticas:', error);
                 }
             };
             fetchData();
         }
-    }, [policyCourseModalOpen]);
+    }, [policyCourseModalOpen, selectedEditInstitution]);
 
     // Funções de seleção de cursos e políticas
     const handleCourseSelection = (courseId: number) => {
@@ -352,7 +418,9 @@ const InstitutionManagement: React.FC = () => {
             setLoadingDeleteData(true);
             try {
                 const courses = await buscarCursosPorInstituicao(selectedEditInstitution.id);
+                console.log('Cursos relacionados:', courses);
                 const policies = await buscarPoliticasPorInstituicao(selectedEditInstitution.id);
+                console.log('Cursos relacionados:', policies);
                 setInstitutionCourses(courses);
                 setInstitutionPolicies(policies);
             } catch (error) {
@@ -395,7 +463,12 @@ const InstitutionManagement: React.FC = () => {
     // Função para excluir cursos e políticas selecionados
     const handleDeleteSelectedCoursesAndPolicies = async () => {
         if (!selectedEditInstitution) return;
+
         try {
+            // Adicione os logs aqui para verificar os IDs antes de iniciar o processo de exclusão
+            console.log('Cursos selecionados para exclusão:', selectedCoursesToDelete);
+            console.log('Políticas selecionadas para exclusão:', selectedPoliciesToDelete);
+
             // Excluir cursos selecionados
             await Promise.all(
                 selectedCoursesToDelete.map(async (cursoInstituicaoId) => {
@@ -541,17 +614,17 @@ const InstitutionManagement: React.FC = () => {
                                                     <Typography sx={{
                                                         fontSize: '15px', color: '#757575',
                                                     }}>{institution.nome}</Typography>
-                                                    <Button
-                                                        variant="text"
+                                                    <IconButton
                                                         size="small"
                                                         onClick={(e) => { e.stopPropagation(); handleDetailModalOpen(institution); }}
                                                         sx={{
-                                                            fontSize: '20px', color: '#185D8E',
-                                                            fontWeight: 'bold'
+                                                            color: '#185D8E',
                                                         }}
                                                     >
-                                                        +
-                                                    </Button>
+                                                        <VisibilityOutlinedIcon sx={{
+                                                            fontSize: '18px'
+                                                        }} />
+                                                    </IconButton>
                                                 </Box>
                                             </TableCell>
                                             <TableCell sx={{ textAlign: 'center' }}>{institution.ativo ? 'Ativo' : 'Inativo'}</TableCell>
@@ -603,17 +676,24 @@ const InstitutionManagement: React.FC = () => {
                                 </Typography>
                             </Grid>
                             <Grid item xs={6}>
-                                <Paper sx={{ padding: '20px', height: '300px', border: '3px solid #185D8E', boxShadow: 'none' }}>
+                                <Paper sx={{ padding: '20px', height: '320px', border: '3px solid #185D8E', boxShadow: 'none' }}>
                                     <Typography variant="h6" gutterBottom sx={{ textAlign: 'center', fontWeight: 'bold', fontFamily: 'Roboto, monospace', color: '#757575' }}>
                                         Dados Gerais
                                     </Typography>
 
                                     <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>ID: {selectedDetailInstitutionWithAddress.id}</Typography>
-                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>Ativo: {selectedDetailInstitutionWithAddress.ativo ? 'Sim' : 'Não'}</Typography>
-                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>Sigla: {selectedDetailInstitutionWithAddress.sigla}</Typography>
-                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>Site: {selectedDetailInstitutionWithAddress.site || 'Não disponível'}</Typography>
                                     <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>
-                                        Nota MEC: {selectedDetailInstitutionWithAddress.notaMec || 'Não disponível'}
+                                        Ativo: {selectedDetailInstitutionWithAddress.ativo ? 'Sim' : 'Não'}
+                                    </Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>Sigla: {selectedDetailInstitutionWithAddress.sigla}</Typography>
+                                    <Typography sx={{
+                                        fontFamily: 'Poppins, sans-serif',
+                                        wordBreak: 'break-all', // quebra longas palavras automaticamente
+                                        overflow: 'hidden', // esconde o texto que ultrapassar a largura do container
+                                        textOverflow: 'ellipsis', // adiciona reticências ao final do texto
+                                    }}>Site: {selectedDetailInstitutionWithAddress.site || 'Não disponível'}</Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>
+                                        Nota MEC|IDEB: {selectedDetailInstitutionWithAddress.notaMec || 'Não disponível'}
                                     </Typography>
                                     <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>
                                         Forma de Ingresso: {selectedDetailInstitutionWithAddress.formaIngresso || 'Não disponível'}
@@ -627,7 +707,7 @@ const InstitutionManagement: React.FC = () => {
                             </Grid>
 
                             <Grid item xs={6}>
-                                <Paper sx={{ padding: '20px', height: '300px', border: '3px solid #185D8E', boxShadow: 'none' }}>
+                                <Paper sx={{ padding: '20px', height: '320px', border: '3px solid #185D8E', boxShadow: 'none' }}>
                                     <Typography variant="h6" gutterBottom sx={{ textAlign: 'center', fontWeight: 'bold', fontFamily: 'Roboto, monospace', color: '#757575' }}>
                                         Endereço
                                     </Typography>
@@ -696,46 +776,111 @@ const InstitutionManagement: React.FC = () => {
                                     <Form>
 
                                         <Grid container spacing={2} sx={{ marginBottom: '10px' }}>
-                                            <Grid item xs={12} sx={{ alignItems: 'center' }}>
-                                                <Typography variant="h5" gutterBottom sx={{ textAlign: 'center' }}>
-                                                    Editar Instituição
-                                                </Typography>
-                                            </Grid>
 
-                                            <Grid item xs={6}>
-                                                <Typography variant="h6" gutterBottom>
-                                                    Políticas e Cursos
-                                                </Typography>
-                                            </Grid>
-                                            {/* Botão para abrir o modal de políticas e cursos */}
-                                            <Grid item xs={3} sx={{ alignItems: 'center' }}>
-                                                <Button
-                                                    variant="contained"
-                                                    color="primary"
-                                                    fullWidth
-                                                    onClick={handlePolicyCourseModalOpen}
+                                        </Grid>
+                                        <Grid item xs={12} sx={{ textAlign: 'justify' }}>
+                                            <Typography variant="h5" gutterBottom sx={{
+                                                fontSize: '20px',
+                                                marginBottom: '10px', marginTop: '20px', color: '#185D8E',
+                                                fontFamily: 'Roboto, monospace', fontWeight: 'bold', textAlign: 'justify'
+                                            }}>
+                                                Edite os campos  da Instituição selecionada:
+                                            </Typography>
+                                        </Grid>
 
-                                                >
-                                                    Adicionar
-                                                </Button>
-                                            </Grid>
+                                        {/* <Grid item xs={12} >
+                                            <Typography variant="h6" gutterBottom sx={{ marginBottom: '15px', fontSize: '20px', fontFamily: 'Roboto, monospace', }}>
+                                                Políticas e Cursos
+                                            </Typography>
+                                        </Grid> */}
 
-                                            <Grid item xs={3} sx={{ alignItems: 'center' }}>
-                                                <Button
-                                                    variant="contained"
-                                                    color="primary"
-                                                    fullWidth
-                                                    onClick={handleDeletePolicyCourseModalOpen}
+                                        <Grid item xs={12}>
+                                            <Typography variant="h6" gutterBottom sx={{
+                                                marginBottom: '5px', fontSize: '18px',
+                                                fontWeight: 'bold', fontFamily: 'Roboto, monospace',
+                                            }}>
+                                                Políticas e Cursos
+                                            </Typography>
+                                            <Box
+                                                sx={{
+                                                    display: 'flex',
+                                                    flexDirection: 'column',
+                                                    alignItems: 'flex-start',
+                                                    gap: 1,
+                                                    marginBottom: 1,
+                                                }}
+                                            >
+                                                {/* Link para adicionar políticas e cursos */}
+                                                <Box sx={{ display: 'flex', alignItems: 'center', }}>
+                                                    <IconButton
+                                                        onClick={handlePolicyCourseModalOpen}
+                                                    // sx={{
+                                                    //     color: '#185D8E',
+                                                    //     '&:hover': {
+                                                    //         color: '#104A6F',
+                                                    //     },
+                                                    // }}
+                                                    >
+                                                        <AddCircleOutlineIcon />
+                                                    </IconButton>
+                                                    <Typography
+                                                        onClick={handlePolicyCourseModalOpen}
+                                                        sx={{
+                                                            // color: '#185D8E',
+                                                            fontSize: '17px',
+                                                            fontWeight: 'bold',
+                                                            color: '#757575',
+                                                            // fontFamily: 'Roboto, monospace',
+                                                            cursor: 'pointer', // Define o cursor como ponteiro para indicar que é clicável
+                                                            textDecoration: 'none',
+                                                            '&:hover': {
+                                                                color: '#104A6F',
+                                                            },
+                                                        }}
+                                                    >
+                                                        Adicionar Políticas e Cursos
+                                                    </Typography>
+                                                </Box>
 
-                                                >
-                                                    Excluir
-                                                </Button>
-                                            </Grid>
-
+                                                {/* Link para excluir políticas e cursos */}
+                                                <Box sx={{ display: 'flex', alignItems: 'center', }}>
+                                                    <IconButton
+                                                        onClick={handleDeletePolicyCourseModalOpen}
+                                                    // sx={{
+                                                    //     color: '#185D8E',
+                                                    //     '&:hover': {
+                                                    //         color: '#104A6F',
+                                                    //     },
+                                                    // }}
+                                                    >
+                                                        <DeleteOutlineIcon />
+                                                    </IconButton>
+                                                    <Typography
+                                                        onClick={handleDeletePolicyCourseModalOpen}
+                                                        sx={{
+                                                            // color: '#185D8E',
+                                                            fontSize: '17px',
+                                                            color: '#757575',
+                                                            fontWeight: 'bold',
+                                                            // fontFamily: 'Roboto, monospace',
+                                                            cursor: 'pointer', // Define o cursor como ponteiro para indicar que é clicável
+                                                            textDecoration: 'none',
+                                                            '&:hover': {
+                                                                color: '#104A6F',
+                                                            },
+                                                        }}
+                                                    >
+                                                        Excluir Políticas e Cursos
+                                                    </Typography>
+                                                </Box>
+                                            </Box>
                                         </Grid>
 
                                         <Grid item xs={12}>
-                                            <Typography variant="h6" gutterBottom sx={{ marginBottom: '15px' }}>
+                                            <Typography variant="h6" gutterBottom sx={{
+                                                marginBottom: '15px', fontSize: '18px',
+                                                fontWeight: 'bold', fontFamily: 'Roboto, monospace',
+                                            }}>
                                                 Dados Gerais
                                             </Typography>
                                         </Grid>
@@ -749,6 +894,12 @@ const InstitutionManagement: React.FC = () => {
                                                     fullWidth
                                                     error={touched.nome && Boolean(errors.nome)}
                                                     helperText={touched.nome && errors.nome}
+                                                    InputProps={{
+                                                        sx: {
+                                                            fontFamily: 'Poppins, sans-serif', // Altere para a fonte que desejar
+                                                            fontSize: '16px',
+                                                        },
+                                                    }}
                                                 />
                                             </Grid>
 
@@ -760,6 +911,12 @@ const InstitutionManagement: React.FC = () => {
                                                     fullWidth
                                                     error={touched.nome && Boolean(errors.nome)}
                                                     helperText={touched.nome && errors.nome}
+                                                    InputProps={{
+                                                        sx: {
+                                                            fontFamily: 'Poppins, sans-serif', // Altere para a fonte que desejar
+                                                            fontSize: '16px',
+                                                        },
+                                                    }}
                                                 />
                                             </Grid>
 
@@ -771,6 +928,12 @@ const InstitutionManagement: React.FC = () => {
                                                     fullWidth
                                                     error={touched.nome && Boolean(errors.nome)}
                                                     helperText={touched.nome && errors.nome}
+                                                    InputProps={{
+                                                        sx: {
+                                                            fontFamily: 'Poppins, sans-serif', // Altere para a fonte que desejar
+                                                            fontSize: '16px',
+                                                        },
+                                                    }}
                                                 />
                                             </Grid>
 
@@ -778,11 +941,17 @@ const InstitutionManagement: React.FC = () => {
                                                 <Field
                                                     as={TextField}
                                                     name="notaMec"
-                                                    label="Nota MEC"
+                                                    label="Nota MEC|IDEB"
                                                     type="number"
                                                     fullWidth
                                                     error={touched.nome && Boolean(errors.nome)}
                                                     helperText={touched.nome && errors.nome}
+                                                    InputProps={{
+                                                        sx: {
+                                                            fontFamily: 'Poppins, sans-serif', // Altere para a fonte que desejar
+                                                            fontSize: '16px',
+                                                        },
+                                                    }}
                                                 />
                                             </Grid>
 
@@ -794,6 +963,12 @@ const InstitutionManagement: React.FC = () => {
                                                     fullWidth
                                                     error={touched.nome && Boolean(errors.nome)}
                                                     helperText={touched.nome && errors.nome}
+                                                    InputProps={{
+                                                        sx: {
+                                                            fontFamily: 'Poppins, sans-serif', // Altere para a fonte que desejar
+                                                            fontSize: '16px',
+                                                        },
+                                                    }}
                                                 />
                                             </Grid>
 
@@ -817,11 +992,11 @@ const InstitutionManagement: React.FC = () => {
                                             </Grid>
 
                                             {/* Campos de endereço */}
-                                            <Grid item xs={12}>
-                                                <Typography variant="h6" gutterBottom sx={{ marginBottom: '5px' }}>
+                                            {/* <Grid item xs={12}>
+                                                <Typography variant="h6" gutterBottom sx={{ marginBottom: '5px', fontSize: '20px', fontFamily: 'Roboto, monospace', }}>
                                                     Endereço
                                                 </Typography>
-                                            </Grid>
+                                            </Grid> */}
                                             <Grid item xs={6}>
                                                 <Field
                                                     as={TextField}
@@ -830,6 +1005,12 @@ const InstitutionManagement: React.FC = () => {
                                                     fullWidth
                                                     error={touched.nome && Boolean(errors.nome)}
                                                     helperText={touched.nome && errors.nome}
+                                                    InputProps={{
+                                                        sx: {
+                                                            fontFamily: 'Poppins, sans-serif', // Altere para a fonte que desejar
+                                                            fontSize: '16px',
+                                                        },
+                                                    }}
                                                 />
                                             </Grid>
 
@@ -841,6 +1022,12 @@ const InstitutionManagement: React.FC = () => {
                                                     fullWidth
                                                     error={touched.nome && Boolean(errors.nome)}
                                                     helperText={touched.nome && errors.nome}
+                                                    InputProps={{
+                                                        sx: {
+                                                            fontFamily: 'Poppins, sans-serif', // Altere para a fonte que desejar
+                                                            fontSize: '16px',
+                                                        },
+                                                    }}
                                                 />
                                             </Grid>
 
@@ -852,6 +1039,12 @@ const InstitutionManagement: React.FC = () => {
                                                     fullWidth
                                                     error={touched.nome && Boolean(errors.nome)}
                                                     helperText={touched.nome && errors.nome}
+                                                    InputProps={{
+                                                        sx: {
+                                                            fontFamily: 'Poppins, sans-serif', // Altere para a fonte que desejar
+                                                            fontSize: '16px',
+                                                        },
+                                                    }}
                                                 />
                                             </Grid>
 
@@ -863,6 +1056,12 @@ const InstitutionManagement: React.FC = () => {
                                                     fullWidth
                                                     error={touched.nome && Boolean(errors.nome)}
                                                     helperText={touched.nome && errors.nome}
+                                                    InputProps={{
+                                                        sx: {
+                                                            fontFamily: 'Poppins, sans-serif', // Altere para a fonte que desejar
+                                                            fontSize: '16px',
+                                                        },
+                                                    }}
                                                 />
                                             </Grid>
 
@@ -874,20 +1073,59 @@ const InstitutionManagement: React.FC = () => {
                                                     fullWidth
                                                     error={touched.nome && Boolean(errors.nome)}
                                                     helperText={touched.nome && errors.nome}
+                                                    InputProps={{
+                                                        sx: {
+                                                            fontFamily: 'Poppins, sans-serif', // Altere para a fonte que desejar
+                                                            fontSize: '16px',
+                                                        },
+                                                    }}
                                                 />
                                             </Grid>
 
+                                            {/* Botões de ação */}
                                             <Grid item xs={12}>
-                                                <Button
-                                                    type="submit"
-                                                    variant="contained"
-                                                    color="primary"
-                                                    fullWidth
-                                                    disabled={isSubmitting}
-                                                    sx={{ mt: 2 }}
-                                                >
-                                                    {isSubmitting ? <CircularProgress size={24} color="inherit" /> : 'Salvar'}
-                                                </Button>
+                                                <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, marginTop: 3 }}>
+                                                    <Button
+                                                        type="button"
+                                                        variant="outlined"
+                                                        color="primary"
+                                                        onClick={handleEditModalClose}
+                                                        sx={{
+                                                            height: '50px',
+                                                            width: '100px',
+                                                            fontSize: '17px',
+                                                            fontFamily: 'Roboto, monospace',
+                                                            fontWeight: 'bold',
+                                                            color: 'white',
+                                                            backgroundColor: '#185D8E',
+                                                            '&:hover': {
+                                                                backgroundColor: '#104A6F',
+                                                            },
+                                                        }}
+                                                    >
+                                                        Cancelar
+                                                    </Button>
+                                                    <Button
+                                                        type="submit"
+                                                        variant="contained"
+                                                        color="primary"
+                                                        disabled={isSubmitting}
+                                                        sx={{
+                                                            height: '50px',
+                                                            width: '100px',
+                                                            fontSize: '17px',
+                                                            fontFamily: 'Roboto, monospace',
+                                                            fontWeight: 'bold',
+                                                            color: 'white',
+                                                            backgroundColor: '#185D8E',
+                                                            '&:hover': {
+                                                                backgroundColor: '#104A6F',
+                                                            },
+                                                        }}
+                                                    >
+                                                        {isSubmitting ? <CircularProgress size={24} color="inherit" /> : 'Salvar'}
+                                                    </Button>
+                                                </Box>
                                             </Grid>
                                         </Grid>
                                     </Form>
@@ -930,76 +1168,138 @@ const InstitutionManagement: React.FC = () => {
                     position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
                     bgcolor: 'background.paper', boxShadow: 24, p: 4, width: '80%', maxWidth: 800, borderRadius: '5px', maxHeight: '80vh', overflowY: 'auto'
                 }}>
-                    <Typography variant="h6" gutterBottom>
-                        Adicionar Cursos e Políticas
+                    <Typography variant="h6" gutterBottom sx={{
+                        marginBottom: '30px', marginTop: '10px', color: '#185D8E',
+                        fontFamily: 'Roboto, monospace', fontWeight: 'bold',
+                    }}>
+                        Selecione cursos e políticas para adicionar na Instiutição:
                     </Typography>
-                    <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-                        <Box sx={{ flex: 1, marginRight: 2 }}>
-                            <Typography variant="subtitle1">Cursos</Typography>
-                            <List>
-                                {courses.map((course) => (
-                                    <ListItem key={course.id} divider>
-                                        <Checkbox
-                                            checked={!!selectedCourses[course.id]}
-                                            onChange={() => handleCourseSelection(course.id)}
-                                        />
-                                        <ListItemText primary={course.descricao} />
-                                        {selectedCourses[course.id] && (
-                                            <FormControl
-                                                style={{ marginLeft: '10px', minWidth: '120px' }}
-                                                error={!!validationErrors[course.id]}
-                                            >
-                                                <InputLabel htmlFor={`notaMec-${course.id}`}>
-                                                    Nota MEC
-                                                </InputLabel>
-                                                <Input
-                                                    id={`notaMec-${course.id}`}
-                                                    value={selectedCourses[course.id]?.notaMec || ''}
-                                                    onChange={(e) =>
-                                                        handleNotaMecChange(
-                                                            course.id,
-                                                            Number(e.target.value)
-                                                        )
-                                                    }
-                                                    type="number"
-                                                    inputProps={{ min: 1, max: 5 }}
-                                                />
-                                                <FormHelperText>
-                                                    {validationErrors[course.id] || 'Nota de 1 a 5'}
-                                                </FormHelperText>
-                                            </FormControl>
-                                        )}
-                                    </ListItem>
-                                ))}
-                            </List>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                        {/* Seção de Cursos */}
+                        <Box>
+                            <Typography variant="subtitle1" gutterBottom sx={{ fontFamily: 'Poppins, sans-serif' }}>
+                                Cursos
+                            </Typography>
+                            {courses.length === 0 ? (
+                                <Typography variant="body2" color="textSecondary">
+                                    Não há cursos disponíveis.
+                                </Typography>
+                            ) : (
+                                <List
+                                    sx={{
+                                        maxHeight: 200,
+                                        overflowY: 'auto',
+                                        border: '1px solid #ddd',
+                                        borderRadius: '5px',
+                                        padding: 1,
+                                    }}
+                                >
+                                    {courses.map((course) => (
+                                        <ListItem key={course.id} divider>
+                                            <Checkbox
+                                                checked={!!selectedCourses[course.id]}
+                                                onChange={() => handleCourseSelection(course.id)}
+                                            />
+                                            <ListItemText primary={course.descricao} />
+                                            {selectedCourses[course.id] && (
+                                                <FormControl
+                                                    style={{ marginLeft: '10px', minWidth: '120px' }}
+                                                    error={!!validationErrors[course.id]}
+                                                >
+                                                    <InputLabel htmlFor={`notaMec-${course.id}`}>
+                                                        Nota MEC|IDEB
+                                                    </InputLabel>
+                                                    <Input
+                                                        id={`notaMec-${course.id}`}
+                                                        value={selectedCourses[course.id]?.notaMec || ''}
+                                                        onChange={(e) =>
+                                                            handleNotaMecChange(
+                                                                course.id,
+                                                                Number(e.target.value)
+                                                            )
+                                                        }
+                                                        type="number"
+                                                        inputProps={{ min: 1, max: 10 }}
+                                                    />
+                                                    <FormHelperText>
+                                                        {validationErrors[course.id] || 'Nota de 1 a 10'}
+                                                    </FormHelperText>
+                                                </FormControl>
+                                            )}
+                                        </ListItem>
+                                    ))}
+                                </List>
+                            )}
                         </Box>
-                        <Box sx={{ flex: 1 }}>
-                            <Typography variant="subtitle1">Políticas</Typography>
-                            <List>
-                                {policies.map((policy) => (
-                                    <ListItem key={policy.id} divider>
-                                        <Checkbox
-                                            checked={selectedPolicies.includes(policy.id)}
-                                            onChange={() => handlePolicySelection(policy.id)}
-                                        />
-                                        <ListItemText primary={policy.descricao} />
-                                    </ListItem>
-                                ))}
-                            </List>
+
+                        {/* Seção de Políticas */}
+                        <Box>
+                            <Typography variant="subtitle1" gutterBottom sx={{ fontFamily: 'Poppins, sans-serif' }}>
+                                Políticas
+                            </Typography>
+                            {policies.length === 0 ? (
+                                <Typography variant="body2" color="textSecondary">
+                                    Não há políticas disponíveis.
+                                </Typography>
+                            ) : (
+                                <List
+                                    sx={{
+                                        maxHeight: 200,
+                                        overflowY: 'auto',
+                                        border: '1px solid #ddd',
+                                        borderRadius: '5px',
+                                        padding: 1,
+                                    }}
+                                >
+                                    {policies.map((policy) => (
+                                        <ListItem key={policy.id} divider>
+                                            <Checkbox
+                                                checked={selectedPolicies.includes(policy.id)}
+                                                onChange={() => handlePolicySelection(policy.id)}
+                                            />
+                                            <ListItemText primary={policy.descricao} />
+                                        </ListItem>
+                                    ))}
+                                </List>
+                            )}
                         </Box>
                     </Box>
-                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: 2 }}>
-                        <Button variant="contained" onClick={handleAddCoursesAndPolicies} sx={{
-                            height: '50px',
-                            fontSize: '17px',
-                            fontFamily: 'Roboto, monospace',
-                            color: 'white',
-                            backgroundColor: '#185D8E',
-                            fontWeight: 'bold',
-                            '&:hover': {
-                                backgroundColor: '#104A6F',
-                            },
-                        }}>
+
+                    <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 5, gap: 5 }}>
+                        <Button
+                            variant="outlined"
+                            onClick={handlePolicyCourseModalClose}
+                            sx={{
+                                height: '50px',
+                                width: '110px',
+                                fontSize: '17px',
+                                fontFamily: 'Roboto, monospace',
+                                fontWeight: 'bold',
+                                color: 'white',
+                                backgroundColor: '#185D8E',
+                                '&:hover': {
+                                    backgroundColor: '#104A6F',
+                                },
+                            }}
+                        >
+                            Cancelar
+                        </Button>
+                        <Button
+                            variant="contained"
+                            onClick={handleAddCoursesAndPolicies}
+                            sx={{
+                                height: '50px',
+                                width: '110px',
+                                fontSize: '17px',
+                                fontFamily: 'Roboto, monospace',
+                                color: 'white',
+                                backgroundColor: '#185D8E',
+                                fontWeight: 'bold',
+                                '&:hover': {
+                                    backgroundColor: '#104A6F',
+                                },
+                            }}
+                        >
                             Adicionar
                         </Button>
                     </Box>
@@ -1013,56 +1313,125 @@ const InstitutionManagement: React.FC = () => {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={{
-                    position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
-                    bgcolor: 'background.paper', boxShadow: 24, p: 4, width: '80%', maxWidth: 800, borderRadius: '5px',
-                    maxHeight: '80vh', overflowY: 'auto'
-                }}>
-                    <Typography variant="h6" gutterBottom>
-                        Excluir Cursos e Políticas
+                <Box
+                    sx={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        bgcolor: 'background.paper',
+                        boxShadow: 24,
+                        p: 4,
+                        width: '80%',
+                        maxWidth: 800,
+                        borderRadius: '5px',
+                        maxHeight: '80vh',
+                        overflowY: 'auto',
+                    }}
+                >
+                    <Typography variant="h6" gutterBottom sx={{
+                        marginBottom: '30px', marginTop: '10px', color: '#185D8E',
+                        fontFamily: 'Roboto, monospace', fontWeight: 'bold',
+                    }}>
+                        Selecione cursos e políticas da Instituição que deseja excluir:
                     </Typography>
 
                     {loadingDeleteData ? (
                         <CircularProgress />
                     ) : (
-                        <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-                            <Box sx={{ flex: 1, marginRight: 2 }}>
-                                <Typography variant="subtitle1">Cursos</Typography>
-                                <List>
-                                    {institutionCourses.map((course) => (
-                                        <ListItem key={course.id} divider>
-                                            <Checkbox
-                                                checked={selectedCoursesToDelete.includes(course.id)}
-                                                onChange={() => handleCourseSelectionToDelete(course.id)}
-                                            />
-                                            <ListItemText primary={course.descricao} />
-                                        </ListItem>
-                                    ))}
-                                </List>
+                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                            {/* Seção de Cursos */}
+                            <Box>
+                                <Typography variant="subtitle1" gutterBottom sx={{ fontFamily: 'Poppins, sans-serif' }}>
+                                    Cursos da Instituição
+                                </Typography>
+                                {institutionCourses.length === 0 ? (
+                                    <Typography variant="body2" color="textSecondary">
+                                        Não há cursos disponíveis nessa instituição.
+                                    </Typography>
+                                ) : (
+                                    <List
+                                        sx={{
+                                            maxHeight: 200,
+                                            overflowY: 'auto',
+                                            border: '1px solid #ddd',
+                                            borderRadius: '5px',
+                                            padding: 1,
+                                        }}
+                                    >
+                                        {institutionCourses.map((course) => (
+                                            <ListItem key={course.id} divider>
+                                                <Checkbox
+                                                    checked={selectedCoursesToDelete.includes(course.id)}
+                                                    onChange={() => handleCourseSelectionToDelete(course.id)}
+                                                />
+                                                <ListItemText primary={course.curso.descricao} />
+                                            </ListItem>
+                                        ))}
+
+                                    </List>
+                                )}
                             </Box>
-                            <Box sx={{ flex: 1 }}>
-                                <Typography variant="subtitle1">Políticas</Typography>
-                                <List>
-                                    {institutionPolicies.map((policy) => (
-                                        <ListItem key={policy.id} divider>
-                                            <Checkbox
-                                                checked={selectedPoliciesToDelete.includes(policy.id)}
-                                                onChange={() => handlePolicySelectionToDelete(policy.id)}
-                                            />
-                                            <ListItemText primary={policy.descricao} />
-                                        </ListItem>
-                                    ))}
-                                </List>
+
+                            {/* Seção de Políticas */}
+                            <Box>
+                                <Typography variant="subtitle1" gutterBottom sx={{ fontFamily: 'Poppins, sans-serif' }}>
+                                    Políticas da Instituição
+                                </Typography>
+                                {institutionPolicies.length === 0 ? (
+                                    <Typography variant="body2" color="textSecondary">
+                                        Não há políticas disponíveis nessa instituição.
+                                    </Typography>
+                                ) : (
+                                    <List
+                                        sx={{
+                                            maxHeight: 200,
+                                            overflowY: 'auto',
+                                            border: '1px solid #ddd',
+                                            borderRadius: '5px',
+                                            padding: 1,
+                                        }}
+                                    >
+                                        {institutionPolicies.map((policy) => (
+                                            <ListItem key={policy.id} divider>
+                                                <Checkbox
+                                                    checked={selectedPoliciesToDelete.includes(policy.id)}
+                                                    onChange={() => handlePolicySelectionToDelete(policy.id)}
+                                                />
+                                                <ListItemText primary={policy.politica.descricao} />
+                                            </ListItem>
+                                        ))}
+                                    </List>
+                                )}
                             </Box>
                         </Box>
                     )}
 
-                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: 2 }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 5, gap: 5 }}>
+                        <Button
+                            variant="outlined"
+                            onClick={handleDeletePolicyCourseModalClose}
+                            sx={{
+                                height: '50px',
+                                width: '100px',
+                                fontSize: '17px',
+                                fontFamily: 'Roboto, monospace',
+                                fontWeight: 'bold',
+                                color: 'white',
+                                backgroundColor: '#185D8E',
+                                '&:hover': {
+                                    backgroundColor: '#104A6F',
+                                },
+                            }}
+                        >
+                            Cancelar
+                        </Button>
                         <Button
                             variant="contained"
                             onClick={handleDeleteSelectedCoursesAndPolicies}
                             sx={{
                                 height: '50px',
+                                width: '100px',
                                 fontSize: '17px',
                                 fontFamily: 'Roboto, monospace',
                                 color: 'white',
@@ -1073,7 +1442,7 @@ const InstitutionManagement: React.FC = () => {
                                 },
                             }}
                         >
-                            Excluir Selecionados
+                            Excluir
                         </Button>
                     </Box>
                 </Box>

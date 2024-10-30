@@ -69,10 +69,10 @@ export const CadastroInstituicao: React.FC = () => {
         formaIngresso: Yup.string().required('Forma de Ingresso é obrigatória'),
         notaMec: Yup.number()
             .nullable()
-            .typeError('A nota MEC deve ser um número')
-            .min(1, 'A nota MEC deve ser no mínimo 1')
-            .max(5, 'A nota MEC deve ser no máximo 5')
-            .required('A nota MEC é obrigatória'),
+            .typeError('A nota deve ser um número')
+            .min(1, 'A nota deve ser no mínimo 1')
+            .max(10, 'A nota deve ser no máximo 5')
+            .required('A nota é obrigatória'),
         sigla: Yup.string()
             .matches(/^[A-Z]+$/, 'A sigla deve estar em letras maiúsculas')
             .required('A sigla é obrigatória'),
@@ -226,9 +226,9 @@ export const CadastroInstituicao: React.FC = () => {
                                                             component={TextField}
                                                             name="notaMec"
                                                             type="number"
-                                                            label="Nota MEC"
+                                                            label="Nota MEC|IDEB"
                                                             variant="standard"
-                                                            inputProps={{ min: 1, max: 5 }}
+                                                            inputProps={{ min: 1, max: 10 }}
                                                             size="small"
                                                             fullWidth
                                                             required

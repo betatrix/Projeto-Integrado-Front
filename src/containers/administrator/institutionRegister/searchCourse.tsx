@@ -37,7 +37,7 @@ const notaMecSchema = yup
     .nullable()
     .typeError('A nota deve ser um número')
     .min(1, 'Nota mínima 1')
-    .max(5, 'Nota máxima 5')
+    .max(10, 'Nota máxima 10')
     .required('A nota é obrigatória');
 
 export const BuscaCurso: React.FC = () => {
@@ -267,7 +267,7 @@ export const BuscaCurso: React.FC = () => {
                                                 error={!!validationErrors[course.id]}
                                             >
                                                 <InputLabel htmlFor={`notaMec-${course.id}`}>
-                                                    Nota MEC
+                                                    Nota MEC|IDEB
                                                 </InputLabel>
                                                 <Input
                                                     id={`notaMec-${course.id}`}

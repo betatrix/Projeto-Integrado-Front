@@ -11,5 +11,5 @@ export const cadastrarPoliticasInstituicao = async (instituicaoId: number, polit
 };
 
 export const excluirPoliticasInstituicao = async (id: number) => {
-    return await excluirEntidade('cursoInstituicao', id );
+    return await excluirEntidade('politicaInstituicao', id );
 };

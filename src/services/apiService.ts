@@ -28,6 +28,11 @@ export const substituirEntidade = async (entidade: string, data: object) => {
 };
 
 export const excluirEntidade = async (entidade: string, id: number) => {
+    console.log(`Excluindo ${entidade} com ID:`, id);
+    if (!id) {
+        console.error(`Erro: ID inválido fornecido para exclusão da entidade ${entidade}`);
+        return;
+    }
     const response = await axios.delete(`${API_URL}/${entidade}/${id}`);
     return response.data;
 };
