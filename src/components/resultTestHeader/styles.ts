@@ -29,7 +29,7 @@ export const logo: SxProps<Theme> = () => ({
     fontFamily: 'Poppins, sans-serif',
     fontWeight: 700,
     letterSpacing: '.3rem',
-    color: 'black',
+    color: '#185D8E',
     textDecoration: 'none'
 });
 

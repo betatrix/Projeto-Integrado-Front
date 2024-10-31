@@ -40,7 +40,7 @@ const styles = {
         fontFamily: 'monospace',
         fontWeight: 700,
         letterSpacing: '.3rem',
-        color: 'inherit',
+        color: '#0B2A40',
         textDecoration: 'none',
     },
     avatarButton: {
@@ -160,7 +160,7 @@ function StudentHeader() {
 
     return (
         <>
-            <AppBar style={{ backgroundColor: '#D9EEFF', boxShadow: 'none'}}>
+            <AppBar style={{ backgroundColor: '#fcfbfb', boxShadow: 'none'}}>
                 <Container maxWidth={isMobile ? 'md' : 'xl'} disableGutters>
                     <Toolbar sx={{ display: 'flex', justifyContent:  'space-between' , width: '100%'}}>
 

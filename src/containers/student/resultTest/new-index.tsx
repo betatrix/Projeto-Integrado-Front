@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable max-len */
 import React, { useState } from 'react';
 import { Grid, CardContent, List, Box, Button, Typography, Modal, TextField, IconButton, ListItem, useMediaQuery } from '@mui/material';
@@ -11,6 +12,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 import PaidIcon from '@mui/icons-material/Paid';
 import BookIcon from '@mui/icons-material/Book';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 interface ResultData {
     id: number;
@@ -37,14 +39,14 @@ interface ResultData {
         id: number;
         descricao: string;
     }>;
-}
-
-interface Institution {
-    id: number;
-    nome: string;
-    sigla: string;
-    site: string;
-    notaMec: number;
+    instituicao: {
+      id: number,
+      nome: string;
+      sigla: string;
+      site: string;
+      ativo: true;
+      notaMec: number;
+    }
 }
 
 const ResultScreen: React.FC = () => {
@@ -55,19 +57,24 @@ const ResultScreen: React.FC = () => {
     const isMobile = useMediaQuery('(max-width:600px)');
 
     const [openModal, setOpenModal] = useState(false);
-    const [institutions, setInstitutions] = useState<Institution[]>([]);
+    const [institutions, setInstitutions] = useState<ResultData['instituicao'][]>([]);
     const [selectedCourse, setSelectedCourse] = useState<{ id: number, descricao: string } | null>(null);
     const [searchTerm, setSearchTerm] = useState('');
-    const [filteredInstitutions, setFilteredInstitutions] = useState<Institution[]>([]);
+    const [filteredInstitutions, setFilteredInstitutions] = useState<ResultData['instituicao'][]>([]);
 
     const handleOpenModal = async (cursoId: number, descricao: string) => {
         setSelectedCourse({ id: cursoId, descricao });
         try {
             const response = await fetch(`${apiUrl}/cursoInstituicao/curso/mec/${cursoId}`);
-            const data: Institution[] = await response.json();
-            setInstitutions(data);
-            setFilteredInstitutions(data);
+            const data: ResultData['instituicao'][] = await response.json();
+
+            // Extraindo apenas as informações de `instituicao`
+            const institutionData = data.map((item: any) => item.instituicao);
+            setInstitutions(institutionData);
+            setFilteredInstitutions(institutionData);
+
             setOpenModal(true);
+            console.log('data intitições: ', data);
         } catch (error) {
             console.error('Erro ao buscar instituições:', error);
         }
@@ -85,6 +92,11 @@ const ResultScreen: React.FC = () => {
         ));
     };
 
+    // Formatação da mensagem
+    const formattedMessage = resultado.mensagem.replace('estruturados.Abaixo', 'estruturados. Abaixo');
+    const formattedMessage2 = formattedMessage.replace('Abaixo listamos alguns cursos que podem te interessar, boa sorte!', '');
+    const words = formattedMessage2.split(' ');
+
     return (
         <>
             <Global />
@@ -101,7 +113,7 @@ const ResultScreen: React.FC = () => {
 
             {!isMobile && (
                 <BackButton
-                    startIcon={<ArrowCircleLeftIcon />}
+                    startIcon={<ArrowBackIcon />}
 
                 >
                     <CustomLink to={'/estudante'}> Voltar
@@ -121,7 +133,7 @@ const ResultScreen: React.FC = () => {
                 <PageTile variant="h4" gutterBottom
                     style={{ fontWeight: 'bold' }}
                     fontSize={isMobile ? '25px' : '30px'}
-                    marginTop={isMobile ? '8%' : '0'}
+                    marginTop={isMobile ? '8%' : '3%'}
                     marginBottom={isMobile ? '8%' : '0'}
                 >
                     Resultado do Teste
@@ -131,12 +143,43 @@ const ResultScreen: React.FC = () => {
                     <Grid item xs={12} md={9} style={{width: '100%'}}
                         maxWidth={isMobile ? '90%' : '75%'}
                     >
-                        <Typography style={{ fontSize: '20px' }}
+                        <Typography
+                            component="div"
+                            style={{ fontSize: '20px', lineHeight: '1.8' }}
                             textAlign={isMobile ? 'justify' : 'left'}
                             marginBottom={isMobile ? '8%' : '0'}
                         >
-                            {resultado.mensagem}
+                            {words.map((word, index) => {
+                                if (index === 11 || index === 17) {
+                                    // Destacar a 12ª e a 18ª palavras
+                                    return (
+                                        <span key={index} style={{ fontWeight: 'bold', color: '#185D8E', fontSize: '22px' }}>
+                                            {word}{' '}
+                                        </span>
+                                    );
+                                } else if (word === ':') {
+                                    return null;
+                                } else if (index === words.length - 1) {
+                                    // Adicionar margem na última frase
+                                    return (
+                                        <span key={index} style={{ marginTop: '20px', display: 'inline-block' }}>
+                                            {word}
+                                        </span>
+                                    );
+                                } else {
+                                    return word + ' ';
+                                }
+                            })}
                         </Typography>
+                        <Typography
+                            style={{
+                                fontSize: '20px',
+                                lineHeight: '1.8',
+                                marginTop: '30px',
+                                display: 'inline-block'
+                            }}
+                            marginBottom={isMobile ? '40px' : '0'}
+                        >Abaixo listamos alguns cursos que podem te interessar, boa sorte!</Typography>
                     </Grid>
                     {!isMobile && (
                         <Grid item xs={12} md={3} >
@@ -157,11 +200,11 @@ const ResultScreen: React.FC = () => {
 
                 {/* Cursos para o perfil primário */}
                 <Box display="flex" justifyContent="flex-start" width="80%" marginBottom="2%">
-                    <Typography variant="h5" style={{ fontWeight: 'bold', color: '#0B2A40' }}
+                    <Typography variant="h5" style={{ fontWeight: 'bold', color: '#185D8E' }}
                         fontSize={isMobile ? '20px' : '25px'}
                         marginBottom={isMobile ? '5%' : '0'}
                     >
-        Cursos recomendados para o perfil {resultado.perfis[0].descricao}
+        Cursos recomendados para o perfil {resultado.perfis[0].descricao.toLowerCase()}
                     </Typography>
                 </Box>
 
@@ -302,12 +345,12 @@ const ResultScreen: React.FC = () => {
 
                 {/* Cursos recomendados para o perfil secundario */}
                 <Box display="flex" justifyContent="flex-start" width="80%" marginBottom="2%" marginTop='6%'>
-                    <Typography variant="h5" style={{ fontWeight: 'bold', color: '#0B2A40' }}
+                    <Typography variant="h5" style={{ fontWeight: 'bold', color: '#185D8E' }}
                         fontSize={isMobile ? '20px' : '25px'}
                         marginBottom={isMobile ? '5%' : '0'}
                         marginTop={isMobile ? '5%' : '0'}
                     >
-        Cursos recomendados para o perfil {resultado.perfis[1].descricao}
+        Cursos recomendados para o perfil {resultado.perfis[1].descricao.toLowerCase()}
                     </Typography>
                 </Box>
 
@@ -496,17 +539,17 @@ const ResultScreen: React.FC = () => {
                         <List>
                             {filteredInstitutions.map((inst) => (
                                 <ListItem key={inst.id}>
-                                    <Typography variant="body1" style={{textAlign: 'justify', }}>
-                                        <Typography style={{fontWeight: 'bold', color: '#185D8E'}}>
-                                            {inst.nome} ({inst.sigla}):
+                                    <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'left' }}>
+                                        <Typography variant="body1" style={{ fontWeight: 'bold', color: '#185D8E' }}>
+                                            {inst.nome} ({inst.sigla})
                                         </Typography>
-                                        <Typography style={{marginLeft: '8px'}}>
-                                            <strong style={{fontWeight: 'bold'}}>Site:</strong>  {inst.site}
+                                        <Typography variant="body2" style={{ marginLeft: '8px' }}>
+                                            <strong>Site:</strong> {inst.site}
                                         </Typography>
-                                        <Typography style={{marginLeft: '8px'}}>
-                                            <strong style={{fontWeight: 'bold'}}>Nota MEC do Curso:</strong>  {inst.notaMec}
+                                        <Typography variant="body2" style={{ marginLeft: '8px' }}>
+                                            <strong>Nota MEC do Curso:</strong> {inst.notaMec}
                                         </Typography>
-                                    </Typography>
+                                    </div>
                                 </ListItem>
                             ))}
                         </List>

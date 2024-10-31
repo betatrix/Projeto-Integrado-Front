@@ -6,7 +6,7 @@ export const Global = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
 
   body {
-    background-color: #D9EEFF;
+    background-color: #fcfbfb;
     font-family: 'Inter', sans-serif;
   }
 `;
@@ -29,11 +29,12 @@ export const CourseCard = styled(Box)`
   padding-left: 35px;
   padding-right: 40px;
   border-radius: 23px;
-  box-shadow: 10px 10px 1px rgba(172, 200, 220, 0.5);
+  box-shadow: 10px 10px 1px #B9D4F8;
   text-align: center;
   height: 560px;
   width: 100%;
   max-width: 400px;
+  border: solid #185D8E; 
 `;
 
 // TITLES ****************************************************************************************************
@@ -41,7 +42,7 @@ export const PageTile = styled(Typography)`
   text-align: center;
   font-family: 'Inter', sans-serif;
   font-weight: bolder;
-  color: #0B2A40;
+  color: #185D8E;
   margin-bottom: 20px;
 `;
 
@@ -74,14 +75,17 @@ export const BackButton = styled(Button)`
   &.MuiButton-root {
     position: absolute;
     left: 5%;
-    color: #0B2A40;
-    padding: 10px;
-    padding-left: 25px;
-    padding-right: 25px;
-    font-weight: bold;
+    color: #185D8E;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 15px;
+    font-weight: 600;
+    width: 150px;
+    font-size: 18px;
     
     &:hover {
-      background-color: rgba(89,87,230,0.1) !important;
+      color: #0B2A40;
+      background-color: #D9EEFF !important;
     }
   }
 `;
@@ -90,7 +94,7 @@ export const MobileBackButton = styled(Button)`
   &.MuiButton-root {
     position: absolute;
     left: 5%;
-    color: #0B2A40;
+    color: #185D8E;
     padding: 10px;
     padding-left: 25px;
     padding-right: 25px;
@@ -104,7 +108,7 @@ export const MobileBackButton = styled(Button)`
 
 export const CustomLink = styled(Link)`
   text-decoration: none;
-  color: #0B2A40;
+  color: #185D8E;
 `;
 
 // SCROLLBAR
