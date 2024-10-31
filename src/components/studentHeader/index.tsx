@@ -33,6 +33,7 @@ import { linkButtonMobile, logo } from './styles';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import AvatarUserStudent from '../avatarUser/indexStudent';
+import { decryptData } from '../../services/encryptionService';
 
 const styles = {
     logo: {
@@ -62,7 +63,6 @@ const styles = {
 };
 
 function StudentHeader() {
-
     const { t } = useTranslation();
     const isMobile = useMediaQuery('(max-width:600px)');
     const [drawerOpen, setDrawerOpen] = useState(false);
@@ -74,6 +74,9 @@ function StudentHeader() {
         return null;
     }
     const { logout } = authContext;
+
+    const studentData = authContext.student ? decryptData(authContext.student) : null;
+    const student = studentData ? JSON.parse(studentData) : null;
 
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElUser(event.currentTarget);
@@ -108,48 +111,77 @@ function StudentHeader() {
             </ListItem>
 
             <ListItem>
-                <DashboardOutlined style={{ color: '#185D8E' }} />
-                <Link to="/instituicao" onClick={toggleDrawer(false)}>
-                    <Button color="inherit" sx={linkButtonMobile}>{t('dashboard')}</Button>
-                </Link>
+                <Tooltip title="Opções de Perfil">
+                    <IconButton onClick={handleOpenUserMenu} sx={styles.avatarButton}>
+                        <AvatarUserStudent
+                            sx={{
+                                width: '40px',
+                                height: '40px',
+                                overflow: 'hidden',
+                                objectFit: 'cover'
+                            }}
+                        />
+                        <Typography
+                            sx={{
+                                marginLeft: '0.7rem',
+                                fontFamily: 'Poppins, sans-serif',
+                                color: '#185D8E',
+                                fontWeight: 700,
+                            }}
+                        >
+                            Hey, {student ? student.nome.split(' ')[0] : 'usuário'}!
+                        </Typography>
+                    </IconButton>
+                </Tooltip>
             </ListItem>
-            <ListItem>
-                <AssignmentOutlined style={{ color: '#185D8E' }} />
-                <Link to="/teste-vocacional" onClick={toggleDrawer(false)}>
-                    <Button color="inherit" sx={linkButtonMobile}>{t('test')}</Button>
-                </Link>
-            </ListItem>
-            <ListItem>
-                <AccountBoxOutlined style={{ color: '#185D8E' }} />
-                <Link to="/minha-conta" onClick={toggleDrawer(false)}>
-                    <Button color="inherit" sx={linkButtonMobile}>{t('myAccount')}</Button>
-                </Link>
-            </ListItem>
-            <ListItem>
-                <LocalLibraryRoundedIcon style={{ color: '#185D8E' }} />
-                <Link to="/curso" onClick={toggleDrawer(false)}>
-                    <Button color="inherit" sx={linkButtonMobile}>{t('courses')}</Button>
-                </Link>
-            </ListItem>
-            <ListItem>
-                <SchoolOutlined style={{ color: '#185D8E' }} />
-                <Link to="/instituicao" onClick={toggleDrawer(false)}>
-                    <Button color="inherit" sx={linkButtonMobile}>{t('institution')}</Button>
-                </Link>
-            </ListItem>
-            <ListItem>
-                <LogoutOutlined style={{ color: '#185D8E' }} />
-                <ScrollLink onClick={handleMenuItemClick} onSetActive={handleCloseDrawer}>
-                    <Button color="inherit" sx={linkButtonMobile}>{t('logout')}</Button>
-                </ScrollLink>
-            </ListItem>
+
+            <List sx={{ paddingLeft: '0.5rem' }}>
+                <ListItem>
+                    <DashboardOutlined style={{ color: '#185D8E' }} />
+                    <Link to="/estudante" onClick={toggleDrawer(false)}>
+                        <Button color="inherit" sx={linkButtonMobile}>{t('dashboard')}</Button>
+                    </Link>
+                </ListItem>
+                <ListItem>
+                    <AssignmentOutlined style={{ color: '#185D8E' }} />
+                    <Link to="/teste-vocacional" onClick={toggleDrawer(false)}>
+                        <Button color="inherit" sx={linkButtonMobile}>{t('test')}</Button>
+                    </Link>
+                </ListItem>
+                <ListItem>
+                    <AccountBoxOutlined style={{ color: '#185D8E' }} />
+                    <Link to="/minha-conta" onClick={toggleDrawer(false)}>
+                        <Button color="inherit" sx={linkButtonMobile}>{t('myAccount')}</Button>
+                    </Link>
+                </ListItem>
+                <ListItem>
+                    <LocalLibraryRoundedIcon style={{ color: '#185D8E' }} />
+                    <Link to="/curso" onClick={toggleDrawer(false)}>
+                        <Button color="inherit" sx={linkButtonMobile}>{t('courses')}</Button>
+                    </Link>
+                </ListItem>
+                <ListItem>
+                    <SchoolOutlined style={{ color: '#185D8E' }} />
+                    <Link to="/instituicao" onClick={toggleDrawer(false)}>
+                        <Button color="inherit" sx={linkButtonMobile}>{t('institution')}</Button>
+                    </Link>
+                </ListItem>
+                <ListItem>
+                    <LogoutOutlined style={{ color: '#185D8E' }} />
+                    <ScrollLink onClick={handleMenuItemClick} onSetActive={handleCloseDrawer}>
+                        <Button color="inherit" sx={linkButtonMobile}>{t('logout')}</Button>
+                    </ScrollLink>
+                </ListItem>
+
+            </List>
 
             <Box
                 sx={{
                     position: 'absolute',
                     color: '#185D8E',
                     fontFamily: 'Roboto, sans-serif',
-                    paddingTop: '30rem',
+                    paddingTop: '20rem',
+                    paddingBottom: '2rem',
                     fontSize: '10px',
                 }}
             >
