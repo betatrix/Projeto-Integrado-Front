@@ -388,15 +388,15 @@ const CourseList: React.FC = () => {
                                         </Select>
                                     </FormControl>
                                 </Grid>
-                            </Grid>
-                            <Grid item xs={12}
-                                sx={{
-                                    display: 'flex',
-                                    justifyContent: 'space-between'
-                                }}
-                            >
-                                <Button sx={clearFilterButton} onClick={handleClearFilters}>{t('courseFilterClean')}</Button>
-                                <Button sx={searchButton} onClick={handleApplyFilters}>{t('courseFilterSearch')}</Button>
+                                <Grid item xs={12}
+                                    sx={{
+                                        display: 'flex',
+                                        justifyContent: 'space-between'
+                                    }}
+                                >
+                                    <Button sx={clearFilterButton} onClick={handleClearFilters}>{t('courseFilterClean')}</Button>
+                                    <Button sx={searchButton} onClick={handleApplyFilters}>{t('courseFilterSearch')}</Button>
+                                </Grid>
                             </Grid>
                         </Box>
                     </Modal>

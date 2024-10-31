@@ -701,10 +701,10 @@ export const searchButton: SxProps<Theme> = (theme) => ({
         minWidth: '200px',
     },
     [theme.breakpoints.down('sm')]: {
-        margin: '0.5rem',
+        margin: '0.1rem',
         padding: '0.8rem',
-        fontSize: '1rem',
-        minWidth: '200px',
+        fontSize: '0.9rem',
+        minWidth: '140px',
     },
 });
 
@@ -737,15 +737,15 @@ export const clearFilterButton: SxProps<Theme> = (theme) => ({
     },
     [theme.breakpoints.down('md')]: {
         margin: '0.5rem',
-        padding: '0.5rem',
+        padding: '0.8rem',
         fontSize: '1rem',
         minWidth: '200px',
     },
     [theme.breakpoints.down('sm')]: {
-        margin: '0.5rem',
+        margin: '0.1rem',
         padding: '0.8rem',
-        fontSize: '1rem',
-        minWidth: '200px',
+        fontSize: '0.9rem',
+        minWidth: '140px',
     },
 });
 
