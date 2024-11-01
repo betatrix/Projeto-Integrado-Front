@@ -48,7 +48,7 @@ const styles = {
         p: 0,
     },
     menu: {
-        mt: '45px',
+        mt: '50px',
     },
     welcomeText: {
         mr: 2,
@@ -111,28 +111,26 @@ function StudentHeader() {
             </ListItem>
 
             <ListItem>
-                <Tooltip title="Opções de Perfil">
-                    <IconButton onClick={handleOpenUserMenu} sx={styles.avatarButton}>
-                        <AvatarUserStudent
-                            sx={{
-                                width: '40px',
-                                height: '40px',
-                                overflow: 'hidden',
-                                objectFit: 'cover'
-                            }}
-                        />
-                        <Typography
-                            sx={{
-                                marginLeft: '0.7rem',
-                                fontFamily: 'Poppins, sans-serif',
-                                color: '#185D8E',
-                                fontWeight: 700,
-                            }}
-                        >
+                <IconButton disabled sx={styles.avatarButton}>
+                    <AvatarUserStudent
+                        sx={{
+                            width: '40px',
+                            height: '40px',
+                            overflow: 'hidden',
+                            objectFit: 'cover'
+                        }}
+                    />
+                    <Typography
+                        sx={{
+                            marginLeft: '0.7rem',
+                            fontFamily: 'Poppins, sans-serif',
+                            color: '#185D8E',
+                            fontWeight: 700,
+                        }}
+                    >
                             Hey, {student ? student.nome.split(' ')[0] : 'usuário'}!
-                        </Typography>
-                    </IconButton>
-                </Tooltip>
+                    </Typography>
+                </IconButton>
             </ListItem>
 
             <List sx={{ paddingLeft: '0.5rem' }}>
@@ -264,6 +262,16 @@ function StudentHeader() {
                                         onClose={handleCloseUserMenu}
                                     >
                                         {/* Opção de Logout */}
+                                        <MenuItem>
+                                            <Typography
+                                                component={Link}
+                                                to="/minha-conta"
+                                                textAlign="center"
+                                                sx={{ fontFamily: 'Roboto, monospace', textDecoration: 'none', color: 'inherit' }}
+                                            >
+                                                Minha conta
+                                            </Typography>
+                                        </MenuItem>
                                         <MenuItem onClick={handleMenuItemClick}>
                                             <Typography textAlign="center" sx={{ fontFamily: 'Roboto, monospace' }}>Logout</Typography>
                                         </MenuItem>

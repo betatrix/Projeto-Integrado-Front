@@ -19,11 +19,11 @@ import {
     CardContent,
     CardActions,
     Pagination,
-    CircularProgress,
     Tabs,
     Tab,
     ListItemIcon,
-    Stack
+    Stack,
+    Skeleton
 } from '@mui/material';
 import {
     Add,
@@ -507,7 +507,24 @@ const InstitutionList: React.FC = () => {
                             mt: 5
                         }}
                     >
-                        <CircularProgress sx={{ color: '#185D8E' }} />
+                        <Box sx={gridContainer}>
+                            <Grid container spacing={4}>
+                                <Grid item xs={12} sm={12} md={6}>
+                                    <Skeleton variant="rectangular" width={600} height={290} sx={{ borderRadius: '14px' }} />
+                                </Grid>
+                                <Grid item xs={12} sm={12} md={6}>
+                                    <Skeleton variant="rectangular" width={600} height={290} sx={{ borderRadius: '14px' }} />
+                                </Grid>
+                            </Grid>
+                            <Grid container spacing={4} sx={{ marginTop: '1rem' }}>
+                                <Grid item xs={12} sm={12} md={6}>
+                                    <Skeleton variant="rectangular" width={600} height={290} sx={{ borderRadius: '14px' }} />
+                                </Grid>
+                                <Grid item xs={12} sm={12} md={6}>
+                                    <Skeleton variant="rectangular" width={600} height={290} sx={{ borderRadius: '14px' }} />
+                                </Grid>
+                            </Grid>
+                        </Box>
                     </Box>
                 ) : (
                     <Box sx={gridContainer}>

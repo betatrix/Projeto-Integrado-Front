@@ -10,9 +10,31 @@ import {
     socialIcons,
     footerBottom
 } from './styles';
+import termosUso from '../../assets/termos-de-uso_vocco.pdf';
+import politicasPrivacidade from '../../assets/politica-de-privacidade_vocco.pdf';
 
 function Footer() {
     const isMobile = useMediaQuery('(max-width:600px)');
+
+    const handleDownloadTerms = (e: { preventDefault: () => void; }) => {
+        e.preventDefault();
+        const link = document.createElement('a');
+        link.href = termosUso;
+        link.download = 'termos-de-uso_vocco.pdf';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
+    const handleDownloadPolicies = (e: { preventDefault: () => void; }) => {
+        e.preventDefault();
+        const link = document.createElement('a');
+        link.href = politicasPrivacidade;
+        link.download = 'politica-de-privacidade_vocco.pdf';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
 
     return (
         <Box component="footer" sx={footerContainer}>
@@ -28,9 +50,9 @@ function Footer() {
                         </Link>
                     </Typography>
                     <Typography>
-                        <Link href="mailto:adastechsup@outlook.com?subject=%5BEscreva%20o%20assunto!%5D&body=Oi%2C%20galera!%20Tudo%20certo%3F%0A%0AT%C3%B4%20passando%20por%20aqui%20porque%20queria%20falar%20com%20voc%C3%AAs%20sobre%20a%20plataforma.%20Tenho%20%5Buma%20d%C3%BAvida%20%2F%20sugest%C3%A3o%20%2F%20elogio%5D%20que%20gostaria%20de%20compartilhar%3A%0A%0A-%20%5BDescreva%20sua%20d%C3%BAvida%2C%20sugest%C3%A3o%20ou%20elogio%20aqui.%5D%0A%0AFico%20no%20aguardo%20e%20j%C3%A1%20agrade%C3%A7o%20pela%20aten%C3%A7%C3%A3o!%20%F0%9F%98%84%0A%0AAbra%C3%A7o%2C%0A%5BSeu%20Nome%5D"
+                        <Link href="mailto:voccosupp@gmail.com?subject=%5BEscreva%20o%20assunto!%5D&body=Oi%2C%20galera!%20Tudo%20certo%3F%0A%0AT%C3%B4%20passando%20por%20aqui%20porque%20queria%20falar%20com%20voc%C3%AAs%20sobre%20a%20plataforma.%20Tenho%20%5Buma%20d%C3%BAvida%20%2F%20sugest%C3%A3o%20%2F%20elogio%5D%20que%20gostaria%20de%20compartilhar%3A%0A%0A-%20%5BDescreva%20sua%20d%C3%BAvida%2C%20sugest%C3%A3o%20ou%20elogio%20aqui.%5D%0A%0AFico%20no%20aguardo%20e%20j%C3%A1%20agrade%C3%A7o%20pela%20aten%C3%A7%C3%A3o!%20%F0%9F%98%84%0A%0AAbra%C3%A7o%2C%0A%5BSeu%20Nome%5D"
                             target="_blank" sx={footerLink}>
-                            adastechsup@outlook.com
+                            voccosupp@gmail.com
                         </Link>
                     </Typography>
                 </Box>
@@ -41,12 +63,12 @@ function Footer() {
                         Recursos
                     </Typography>
                     <Typography>
-                        <Link href="#" sx={footerLink}>
+                        <Link href="#" sx={footerLink} onClick={handleDownloadTerms}>
                             Termos e condições
                         </Link>
                     </Typography>
                     <Typography>
-                        <Link href="#" sx={footerLink}>
+                        <Link href="#" sx={footerLink} onClick={handleDownloadPolicies}>
                             Política de Privacidade
                         </Link>
                     </Typography>
