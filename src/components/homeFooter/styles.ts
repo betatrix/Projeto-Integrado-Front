@@ -1,9 +1,9 @@
 import { SxProps, Theme } from '@mui/material';
 
-export const footerContainer: SxProps<Theme> = (_theme) => ({
+export const footerContainer: SxProps<Theme> = () => ({
     backgroundColor: '#0B2A40',
     color: '#A4BFD2',
-    padding: '40px 0',
+    padding: '30px 0',
 });
 
 export const footerContent: SxProps<Theme> = (theme) => ({
@@ -25,7 +25,6 @@ export const footerContent: SxProps<Theme> = (theme) => ({
 export const footerColumn: SxProps<Theme> = (theme) => ({
     flex: '1',
     minWidth: '250px',
-    marginBottom: '20px',
     [theme.breakpoints.down('sm')]: {
         marginBottom: '10px',
         minWidth: '150px'
@@ -62,12 +61,12 @@ export const footerLink: SxProps<Theme> = (theme) => ({
     },
 });
 
-export const socialIcons: SxProps<Theme> = (_theme) => ({
+export const socialIcons: SxProps<Theme> = () => ({
     display: 'flex',
     gap: '10px',
 });
 
-export const footerBottom: SxProps<Theme> = (_theme) => ({
+export const footerBottom: SxProps<Theme> = () => ({
     textAlign: 'right',
     padding: '20px 20px 0px',
     color: '#6B9ABC',

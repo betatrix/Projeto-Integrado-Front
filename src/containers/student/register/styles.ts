@@ -103,6 +103,7 @@ export const header: SxProps<Theme> = (theme) => ({
     fontFamily: 'Poppins, sans-serif',
     fontWeight: 800,
     fontSize: '2.4rem',
+    marginBottom: '1rem',
     color: '#1b1f27',
     [theme.breakpoints.down('lg')]: {
         fontSize: '2rem',
@@ -110,6 +111,19 @@ export const header: SxProps<Theme> = (theme) => ({
     [theme.breakpoints.down('sm')]: {
         fontSize: '1.7rem',
     },
+});
+
+export const subTitle: SxProps<Theme> = () => ({
+    fontFamily: 'Poppins, sans-serif',
+    fontWeight: 700,
+    fontSize: '1.4rem',
+    color: '#0B2A40',
+});
+
+export const textTermsPolicies: SxProps<Theme> = () => ({
+    fontFamily: 'Poppins, sans-serif',
+    fontSize: '1rem',
+    color: '#0B2A40',
 });
 
 export const paragraph: SxProps<Theme> = (theme) => ({

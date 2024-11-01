@@ -3,7 +3,6 @@ import { Box,
     Button,
     Card,
     CardContent,
-    CircularProgress,
     FormControl,
     Grid,
     IconButton,
@@ -13,6 +12,7 @@ import { Box,
     Modal,
     Pagination,
     Select,
+    Skeleton,
     TextField,
     Typography
 } from '@mui/material';
@@ -405,7 +405,24 @@ const CourseList: React.FC = () => {
                 {/* Cards Instituições */}
                 {loading ? (
                     <Box sx={{ display: 'flex', justifyContent: 'center', mt: 5 }}>
-                        <CircularProgress sx={{ color: '#185D8E' }} />
+                        <Box sx={gridContainer}>
+                            <Grid container spacing={4}>
+                                <Grid item xs={12} sm={12} md={6}>
+                                    <Skeleton variant="rectangular" width={600} height={290} sx={{ borderRadius: '14px' }} />
+                                </Grid>
+                                <Grid item xs={12} sm={12} md={6}>
+                                    <Skeleton variant="rectangular" width={600} height={290} sx={{ borderRadius: '14px' }} />
+                                </Grid>
+                            </Grid>
+                            <Grid container spacing={4} sx={{ marginTop: '1rem' }}>
+                                <Grid item xs={12} sm={12} md={6}>
+                                    <Skeleton variant="rectangular" width={600} height={290} sx={{ borderRadius: '14px' }} />
+                                </Grid>
+                                <Grid item xs={12} sm={12} md={6}>
+                                    <Skeleton variant="rectangular" width={600} height={290} sx={{ borderRadius: '14px' }} />
+                                </Grid>
+                            </Grid>
+                        </Box>
                     </Box>
                 ) : (
                     <Box sx={gridContainer}>
