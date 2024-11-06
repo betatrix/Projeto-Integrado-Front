@@ -1,13 +1,13 @@
 import { CourseForm, CourseFormCad } from '../types/courseTypes';
-import { buscarEntidades, buscarEntidadePorId, excluirEntidade, substituirEntidade, cadastrarEntidade } from './apiService';
+import { buscarEntidadesAtivas, buscarEntidadePorId, excluirEntidade, substituirEntidade, cadastrarEntidade } from './apiService';
 
 export const buscarCursos = async () => {
-    const response = await buscarEntidades('curso/ativos');
+    const response = await buscarEntidadesAtivas('curso/ativos');
     return response;
 };
 
 export const buscarCursosListaCompleta = async () => {
-    const response = await buscarEntidades('curso');
+    const response = await buscarEntidadesAtivas('curso');
     return response;
 };
 
@@ -28,6 +28,6 @@ export const cadastrarCurso = async (courseData: CourseFormCad ) => {
 };
 
 export const buscarAreas = async () => {
-    const response = await buscarEntidades('area');
+    const response = await buscarEntidadesAtivas('area');
     return response;
 };

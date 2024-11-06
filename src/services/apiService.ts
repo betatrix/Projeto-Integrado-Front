@@ -7,8 +7,8 @@ export const cadastrarEntidade = async (entidade: string, data: object) => {
     return response.data;
 };
 
-export const buscarEntidades = async (entidade: string) => {
-    const response = await axios.get(`${API_URL}/${entidade}`);
+export const buscarEntidadesAtivas = async (entidade: string) => {
+    const response = await axios.get(`${API_URL}/${entidade}/ativos`);
     return response.data;
 };
 
