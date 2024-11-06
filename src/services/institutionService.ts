@@ -1,5 +1,5 @@
 import { InstituicaoForm } from '../types/institutionTypes';
-import { buscarEntidadePorId, buscarEntidades, cadastrarEntidade, excluirEntidade, substituirEntidade } from './apiService';
+import { buscarEntidadePorId, buscarEntidadesAtivas, cadastrarEntidade, excluirEntidade, substituirEntidade } from './apiService';
 
 // Cadastrar uma nova instituição
 export const cadastrarInstituicao = async (instituicaoData: InstituicaoForm) => {
@@ -9,13 +9,13 @@ export const cadastrarInstituicao = async (instituicaoData: InstituicaoForm) => 
 
 // Buscar todas as instituições ativas
 export const buscarInstituicoes = async () => {
-    const response = await buscarEntidades('instituicao/ativas');
+    const response = await buscarEntidadesAtivas('instituicao/ativas');
     return response;
 };
 
 // Buscar instituições por nome
 export const buscarInstituicoesPorNome = async (nome: string) => {
-    const response = await buscarEntidades(`instituicao?nome=${nome}`);
+    const response = await buscarEntidadesAtivas(`instituicao?nome=${nome}`);
     return response;
 };
 

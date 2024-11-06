@@ -38,7 +38,7 @@ import {
 import Footer from '../../../components/homeFooter';
 import { Endereco, TipoInstituicaoCurso } from '../../../types/institutionTypes';
 import {
-    buscarEntidades,
+    buscarEntidadesAtivas,
     buscarEntidadePorId,
     buscarCursosPorInstituicao,
     buscarPoliticasPorInstituicao
@@ -188,7 +188,7 @@ const InstitutionList: React.FC = () => {
         const fetchInstitutions = async () => {
             setLoading(true);
             try {
-                const institutionList = await buscarEntidades('instituicao');
+                const institutionList = await buscarEntidadesAtivas('instituicao');
 
                 const institutionsWithDetails = await Promise.all(
                     institutionList.map(async (institution: { id: number; }) => {
@@ -510,18 +510,62 @@ const InstitutionList: React.FC = () => {
                         <Box sx={gridContainer}>
                             <Grid container spacing={4}>
                                 <Grid item xs={12} sm={12} md={6}>
-                                    <Skeleton variant="rectangular" width={600} height={290} sx={{ borderRadius: '14px' }} />
+                                    <Skeleton
+                                        variant="rectangular"
+                                        sx={{
+                                            borderRadius: '14px',
+                                            width: '600px',
+                                            height:'290px',
+                                            '@media (max-width: 1700px)': {
+                                                width: '450px',
+                                                height:'290px',
+                                            }
+                                        }}
+                                    />
                                 </Grid>
                                 <Grid item xs={12} sm={12} md={6}>
-                                    <Skeleton variant="rectangular" width={600} height={290} sx={{ borderRadius: '14px' }} />
+                                    <Skeleton
+                                        variant="rectangular"
+                                        sx={{
+                                            borderRadius: '14px',
+                                            width: '600px',
+                                            height:'290px',
+                                            '@media (max-width: 1700px)': {
+                                                width: '450px',
+                                                height:'290px',
+                                            }
+                                        }}
+                                    />
                                 </Grid>
                             </Grid>
                             <Grid container spacing={4} sx={{ marginTop: '1rem' }}>
                                 <Grid item xs={12} sm={12} md={6}>
-                                    <Skeleton variant="rectangular" width={600} height={290} sx={{ borderRadius: '14px' }} />
+                                    <Skeleton
+                                        variant="rectangular"
+                                        sx={{
+                                            borderRadius: '14px',
+                                            width: '600px',
+                                            height:'290px',
+                                            '@media (max-width: 1700px)': {
+                                                width: '450px',
+                                                height:'290px',
+                                            }
+                                        }}
+                                    />
                                 </Grid>
                                 <Grid item xs={12} sm={12} md={6}>
-                                    <Skeleton variant="rectangular" width={600} height={290} sx={{ borderRadius: '14px' }} />
+                                    <Skeleton
+                                        variant="rectangular"
+                                        sx={{
+                                            borderRadius: '14px',
+                                            width: '600px',
+                                            height:'290px',
+                                            '@media (max-width: 1700px)': {
+                                                width: '450px',
+                                                height:'290px',
+                                            }
+                                        }}
+                                    />
                                 </Grid>
                             </Grid>
                         </Box>

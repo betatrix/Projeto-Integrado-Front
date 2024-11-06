@@ -71,7 +71,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
     })
 );
 
-const iconMap: { [key: string]: { icon: React.ReactNode, link: string } } = {
+const iconMap: { [key: string]: { icon: React.ReactNode, link: string, } } = {
     'dashboard': { icon: <DashboardOutlined sx={{fontSize: '1.8rem'}}/>, link: '/estudante' },
     'test': { icon: <AssignmentOutlined sx={{fontSize: '1.8rem'}} />, link: '/teste-vocacional' },
     'myAccount': { icon: <AccountBoxOutlined sx={{fontSize: '1.8rem'}}/>, link: '/minha-conta' },
