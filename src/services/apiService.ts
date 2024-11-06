@@ -18,7 +18,7 @@ export const buscarEntidadePorId = async (entidade: string, id: number) => {
 };
 
 export const atualizarEntidade = async (entidade: string, id: number, data: object) => {
-    const response = await axios.patch(`${API_URL}/${entidade}/${id}`, data);
+    const response = await axios.put(`${API_URL}/${entidade}/${id}`, data);
     return response.data;
 };
 

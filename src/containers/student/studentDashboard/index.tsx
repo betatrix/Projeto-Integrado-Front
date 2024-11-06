@@ -88,13 +88,15 @@ const StudentDashboard: React.FC = () => {
             try {
                 if (user?.id) {
                     const tests = await buscarTestesDeEstudante(user.id);
-                    console.log(tests);
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    const formattedTests = tests.map((test: any) => ({
-                        date: new Date(test.data).toLocaleDateString('pt-BR'),
-                        result: test.perfis,
-                    }));
-                    console.log(formattedTests);
+                    const formattedTests = tests.map((test:any) => {
+                        const date = new Date(test.data);
+                        const utcDate = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
+                        return {
+                            date: utcDate.toLocaleDateString('pt-BR'),
+                            result: test.perfis,
+                        };
+                    }).reverse();
                     setTestHistory(formattedTests);
                 }
             } catch (error) {

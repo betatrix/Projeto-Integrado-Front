@@ -37,9 +37,6 @@ import { Link } from 'react-router-dom';
 import AdminHeader from '../../../components/adminHeader';
 import { Endereco } from '../../../types/institutionTypes';
 import SearchIcon from '@mui/icons-material/Search';
-// import { AuthContext } from '../../../contexts/auth';
-
-// Importando as funções do institutionService
 import {
     buscarInstituicaoPorId,
     buscarInstituicoesPorNome,
@@ -50,9 +47,6 @@ import {
 
 import { Formik, Form, Field } from 'formik';
 import * as yup from 'yup';
-
-// Importando as funções e tipos necessários
-
 import { CourseForm } from '../../../types/courseTypes';
 import { PolicesInstitutionForm } from '../../../types/policiesTypes';
 import { buscarCursos } from '../../../services/courseService';
@@ -79,7 +73,7 @@ interface FormValues {
     formaIngresso: string;
     tipo: string;
     sigla: string;
-    notaMec: number | null; //verificar o null da nota mec
+    notaMec: number | null;
     site: string;
     endereco: Endereco;
 }
@@ -125,7 +119,7 @@ export interface InstitutionPolicyForm {
     };
     politica: {
         id: number;
-        tipo: 'POLITICA_ENTRADA' | string; // Pode ser uma string específica ou qualquer outra string
+        tipo: 'POLITICA_ENTRADA' | string;
         descricao: string;
         ativo: boolean;
     };
@@ -157,6 +151,8 @@ const institutionValidationSchema = yup.object().shape({
     }),
 });
 
+const loadedInstitutions = await buscarInstituicoesPorNome('') as FormValues[];
+
 const InstitutionManagement: React.FC = () => {
     // Estados principais
     const [institutions, setInstitutions] = useState<FormValues[]>([]);
@@ -173,7 +169,7 @@ const InstitutionManagement: React.FC = () => {
     const [deleteMultipleModalOpen, setDeleteMultipleModalOpen] = useState(false);
     const [institutionsToDeleteMultiple, setInstitutionsToDeleteMultiple] = useState<FormValues[]>([]);
 
-    const [searchValue, setSearchValue] = useState<string>('');
+    // const [searchValue, setSearchValue] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(true);
 
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
@@ -278,20 +274,23 @@ const InstitutionManagement: React.FC = () => {
         setValidationErrors({});
     };
 
+    const searchInstitution = (searchText:string) => {
+        setLoading(true);
+        console.log(searchText);
+        try {
+            const filteredInstitutions = loadedInstitutions.filter((i) => i.nome.toLowerCase().includes(searchText.toLowerCase()));
+            setInstitutions(filteredInstitutions.slice(0, 25));
+        } catch (error) {
+            console.error('Erro ao buscar instituições:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     // Busca de instituições
     useEffect(() => {
-        const searchInstitution = async () => {
-            setLoading(true);
-            try {
-                const data = await buscarInstituicoesPorNome(searchValue);
-                setInstitutions(data);
-            } catch (error) {
-                console.error('Erro ao buscar instituições:', error);
-            }
-            setLoading(false);
-        };
-        searchInstitution();
-    }, [searchValue]);
+        searchInstitution('');
+    }, []);
 
     // Busca de cursos e políticas quando o modal é aberto
     useEffect(() => {
@@ -402,7 +401,6 @@ const InstitutionManagement: React.FC = () => {
                 )
             );
 
-            alert('Cursos e políticas adicionados com sucesso!');
             // Fechar modal
             handlePolicyCourseModalClose();
 
@@ -418,9 +416,7 @@ const InstitutionManagement: React.FC = () => {
             setLoadingDeleteData(true);
             try {
                 const courses = await buscarCursosPorInstituicao(selectedEditInstitution.id);
-                console.log('Cursos relacionados:', courses);
                 const policies = await buscarPoliticasPorInstituicao(selectedEditInstitution.id);
-                console.log('Cursos relacionados:', policies);
                 setInstitutionCourses(courses);
                 setInstitutionPolicies(policies);
             } catch (error) {
@@ -465,16 +461,12 @@ const InstitutionManagement: React.FC = () => {
         if (!selectedEditInstitution) return;
 
         try {
-            // Adicione os logs aqui para verificar os IDs antes de iniciar o processo de exclusão
-            console.log('Cursos selecionados para exclusão:', selectedCoursesToDelete);
-            console.log('Políticas selecionadas para exclusão:', selectedPoliciesToDelete);
 
             // Excluir cursos selecionados
             await Promise.all(
                 selectedCoursesToDelete.map(async (cursoInstituicaoId) => {
                     try {
                         await excluirCursoInstituicao(cursoInstituicaoId);
-                        console.log(`Curso ID ${cursoInstituicaoId} excluído com sucesso`);
                     } catch (error) {
                         console.error(`Erro ao excluir curso ID ${cursoInstituicaoId}:`, error);
                         throw error; // Repassa o erro para tratamento
@@ -487,7 +479,6 @@ const InstitutionManagement: React.FC = () => {
                 selectedPoliciesToDelete.map(async (politicaInstituicaoId) => {
                     try {
                         await excluirPoliticasInstituicao(politicaInstituicaoId);
-                        console.log(`Política ID ${politicaInstituicaoId} excluída com sucesso`);
                     } catch (error) {
                         console.error(`Erro ao excluir política ID ${politicaInstituicaoId}:`, error);
                         throw error; // Repassa o erro para tratamento
@@ -495,7 +486,6 @@ const InstitutionManagement: React.FC = () => {
                 })
             );
 
-            alert('Cursos e políticas excluídos com sucesso!');
             handleDeletePolicyCourseModalClose();
         } catch (error) {
             console.error('Erro ao excluir cursos e políticas:', error);
@@ -514,7 +504,7 @@ const InstitutionManagement: React.FC = () => {
                         label="Pesquisar Instituição"
                         variant="outlined"
                         sx={{ width: '55%', fontFamily: 'Roboto, monospace', }}
-                        onChange={(e) => setSearchValue(e.target.value)}
+                        onChange={(e) => searchInstitution(e.target.value)}
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end">
@@ -587,50 +577,47 @@ const InstitutionManagement: React.FC = () => {
 
                                 {institutions.map((institution) => (
 
-                                    searchValue.trim() === '' || institution.nome.toLowerCase().includes(searchValue.toLowerCase()) ? (
+                                    <TableRow>
 
-                                        <TableRow key={institution.id} onClick={() => handleDetailModalOpen(institution)}>
+                                        <TableCell align="center" sx={{ borderRight: '1px solid #ddd' }}>
+                                            <Checkbox
+                                                onClick={(e) => e.stopPropagation()}
+                                                checked={selectedInstitutions.includes(institution.id)}
+                                                onChange={() => handleCheckboxChange(institution.id)}
+                                                sx={{ '& .MuiSvgIcon-root': { fontSize: 18 } }}
+                                            />
+                                            <IconButton>
+                                                <EditIcon onClick={(e) => { e.stopPropagation(); handleEditModalOpen(institution); }} sx={{ fontSize: 18 }} />
+                                            </IconButton>
 
-                                            <TableCell align="center" sx={{ borderRight: '1px solid #ddd' }}>
-                                                <Checkbox
-                                                    onClick={(e) => e.stopPropagation()}
-                                                    checked={selectedInstitutions.includes(institution.id)}
-                                                    onChange={() => handleCheckboxChange(institution.id)}
-                                                    sx={{ '& .MuiSvgIcon-root': { fontSize: 18 } }}
-                                                />
-                                                <IconButton>
-                                                    <EditIcon onClick={(e) => { e.stopPropagation(); handleEditModalOpen(institution); }} sx={{ fontSize: 18 }} />
+                                            <IconButton onClick={(e) => { e.stopPropagation(); handleDeleteModalOpen(institution); }} >
+                                                <DeleteIcon sx={{ fontSize: 18 }} />
+                                            </IconButton>
+
+                                        </TableCell>
+
+                                        <TableCell sx={{ borderRight: '1px solid #ddd', textAlign: 'center' }}>{institution.id}</TableCell>
+                                        <TableCell sx={{ borderRight: '1px solid #ddd' }}>
+                                            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                <Typography sx={{
+                                                    fontSize: '15px', color: '#757575',
+                                                }}>{institution.nome}</Typography>
+                                                <IconButton
+                                                    size="small"
+                                                    onClick={(e) => { e.stopPropagation(); handleDetailModalOpen(institution); }}
+                                                    sx={{
+                                                        color: '#185D8E',
+                                                    }}
+                                                >
+                                                    <VisibilityOutlinedIcon sx={{
+                                                        fontSize: '18px'
+                                                    }} />
                                                 </IconButton>
+                                            </Box>
+                                        </TableCell>
+                                        <TableCell sx={{ textAlign: 'center' }}>{institution.ativo ? 'Ativo' : 'Inativo'}</TableCell>
 
-                                                <IconButton onClick={(e) => { e.stopPropagation(); handleDeleteModalOpen(institution); }} >
-                                                    <DeleteIcon sx={{ fontSize: 18 }} />
-                                                </IconButton>
-
-                                            </TableCell>
-
-                                            <TableCell sx={{ borderRight: '1px solid #ddd', textAlign: 'center' }}>{institution.id}</TableCell>
-                                            <TableCell sx={{ borderRight: '1px solid #ddd' }}>
-                                                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                                    <Typography sx={{
-                                                        fontSize: '15px', color: '#757575',
-                                                    }}>{institution.nome}</Typography>
-                                                    <IconButton
-                                                        size="small"
-                                                        onClick={(e) => { e.stopPropagation(); handleDetailModalOpen(institution); }}
-                                                        sx={{
-                                                            color: '#185D8E',
-                                                        }}
-                                                    >
-                                                        <VisibilityOutlinedIcon sx={{
-                                                            fontSize: '18px'
-                                                        }} />
-                                                    </IconButton>
-                                                </Box>
-                                            </TableCell>
-                                            <TableCell sx={{ textAlign: 'center' }}>{institution.ativo ? 'Ativo' : 'Inativo'}</TableCell>
-
-                                        </TableRow>
-                                    ) : null
+                                    </TableRow>
                                 ))}
 
                             </TableBody>
@@ -771,7 +758,6 @@ const InstitutionManagement: React.FC = () => {
                             }}
                         >
                             {({ isSubmitting, setFieldValue, values, errors, touched }) => {
-                                // console.log('Erros de validação:', errors);
                                 return (
                                     <Form>
 
@@ -787,12 +773,6 @@ const InstitutionManagement: React.FC = () => {
                                                 Edite os campos  da Instituição selecionada:
                                             </Typography>
                                         </Grid>
-
-                                        {/* <Grid item xs={12} >
-                                            <Typography variant="h6" gutterBottom sx={{ marginBottom: '15px', fontSize: '20px', fontFamily: 'Roboto, monospace', }}>
-                                                Políticas e Cursos
-                                            </Typography>
-                                        </Grid> */}
 
                                         <Grid item xs={12}>
                                             <Typography variant="h6" gutterBottom sx={{
@@ -814,12 +794,6 @@ const InstitutionManagement: React.FC = () => {
                                                 <Box sx={{ display: 'flex', alignItems: 'center', }}>
                                                     <IconButton
                                                         onClick={handlePolicyCourseModalOpen}
-                                                    // sx={{
-                                                    //     color: '#185D8E',
-                                                    //     '&:hover': {
-                                                    //         color: '#104A6F',
-                                                    //     },
-                                                    // }}
                                                     >
                                                         <AddCircleOutlineIcon />
                                                     </IconButton>
@@ -830,7 +804,6 @@ const InstitutionManagement: React.FC = () => {
                                                             fontSize: '17px',
                                                             fontWeight: 'bold',
                                                             color: '#757575',
-                                                            // fontFamily: 'Roboto, monospace',
                                                             cursor: 'pointer', // Define o cursor como ponteiro para indicar que é clicável
                                                             textDecoration: 'none',
                                                             '&:hover': {
@@ -846,12 +819,6 @@ const InstitutionManagement: React.FC = () => {
                                                 <Box sx={{ display: 'flex', alignItems: 'center', }}>
                                                     <IconButton
                                                         onClick={handleDeletePolicyCourseModalOpen}
-                                                    // sx={{
-                                                    //     color: '#185D8E',
-                                                    //     '&:hover': {
-                                                    //         color: '#104A6F',
-                                                    //     },
-                                                    // }}
                                                     >
                                                         <DeleteOutlineIcon />
                                                     </IconButton>
@@ -992,11 +959,6 @@ const InstitutionManagement: React.FC = () => {
                                             </Grid>
 
                                             {/* Campos de endereço */}
-                                            {/* <Grid item xs={12}>
-                                                <Typography variant="h6" gutterBottom sx={{ marginBottom: '5px', fontSize: '20px', fontFamily: 'Roboto, monospace', }}>
-                                                    Endereço
-                                                </Typography>
-                                            </Grid> */}
                                             <Grid item xs={6}>
                                                 <Field
                                                     as={TextField}
@@ -1181,10 +1143,18 @@ const InstitutionManagement: React.FC = () => {
                                 Cursos
                             </Typography>
                             {courses.length === 0 ? (
-                                <Typography variant="body2" color="textSecondary">
-                                    Não há cursos disponíveis.
-                                </Typography>
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        height: 150, // Altura para centralizar
+                                    }}
+                                >
+                                    <CircularProgress />
+                                </Box>
                             ) : (
+
                                 <List
                                     sx={{
                                         maxHeight: 200,
@@ -1238,9 +1208,16 @@ const InstitutionManagement: React.FC = () => {
                                 Políticas
                             </Typography>
                             {policies.length === 0 ? (
-                                <Typography variant="body2" color="textSecondary">
-                                    Não há políticas disponíveis.
-                                </Typography>
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        height: 150, // Altura para centralizar
+                                    }}
+                                >
+                                    <CircularProgress />
+                                </Box>
                             ) : (
                                 <List
                                     sx={{
