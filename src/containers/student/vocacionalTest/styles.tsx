@@ -1,16 +1,29 @@
 import styled, { createGlobalStyle } from 'styled-components';
 import { LinearProgress, Button, Typography, SxProps, Theme} from '@mui/material';
-import vocacionalTestImg from '../../../assets/img/vocacionaTest.png';
+import vocacionalTestImg from '../../../assets/img/background.png';
 import { Link } from 'react-router-dom';
 
 export const Global = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css2?family=Exo:wght@400;600&display=swap');
 
+  body, html, #root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+
   body {
     color: #030140;
     font-weight: 400;
     font-style: normal;
-}
+    font-family: 'Exo', sans-serif;
+    background-image: url(${vocacionalTestImg});
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  }
 `;
 
 export const IntroText = styled(Typography)`
@@ -40,15 +53,17 @@ export const CenteredDiv = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 70vh;
+    height: 550px;
     width: 90%; 
-    max-width: 800px;
+    max-width: 1200px;
     background-color: white;
-    border-radius: 10px; 
+    border-radius: 20px; 
     padding: 20px; 
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    /* box-shadow: 5px 5px 1px #185D8E; */
     margin: auto;
-    max-height: 450px;
+    max-height: 600px;
+    margin-top: 9%;
+    border: solid #185D8E; 
 `;
 
 export const ButtonGroup = styled.div`
@@ -142,7 +157,7 @@ const globalBoxStyles: SxProps<Theme> = (theme) => ({
     minHeight: '90vh',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    backgroundColor: '#caddff',
+    backgroundColor: '#0b2e6a',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -164,21 +179,23 @@ export const BackButton = styled(Button)`
     position: absolute;
     top: 80px;
     left: 20px;
-    color: #3533cd;
+    left: 5%;
+    color: #185D8E;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 15px;
+    font-weight: 600;
+    width: 150px;
+    font-size: 18px;
     
     &:hover {
-      background-color: rgba(89,87,230,0.1) !important;
+      color: #0B2A40;
+      background-color: #D9EEFF !important;
     }
   }
 `;
 
 export const CustomLink = styled(Link)`
   text-decoration: none;
-  font-weight: 600;
-  color: #735FE4;
-  transition: 0.3s;
-
-  &:hover {
-    color: #452DCB;
-  }
+  color: #185D8E;
 `;

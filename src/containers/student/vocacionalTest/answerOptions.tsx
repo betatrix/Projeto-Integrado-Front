@@ -1,10 +1,5 @@
 import React from 'react';
 import { IconButton, Tooltip } from '@mui/material';
-import MoodBadIcon from '@mui/icons-material/MoodBad';
-import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
-import SentimentDissatisfiedIcon from '@mui/icons-material/SentimentDissatisfied';
-import SentimentSatisfiedIcon from '@mui/icons-material/SentimentSatisfied';
-import MoodIcon from '@mui/icons-material/Mood';
 
 interface AnswerOptionsProps {
     value: number;
@@ -14,11 +9,11 @@ interface AnswerOptionsProps {
 
 const AnswerOptions: React.FC<AnswerOptionsProps> = ({ value, onChange, disabled }) => {
     const icons = [
-        { value: 1, icon: <MoodBadIcon fontSize="large" />, label: 'Não me identifico com isso de forma alguma' },
-        { value: 2, icon: <SentimentVeryDissatisfiedIcon fontSize="large" />, label: 'Isso não reflete muito quem eu sou' },
-        { value: 3, icon: <SentimentDissatisfiedIcon fontSize="large" />, label: 'Não tenho uma opinião definida sobre isso' },
-        { value: 4, icon: <SentimentSatisfiedIcon fontSize="large" />, label: 'Tenho uma conexão razoável com isso' },
-        { value: 5, icon: <MoodIcon fontSize="large" />, label: 'Isso reflete muito quem eu sou!' },
+        { value: 1, src: 'src/assets/img/SVG-emoji-voquinho-chorando.svg', label: 'Não me identifico com isso de forma alguma' },
+        { value: 2, src: 'src/assets/img/SVG-emoji-voquinho-triste.svg', label: 'Isso não reflete muito quem eu sou' },
+        { value: 3, src: 'src/assets/img/SVG-emoji-voquinho-neutro.svg', label: 'Não tenho uma opinião definida sobre isso' },
+        { value: 4, src: 'src/assets/img/SVG-emoji-voquinho-feliz.svg', label: 'Tenho uma conexão razoável com isso' },
+        { value: 5, src: 'src/assets/img/SVG-emoji-voquinho-apaixonado.svg', label: 'Isso reflete muito quem eu sou!' },
     ];
 
     return (
@@ -30,9 +25,13 @@ const AnswerOptions: React.FC<AnswerOptionsProps> = ({ value, onChange, disabled
                             onClick={() => onChange(iconData.value)}
                             color={value === iconData.value ? 'primary' : 'default'}
                             disabled={disabled}
-                            style={{ margin: '0 10px' }}
+                            style={{
+                                margin: '0 10px',
+                                transition: 'filter 0.2s ease',
+                                filter: value === iconData.value ? 'brightness(0.7)' : 'brightness(1)', // Escurece a imagem selecionada
+                            }}
                         >
-                            {iconData.icon}
+                            <img src={iconData.src} alt={iconData.label} style={{ width: '175px', borderRadius: '8px' }} />
                         </IconButton>
                     </span>
                 </Tooltip>
