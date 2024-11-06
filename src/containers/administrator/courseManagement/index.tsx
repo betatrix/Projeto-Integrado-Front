@@ -8,25 +8,53 @@ import {
     Modal,
     Button,
     Grid,
-    MenuItem,
-    Select,
     FormControl,
-    InputLabel,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableRow,
     InputAdornment,
+    Autocomplete,
+    TableContainer,
+    Table,
+    TableRow,
+    TableCell,
+    TableBody,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AdminHeader from '../../../components/adminHeader';
 import Footer from '../../../components/homeFooter';
 import { buscarCursosListaCompleta, editarCurso, buscarAreas, excluirCurso } from '../../../services/courseService';
-import { CourseForm, Area } from '../../../types/courseTypes';
+import { CourseForm, Area, TipoInstituicaoCurso, NivelEmpregabilidade } from '../../../types/courseTypes';
 import SearchIcon from '@mui/icons-material/Search';
 import { Link } from 'react-router-dom';
+import { Formik, Form, Field } from 'formik';
+// import * as yup from 'yup';
+
+const niveisEmpregabilidade = [
+    { label: 'Alta', value: 'ALTA' },
+    { label: 'Média', value: 'MEDIA' },
+    { label: 'Baixa', value: 'BAIXA' },
+    { label: 'Em Queda', value: 'EM_QUEDA' },
+];
+
+const tiposInstituicao = [
+    { label: 'Superior', value: 'SUPERIOR' },
+    { label: 'Técnico', value: 'TECNICO' },
+    { label: 'Ambos', value: 'AMBOS' },
+];
+
+// const courseValidationSchema = yup.object().shape({
+//     descricao: yup.string().required('Descrição é obrigatória'),
+//     empregabilidade: yup
+//         .mixed<NivelEmpregabilidade>()
+//         .oneOf(Object.values(NivelEmpregabilidade))
+//         .required('Nível de Empregabilidade é obrigatório'),
+//     possiveisCarreiras: yup.array().of(yup.string()).nullable(),
+//     areaId: yup.number().required('Área é obrigatória'),
+//     perfil: yup.string().required('Perfil é obrigatório'),
+//     tipoInstituicaoCurso: yup
+//         .mixed<TipoInstituicaoCurso>()
+//         .oneOf(Object.values(TipoInstituicaoCurso))
+//         .required('Tipo de Instituição é obrigatório'),
+// });
 
 const CourseList: React.FC = () => {
     const [courses, setCourses] = useState<CourseForm[]>([]);
@@ -39,28 +67,32 @@ const CourseList: React.FC = () => {
     const [selectedCourse, setSelectedCourse] = useState<CourseForm | null>(null);
 
     useEffect(() => {
-        const fetchCourses = async () => {
+        const fetchData = async () => {
             setLoading(true);
-            try {
-                const fetchedCourses = await buscarCursosListaCompleta();
-                setCourses(fetchedCourses);
-                setFilteredCourses(fetchedCourses);
-            } catch (error) {
-                console.error('Erro ao buscar cursos:', error);
-            }
-            setLoading(false);
-        };
-        fetchCourses();
-
-        const fetchAreas = async () => {
             try {
                 const fetchedAreas = await buscarAreas();
                 setAreas(fetchedAreas);
+
+                const fetchedCourses = await buscarCursosListaCompleta();
+
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                const mappedCourses = fetchedCourses.map((course: { area: any; }) => {
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    const areaObject = fetchedAreas.find((area: { descricao: any; }) => area.descricao === course.area);
+                    return {
+                        ...course,
+                        area: areaObject || null
+                    };
+                });
+
+                setCourses(mappedCourses);
+                setFilteredCourses(mappedCourses);
             } catch (error) {
-                console.error('Erro ao buscar áreas:', error);
+                console.error('Erro ao buscar cursos ou áreas:', error);
             }
+            setLoading(false);
         };
-        fetchAreas();
+        fetchData();
     }, []);
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -72,10 +104,7 @@ const CourseList: React.FC = () => {
     };
 
     const handleEditModalOpen = (course: CourseForm) => {
-        setSelectedCourse({
-            ...course,
-            areaId: course.area ? course.area.id : 0,
-        });
+        setSelectedCourse(course); // Usa o curso completo com `area` como um objeto completo
         setEditModalOpen(true);
     };
 
@@ -85,40 +114,13 @@ const CourseList: React.FC = () => {
     };
 
     const handleDeleteModalOpen = (course: CourseForm) => {
-        setSelectedCourse({
-            ...course,
-            areaId: course.area ? course.area.id : 0,
-        });
+        setSelectedCourse(course); // Apenas define o curso selecionado diretamente
         setDeleteModalOpen(true);
     };
 
     const handleDeleteModalClose = () => {
         setSelectedCourse(null);
         setDeleteModalOpen(false);
-    };
-
-    const handleUpdateCourse = async () => {
-        if (selectedCourse) {
-            const updatedArea = areas.find(area => area.id === selectedCourse.areaId) || selectedCourse.area;
-
-            const updatedCourse: CourseForm = {
-                ...selectedCourse,
-                area: updatedArea,
-            };
-
-            try {
-                await editarCurso(updatedCourse);
-                setCourses(courses.map((course) =>
-                    course.id === updatedCourse.id ? updatedCourse : course
-                ));
-                setFilteredCourses(filteredCourses.map((course) =>
-                    course.id === updatedCourse.id ? updatedCourse : course
-                ));
-                handleEditModalClose();
-            } catch (error) {
-                console.error('Erro ao atualizar curso:', error);
-            }
-        }
     };
 
     const handleDeleteCourse = async () => {
@@ -128,7 +130,7 @@ const CourseList: React.FC = () => {
                 setCourses(courses.map((c) =>
                     c.id === selectedCourse.id ? { ...c, ativo: false } : c
                 ));
-                setFilteredCourses(courses.map((c) =>
+                setFilteredCourses(filteredCourses.map((c) =>
                     c.id === selectedCourse.id ? { ...c, ativo: false } : c
                 ));
                 handleDeleteModalClose();
@@ -196,7 +198,7 @@ const CourseList: React.FC = () => {
                                     {filteredCourses.map((course) => (
                                         <TableRow key={course.id}>
 
-                                            <TableCell align="center" sx={{borderRight: '1px solid #ddd'}}>
+                                            <TableCell align="center" sx={{ borderRight: '1px solid #ddd' }}>
                                                 <IconButton onClick={() => handleEditModalOpen(course)}>
                                                     <EditIcon sx={{ fontSize: 18 }} />
                                                 </IconButton>
@@ -235,103 +237,185 @@ const CourseList: React.FC = () => {
                         p: 4,
                         width: '80%',
                         maxWidth: 620,
+                        borderRadius: '5px'
                     }}
                 >
                     {selectedCourse && (
-                        <Grid container spacing={3} direction="column" alignItems="center">
-                            <Grid item>
-                                <Typography
-                                    variant="h5"
-                                    gutterBottom
-                                    sx={{ marginTop: 2, textAlign: 'center' }}
-                                >
-                                    Editar Curso
-                                </Typography>
-                            </Grid>
-                            <Grid item>
-                                <TextField
-                                    label="Descrição"
-                                    value={selectedCourse.descricao}
-                                    onChange={(e) =>
-                                        setSelectedCourse({
-                                            ...selectedCourse,
-                                            descricao: e.target.value,
-                                        })
-                                    }
-                                    fullWidth
-                                />
-                            </Grid>
-                            <Grid item>
-                                <TextField
-                                    label="Empregabilidade"
-                                    value={selectedCourse.empregabilidade}
-                                    onChange={(e) =>
-                                        setSelectedCourse({
-                                            ...selectedCourse,
-                                            empregabilidade: e.target.value,
-                                        })
-                                    }
-                                    fullWidth
-                                />
-                            </Grid>
-                            <Grid item>
-                                <TextField
-                                    label="Possíveis Carreiras"
-                                    value={
-                                        selectedCourse.possiveisCarreiras
-                                            ? selectedCourse.possiveisCarreiras.join(', ')
-                                            : ''
-                                    }
-                                    onChange={(e) =>
-                                        setSelectedCourse({
-                                            ...selectedCourse,
-                                            possiveisCarreiras: e.target.value
-                                                .split(',')
-                                                .map((carreira) => carreira.trim()),
-                                        })
-                                    }
-                                    fullWidth
-                                />
-                            </Grid>
-                            <Grid item sx={{ width: '43%' }} alignItems="center">
-                                <FormControl fullWidth>
-                                    <InputLabel id="area-label">Área</InputLabel>
-                                    <Select
-                                        labelId="area-label"
-                                        value={selectedCourse.areaId}
-                                        label="Área"
-                                        onChange={(e) =>
-                                            setSelectedCourse({
-                                                ...selectedCourse,
-                                                areaId: e.target.value as number,
-                                            })
-                                        }
-                                    >
-                                        {areas.map((area) => (
-                                            <MenuItem key={area.id} value={area.id}>
-                                                {area.descricao}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
-                            </Grid>
-                            <Grid item container justifyContent="center" spacing={2}>
-                                <Grid item>
-                                    <Button variant="contained" onClick={handleEditModalClose}>
-                                        Cancelar
-                                    </Button>
-                                </Grid>
-                                <Grid item>
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        onClick={handleUpdateCourse}
-                                    >
-                                        Salvar
-                                    </Button>
-                                </Grid>
-                            </Grid>
-                        </Grid>
+                        <Formik
+                            initialValues={selectedCourse}
+                            enableReinitialize
+                            // validationSchema={courseValidationSchema}
+                            onSubmit={async (values, { setSubmitting }) => {
+                                try {
+                                    const finalValues = {
+                                        ...values,
+                                        areaId: values.area?.id
+                                    };
+                                    await editarCurso(finalValues);
+                                    setCourses(courses.map((course) =>
+                                        course.id === values.id ? values : course
+                                    ));
+                                    setFilteredCourses(filteredCourses.map((course) =>
+                                        course.id === values.id ? values : course
+                                    ));
+                                    handleEditModalClose();
+                                } catch (error) {
+                                    console.error('Erro ao atualizar curso:', error);
+                                }
+                                setSubmitting(false);
+                            }}
+                        >
+                            {({ values, setFieldValue, errors, touched }) => (
+                                <Form>
+                                    <Grid container spacing={2} direction="column" alignItems="center">
+
+                                    </Grid>
+                                    <Grid item xs={12} sx={{ textAlign: 'justify' }}>
+                                        <Typography
+                                            variant="h5" gutterBottom sx={{
+                                                fontSize: '20px',
+                                                marginBottom: '25px', marginTop: '10px', color: '#185D8E',
+                                                fontFamily: 'Roboto, monospace', fontWeight: 'bold', textAlign: 'justify'
+                                            }}
+                                        >
+                                            Edite os campos  do Curso selecionado:
+                                        </Typography>
+                                    </Grid>
+
+                                    <Grid container spacing={2} direction="column" alignItems="center">
+                                        <Grid item sx={{ width: '60%' }} alignItems="center">
+                                            <Field
+                                                as={TextField}
+                                                name="descricao"
+                                                label="Nome"
+                                                fullWidth
+                                                error={touched.descricao && Boolean(errors.descricao)}
+                                                helperText={touched.descricao && errors.descricao}
+                                            />
+                                        </Grid>
+                                        <Grid item sx={{ width: '60%' }} alignItems="center">
+                                            <FormControl fullWidth variant="filled">
+                                                <Autocomplete
+                                                    disablePortal
+                                                    options={niveisEmpregabilidade}
+                                                    getOptionLabel={(option) => option.label}
+                                                    value={niveisEmpregabilidade.find((option) => option.value === values.empregabilidade) || null}
+                                                    onChange={(_, value) =>
+                                                        setFieldValue('empregabilidade', value ? value.value : NivelEmpregabilidade.INDEFINIDO)
+                                                    }
+                                                    renderInput={(params) => (
+                                                        <TextField
+                                                            {...params}
+                                                            label="Empregabilidade"
+                                                            variant="filled"
+                                                            error={touched.empregabilidade && Boolean(errors.empregabilidade)}
+                                                            helperText={touched.empregabilidade && errors.empregabilidade}
+                                                        />
+                                                    )}
+                                                />
+                                            </FormControl>
+                                        </Grid>
+                                        <Grid item sx={{ width: '60%' }} alignItems="center">
+                                            <FormControl fullWidth variant="filled">
+                                                <Autocomplete
+                                                    disablePortal
+                                                    options={areas}
+                                                    getOptionLabel={(option) => option.descricao}
+                                                    value={values.area || null}
+                                                    onChange={(_, value) => setFieldValue('area', value || null)}
+                                                    isOptionEqualToValue={(option, value) => option.id === value?.id} // Compara pelo `id`
+                                                    renderInput={(params) => (
+                                                        <TextField
+                                                            {...params}
+                                                            label="Área"
+                                                            variant="filled"
+                                                            error={touched.area && Boolean(errors.area)}
+                                                            helperText={touched.area && errors.area}
+                                                        />
+                                                    )}
+                                                />
+                                            </FormControl>
+
+                                        </Grid>
+                                        <Grid item sx={{ width: '60%' }} alignItems="center">
+                                            <FormControl fullWidth variant="filled">
+                                                <Autocomplete
+                                                    disablePortal
+                                                    options={tiposInstituicao}
+                                                    getOptionLabel={(option) => option.label}
+                                                    value={tiposInstituicao.find((option) => option.value === values.tipo) || null}
+                                                    onChange={(_, value) =>
+                                                        setFieldValue('tipo', value ? value.value : TipoInstituicaoCurso.INDEFINIDO)
+                                                    }
+                                                    renderInput={(params) => (
+                                                        <TextField
+                                                            {...params}
+                                                            label="Tipo de Instituição"
+                                                            variant="filled"
+                                                            error={touched.tipo && Boolean(errors.tipo)}
+                                                            helperText={touched.tipo && errors.tipo}
+                                                        />
+                                                    )}
+                                                />
+                                            </FormControl>
+                                        </Grid>
+                                        <Grid item sx={{ width: '60%' }} alignItems="center">
+                                            <Field
+                                                as={TextField}
+                                                name="possiveisCarreiras"
+                                                label="Possíveis Carreiras"
+                                                fullWidth
+                                                value={values.possiveisCarreiras ? values.possiveisCarreiras.join(', ') : ''}
+                                                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                                    setFieldValue(
+                                                        'possiveisCarreiras',
+                                                        e.target.value.split(',').map((carreira) => carreira.trim())
+                                                    )
+                                                }
+                                                error={touched.possiveisCarreiras && Boolean(errors.possiveisCarreiras)}
+                                                helperText={touched.possiveisCarreiras && errors.possiveisCarreiras}
+                                            />
+                                        </Grid>
+                                    </Grid>
+                                    <Grid item xs={12}>
+
+                                        <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, marginTop: 3 }}>
+                                            <Button variant="contained" onClick={handleEditModalClose} sx={{
+                                                height: '50px',
+                                                width: '100px',
+                                                fontSize: '17px',
+                                                fontFamily: 'Roboto, monospace',
+                                                fontWeight: 'bold',
+                                                color: 'white',
+                                                backgroundColor: '#185D8E',
+                                                '&:hover': {
+                                                    backgroundColor: '#104A6F',
+                                                },
+                                            }}>
+                                                Cancelar
+                                            </Button>
+
+                                            <Button type="submit" variant="contained" color="primary" sx={{
+                                                height: '50px',
+                                                width: '100px',
+                                                fontSize: '17px',
+                                                fontFamily: 'Roboto, monospace',
+                                                fontWeight: 'bold',
+                                                color: 'white',
+                                                backgroundColor: '#185D8E',
+                                                '&:hover': {
+                                                    backgroundColor: '#104A6F',
+                                                },
+                                            }}>
+                                                Salvar
+                                            </Button>
+
+                                        </Box>
+                                    </Grid>
+                                    {/* </Grid> */}
+                                </Form>
+                            )}
+                        </Formik>
                     )}
                 </Box>
             </Modal>
