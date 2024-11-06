@@ -151,7 +151,12 @@ const institutionValidationSchema = yup.object().shape({
     }),
 });
 
-const loadedInstitutions = await buscarInstituicoesPorNome('') as FormValues[];
+let loadedInstitutions:FormValues[] = [];
+async function loadInstitutions() {
+    loadedInstitutions = await buscarInstituicoesPorNome('');
+}
+
+loadInstitutions();
 
 const InstitutionManagement: React.FC = () => {
     // Estados principais
