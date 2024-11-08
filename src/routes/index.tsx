@@ -23,7 +23,8 @@ import CadastroCurso from '../containers/administrator/courseRegister';
 import ResultScreen from '../containers/student/resultTest/new-index';
 import CourseManagement from '../containers/administrator/courseManagement';
 import CourseList from '../containers/student/studentDashboard/searchCourse';
-import TestManagement from '../containers/administrator/testManagement';
+import TestManagement from '../containers/administrator/questionManagement';
+import QuestionRegister from '../containers/administrator/questionRegister';
 
 export const AppRoutes = () => {
     return (
@@ -54,6 +55,7 @@ export const AppRoutes = () => {
                         <Route element={<PrivateRoute requiredRole="ADMIN" />}>
                             <Route path="/cadastro" element={<CadastroInstituicao />} />
                             <Route path="/cadastro-curso" element={<CadastroCurso />} />
+                            <Route path="/cadastro-pergunta" element={<QuestionRegister />} />
                             <Route path="/cursos" element={<BuscaCurso />} />
                             <Route path='/politicas' element={<BuscaPoliticas />} />
                             <Route path='/gerenciamento-curso' element={<CourseManagement />} />
