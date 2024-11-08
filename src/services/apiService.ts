@@ -17,6 +17,11 @@ export const buscarEntidadePorId = async (entidade: string, id: number) => {
     return response.data;
 };
 
+export const buscarEntidade = async (entidade: string) => {
+    const response = await axios.get(`${API_URL}/${entidade}`);
+    return response.data;
+};
+
 export const atualizarEntidade = async (entidade: string, id: number, data: object) => {
     const response = await axios.put(`${API_URL}/${entidade}/${id}`, data);
     return response.data;
@@ -34,6 +39,11 @@ export const excluirEntidade = async (entidade: string, id: number) => {
         return;
     }
     const response = await axios.delete(`${API_URL}/${entidade}/${id}`);
+    return response.data;
+};
+
+export const buscarPerguntaPorId = async (entidade: string, id: number) => {
+    const response = await axios.get(`${API_URL}/${entidade}/teste/${id}`);
     return response.data;
 };
 
