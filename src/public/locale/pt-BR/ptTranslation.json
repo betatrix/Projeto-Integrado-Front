@@ -121,7 +121,12 @@
       "studentAccountField6": "Nova senha",
       "studentAccountField7": "Confirme sua nova senha",
       "studentAccountButton1": "Selecionar foto",
-      "studentAccountButton2": "Enviar",
+      "studentAccountButton2": "Deletar conta",
+      "studentAccountButton3": "Enviar",
+      "studentAccountButton4": "Deletar",
+      "studentAccountButton5": "Cancelar",
+      "studentAccountTextDelete1": "Confirmação de Exclusão",
+      "studentAccountTextDelete2": "Tem certeza de que deseja deletar sua conta? Esta ação não pode ser desfeita!",
 
       "testIntroTitle": "Antes de começar ...",
       "testIntro1": "Nosso teste vocacional é inspirado na teoria do psicólogo John L. Holland, conhecida como RIASEC - Realista, Investigativo, Artístico, Social, Empreendedor e Convencional.",
