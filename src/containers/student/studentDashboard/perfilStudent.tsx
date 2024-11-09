@@ -2,6 +2,11 @@ import { Alert, Autocomplete,
     Box,
     Button,
     CircularProgress,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
     FilledInput,
     FormControl,
     IconButton,
@@ -16,16 +21,28 @@ import StudentHeader from '../../../components/studentHeader';
 import CustomDrawer from '../../../components/sidemenu/CustomDrawer';
 import { useTranslation } from 'react-i18next';
 import React, { useContext, useRef, useState } from 'react';
-import { atualizaEstudante, fotoEstudante } from '../../../services/studentService';
+import { atualizaEstudante, deletaEstudante, fotoEstudante } from '../../../services/studentService';
 import { AuthContext } from '../../../contexts/auth';
 import { decryptData } from '../../../services/encryptionService';
 import AvatarUserStudent from '../../../components/avatarUser/indexStudent';
 import { CameraAltOutlined, Visibility, VisibilityOff } from '@mui/icons-material';
 import { ErrorMessage, Form, Formik } from 'formik';
-import { container, customAutocomplete, customField, customInputLabel, formContainer, header, passwordContainer, registerButton, registerContainer } from './styles';
+import {
+    container,
+    customAutocomplete,
+    customField,
+    customInputLabel,
+    deleteButton,
+    formContainer,
+    header,
+    passwordContainer,
+    registerButton,
+    registerContainer
+} from './styles';
 import { StudentUpdateForm } from '../../../types/studentTypes';
 import * as yup from 'yup';
 import 'yup-phone-lite';
+import { useNavigate } from 'react-router-dom';
 
 const nivelEducacao = [
     { label: 'Ensino Fundamental', value: 'ENSINO_FUNDAMENTAL' },
@@ -66,6 +83,7 @@ const PerfilStudent: React.FC = () => {
 
     const authContext = useContext(AuthContext);
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const navigate = useNavigate();
 
     const [selectedImage, setSelectedImage] = useState<string | undefined>(undefined);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -178,6 +196,32 @@ const PerfilStudent: React.FC = () => {
         } finally {
             setLoading(false);
             setSubmitting(false);
+        }
+    };
+
+    // ---------------------------- Deletar conta ----------------------------
+
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [openDeleteModal, setOpenDeleteModal] = useState(false);
+
+    // Função para abrir o modal de confirmação
+    const handleDelete = () => {
+        setOpenDeleteModal(true);
+    };
+
+    // Função para fechar o modal
+    const handleCloseDeleteModal = () => {
+        setOpenDeleteModal(false);
+    };
+
+    // Função para confirmar a exclusão da conta
+    const confirmDelete = async () => {
+        try {
+            await deletaEstudante(student.id);
+            setOpenDeleteModal(false);
+            navigate('/login');
+        } catch (error) {
+            console.log(error);
         }
     };
 
@@ -379,12 +423,13 @@ const PerfilStudent: React.FC = () => {
                                         component="div"
                                         sx={{
                                             display: 'flex',
-                                            justifyContent: 'flex-end',
+                                            justifyContent: 'space-between',
                                             width: '100%',
                                         }}
                                     >
+                                        <Button sx={deleteButton} onClick={handleDelete}>{t('studentAccountButton2')}</Button>
                                         <Button sx={registerButton} type="submit" disabled={isSubmitting}>
-                                            {loading ? <CircularProgress size={24} color="inherit" /> : t('studentAccountButton2')}
+                                            {loading ? <CircularProgress size={24} color="inherit" /> : t('studentAccountButton3')}
                                         </Button>
                                     </Box>
 
@@ -392,6 +437,67 @@ const PerfilStudent: React.FC = () => {
                             )}
                         </Formik>
                     </Box>
+
+                    {/* Modal de confirmação */}
+                    <Dialog
+                        open={openDeleteModal}
+                        onClose={handleCloseDeleteModal}
+                        aria-labelledby="confirm-delete-title"
+                        aria-describedby="confirm-delete-description"
+                    >
+                        <DialogTitle
+                            sx={{
+                                fontFamily: 'Poppins, sans-serif',
+                            }}
+                            id="confirm-delete-title"
+                        >
+                            {t('studentAccountTextDelete1')}
+                        </DialogTitle>
+                        <DialogContent>
+                            <DialogContentText
+                                sx={{
+                                    fontFamily: 'Poppins, sans-serif',
+                                }}
+                                id="confirm-delete-description"
+                            >
+                                {t('studentAccountTextDelete2')}
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button
+                                sx={{
+                                    color:'#A80E11',
+                                    fontFamily: 'Poppins, sans-serif',
+                                    '&:hover': {
+                                        backgroundColor: '#F4BABB',
+                                        borderWidth: '2px',
+                                        transform: 'scale(1.02)',
+                                    },
+                                }}
+                                onClick={confirmDelete}
+                                color="secondary"
+                                autoFocus
+                            >
+                                {t('studentAccountButton4')}
+                            </Button>
+                            <Button
+                                sx={{
+                                    color: '#185D8E',
+                                    fontFamily: 'Poppins, sans-serif',
+                                    '&:hover': {
+                                        backgroundColor: '#C0E3FF',
+                                        borderColor: '#185D8E',
+                                        borderWidth: '2px',
+                                        transform: 'scale(1.02)',
+                                    },
+                                }}
+                                onClick={handleCloseDeleteModal}
+                                color="primary"
+                            >
+                                {t('studentAccountButton5')}
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
                     <Snackbar
                         anchorOrigin={{
                             vertical: 'bottom',

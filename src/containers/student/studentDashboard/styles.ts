@@ -957,6 +957,47 @@ export const MessageError: SxProps<Theme> = () => ({
     marginTop: '0.25rem',
 });
 
+export const deleteButton: SxProps<Theme> = (theme) => ({
+    mr: 0,
+    margin: '1rem 0',
+    fontFamily: 'Poppins, sans-serif',
+    fontSize: '1.1rem',
+    padding: '0.5rem',
+    backgroundColor: '#F4BABB',
+    color: '#A80E11',
+    fontWeight: 600,
+    border: 'solid 2px #E82F32',
+    borderRadius: '7px',
+    boxShadow: '4px 4px 0px 1px rgba(0, 111, 255, 0.2)',
+    textAlign: 'center',
+    width: '100%',
+    maxWidth: '180px',
+    whiteSpace: 'nowrap',
+    transition: 'transform 0.3s ease-in-out',
+    '&:hover': {
+        backgroundColor: '#F1A8A9',
+        borderWidth: '2px',
+        transform: 'scale(1.02)',
+    },
+    [theme.breakpoints.down('lg')]: {
+        padding: '0.5rem',
+        fontSize: '1rem',
+        minWidth: '200px',
+    },
+    [theme.breakpoints.down('md')]: {
+        margin: '0.5rem',
+        padding: '0.5rem',
+        fontSize: '1rem',
+        minWidth: '200px',
+    },
+    [theme.breakpoints.down('sm')]: {
+        margin: '0.2rem',
+        padding: '0.8rem',
+        fontSize: '1rem',
+        minWidth: '150px',
+    },
+});
+
 export const registerButton: SxProps<Theme> = (theme) => ({
     mr: 0,
     margin: '1rem 0',
@@ -992,9 +1033,9 @@ export const registerButton: SxProps<Theme> = (theme) => ({
         minWidth: '200px',
     },
     [theme.breakpoints.down('sm')]: {
-        margin: '0.5rem',
+        margin: '0.2rem',
         padding: '0.8rem',
         fontSize: '1rem',
-        minWidth: '200px',
+        minWidth: '150px',
     },
 });

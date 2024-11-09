@@ -6,11 +6,17 @@ import {
     redefinirSenha,
     loginConta,
     adicionarImagem,
-    atualizarEstudante
+    atualizarEstudante,
+    deletarEstudante
 } from './apiService';
 
 export const cadastroEstudante = async (estudanteData: StudentRegisterForm) => {
     const response = await cadastrarEstudante('estudante', estudanteData);
+    return response;
+};
+
+export const deletaEstudante = async (estudanteId:number,) => {
+    const response = await deletarEstudante('estudante', estudanteId);
     return response;
 };
 
