@@ -96,6 +96,9 @@ function AdminHeader() {
                         <Link to="/admin" style={{ textDecoration: 'none' }}>
                             <Button sx={ButtonMenu}>TESTES</Button>
                         </Link>
+                        <Link to="/gerenciamento-usuario" style={{ textDecoration: 'none' }}>
+                            <Button sx={ButtonMenu}>USUÁRIOS</Button>
+                        </Link>
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
                         <LanguageMenu />

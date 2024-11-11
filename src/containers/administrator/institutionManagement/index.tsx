@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
     Box,
     Checkbox,
@@ -57,6 +57,7 @@ import { cadastrarPoliticasInstituicao } from '../../../services/policiesInstitu
 import { buscarCursosPorInstituicao, buscarPoliticasPorInstituicao } from '../../../services/apiService';
 import { excluirCursoInstituicao } from '../../../services/courseInstitutionService';
 import { excluirPoliticasInstituicao } from '../../../services/policiesInstitutionService';
+import Pagination from '@mui/material/Pagination';
 
 const notaMecSchema = yup
     .number()
@@ -149,18 +150,19 @@ const institutionValidationSchema = yup.object().shape({
         cidade: yup.string().required('Cidade é obrigatória'),
         estado: yup.string().required('Estado é obrigatório'),
     }),
+    ativo: yup.boolean().required('Status é obrigatório'),
 });
 
-let loadedInstitutions:FormValues[] = [];
-async function loadInstitutions() {
-    loadedInstitutions = await buscarInstituicoesPorNome('');
-}
-
-loadInstitutions();
+// let loadedInstitutions: FormValues[] = [];
+// async function loadInstitutions() {
+//     loadedInstitutions = await buscarInstituicoesPorNome('');
+// }
+// loadInstitutions();
 
 const InstitutionManagement: React.FC = () => {
     // Estados principais
     const [institutions, setInstitutions] = useState<FormValues[]>([]);
+    const [loadedInstitutions, setLoadedInstitutions] = useState<FormValues[]>([]);
     const [detailModalOpen, setDetailModalOpen] = useState(false);
     const [selectedDetailInstitutionWithAddress, setSelectedDetailInstitutionWithAddress] = useState<FormValues | null>(null);
 
@@ -173,6 +175,8 @@ const InstitutionManagement: React.FC = () => {
     const [selectedInstitutions, setSelectedInstitutions] = useState<number[]>([]);
     const [deleteMultipleModalOpen, setDeleteMultipleModalOpen] = useState(false);
     const [institutionsToDeleteMultiple, setInstitutionsToDeleteMultiple] = useState<FormValues[]>([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10; // Você pode ajustar este valor conforme necessário
 
     // const [searchValue, setSearchValue] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(true);
@@ -279,23 +283,26 @@ const InstitutionManagement: React.FC = () => {
         setValidationErrors({});
     };
 
-    const searchInstitution = (searchText:string) => {
-        setLoading(true);
-        console.log(searchText);
+    const searchInstitution = useCallback((searchText: string) => {
         try {
-            const filteredInstitutions = loadedInstitutions.filter((i) => i.nome.toLowerCase().includes(searchText.toLowerCase()));
-            setInstitutions(filteredInstitutions.slice(0, 25));
+            const filteredInstitutions = loadedInstitutions.filter((i) =>
+                i.nome.toLowerCase().includes(searchText.toLowerCase())
+            );
+            setInstitutions(filteredInstitutions);
+            setCurrentPage(1); // Reinicia para a primeira página após a busca
         } catch (error) {
             console.error('Erro ao buscar instituições:', error);
-        } finally {
-            setLoading(false);
         }
-    };
+    }, [loadedInstitutions]);
+
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentInstitutions = institutions.slice(indexOfFirstItem, indexOfLastItem);
 
     // Busca de instituições
     useEffect(() => {
         searchInstitution('');
-    }, []);
+    }, [searchInstitution]);
 
     // Busca de cursos e políticas quando o modal é aberto
     useEffect(() => {
@@ -331,6 +338,27 @@ const InstitutionManagement: React.FC = () => {
             fetchData();
         }
     }, [policyCourseModalOpen, selectedEditInstitution]);
+
+    const handlePageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
+        setCurrentPage(value);
+    };
+
+    useEffect(() => {
+        async function fetchInstitutions() {
+            setLoading(true);
+            try {
+                const data = await buscarInstituicoesPorNome('');
+                setLoadedInstitutions(data);
+                setInstitutions(data);
+                setCurrentPage(1); // Reinicia para a primeira página
+            } catch (error) {
+                console.error('Erro ao buscar instituições:', error);
+            } finally {
+                setLoading(false);
+            }
+        }
+        fetchInstitutions();
+    }, []);
 
     // Funções de seleção de cursos e políticas
     const handleCourseSelection = (courseId: number) => {
@@ -580,9 +608,9 @@ const InstitutionManagement: React.FC = () => {
 
                             <TableBody>
 
-                                {institutions.map((institution) => (
+                                {currentInstitutions.map((institution) => (
 
-                                    <TableRow>
+                                    <TableRow key={institution.id}>
 
                                         <TableCell align="center" sx={{ borderRight: '1px solid #ddd' }}>
                                             <Checkbox
@@ -629,6 +657,15 @@ const InstitutionManagement: React.FC = () => {
 
                         </Table>
                     )}
+
+                    <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+                        <Pagination
+                            count={Math.ceil(institutions.length / itemsPerPage)}
+                            page={currentPage}
+                            onChange={handlePageChange}
+                            color="primary"
+                        />
+                    </Box>
 
                 </Box>
 
@@ -740,19 +777,25 @@ const InstitutionManagement: React.FC = () => {
                 }}>
                     {selectedEditInstitution && (
                         <Formik
-                            initialValues={selectedEditInstitution}
+                            initialValues={{
+                                ...selectedEditInstitution,
+                                ativo: selectedEditInstitution.ativo ? 1 : 0,
+                            }}
                             enableReinitialize
                             validationSchema={institutionValidationSchema}
                             onSubmit={async (values, { setSubmitting }) => {
                                 try {
-                                    console.log('Dados enviados:', values);
                                     await editarInstituicao(values);
                                     console.log(`Instituição ${values.nome} atualizada com sucesso!`);
                                     setShowSuccessMessage(true);
+                                    // Converta 'ativo' para boolean antes de atualizar o estado
+                                    const updatedInstitution = { ...values, ativo: values.ativo === 1 };
+
                                     setInstitutions(prevInstitutions =>
-                                        prevInstitutions.map(inst =>
-                                            inst.id === values.id ? values : inst
-                                        )
+                                        prevInstitutions.map(inst => (inst.id === values.id ? updatedInstitution : inst))
+                                    );
+                                    setLoadedInstitutions(prevLoadedInstitutions =>
+                                        prevLoadedInstitutions.map(inst => (inst.id === values.id ? updatedInstitution : inst))
                                     );
                                     handleEditModalClose();
                                 } catch (error) {
@@ -856,7 +899,6 @@ const InstitutionManagement: React.FC = () => {
                                                 Dados Gerais
                                             </Typography>
                                         </Grid>
-
                                         <Grid container spacing={2}>
                                             <Grid item xs={6}>
                                                 <Field
@@ -926,22 +968,39 @@ const InstitutionManagement: React.FC = () => {
                                                     }}
                                                 />
                                             </Grid>
+                                            {/* <Grid item xs={6}>
+                                                <FormControl fullWidth>
+                                                    <InputLabel>Status</InputLabel>
+                                                    <Select
+                                                        name="ativo"
+                                                        value={values.ativo}
+                                                        onChange={(e) => setFieldValue('ativo', Number(e.target.value))}
+                                                        label="Status"
+                                                    >
+                                                        <MenuItem value={1}>Ativo</MenuItem>
+                                                        <MenuItem value={0}>Inativo</MenuItem>
+                                                    </Select>
+                                                </FormControl>
+                                            </Grid> */}
 
                                             <Grid item xs={6}>
-                                                <Field
-                                                    as={TextField}
-                                                    name="formaIngresso"
-                                                    label="Forma de Ingresso"
-                                                    fullWidth
-                                                    error={touched.nome && Boolean(errors.nome)}
-                                                    helperText={touched.nome && errors.nome}
-                                                    InputProps={{
-                                                        sx: {
-                                                            fontFamily: 'Poppins, sans-serif', // Altere para a fonte que desejar
-                                                            fontSize: '16px',
-                                                        },
-                                                    }}
-                                                />
+                                                <FormControl fullWidth variant="filled">
+                                                    <Autocomplete
+                                                        options={[
+                                                            { label: 'Ativo', value: 1 },
+                                                            { label: 'Inativo', value: 0 },
+                                                        ]}
+                                                        getOptionLabel={(option) => option.label}
+                                                        value={
+                                                            values.ativo !== undefined
+                                                                ? { label: values.ativo === 1 ? 'Ativo' : 'Inativo', value: values.ativo }
+                                                                : null
+                                                        }
+                                                        onChange={(_event, newValue) => setFieldValue('ativo', newValue ? newValue.value : '')}
+                                                        renderInput={(params) => <TextField {...params} label="Status" fullWidth variant="filled" />}
+                                                        isOptionEqualToValue={(option, value) => option.value === value?.value}
+                                                    />
+                                                </FormControl>
                                             </Grid>
 
                                             <Grid item xs={6}>
@@ -961,6 +1020,23 @@ const InstitutionManagement: React.FC = () => {
                                                         )}
                                                     />
                                                 </FormControl>
+                                            </Grid>
+
+                                            <Grid item xs={12}>
+                                                <Field
+                                                    as={TextField}
+                                                    name="formaIngresso"
+                                                    label="Forma de Ingresso"
+                                                    fullWidth
+                                                    error={touched.nome && Boolean(errors.nome)}
+                                                    helperText={touched.nome && errors.nome}
+                                                    InputProps={{
+                                                        sx: {
+                                                            fontFamily: 'Poppins, sans-serif', // Altere para a fonte que desejar
+                                                            fontSize: '16px',
+                                                        },
+                                                    }}
+                                                />
                                             </Grid>
 
                                             {/* Campos de endereço */}

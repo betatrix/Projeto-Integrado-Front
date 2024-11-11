@@ -19,7 +19,7 @@ import {
     contentResultStyle,
     IconStyles,
 } from './styles';
-import { buscarTestesDeEstudante, buscarPerfisRecorrentes } from '../../../services/apiService';
+import { buscarTestesDeEstudante, buscarPerfisRecorrentes, buscarPerfilEstudante } from '../../../services/apiService';
 import { AuthContext } from '../../../contexts/auth';
 import { decryptData } from '../../../services/encryptionService';
 import { useTranslation } from 'react-i18next';
@@ -79,9 +79,27 @@ const StudentDashboard: React.FC = () => {
     const [sliderRef, setSliderRef] = useState<Slider | null>(null);
     // const [recorrenteImage, setRecorrenteImage] = useState<string | null>(null);
 
+    const [perfilImage, setPerfilImage] = useState<string | null>(null); // Estado para a imagem do perfil
+
     const authContext = useContext(AuthContext);
     const userData = authContext?.user ? decryptData(authContext.user) : null;
     const user = userData ? JSON.parse(userData) : null;
+
+    useEffect(() => {
+        const fetchPerfilImage = async () => {
+            try {
+                if (user?.id) {
+                    const perfilData = await buscarPerfilEstudante(user.id);
+                    console.log('Dados do perfil recebidos:', perfilData); // Exibe a resposta completa
+                    console.log('Imagem do perfil recebida:', perfilData.imagem); //
+                    setPerfilImage(perfilData.imagem); // Define a imagem do perfil
+                }
+            } catch (error) {
+                console.error('Erro ao buscar imagem do perfil do estudante:', error);
+            }
+        };
+        fetchPerfilImage();
+    }, [user?.id]);
 
     useEffect(() => {
         const fetchTestHistory = async () => {
@@ -89,7 +107,7 @@ const StudentDashboard: React.FC = () => {
                 if (user?.id) {
                     const tests = await buscarTestesDeEstudante(user.id);
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    const formattedTests = tests.map((test:any) => {
+                    const formattedTests = tests.map((test: any) => {
                         const date = new Date(test.data);
                         const utcDate = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
                         return {
@@ -102,6 +120,7 @@ const StudentDashboard: React.FC = () => {
             } catch (error) {
                 console.error('Erro ao buscar histórico de testes:', error);
             }
+
         };
 
         const fetchPerfisRecorrentes = async () => {
@@ -263,8 +282,9 @@ const StudentDashboard: React.FC = () => {
                                             <Paper sx={paperImgStyles}>
                                                 <Box
                                                     component="img"
-                                                    src={perfilArtistico}
-                                                    alt="Perfil"
+                                                    src={perfilImage || perfilArtistico}
+                                                    alt="Perfil do Estudante"
+                                                    onError={() => console.log('Erro ao carregar imagem:', perfilImage)}
                                                     sx={{
                                                         width: '139.25px',
                                                         [theme.breakpoints.down('sm')]: {

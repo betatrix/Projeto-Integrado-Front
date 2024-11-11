@@ -18,7 +18,7 @@ export type CourseForm = {
     // perfil?: string; // Alterado para string
     // perfilId?: number; // Você pode remover este campo se ele não for mais necessário
     id: number;
-    ativo?: string | boolean;
+    ativo?: string | boolean | number;
   };
 
 export type CourseFormCad = {

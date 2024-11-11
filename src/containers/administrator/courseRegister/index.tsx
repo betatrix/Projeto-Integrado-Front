@@ -153,7 +153,7 @@ const CadastroCurso: React.FC = () => {
                                                 spacing={2}
                                                 sx={{
                                                     maxWidth: 500,
-                                                    paddingLeft: '60px',
+                                                    marginLeft:'35px',
                                                     paddingTop: '50px',
                                                     paddingBottom: '30px',
                                                 }}
@@ -183,6 +183,25 @@ const CadastroCurso: React.FC = () => {
                                                     />
                                                 </Grid>
                                                 <Grid item xs={12}>
+                                                    <Field
+                                                        as={TextField}
+                                                        name="possiveisCarreiras"
+                                                        label="Possíveis Carreiras (Separe com vírgulas)"
+                                                        variant="standard"
+                                                        size="small"
+                                                        fullWidth
+                                                        value={values.possiveisCarreiras ? values.possiveisCarreiras.join(', ') : ''}
+                                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                                            setFieldValue(
+                                                                'possiveisCarreiras',
+                                                                e.target.value.split(',').map((carreira) => carreira.trim())
+                                                            )
+                                                        }
+                                                        error={touched.possiveisCarreiras && Boolean(errors.possiveisCarreiras)}
+                                                        helperText={touched.possiveisCarreiras && errors.possiveisCarreiras}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={12}>
                                                     <Field name="perfilId">
                                                         {({ field, form, meta }: FieldProps<number>) => (
                                                             <Autocomplete
@@ -204,25 +223,6 @@ const CadastroCurso: React.FC = () => {
                                                             />
                                                         )}
                                                     </Field>
-                                                </Grid>
-                                                <Grid item xs={12}>
-                                                    <Field
-                                                        as={TextField}
-                                                        name="possiveisCarreiras"
-                                                        label="Possíveis Carreiras (Separe com vírgulas)"
-                                                        variant="standard"
-                                                        size="small"
-                                                        fullWidth
-                                                        value={values.possiveisCarreiras ? values.possiveisCarreiras.join(', ') : ''}
-                                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                                            setFieldValue(
-                                                                'possiveisCarreiras',
-                                                                e.target.value.split(',').map((carreira) => carreira.trim())
-                                                            )
-                                                        }
-                                                        error={touched.possiveisCarreiras && Boolean(errors.possiveisCarreiras)}
-                                                        helperText={touched.possiveisCarreiras && errors.possiveisCarreiras}
-                                                    />
                                                 </Grid>
                                                 <Grid item xs={12}>
                                                     {/* {loadingAreas ? (

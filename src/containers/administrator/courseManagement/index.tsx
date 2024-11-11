@@ -104,7 +104,10 @@ const CourseManagement: React.FC = () => {
     };
 
     const handleEditModalOpen = (course: CourseForm) => {
-        setSelectedCourse(course); // Usa o curso completo com `area` como um objeto completo
+        setSelectedCourse({
+            ...course,
+            ativo: course.ativo ? 'Ativo' : 'Inativo'
+        }); // Usa o curso completo com `area` como um objeto completo
         setEditModalOpen(true);
     };
 
@@ -190,6 +193,7 @@ const CourseManagement: React.FC = () => {
                             <Table>
                                 <TableRow>
                                     <TableCell sx={{ borderRight: '1px solid #ddd', textAlign: 'center', fontWeight: 'bold', color: '#757575' }}>AÇÕES</TableCell>
+                                    <TableCell sx={{ borderRight: '1px solid #ddd', textAlign: 'center', fontWeight: 'bold', color: '#757575' }}>ID</TableCell>
                                     <TableCell sx={{ borderRight: '1px solid #ddd', fontWeight: 'bold', color: '#757575' }}>CURSOS</TableCell>
                                     <TableCell sx={{ textAlign: 'center', fontWeight: 'bold', color: '#757575' }}>STATUS</TableCell>
                                 </TableRow>
@@ -206,8 +210,12 @@ const CourseManagement: React.FC = () => {
                                                     <DeleteIcon sx={{ fontSize: 18 }} />
                                                 </IconButton>
                                             </TableCell>
-
-                                            <TableCell sx={{ borderRight: '1px solid #ddd' }}>{course.descricao}</TableCell>
+                                            <TableCell sx={{ borderRight: '1px solid #ddd', textAlign: 'center' }}>{course.id}</TableCell>
+                                            <TableCell sx={{ borderRight: '1px solid #ddd' }}>
+                                                <Typography sx={{
+                                                    fontSize: '15px', color: '#757575',
+                                                }}>{course.descricao}</Typography>
+                                            </TableCell>
                                             <TableCell sx={{ textAlign: 'center' }}>{course.ativo ? 'Ativo' : 'Inativo'}</TableCell>
                                         </TableRow>
                                     ))}
@@ -242,21 +250,27 @@ const CourseManagement: React.FC = () => {
                 >
                     {selectedCourse && (
                         <Formik
-                            initialValues={selectedCourse}
+                            // initialValues={selectedCourse}
+                            // enableReinitialize
+                            initialValues={{
+                                ...selectedCourse,
+                                ativo: selectedCourse?.ativo as string
+                            }}
                             enableReinitialize
                             // validationSchema={courseValidationSchema}
                             onSubmit={async (values, { setSubmitting }) => {
                                 try {
                                     const finalValues = {
                                         ...values,
+                                        ativo: values.ativo === 'Ativo', // Converte para booleano
                                         areaId: values.area?.id
                                     };
                                     await editarCurso(finalValues);
                                     setCourses(courses.map((course) =>
-                                        course.id === values.id ? values : course
+                                        course.id === values.id ? { ...course, ...finalValues } : course
                                     ));
                                     setFilteredCourses(filteredCourses.map((course) =>
-                                        course.id === values.id ? values : course
+                                        course.id === values.id ? { ...course, ativo: finalValues.ativo } : course
                                     ));
                                     handleEditModalClose();
                                 } catch (error) {
@@ -267,9 +281,7 @@ const CourseManagement: React.FC = () => {
                         >
                             {({ values, setFieldValue, errors, touched }) => (
                                 <Form>
-                                    <Grid container spacing={2} direction="column" alignItems="center">
-
-                                    </Grid>
+                                    <Grid container spacing={2} direction="column" alignItems="center"></Grid>
                                     <Grid item xs={12} sx={{ textAlign: 'justify' }}>
                                         <Typography
                                             variant="h5" gutterBottom sx={{
@@ -376,6 +388,24 @@ const CourseManagement: React.FC = () => {
                                                 helperText={touched.possiveisCarreiras && errors.possiveisCarreiras}
                                             />
                                         </Grid>
+                                        <Grid item sx={{ width: '60%' }} alignItems="center">
+                                            <FormControl fullWidth variant="filled">
+                                                <Autocomplete
+                                                    disablePortal
+                                                    options={['Ativo', 'Inativo']}
+                                                    value={values.ativo || 'Inativo'} // Define o valor como string
+                                                    onChange={(_, value) => setFieldValue('ativo', value)}
+                                                    isOptionEqualToValue={(option, value) => option === value} // Customiza a igualdade
+                                                    renderInput={(params) => (
+                                                        <TextField
+                                                            {...params}
+                                                            label="Status do Curso"
+                                                            variant="filled"
+                                                        />
+                                                    )}
+                                                />
+                                            </FormControl>
+                                        </Grid>
                                     </Grid>
                                     <Grid item xs={12}>
 
@@ -428,41 +458,71 @@ const CourseManagement: React.FC = () => {
             >
                 <Box
                     sx={{
-                        position: 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        transform: 'translate(-50%, -50%)',
-                        bgcolor: 'background.paper',
-                        boxShadow: 24,
-                        p: 4,
-                        maxWidth: 400,
-                        width: '90%',
+                        position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+                        bgcolor: 'background.paper', boxShadow: 24, p: 4, maxWidth: 400, width: '90%', borderRadius: '5px'
                     }}
                 >
-                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                    <Typography id="modal-modal-title" variant="h6" component="h2" sx={{
+                        color: '#185D8E',
+                        fontFamily: 'Roboto, monospace',
+                        marginTop: 1,
+                        fontWeight: 'bold',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        textAlign: 'justify',
+                        mb: '5px'
+                    }}>
                         Confirmar exclusão
                     </Typography>
-                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        Tem certeza que deseja excluir o curso {selectedCourse?.descricao}?
+                    <Typography id="modal-modal-description" sx={{
+                        mt: 2,
+                        fontFamily: 'Poppins, sans-serif',
+                        textAlign: 'justify',
+                        mb: '10px'
+                    }}>
+                        Você está prestes a excluir o curso {selectedCourse?.descricao}. Deseja continuar?
                     </Typography>
                     <Grid
                         container
                         spacing={2}
-                        justifyContent="space-between"
+                        justifyContent="center"
                         sx={{ mt: 2 }}
                     >
-                        <Grid item>
-                            <Button variant="outlined" onClick={handleDeleteModalClose}>
-                                Não
-                            </Button>
-                        </Grid>
                         <Grid item>
                             <Button
                                 variant="contained"
                                 color="primary"
                                 onClick={handleDeleteCourse}
+                                sx={{
+                                    height: '35px',
+                                    fontSize: '17px',
+                                    fontFamily: 'Roboto, monospace',
+                                    color: 'white',
+                                    backgroundColor: '#185D8E',
+                                    fontWeight: 'bold',
+                                    '&:hover': {
+                                        backgroundColor: '#104A6F',
+                                        color: 'white',
+                                    }
+                                }}
                             >
                                 Sim
+                            </Button>
+                        </Grid>
+                        <Grid item>
+                            <Button variant="outlined" onClick={handleDeleteModalClose} sx={{
+                                height: '35px',
+                                fontSize: '17px',
+                                fontFamily: 'Roboto, monospace',
+                                color: 'white',
+                                backgroundColor: '#185D8E',
+                                fontWeight: 'bold',
+                                '&:hover': {
+                                    backgroundColor: '#104A6F',
+                                    color: 'white',
+                                }
+                            }}>
+                                Não
                             </Button>
                         </Grid>
                     </Grid>

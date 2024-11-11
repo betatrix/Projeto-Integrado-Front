@@ -124,6 +124,14 @@ const Dashboard = () => {
                                     <MyIcon />
                                 </SquareButton>
                             </Grid>
+                            <Grid item>
+                                <SquareButton href="/gerenciamento-usuario">
+                                    <TextButton>
+                                        Usuários
+                                    </TextButton>
+                                    <MyIcon />
+                                </SquareButton>
+                            </Grid>
                         </Grid>
                     </Grid>
 

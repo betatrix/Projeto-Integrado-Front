@@ -10,3 +10,4 @@ export const fotoAdministrador = async (administradorId:number, arquivo: FormDat
     const response = await adicionarImagem('administrador', administradorId, arquivo );
     return response;
 };
+
