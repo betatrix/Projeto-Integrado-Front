@@ -7,13 +7,18 @@ export const cadastrarEntidade = async (entidade: string, data: object) => {
     return response.data;
 };
 
-export const buscarEntidades = async (entidade: string) => {
-    const response = await axios.get(`${API_URL}/${entidade}`);
+export const buscarEntidadesAtivas = async (entidade: string) => {
+    const response = await axios.get(`${API_URL}/${entidade}/ativos`);
     return response.data;
 };
 
 export const buscarEntidadePorId = async (entidade: string, id: number) => {
     const response = await axios.get(`${API_URL}/${entidade}/${id}`);
+    return response.data;
+};
+
+export const buscarEntidade = async (entidade: string) => {
+    const response = await axios.get(`${API_URL}/${entidade}`);
     return response.data;
 };
 
@@ -34,6 +39,11 @@ export const excluirEntidade = async (entidade: string, id: number) => {
         return;
     }
     const response = await axios.delete(`${API_URL}/${entidade}/${id}`);
+    return response.data;
+};
+
+export const buscarPerguntaPorId = async (entidade: string, id: number) => {
+    const response = await axios.get(`${API_URL}/${entidade}/teste/${id}`);
     return response.data;
 };
 

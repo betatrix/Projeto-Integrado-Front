@@ -1,8 +1,8 @@
-import { buscarEntidades, buscarEntidadePorId, excluirEntidade, substituirEntidade} from './apiService';
+import { buscarEntidade, buscarEntidadePorId, excluirEntidade, substituirEntidade} from './apiService';
 import { AdmForm, UserForm} from '../../src/types/userTypes';
 
 export const buscarUsuarios = async () => {
-    const response = await buscarEntidades('estudante');
+    const response = await buscarEntidade('estudante');
     return response;
 };
 
@@ -19,7 +19,7 @@ export const editarUsuario = async (userData: UserForm) => {
 };
 
 export const buscarAdministrador = async () => {
-    const response = await buscarEntidades('administrador');
+    const response = await buscarEntidade('administrador');
     return response;
 };
 

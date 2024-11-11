@@ -93,7 +93,7 @@ function AdminHeader() {
                         <Link to="/gerenciamento-curso" style={{ textDecoration: 'none' }}>
                             <Button sx={ButtonMenu}>CURSOS</Button>
                         </Link>
-                        <Link to="/admin" style={{ textDecoration: 'none' }}>
+                        <Link to="/gerenciamento-teste" style={{ textDecoration: 'none' }}>
                             <Button sx={ButtonMenu}>TESTES</Button>
                         </Link>
                         <Link to="/gerenciamento-usuario" style={{ textDecoration: 'none' }}>

@@ -37,7 +37,7 @@ import {
 } from './styles';
 import SearchIcon from '@mui/icons-material/Search';
 import { TipoInstituicaoCurso } from '../../../types/institutionTypes';
-import { buscarEntidadePorId, buscarEntidades } from '../../../services/apiService';
+import { buscarEntidadePorId, buscarEntidadesAtivas } from '../../../services/apiService';
 import { NivelEmpregabilidade } from '../../../types/courseTypes';
 import * as changeCase from 'change-case';
 import { useTranslation } from 'react-i18next';
@@ -114,7 +114,7 @@ const CourseList: React.FC = () => {
         const fetchCourses = async () => {
             setLoading(true);
             try {
-                const courseList = await buscarEntidades('curso');
+                const courseList = await buscarEntidadesAtivas('curso');
 
                 const coursesWithDetails = await Promise.all(
                     courseList.map(async (course: { id: number; }) => {
@@ -408,18 +408,62 @@ const CourseList: React.FC = () => {
                         <Box sx={gridContainer}>
                             <Grid container spacing={4}>
                                 <Grid item xs={12} sm={12} md={6}>
-                                    <Skeleton variant="rectangular" width={600} height={290} sx={{ borderRadius: '14px' }} />
+                                    <Skeleton
+                                        variant="rectangular"
+                                        sx={{
+                                            borderRadius: '14px',
+                                            width: '600px',
+                                            height:'290px',
+                                            '@media (max-width: 1700px)': {
+                                                width: '450px',
+                                                height:'290px',
+                                            }
+                                        }}
+                                    />
                                 </Grid>
                                 <Grid item xs={12} sm={12} md={6}>
-                                    <Skeleton variant="rectangular" width={600} height={290} sx={{ borderRadius: '14px' }} />
+                                    <Skeleton
+                                        variant="rectangular"
+                                        sx={{
+                                            borderRadius: '14px',
+                                            width: '600px',
+                                            height:'290px',
+                                            '@media (max-width: 1700px)': {
+                                                width: '450px',
+                                                height:'290px',
+                                            }
+                                        }}
+                                    />
                                 </Grid>
                             </Grid>
                             <Grid container spacing={4} sx={{ marginTop: '1rem' }}>
                                 <Grid item xs={12} sm={12} md={6}>
-                                    <Skeleton variant="rectangular" width={600} height={290} sx={{ borderRadius: '14px' }} />
+                                    <Skeleton
+                                        variant="rectangular"
+                                        sx={{
+                                            borderRadius: '14px',
+                                            width: '600px',
+                                            height:'290px',
+                                            '@media (max-width: 1700px)': {
+                                                width: '450px',
+                                                height:'290px',
+                                            }
+                                        }}
+                                    />
                                 </Grid>
                                 <Grid item xs={12} sm={12} md={6}>
-                                    <Skeleton variant="rectangular" width={600} height={290} sx={{ borderRadius: '14px' }} />
+                                    <Skeleton
+                                        variant="rectangular"
+                                        sx={{
+                                            borderRadius: '14px',
+                                            width: '600px',
+                                            height:'290px',
+                                            '@media (max-width: 1700px)': {
+                                                width: '450px',
+                                                height:'290px',
+                                            }
+                                        }}
+                                    />
                                 </Grid>
                             </Grid>
                         </Box>

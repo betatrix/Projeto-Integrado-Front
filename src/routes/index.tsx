@@ -25,6 +25,8 @@ import CourseManagement from '../containers/administrator/courseManagement';
 import CourseList from '../containers/student/studentDashboard/searchCourse';
 import UserManagement from '../containers/administrator/userManagement';
 import AdminManagement from '../containers/administrator/userManagement/adminManagement';
+import TestManagement from '../containers/administrator/questionManagement';
+import QuestionRegister from '../containers/administrator/questionRegister';
 
 export const AppRoutes = () => {
     return (
@@ -55,12 +57,14 @@ export const AppRoutes = () => {
                         <Route element={<PrivateRoute requiredRole="ADMIN" />}>
                             <Route path="/cadastro" element={<CadastroInstituicao />} />
                             <Route path="/cadastro-curso" element={<CadastroCurso />} />
+                            <Route path="/cadastro-pergunta" element={<QuestionRegister />} />
                             <Route path="/cursos" element={<BuscaCurso />} />
                             <Route path='/politicas' element={<BuscaPoliticas />} />
                             <Route path='/gerenciamento-curso' element={<CourseManagement />} />
                             <Route path="/gerenciamento-instituicao" element={<InstitutionManagement />} />
                             <Route path="/gerenciamento-usuario" element={<UserManagement />} />
                             <Route path="/gerenciamento-administrador" element={<AdminManagement />} />
+                            <Route path="/gerenciamento-teste" element={<TestManagement />} />
                             <Route path='/admin' element={<Dashboard />} />
                         </Route>
 
