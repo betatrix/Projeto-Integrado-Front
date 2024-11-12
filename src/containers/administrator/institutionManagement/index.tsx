@@ -1539,7 +1539,7 @@ const InstitutionManagement: React.FC = () => {
                     }}>
                         Você está prestes a excluir a instituição {institutionToDelete?.nome}. Deseja continuar?
                     </Typography>
-                    <Grid item container justifyContent="center" spacing={2} sx={{ mt: '10px' }}>
+                    <Grid container justifyContent="center" spacing={2} sx={{ mt: '10px' }}>
                         <Grid item display="flex" justifyContent="center">
                             <Button onClick={async () => {
                                 if (institutionToDelete) {

@@ -16,7 +16,6 @@ export type AdmForm = {
   email: string;
   cargo: string;
   celular: string;
-  nivelEscolar: string;
   ativo: boolean;
   endereco: Endereco;
 };

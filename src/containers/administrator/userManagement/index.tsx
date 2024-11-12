@@ -11,9 +11,11 @@ import {
     TableRow,
     TableCell,
     TableBody,
+    TableHead,
     Grid,
     Typography,
     InputAdornment,
+    Checkbox
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -33,13 +35,13 @@ const UserManagement: React.FC = () => {
     const [editModalOpen, setEditModalOpen] = useState(false);
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState<UserForm | null>(null);
+    const [selectedUsers, setSelectedUsers] = useState<number[]>([]); // IDs dos usuários selecionados
 
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
             try {
                 const fetchedUsers = await buscarUsuarios();
-                console.log('Usuários carregados:', fetchedUsers);
                 setUsers(fetchedUsers);
                 setFilteredUsers(fetchedUsers);
             } catch (error) {
@@ -91,19 +93,46 @@ const UserManagement: React.FC = () => {
         }
     };
 
+    const handleDeleteSelectedUsers = async () => {
+        try {
+            for (const userId of selectedUsers) {
+                await excluirUsuario(userId);
+            }
+            setUsers(users.filter((user) => !selectedUsers.includes(user.id)));
+            setFilteredUsers(filteredUsers.filter((user) => !selectedUsers.includes(user.id)));
+            setSelectedUsers([]);
+        } catch (error) {
+            console.error('Erro ao excluir usuários selecionados:', error);
+        }
+    };
+
+    const toggleSelectUser = (userId: number) => {
+        setSelectedUsers((prevSelected) =>
+            prevSelected.includes(userId)
+                ? prevSelected.filter((id) => id !== userId)
+                : [...prevSelected, userId]
+        );
+    };
+
+    const toggleSelectAll = () => {
+        if (selectedUsers.length === filteredUsers.length) {
+            setSelectedUsers([]);
+        } else {
+            setSelectedUsers(filteredUsers.map((user) => user.id));
+        }
+    };
+
     return (
         <>
             <AdminHeader />
             <Box sx={{ marginTop: '20px', minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: '#F3F3F3' }}>
-
                 <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', marginTop: 20, gap: 2, paddingLeft: 65 }}>
                     <TextField
-                        label="Pesquisar usuários"
+                        label="Pesquisar Usuários"
                         variant="outlined"
+                        sx={{ width: '55%', fontFamily: 'Roboto, monospace', }}
                         value={searchTerm}
                         onChange={handleSearchChange}
-                        sx={{ width: '55%', fontFamily: 'Roboto, monospace', }}
-
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end">
@@ -126,23 +155,49 @@ const UserManagement: React.FC = () => {
                         }}>Gerenciamento de Administrador</Button>
                     </Link>
                 </Box>
+
                 <Box sx={{ paddingTop: 10, paddingLeft: 45, paddingRight: 45, marginBottom: 10 }}>
                     {loading ? (
-                        <CircularProgress />
+                        <Box sx={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            marginTop: '60px'
+                        }}>
+                            <CircularProgress />
+                        </Box>
                     ) : (
                         <TableContainer>
                             <Table>
-                                <TableRow>
-                                    <TableCell>Ações</TableCell>
-                                    <TableCell>ID</TableCell>
-                                    <TableCell>Nome</TableCell>
-                                    <TableCell>Status</TableCell>
-                                </TableRow>
-
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>
+                                            <Checkbox
+                                                checked={selectedUsers.length === filteredUsers.length && filteredUsers.length > 0}
+                                                onChange={toggleSelectAll}
+                                            />
+                                            <Button
+                                                variant="contained"
+                                                color="secondary"
+                                                onClick={handleDeleteSelectedUsers}
+                                                disabled={selectedUsers.length === 0}
+                                            >
+                                                Excluir
+                                            </Button>
+                                        </TableCell>
+                                        <TableCell>ID</TableCell>
+                                        <TableCell>Nome</TableCell>
+                                        <TableCell>Status</TableCell>
+                                    </TableRow>
+                                </TableHead>
                                 <TableBody>
                                     {filteredUsers.map((user) => (
                                         <TableRow key={user.id}>
                                             <TableCell>
+                                                <Checkbox
+                                                    checked={selectedUsers.includes(user.id)}
+                                                    onChange={() => toggleSelectUser(user.id)}
+                                                />
                                                 <IconButton onClick={() => handleEditModalOpen(user)}>
                                                     <EditIcon />
                                                 </IconButton>
@@ -162,7 +217,6 @@ const UserManagement: React.FC = () => {
                 </Box>
             </Box>
             <Footer />
-
             {/* Edit Modal */}
             <Modal open={editModalOpen} onClose={handleEditModalClose}>
                 <Box
