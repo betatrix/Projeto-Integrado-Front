@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import {
     Box,
@@ -17,6 +18,7 @@ import {
     InputAdornment,
     Checkbox,
     Paper,
+    TablePagination,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -31,6 +33,7 @@ import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 
 const AdminManagement: React.FC = () => {
     const [admins, setAdmins] = useState<AdmForm[]>([]);
+    const [filteredAdmins, setFilteredAdmins] = useState<AdmForm[]>([]);
     const [loading, setLoading] = useState(false);
     const [editModalOpen, setEditModalOpen] = useState(false);
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -38,12 +41,16 @@ const AdminManagement: React.FC = () => {
     const [selectedAdmins, setSelectedAdmins] = useState<number[]>([]);
     const [detailModalOpen, setDetailModalOpen] = useState(false);
 
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
             try {
                 const fetchedAdmins = await buscarAdministrador();
                 setAdmins(fetchedAdmins);
+                setFilteredAdmins(fetchedAdmins); // Inicializa o filtro com todos os administradores
             } catch (error) {
                 console.error('Erro ao buscar administradores:', error);
             }
@@ -52,11 +59,45 @@ const AdminManagement: React.FC = () => {
         fetchData();
     }, []);
 
+    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const searchTerm = event.target.value.toLowerCase();
+        const filtered = admins.filter((admin) =>
+            admin.nome.toLowerCase().includes(searchTerm)
+        );
+        setFilteredAdmins(filtered);
+        setPage(0); // Resetar para a primeira página após a pesquisa
+    };
+
+    const handleChangePage = (_event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0);
+    };
+
+    const paginatedAdmins = filteredAdmins.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+
+    const handleDetailModalOpen = async (admin: AdmForm) => {
+        try {
+            const adminData = await buscarAdministradorPorId(admin.id);
+            setSelectedAdmin(adminData);
+            setDetailModalOpen(true);
+        } catch (error) {
+            console.error('Erro ao buscar dados do administrador:', error);
+        }
+    };
+
+    const handleDetailModalClose = () => {
+        setSelectedAdmin(null);
+        setDetailModalOpen(false);
+    };
+
     const handleEditModalOpen = async (admin: AdmForm) => {
         try {
-            const adminData = await buscarAdministradorPorId(admin.id); // Buscar dados completos do administrador
-            console.log('Administrador selecionado para edição:', adminData);
-            setSelectedAdmin(adminData); // Definir `selectedAdmin` com os dados completos
+            const adminData = await buscarAdministradorPorId(admin.id);
+            setSelectedAdmin(adminData);
             setEditModalOpen(true);
         } catch (error) {
             console.error('Erro ao buscar dados completos do administrador:', error);
@@ -83,6 +124,7 @@ const AdminManagement: React.FC = () => {
             try {
                 await excluirAdministrador(selectedAdmin.id);
                 setAdmins(admins.filter((a) => a.id !== selectedAdmin.id));
+                setFilteredAdmins(filteredAdmins.filter((a) => a.id !== selectedAdmin.id));
                 handleDeleteModalClose();
             } catch (error) {
                 console.error('Erro ao excluir administrador:', error);
@@ -96,6 +138,7 @@ const AdminManagement: React.FC = () => {
                 await excluirAdministrador(adminId);
             }
             setAdmins(admins.filter((admin) => !selectedAdmins.includes(admin.id)));
+            setFilteredAdmins(filteredAdmins.filter((admin) => !selectedAdmins.includes(admin.id)));
             setSelectedAdmins([]);
         } catch (error) {
             console.error('Erro ao excluir administradores selecionados:', error);
@@ -110,35 +153,16 @@ const AdminManagement: React.FC = () => {
         );
     };
 
-    const handleDetailModalOpen = async (admin: AdmForm) => {
-        try {
-            const adminData = await buscarAdministradorPorId(admin.id);
-            setSelectedAdmin(adminData);
-            setDetailModalOpen(true);
-        } catch (error) {
-            console.error('Erro ao buscar dados do administrador:', error);
-        }
-    };
-
-    const handleDetailModalClose = () => {
-        setSelectedAdmin(null);
-        setDetailModalOpen(false);
-    };
-
     return (
         <>
             <AdminHeader />
-            <Box sx={{ marginTop: '20px', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: '#F3F3F3' }}>
-                <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', marginTop: 20, gap: 2 }}>
+            <Box sx={{ marginTop: '20px', minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: '#F3F3F3' }}>
+                <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', marginTop: 20, gap: 2, width: '100%', maxWidth: '110rem', paddingLeft: 55 }}>
                     <TextField
                         label="Pesquisar Administradores"
                         variant="outlined"
-                        onChange={(e) => {
-                            const searchTerm = e.target.value.toLowerCase();
-                            setAdmins(prev => prev.filter(admin => admin.nome.toLowerCase().includes(searchTerm)));
-                        }}
-                        sx={{ width: '55%', fontFamily: 'Roboto, monospace', }}
-
+                        onChange={handleSearchChange}
+                        sx={{ width: '55%', fontFamily: 'Roboto, monospace' }}
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end">
@@ -150,6 +174,7 @@ const AdminManagement: React.FC = () => {
                     <Link to="/gerenciamento-usuario">
                         <Button sx={{
                             height: '50px',
+                            width:  '21rem',
                             fontSize: '17px',
                             fontFamily: 'Roboto, monospace',
                             color: 'white',
@@ -161,15 +186,22 @@ const AdminManagement: React.FC = () => {
                         }}>Gerenciamento de Usuários</Button>
                     </Link>
                 </Box>
-                <Box sx={{ paddingTop: 5, width: '90%', maxWidth: '800px' }}>
+                <Box sx={{ paddingTop: 10, paddingLeft: 45, paddingRight: 45, marginBottom: 10 }}>
                     {loading ? (
-                        <CircularProgress />
+                        <Box sx={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            marginTop: '60px'
+                        }}>
+                            <CircularProgress />
+                        </Box>
                     ) : (
-                        <TableContainer sx={{ width:'100%'}}>
+                        <TableContainer>
                             <Table>
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell sx={{ borderRight: '1px solid #ddd', textAlign: 'center' }}>
+                                        <TableCell align="center" sx={{ borderRight: '1px solid #ddd', width: '10rem' }}>
                                             <Button
                                                 variant="contained"
                                                 color="secondary"
@@ -185,29 +217,30 @@ const AdminManagement: React.FC = () => {
                                                 Excluir
                                             </Button>
                                         </TableCell>
-                                        <TableCell sx={{ borderRight: '1px solid #ddd', textAlign: 'center', fontWeight: 'bold', color: '#757575' }}>ID</TableCell>
-                                        <TableCell sx={{ borderRight: '1px solid #ddd', textAlign: 'center', fontWeight: 'bold', color: '#757575' }}>Nome</TableCell>
-                                        <TableCell sx={{ textAlign: 'center', fontWeight: 'bold', color: '#757575' }}>Status</TableCell>
+                                        <TableCell sx={{ borderRight: '1px solid #ddd', textAlign: 'center', fontWeight: 'bold', color: '#757575', width: '5rem' }}>ID</TableCell>
+                                        <TableCell sx={{ borderRight: '1px solid #ddd', fontWeight: 'bold', color: '#757575' }}>NOME</TableCell>
+                                        <TableCell sx={{ textAlign: 'center', fontWeight: 'bold', color: '#757575', width: '5rem' }}>STATUS</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {admins.map((admin) => (
+                                    {paginatedAdmins.map((admin) => (
                                         <TableRow key={admin.id}>
-                                            <TableCell sx={{ borderRight: '1px solid #ddd', textAlign: 'center' }}>
+                                            <TableCell align="center" sx={{ borderRight: '1px solid #ddd' }}>
                                                 <Checkbox
                                                     checked={selectedAdmins.includes(admin.id)}
                                                     onChange={() => toggleSelectAdmin(admin.id)}
+                                                    sx={{ '& .MuiSvgIcon-root': { fontSize: 18 } }}
                                                 />
                                                 <IconButton onClick={() => handleEditModalOpen(admin)}>
-                                                    <EditIcon />
+                                                    <EditIcon sx={{ fontSize: 18 }} />
                                                 </IconButton>
                                                 <IconButton onClick={() => handleDeleteModalOpen(admin)}>
-                                                    <DeleteIcon />
+                                                    <DeleteIcon sx={{ fontSize: 18 }} />
                                                 </IconButton>
                                             </TableCell>
                                             <TableCell sx={{ borderRight: '1px solid #ddd', textAlign: 'center' }}>{admin.id}</TableCell>
-                                            <TableCell sx={{ borderRight: '1px solid #ddd',}}>
-                                                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', }}>
+                                            <TableCell sx={{ borderRight: '1px solid #ddd' }}>
+                                                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                                     <Typography sx={{
                                                         fontSize: '15px', color: '#757575',
                                                     }}>{admin.nome}</Typography>
@@ -220,7 +253,6 @@ const AdminManagement: React.FC = () => {
                                                     </IconButton>
                                                 </Box>
                                             </TableCell>
-
                                             <TableCell sx={{ textAlign: 'center' }}>{admin.ativo ? 'Ativo' : 'Inativo'}</TableCell>
                                         </TableRow>
                                     ))}
@@ -228,6 +260,17 @@ const AdminManagement: React.FC = () => {
                             </Table>
                         </TableContainer>
                     )}
+                </Box>
+                <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 7, marginBottom: 7 }}>
+                    <TablePagination
+                        rowsPerPageOptions={[5, 10, 25]}
+                        component="div"
+                        count={filteredAdmins.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                    />
                 </Box>
             </Box>
             <Footer />
@@ -480,7 +523,7 @@ const AdminManagement: React.FC = () => {
                                     sx={{
                                         color: '#185D8E',
                                         fontFamily: 'Roboto, monospace',
-                                        marginTop: 2,
+                                        // marginTop: 2,
                                         fontWeight: 'bold',
                                         display: 'flex',
                                         justifyContent: 'center',
@@ -495,11 +538,13 @@ const AdminManagement: React.FC = () => {
                                     <Typography variant="h6" gutterBottom sx={{ textAlign: 'center', fontWeight: 'bold', fontFamily: 'Roboto, monospace', color: '#757575' }}>
                                         Dados Gerais
                                     </Typography>
-                                    <Typography>ID: {selectedAdmin.id}</Typography>
-                                    <Typography>Ativo: {selectedAdmin.ativo ? 'Sim' : 'Não'}</Typography>
-                                    <Typography>Cargo: {selectedAdmin.cargo}</Typography>
-                                    <Typography>Email: {selectedAdmin.email}</Typography>
-                                    <Typography>Celular: {selectedAdmin.celular}</Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>ID: {selectedAdmin.id}</Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>Ativo: {selectedAdmin.ativo ? 'Sim' : 'Não'}</Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>Nome: {selectedAdmin.nome}</Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>CPF: {selectedAdmin.cpf}</Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>Cargo: {selectedAdmin.cargo}</Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>Email: {selectedAdmin.email}</Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>Celular: {selectedAdmin.celular}</Typography>
                                 </Paper>
                             </Grid>
                             <Grid item xs={6}>
@@ -507,11 +552,11 @@ const AdminManagement: React.FC = () => {
                                     <Typography variant="h6" gutterBottom sx={{ textAlign: 'center', fontWeight: 'bold', fontFamily: 'Roboto, monospace', color: '#757575' }}>
                                         Endereço
                                     </Typography>
-                                    <Typography>Logradouro: {selectedAdmin.endereco.logradouro}</Typography>
-                                    <Typography>Número: {selectedAdmin.endereco.numero}</Typography>
-                                    <Typography>Cidade: {selectedAdmin.endereco.cidade}</Typography>
-                                    <Typography>Estado: {selectedAdmin.endereco.estado}</Typography>
-                                    <Typography>CEP: {selectedAdmin.endereco.cep}</Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>Logradouro: {selectedAdmin.endereco?.logradouro}</Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>Número: {selectedAdmin.endereco?.numero}</Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>Cidade: {selectedAdmin.endereco?.cidade}</Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>Estado: {selectedAdmin.endereco?.estado}</Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>CEP: {selectedAdmin.endereco?.cep}</Typography>
                                 </Paper>
                             </Grid>
                         </Grid>

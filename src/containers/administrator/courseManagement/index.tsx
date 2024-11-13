@@ -16,6 +16,10 @@ import {
     TableRow,
     TableCell,
     TableBody,
+    TablePagination,
+    Paper,
+    TableHead,
+    Checkbox,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -26,6 +30,7 @@ import { CourseForm, Area, TipoInstituicaoCurso, NivelEmpregabilidade } from '..
 import SearchIcon from '@mui/icons-material/Search';
 import { Link } from 'react-router-dom';
 import { Formik, Form, Field } from 'formik';
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 // import * as yup from 'yup';
 
 const niveisEmpregabilidade = [
@@ -65,6 +70,11 @@ const CourseManagement: React.FC = () => {
     const [editModalOpen, setEditModalOpen] = useState(false);
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const [selectedCourse, setSelectedCourse] = useState<CourseForm | null>(null);
+    const [detailModalOpen, setDetailModalOpen] = useState(false);
+    const [selectedCourses, setSelectedCourses] = useState<number[]>([]);
+
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -101,6 +111,7 @@ const CourseManagement: React.FC = () => {
             course?.descricao?.toLowerCase().includes(event.target.value.toLowerCase())
         );
         setFilteredCourses(filtered);
+        setPage(0); // Resetar para a primeira página após a pesquisa
     };
 
     const handleEditModalOpen = (course: CourseForm) => {
@@ -141,6 +152,48 @@ const CourseManagement: React.FC = () => {
                 console.error('Erro ao excluir curso:', error);
             }
         }
+    };
+
+    const handleDetailModalOpen = (course: CourseForm) => {
+        setSelectedCourse(course);
+        setDetailModalOpen(true);
+    };
+
+    const handleDetailModalClose = () => {
+        setSelectedCourse(null);
+        setDetailModalOpen(false);
+    };
+
+    const handleChangePage = (_event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0);
+    };
+
+    const paginatedCourses = filteredCourses.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+
+    const handleDeleteSelectedCourses = async () => {
+        try {
+            for (const courseId of selectedCourses) {
+                await excluirCurso(courseId);
+            }
+            setCourses(courses.filter((course) => !selectedCourses.includes(course.id)));
+            setFilteredCourses(filteredCourses.filter((course) => !selectedCourses.includes(course.id)));
+            setSelectedCourses([]);
+        } catch (error) {
+            console.error('Erro ao excluir cursos selecionados:', error);
+        }
+    };
+
+    const toggleSelectCourse = (courseId: number) => {
+        setSelectedCourses((prevSelected) =>
+            prevSelected.includes(courseId)
+                ? prevSelected.filter((id) => id !== courseId)
+                : [...prevSelected, courseId]
+        );
     };
 
     return (
@@ -191,18 +244,40 @@ const CourseManagement: React.FC = () => {
                     ) : (
                         <TableContainer >
                             <Table>
-                                <TableRow>
-                                    <TableCell sx={{ borderRight: '1px solid #ddd', textAlign: 'center', fontWeight: 'bold', color: '#757575' }}>AÇÕES</TableCell>
-                                    <TableCell sx={{ borderRight: '1px solid #ddd', textAlign: 'center', fontWeight: 'bold', color: '#757575' }}>ID</TableCell>
-                                    <TableCell sx={{ borderRight: '1px solid #ddd', fontWeight: 'bold', color: '#757575' }}>CURSOS</TableCell>
-                                    <TableCell sx={{ textAlign: 'center', fontWeight: 'bold', color: '#757575' }}>STATUS</TableCell>
-                                </TableRow>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell sx={{ borderRight: '1px solid #ddd', textAlign: 'center', fontWeight: 'bold', color: '#757575', width: '10rem' }}>
+                                            <Button
+                                                variant="contained"
+                                                color="secondary"
+                                                onClick={handleDeleteSelectedCourses}
+                                                disabled={selectedCourses.length === 0}
+                                                sx={{
+                                                    color: 'white',
+                                                    backgroundColor: '#185D8E',
+                                                    fontWeight: 'bold',
+                                                    fontFamily: 'Roboto, monospace',
+                                                }}
+                                            >
+                                                Excluir
+                                            </Button>
+                                        </TableCell>
+                                        <TableCell sx={{ borderRight: '1px solid #ddd', textAlign: 'center', fontWeight: 'bold', color: '#757575', width: '5rem' }}>ID</TableCell>
+                                        <TableCell sx={{ borderRight: '1px solid #ddd', fontWeight: 'bold', color: '#757575' }}>CURSOS</TableCell>
+                                        <TableCell sx={{ textAlign: 'center', fontWeight: 'bold', color: '#757575', width: '5rem' }}>STATUS</TableCell>
+                                    </TableRow>
+                                </TableHead>
 
                                 <TableBody>
-                                    {filteredCourses.map((course) => (
+                                    {paginatedCourses.map((course) => (
                                         <TableRow key={course.id}>
 
                                             <TableCell align="center" sx={{ borderRight: '1px solid #ddd' }}>
+                                                <Checkbox
+                                                    checked={selectedCourses.includes(course.id)}
+                                                    onChange={() => toggleSelectCourse(course.id)}
+                                                    sx={{ '& .MuiSvgIcon-root': { fontSize: 18 } }}
+                                                />
                                                 <IconButton onClick={() => handleEditModalOpen(course)}>
                                                     <EditIcon sx={{ fontSize: 18 }} />
                                                 </IconButton>
@@ -212,9 +287,18 @@ const CourseManagement: React.FC = () => {
                                             </TableCell>
                                             <TableCell sx={{ borderRight: '1px solid #ddd', textAlign: 'center' }}>{course.id}</TableCell>
                                             <TableCell sx={{ borderRight: '1px solid #ddd' }}>
-                                                <Typography sx={{
-                                                    fontSize: '15px', color: '#757575',
-                                                }}>{course.descricao}</Typography>
+                                                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                    <Typography sx={{
+                                                        fontSize: '15px', color: '#757575',
+                                                    }}>{course.descricao}</Typography>
+                                                    <IconButton size="small" onClick={() => handleDetailModalOpen(course)} sx={{
+                                                        color: '#185D8E',
+                                                    }}>
+                                                        <VisibilityOutlinedIcon sx={{
+                                                            fontSize: '18px'
+                                                        }} />
+                                                    </IconButton>
+                                                </Box>
                                             </TableCell>
                                             <TableCell sx={{ textAlign: 'center' }}>{course.ativo ? 'Ativo' : 'Inativo'}</TableCell>
                                         </TableRow>
@@ -223,6 +307,17 @@ const CourseManagement: React.FC = () => {
                             </Table>
                         </TableContainer>
                     )}
+                </Box>
+                <Box sx={{ display: 'flex', justifyContent: 'center', marginBottom: 7 }}>
+                    <TablePagination
+                        rowsPerPageOptions={[5, 10, 25]}
+                        component="div"
+                        count={filteredCourses.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                    />
                 </Box>
             </Box>
             <Footer />
@@ -526,6 +621,52 @@ const CourseManagement: React.FC = () => {
                             </Button>
                         </Grid>
                     </Grid>
+                </Box>
+            </Modal>
+            {/* Detail Modal */}
+            <Modal
+                open={detailModalOpen}
+                onClose={handleDetailModalClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={{
+                    position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+                    bgcolor: 'background.paper', boxShadow: 24, p: 4, width: '80%', maxWidth: 600, borderRadius: '5px'
+                }}>
+                    {selectedCourse && (
+                        <Grid container spacing={3}>
+                            <Grid item xs={12}>
+                                <Typography
+                                    variant="h5"
+                                    gutterBottom
+                                    sx={{
+                                        color: '#185D8E',
+                                        fontFamily: 'Roboto, monospace',
+                                        fontWeight: 'bold',
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        textAlign: 'center'
+                                    }}
+                                >
+                                    {selectedCourse.descricao}
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Paper sx={{ padding: '20px', border: '3px solid #185D8E', boxShadow: 'none' }}>
+                                    <Typography variant="h6" gutterBottom sx={{ textAlign: 'center', fontWeight: 'bold', fontFamily: 'Roboto, monospace', color: '#757575' }}>
+                                        Dados do Curso
+                                    </Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>ID: {selectedCourse.id}</Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>Status: {selectedCourse.ativo ? 'Ativo' : 'Inativo'}</Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>Nome: {selectedCourse.descricao}</Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>Empregabilidade: {selectedCourse.empregabilidade}</Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>Área: {selectedCourse.area?.descricao || 'Não especificada'}</Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>Tipo: {selectedCourse.tipo}</Typography>
+                                </Paper>
+                            </Grid>
+                        </Grid>
+                    )}
                 </Box>
             </Modal>
         </>

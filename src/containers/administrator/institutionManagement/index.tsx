@@ -26,6 +26,7 @@ import {
     InputLabel,
     Input,
     FormHelperText,
+    TablePagination,
 } from '@mui/material';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
@@ -57,7 +58,6 @@ import { cadastrarPoliticasInstituicao } from '../../../services/policiesInstitu
 import { buscarCursosPorInstituicao, buscarPoliticasPorInstituicao } from '../../../services/apiService';
 import { excluirCursoInstituicao } from '../../../services/courseInstitutionService';
 import { excluirPoliticasInstituicao } from '../../../services/policiesInstitutionService';
-import Pagination from '@mui/material/Pagination';
 
 const notaMecSchema = yup
     .number()
@@ -175,8 +175,8 @@ const InstitutionManagement: React.FC = () => {
     const [selectedInstitutions, setSelectedInstitutions] = useState<number[]>([]);
     const [deleteMultipleModalOpen, setDeleteMultipleModalOpen] = useState(false);
     const [institutionsToDeleteMultiple, setInstitutionsToDeleteMultiple] = useState<FormValues[]>([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 10; // Você pode ajustar este valor conforme necessário
+    const [currentPage, setCurrentPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5); // Número de linhas por página
 
     // const [searchValue, setSearchValue] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(true);
@@ -295,10 +295,6 @@ const InstitutionManagement: React.FC = () => {
         }
     }, [loadedInstitutions]);
 
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentInstitutions = institutions.slice(indexOfFirstItem, indexOfLastItem);
-
     // Busca de instituições
     useEffect(() => {
         searchInstitution('');
@@ -339,9 +335,18 @@ const InstitutionManagement: React.FC = () => {
         }
     }, [policyCourseModalOpen, selectedEditInstitution]);
 
-    const handlePageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
-        setCurrentPage(value);
+    const handlePageChange = (_event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
+        setCurrentPage(newPage);
     };
+
+    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setCurrentPage(0);
+    };
+
+    const indexOfLastItem = (currentPage + 1) * rowsPerPage;
+    const indexOfFirstItem = indexOfLastItem - rowsPerPage;
+    const currentInstitutions = institutions.slice(indexOfFirstItem, indexOfLastItem);
 
     useEffect(() => {
         async function fetchInstitutions() {
@@ -582,7 +587,7 @@ const InstitutionManagement: React.FC = () => {
 
                                 <TableRow>
 
-                                    <TableCell align="center" sx={{ borderRight: '1px solid #ddd' }}>
+                                    <TableCell align="center" sx={{ borderRight: '1px solid #ddd', width: '10rem' }}>
                                         <Button
                                             variant="contained"
                                             color="secondary"
@@ -598,9 +603,9 @@ const InstitutionManagement: React.FC = () => {
                                             Excluir
                                         </Button>
                                     </TableCell>
-                                    <TableCell sx={{ borderRight: '1px solid #ddd', textAlign: 'center', fontWeight: 'bold', color: '#757575' }}>ID</TableCell>
+                                    <TableCell sx={{ borderRight: '1px solid #ddd', textAlign: 'center', fontWeight: 'bold', color: '#757575', width: '5rem' }}>ID</TableCell>
                                     <TableCell sx={{ borderRight: '1px solid #ddd', fontWeight: 'bold', color: '#757575' }}>NOME</TableCell>
-                                    <TableCell sx={{ textAlign: 'center', fontWeight: 'bold', color: '#757575' }}>STATUS</TableCell>
+                                    <TableCell sx={{ textAlign: 'center', fontWeight: 'bold', color: '#757575', width: '5rem' }}>STATUS</TableCell>
 
                                 </TableRow>
 
@@ -658,12 +663,15 @@ const InstitutionManagement: React.FC = () => {
                         </Table>
                     )}
 
-                    <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-                        <Pagination
-                            count={Math.ceil(institutions.length / itemsPerPage)}
+                    <Box sx={{ display: 'flex', justifyContent: 'center', marginBottom: 7, marginTop: 10 }}>
+                        <TablePagination
+                            rowsPerPageOptions={[5, 10, 25]}
+                            component="div"
+                            count={institutions.length}
+                            rowsPerPage={rowsPerPage}
                             page={currentPage}
-                            onChange={handlePageChange}
-                            color="primary"
+                            onPageChange={handlePageChange}
+                            onRowsPerPageChange={handleChangeRowsPerPage}
                         />
                     </Box>
 
@@ -694,7 +702,6 @@ const InstitutionManagement: React.FC = () => {
                                     sx={{
                                         color: '#185D8E',
                                         fontFamily: 'Roboto, monospace',
-                                        marginTop: 2,
                                         fontWeight: 'bold',
                                         display: 'flex',
                                         justifyContent: 'center',

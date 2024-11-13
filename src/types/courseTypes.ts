@@ -44,7 +44,7 @@ export enum NivelEmpregabilidade {
 
 export enum TipoInstituicaoCurso {
   INDEFINIDO = 'Selecione o Tipo de Ensino',
-  SUPERIOR = 'Superior',
-  TECNICO = 'Técnico',
-  AMBOS = 'Ambos',
+  SUPERIOR = 'SUPERIOR',
+  TECNICO = 'TECNICO',
+  AMBOS = 'AMBOS',
 }
