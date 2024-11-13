@@ -417,6 +417,10 @@ const CourseList: React.FC = () => {
                                             '@media (max-width: 1700px)': {
                                                 width: '450px',
                                                 height:'290px',
+                                            },
+                                            '@media (max-width: 600px)': {
+                                                width: '360px',
+                                                height:'400px',
                                             }
                                         }}
                                     />
@@ -431,6 +435,10 @@ const CourseList: React.FC = () => {
                                             '@media (max-width: 1700px)': {
                                                 width: '450px',
                                                 height:'290px',
+                                            },
+                                            '@media (max-width: 600px)': {
+                                                width: '360px',
+                                                height:'400px',
                                             }
                                         }}
                                     />
@@ -447,6 +455,10 @@ const CourseList: React.FC = () => {
                                             '@media (max-width: 1700px)': {
                                                 width: '450px',
                                                 height:'290px',
+                                            },
+                                            '@media (max-width: 600px)': {
+                                                width: '360px',
+                                                height:'400px',
                                             }
                                         }}
                                     />
@@ -461,6 +473,10 @@ const CourseList: React.FC = () => {
                                             '@media (max-width: 1700px)': {
                                                 width: '450px',
                                                 height:'290px',
+                                            },
+                                            '@media (max-width: 600px)': {
+                                                width: '360px',
+                                                height:'400px',
                                             }
                                         }}
                                     />

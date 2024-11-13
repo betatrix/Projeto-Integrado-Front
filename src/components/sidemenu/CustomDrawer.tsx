@@ -1,4 +1,3 @@
-// import React, { useEffect } from 'react';
 import { styled, Theme, CSSObject } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
@@ -7,7 +6,6 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import LocalLibraryRoundedIcon from '@mui/icons-material/LocalLibraryRounded';
-// import polvo_voquinho from '../../assets/img/polvo_voquinho.png';
 import { Typography, Box } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTranslation } from 'react-i18next';
@@ -20,6 +18,8 @@ import {
     LogoutOutlined,
 } from '@mui/icons-material';
 import logo from '../../assets/img/logo-azul-claro.png';
+import { useContext, useEffect, useRef } from 'react';
+import { AuthContext } from '../../contexts/auth';
 
 const drawerWidth = 265;
 
@@ -71,15 +71,6 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
     })
 );
 
-const iconMap: { [key: string]: { icon: React.ReactNode, link: string, } } = {
-    'dashboard': { icon: <DashboardOutlined sx={{fontSize: '1.8rem'}}/>, link: '/estudante' },
-    'test': { icon: <AssignmentOutlined sx={{fontSize: '1.8rem'}} />, link: '/teste-vocacional' },
-    'myAccount': { icon: <AccountBoxOutlined sx={{fontSize: '1.8rem'}}/>, link: '/minha-conta' },
-    'courses': { icon: <LocalLibraryRoundedIcon sx={{fontSize: '1.8rem'}} />, link: '/curso' },
-    'institution': { icon: <SchoolOutlined sx={{fontSize: '1.8rem'}}/>, link: '/instituicao' },
-    'logout': { icon: <LogoutOutlined sx={{fontSize: '1.8rem'}}/>, link: '/logout' },
-};
-
 interface CustomDrawerProps {
     open: boolean;
     handleDrawerOpen: () => void;
@@ -89,10 +80,49 @@ interface CustomDrawerProps {
 const CustomDrawer: React.FC<CustomDrawerProps> = ({ open, handleDrawerOpen, handleDrawerClose }) => {
     const isMobile = useMediaQuery('(max-width:600px)');
     const { t } = useTranslation();
+    const drawerRef = useRef<HTMLDivElement | null>(null);
+    const authContext = useContext(AuthContext);
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (drawerRef.current && !drawerRef.current.contains(event.target as Node)) {
+                handleDrawerClose();
+            }
+        };
+
+        if (open) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [open, handleDrawerClose]);
+
+    if (!authContext) {
+        return null;
+    }
+    const { logout } = authContext;
+
+    const handleLogout = () => {
+        logout();
+    };
+
+    const iconMap: {
+        [key: string]: { icon: React.ReactNode; link?: string; onClick?: () => void }
+    } = {
+        'dashboard': { icon: <DashboardOutlined sx={{ fontSize: '1.8rem' }} />, link: '/estudante' },
+        'test': { icon: <AssignmentOutlined sx={{ fontSize: '1.8rem' }} />, link: '/teste-vocacional' },
+        'myAccount': { icon: <AccountBoxOutlined sx={{ fontSize: '1.8rem' }} />, link: '/minha-conta' },
+        'courses': { icon: <LocalLibraryRoundedIcon sx={{ fontSize: '1.8rem' }} />, link: '/curso' },
+        'institution': { icon: <SchoolOutlined sx={{ fontSize: '1.8rem' }} />, link: '/instituicao' },
+        'logout': { icon: <LogoutOutlined sx={{ fontSize: '1.8rem' }} />, onClick: handleLogout },
+    };
 
     return (
         <>
             <Drawer
+                ref={drawerRef}
                 variant={isMobile ? 'temporary' : 'permanent'}
                 open={open}
                 onClose={handleDrawerClose}
@@ -100,9 +130,25 @@ const CustomDrawer: React.FC<CustomDrawerProps> = ({ open, handleDrawerOpen, han
                     keepMounted: true,
                 }}
             >
-                <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        height: '100%',
+                    }}
+                    onClick={open ? handleDrawerClose : handleDrawerOpen}
+                >
                     {/* Itens normais do menu */}
-                    <List sx={{ backgroundColor: '#E3EDF4', boxShadow: 'none', flexGrow: 1 }}>
+                    <List
+                        sx={{
+                            backgroundColor: '#E3EDF4',
+                            boxShadow: 'none',
+                            flexGrow: 1,
+                            '&:hover': {
+                                cursor:'pointer',
+                            },
+                        }}
+                    >
                         <ListItem disablePadding sx={{ display: 'block' }}>
                             <ListItemButton
                                 sx={{
@@ -149,7 +195,7 @@ const CustomDrawer: React.FC<CustomDrawerProps> = ({ open, handleDrawerOpen, han
                                 <ListItem key={key} disablePadding sx={{ display: 'block' }}>
                                     <ListItemButton
                                         component={Link}
-                                        to={iconMap[key].link}
+                                        to={iconMap[key]?.link || ''}
                                         sx={[
                                             { minHeight: 48, px: 2.5 },
                                             open ? { justifyContent: 'initial' } : { justifyContent: 'center' },
@@ -181,8 +227,7 @@ const CustomDrawer: React.FC<CustomDrawerProps> = ({ open, handleDrawerOpen, han
                     <List sx={{ backgroundColor: '#E3EDF4', boxShadow: 'none', color: '#185D8E' }}>
                         <ListItem disablePadding sx={{ marginTop: 'auto', marginBottom: '25px' }}>
                             <ListItemButton
-                                component={Link}
-                                to={iconMap['logout'].link}
+                                onClick={iconMap['logout'].onClick}
                                 sx={[
                                     { minHeight: 48, px: 2.5 },
                                     open ? { justifyContent: 'initial' } : { justifyContent: 'center' },
