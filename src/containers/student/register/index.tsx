@@ -56,6 +56,8 @@ const initialValues: StudentRegisterForm = {
 const textTerms = `
     Termos de Uso e Serviço da Vocco
 
+    Última atualização: 13 de outubro de 2024
+
     Seja Bem-Vindo ao site da Vocco. Antes de explorar tudo o que temos a oferecer, é importante que você entenda e concorde com algumas regras básicas que regem o uso do nosso site https://vocco.vercel.app/pagina-inicial, e qualquer outro serviço digital que nós oferecemos, como lojas e plataformas de e-commerce.
     Ao usar nosso site e serviços, você automaticamente concorda em seguir as regras que estabelecemos aqui. Caso não concorde com algo, por favor, considere não usar nossos serviços. É muito importante para nós que você se sinta seguro e informado a todo momento.
     
@@ -199,20 +201,6 @@ const textPolicies = `
     - Por e-mail: voccosupp@gmail.com
 `;
 
-const validationSchema = yup.object().shape({
-    nome: yup.string().required('Nome é obrigatório*'),
-    email: yup.string().email('E-mail inválido*').required('E-mail é obrigatório*'),
-    senha: yup.string().required('Senha é obrigatória*')
-        .min(5, 'A senha deve ter no mínimo 5 caracteres!*'),
-    confirmarSenha: yup.string().required('Confirmação de senha é obrigatória*')
-        .oneOf([yup.ref('senha'), ''], 'As senhas precisam ser iguais*'),
-    dataNascimento: yup.date().required('Data de nascimento é obrigatória*')
-        .max(new Date(new Date().setFullYear(new Date().getFullYear() - 14)), 'Você deve ter pelo menos 14 anos.*'),
-    celular: yup.string().phone('BR', 'Insira um número de celular válido').required('Celular é obrigatório*')
-        .min(15, 'Insira um número de celular válido*'),
-    nivelEscolar: yup.string().required('Nível de escolaridade é obrigatório*'),
-});
-
 const formatarCelular = (value: string) => {
     const cleaned = value.replace(/\D/g, '');
     const match = cleaned.match(/^(\d{2})(\d{5})(\d{4})$/);
@@ -234,6 +222,21 @@ export const StudentRegister = () => {
     const [loading, setLoading] = React.useState(false);
     const [modalTermsOpen, setModalTermsOpen] = useState(false);
     const [modalPoliciesOpen, setModalPoliciesOpen] = useState(false);
+
+    const validationSchema = yup.object().shape({
+        nome: yup.string().required(t('studentRegisterValidation1')),
+        email: yup.string().email(t('studentRegisterValidation2')).required(t('studentRegisterValidation3')),
+        senha: yup.string().required(t('studentRegisterValidation4'))
+            .min(5, t('studentRegisterValidation5')),
+        confirmarSenha: yup.string().required(t('studentRegisterValidation6'))
+            .oneOf([yup.ref('senha'), ''], t('studentRegisterValidation7')),
+        dataNascimento: yup.date().required(t('studentRegisterValidation8'))
+            .max(new Date(new Date().setFullYear(new Date().getFullYear() - 14)), t('studentRegisterValidation9')),
+        celular: yup.string().phone('BR', t('studentRegisterValidation11')).required(t('studentRegisterValidation10'))
+            .min(15, t('studentRegisterValidation11'))
+            .max(15, t('studentRegisterValidation11')),
+        nivelEscolar: yup.string().required(t('studentRegisterValidation12')),
+    });
 
     const handleModalTermsClose = () => {
         setModalTermsOpen(false);
@@ -381,6 +384,7 @@ export const StudentRegister = () => {
                                             const formattedValue = formatarCelular(e.target.value);
                                             setFieldValue('celular', formattedValue);
                                         }}
+                                        inputProps={{ maxLength: 15 }}
                                         onBlur={handleBlur}
                                         sx={customField}
                                         error={touched.celular && Boolean(errors.celular)}
@@ -463,13 +467,13 @@ export const StudentRegister = () => {
                                     control={<Checkbox />}
                                     label={
                                         <span>
-                                            Li e aceito os{' '}
+                                            {t('studentRegisterTerms1')}{' '}
                                             <Link
                                                 href="#"
                                                 onClick={handleModalTermsOpen}
                                                 style={{ textDecoration: 'underline', color: '#185D8E', fontWeight: 700 }}
                                             >
-                                                Termos e Condições de Uso
+                                                {t('studentRegisterTerms2')}
                                             </Link>{' '}
                                             e{' '}
                                             <Link
@@ -477,7 +481,7 @@ export const StudentRegister = () => {
                                                 onClick={handleModalPoliciesOpen}
                                                 style={{ textDecoration: 'underline', color: '#185D8E', fontWeight: 700 }}
                                             >
-                                                Política de Privacidade
+                                                {t('studentRegisterTerms3')}
                                             </Link>.
                                         </span>
                                     }
@@ -505,7 +509,7 @@ export const StudentRegister = () => {
                         onClose={handleCloseSuccess}
                     >
                         <Alert onClose={handleCloseSuccess} severity="success" sx={{ width: '100%', fontFamily: 'Poppins, sans-serif', fontSize: '1.1rem' }}>
-                            Conta criada com sucesso!
+                            {t('studentRegisterAlert1')}
                         </Alert>
                     </Snackbar>
 
@@ -519,7 +523,7 @@ export const StudentRegister = () => {
                         onClose={handleCloseErrorMessageMail}
                     >
                         <Alert onClose={handleCloseErrorMessageMail} severity="error" sx={{ width: '100%', fontFamily: 'Poppins, sans-serif', fontSize: '1.1rem' }}>
-                            Já existe uma conta cadastrada com esse email!
+                            {t('studentRegisterAlert2')}
                         </Alert>
                     </Snackbar>
                 </Box>
@@ -558,7 +562,7 @@ export const StudentRegister = () => {
                             <Close fontSize="large" />
                         </IconButton>
                         <Typography variant="h6" gutterBottom sx={subTitle}>
-                            Termos e Condições de Uso
+                            {t('studentRegisterTerms2')}
                         </Typography>
                         <Box
                             sx={{
@@ -615,7 +619,7 @@ export const StudentRegister = () => {
                             <Close fontSize="large" />
                         </IconButton>
                         <Typography variant="h6" gutterBottom sx={subTitle}>
-                            Política de Privacidade
+                            {t('studentRegisterTerms3')}
                         </Typography>
                         <Box
                             sx={{

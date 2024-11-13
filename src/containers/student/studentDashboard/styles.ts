@@ -44,12 +44,12 @@ export const gridItem2Styles: SxProps<Theme> = (theme) => ({
     justifyContent:'center',
     alignItems:'center',
     display:'flex',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
         flexDirection: 'column',
         alignItems: 'center',
         backgroundAttachment: 'local',
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
         flexDirection: 'column',
         alignItems: 'center',
         backgroundAttachment: 'local',
@@ -62,10 +62,12 @@ export const cardTitleStyle: SxProps<Theme> = (theme) => ({
     fontWeight: 'bold',
     fontSize: '1.875rem',
     [theme.breakpoints.down('md')]: {
-        fontSize: '1rem',
+        paddingLeft:'1rem',
+        fontSize: '1.2rem',
     },
     [theme.breakpoints.down('sm')]: {
-        fontSize: '1rem',
+        paddingLeft:'1rem',
+        fontSize: '1.2rem',
     },
 });
 
@@ -75,37 +77,43 @@ export const cardTitle2Style: SxProps<Theme> = (theme) => ({
     fontSize: '1.875rem',
     marginTop: '0.625rem',
     [theme.breakpoints.down('md')]: {
-        fontSize: '0.8rem',
+        paddingRight:'2rem',
+        paddingLeft:'1rem',
+        fontSize: '1rem',
     },
     [theme.breakpoints.down('sm')]: {
-        fontSize: '0.8rem',
+        paddingRight:'2rem',
+        paddingLeft:'1rem',
+        fontSize: '0.9rem',
     },
 });
 
 export const titleResultStyle: SxProps<Theme> = (theme) => ({
-    fontFamily: 'Roboto, monospace',
+    fontFamily: 'Poppins, sans-serif',
     color: '#0B2A40',
-    fontWeight: 'bold',
-    fontSize: '1.875rem',
+    fontWeight: 700,
+    fontSize: '1.6rem',
     textAlign: 'center',
     alignItems: 'center',
     [theme.breakpoints.down('md')]: {
-        textAlign: 'right',
+        textAlign: 'center',
         fontSize: '1rem',
         fontWeight: 'bold',
+        marginBottom: '3.5rem',
     },
     [theme.breakpoints.down('sm')]: {
-        textAlign: 'right',
+        textAlign: 'center',
         fontSize: '1rem',
         fontWeight: 'bold',
+        marginBottom: '2rem',
     },
 });
 
 export const titlePerfilStyle: SxProps<Theme> = (theme) => ({
-    fontFamily: 'Roboto, monospace',
+    fontFamily: 'Poppins, sans-serif',
     color: '#0B2A40',
-    fontWeight: 'bold',
-    fontSize: '1.875rem',
+    fontWeight: 700,
+    fontSize: '1.6rem',
     textAlign: 'center',
     [theme.breakpoints.down('md')]: {
         textAlign: 'center',
@@ -133,13 +141,13 @@ export const contentStyle: SxProps<Theme> = (theme) => ({
     padding: '6.25px 12.5px',
     [theme.breakpoints.down('md')]: {
         textAlign: 'right',
-        fontSize: '0.8rem',
-        marginTop: '0.5rem',
+        fontSize: '1rem',
+        marginTop: '0.7rem',
     },
     [theme.breakpoints.down('sm')]: {
         textAlign: 'right',
-        fontSize: '0.8rem',
-        marginTop: '0.5rem',
+        fontSize: '1rem',
+        marginTop: '0.7rem',
     },
 });
 
@@ -160,9 +168,11 @@ export const IconStyles: SxProps<Theme> = (theme) => ({
 });
 
 export const contentPerfilStyle = (theme: Theme) => ({
-    fontFamily: 'Roboto, monospace',
-    fontSize: '2rem',
+    fontFamily: 'Poppins, sans-serif',
+    fontSize: '1.8rem',
+    fontWeight: 500,
     paddingTop: '0.8rem',
+    marginLeft:'0.7rem',
     color: '#0B2A40',
     display: 'flex',
     flexDirection: 'column',
@@ -171,11 +181,13 @@ export const contentPerfilStyle = (theme: Theme) => ({
     textAlign: 'center',
     [theme.breakpoints.down('md')]: {
         textAlign: 'center',
-        fontSize: '1rem',
+        fontSize: '1.3rem',
+        marginLeft:'0.7rem',
     },
     [theme.breakpoints.down('sm')]: {
         textAlign: 'center',
-        fontSize: '1rem',
+        fontSize: '1.3rem',
+        marginLeft:'0.7rem',
     },
 });
 
@@ -184,18 +196,18 @@ export const contentResultStyle: SxProps<Theme> = (theme) => ({
     justifyContent: 'center',
     alignItems: 'center',
     height: '100%',
-    fontFamily: 'Roboto, monospace',
+    fontFamily: 'Poppins, sans-serif',
     color: '#0B2A40',
     textAlign: 'center',
     fontWeight: 'bold',
     fontSize: '1.625rem',
     [theme.breakpoints.down('md')]: {
         textAlign: 'center',
-        fontSize: '1rem',
+        fontSize: '1.3rem',
     },
     [theme.breakpoints.down('sm')]: {
         textAlign: 'center',
-        fontSize: '1rem',
+        fontSize: '1.3rem',
     },
 });
 
@@ -224,22 +236,24 @@ export const boxResultStyles: SxProps<Theme> = (theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
     textAlign: 'center',
-    width: '31.25rem',
-    height: '20rem',
+    width: '30vw',
+    height: '22rem',
     boxShadow: 'none',
     borderRadius: '10px',
     [theme.breakpoints.down('md')]: {
         flexDirection: 'column',
         alignItems: 'center',
-        width: '15rem',
-        height: '11rem',
+        width: '26rem',
+        height: '15rem',
+        marginBottom: '3rem',
         borderRadius: '5px',
     },
     [theme.breakpoints.down('sm')]: {
         flexDirection: 'column',
         alignItems: 'center',
-        width: '15rem',
-        height: '11rem',
+        width: '21rem',
+        height: '13rem',
+        marginBottom: '2rem',
         borderRadius: '5px',
     },
 });
@@ -271,13 +285,13 @@ export const paperPerfisStyles: SxProps<Theme> = (theme) => ({
     height: '8.75rem',
     margin: '0.475rem',
     [theme.breakpoints.down('md')]: {
-        width: '10.5rem',
-        height: '4.7rem',
+        width: '12.5rem',
+        height: '5.7rem',
         border: '2px solid rgb(11, 42, 64)',
     },
     [theme.breakpoints.down('sm')]: {
-        width: '10.5rem',
-        height: '4.7rem',
+        width: '12.5rem',
+        height: '5.7rem',
         border: '2px solid rgb(11, 42, 64)',
     },
 });
@@ -315,17 +329,17 @@ export const paperTestStyles: SxProps<Theme> = (theme) => ({
     textAlign: 'left',
     alignItems: 'left',
     justifyContent: 'left',
-    width: '87.5rem',
+    width: '75vw',
     height: '18.75rem',
     marginBottom: '1.25rem',
     marginTop: '3.3rem',
     border: '3px solid #0B2A40',
     borderRadius: '10px',
     [theme.breakpoints.down('md')]: {
-        width: '18rem',
-        height: '9rem',
+        width: '26rem',
+        height: '13rem',
         gap: '0.5rem',
-        marginBottom: '1rem',
+        marginBottom: '2rem',
         borderRadius: '5px',
         border: '2px solid #0B2A40',
         '& .your-image-container img': {
@@ -333,10 +347,11 @@ export const paperTestStyles: SxProps<Theme> = (theme) => ({
         }
     },
     [theme.breakpoints.down('sm')]: {
-        width: '18rem',
-        height: '9rem',
+        width: '21rem',
+        height: '12rem',
         gap: '0.5rem',
-        marginBottom: '1rem',
+        marginBottom: '2rem',
+        paddingTop: '1.2rem',
         borderRadius: '5px',
         border: '2px solid #0B2A40',
         '& .your-image-container img': {
@@ -354,20 +369,20 @@ export const paperBannerStyles: SxProps<Theme> = (theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
     textAlign: 'center',
-    width: '87.5rem',
+    width: '75vw',
     height: '2rem',
     marginTop: '2.5rem',
     marginBottom: '3.75rem',
     borderRadius: '8px',
     [theme.breakpoints.down('md')]: {
-        width: '18rem',
+        width: '26rem',
         height: '4rem',
         marginTop: '1.5rem',
         marginBottom: '2rem',
         borderRadius: '5px',
     },
     [theme.breakpoints.down('sm')]: {
-        width: '18rem',
+        width: '21rem',
         height: '4rem',
         padding: '2%',
         marginTop: '1.5rem',
@@ -378,15 +393,14 @@ export const paperBannerStyles: SxProps<Theme> = (theme) => ({
 
 export const TestButton: SxProps<Theme> = (theme) => ({
     mr: 2,
-    fontFamily: 'Roboto, monospace',
-    fontSize: '1.625rem',
+    fontFamily: 'Poppins, sans-serif',
+    fontSize: '1.6rem',
     padding: '0.5rem 3.75rem',
     backgroundColor: '#D9EEFF',
     color: '#185D8E',
-    fontWeight: 700,
-    borderColor: '#185D8E',
+    fontWeight: 600,
+    border: 'solid 3px #185D8E',
     borderRadius: '8.75px',
-    borderWidth: '2.5px',
     boxShadow: '5px 5px 0px 1.25px rgba(0, 111, 255, 0.2)',
     textAlign: 'center',
     maxWidth: '100%',
@@ -401,14 +415,18 @@ export const TestButton: SxProps<Theme> = (theme) => ({
         transform: 'scale(1.02)',
     },
     [theme.breakpoints.down('md')]: {
-        padding: '0.3rem 2rem',
-        fontSize: '0.7rem',
+        marginRight:'2rem',
+        marginLeft:'1rem',
+        padding: '0.7rem 6rem',
+        fontSize: '1rem',
         minWidth: '180px',
         marginTop: '0.5rem',
     },
     [theme.breakpoints.down('sm')]: {
-        padding: '0.3rem 1rem',
-        fontSize: '0.7rem',
+        marginRight:'2rem',
+        marginLeft:'1rem',
+        padding: '0.7rem 4.4rem',
+        fontSize: '0.9rem',
         minWidth: '100px',
         marginTop: '0.5rem',
     },

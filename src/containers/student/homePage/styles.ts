@@ -1,12 +1,11 @@
 import { SxProps, Theme } from '@mui/material';
-import backgorundImage1 from '../../../assets/img/imagem-principal2.png';
 import backgorundImage2 from '../../../assets/img/background.png';
 
 const globalBoxStyles: SxProps<Theme> = (theme) => ({
     minHeight: '100vh',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    backgroundColor: '#F3F3F3',
+    backgroundColor: '#FFFFFF',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -30,11 +29,16 @@ const globalBoxStyles: SxProps<Theme> = (theme) => ({
 
 // Style Index-------------------------------------------------------
 export const homePageBoxStyles: SxProps<Theme> = (theme) => ({
-    //TODO(beatriz.andrade): adicionar backgorund
     ...globalBoxStyles(theme),
-    backgroundImage: `url(${backgorundImage1})`,
-    [theme.breakpoints.down('lg')]: {
-        backgroundImage: `url(${backgorundImage2})`,
+});
+
+export const container: SxProps<Theme> = (theme) => ({
+    display: 'flex',
+    flexDirection: 'grid',
+    alignItems: 'center',
+    marginBottom: '4rem',
+    [theme.breakpoints.down('sm')]: {
+        marginBottom: '0rem',
     },
 });
 
@@ -56,11 +60,13 @@ export const typographyTitleStyles: SxProps<Theme> = (theme) => ({
     fontWeight: 800,
     fontSize: '2.4rem',
     color: '#1b1f27',
-    [theme.breakpoints.down('sm')]: {
-        fontSize: '1.6rem',
-    },
     [theme.breakpoints.down('lg')]: {
         fontSize: '1.6rem',
+    },
+    [theme.breakpoints.down('sm')]: {
+        margin: '0.4rem 1rem',
+        fontSize: '1.6rem',
+        textAlign: 'justify',
     },
 });
 
@@ -70,12 +76,13 @@ export const typographySubtitleStyles: SxProps<Theme> = (theme) => ({
     fontSize: '1.4rem',
     mb: '1rem',
     color: '#1b1f27',
-    [theme.breakpoints.down('sm')]: {
-        fontSize: '1rem',
-        textAlign: 'center',
-    },
     [theme.breakpoints.down('lg')]: {
         fontSize: '1.1rem',
+    },
+    [theme.breakpoints.down('sm')]: {
+        margin: '1.5rem 1rem',
+        fontSize: '1rem',
+        textAlign: 'justify',
     },
 });
 
@@ -113,8 +120,9 @@ export const buttonStyles: SxProps<Theme> = (theme) => ({
         minWidth: '200px',
     },
     [theme.breakpoints.down('sm')]: {
-        padding: '0.3rem 8rem',
-        fontSize: '1rem',
+        padding: '0.4rem 8.1rem',
+        marginLeft:'0.6rem',
+        fontSize: '1.2rem',
         minWidth: '200px',
     },
 });
@@ -122,29 +130,28 @@ export const buttonStyles: SxProps<Theme> = (theme) => ({
 // Style About-----------------------------------------------------
 export const aboutBoxStyles: SxProps<Theme> = (theme) => ({
     ...globalBoxStyles(theme),
+    backgroundImage: `url(${backgorundImage2})`,
 });
 
-export const container: SxProps<Theme> = () => ({
+export const containerAbout: SxProps<Theme> = () => ({
     display: 'flex',
     flexDirection: 'grid',
     alignItems: 'center',
-    gap: '2rem',
 });
 
 export const gridAboutContainerStyles: SxProps<Theme> = (theme) => ({
-    width: '100%',
+    width: '70%',
     textAlign: 'left',
     [theme.breakpoints.down('md')]: {
         alignItems: 'center',
-        padding: '0rem 3rem',
+        padding: '0rem 1.5rem',
+        width: '100%',
     },
 });
 
 export const gridItemTextStyles: SxProps<Theme> = (theme) => ({
     fontFamily: 'Poppins, sans-serif',
     fontWeight: 300,
-    fontSize: '1.4rem',
-    mb: '1rem',
     color: '#1b1f27',
     [theme.breakpoints.down('sm')]: {
         margin: '14px',
@@ -163,6 +170,7 @@ export const typographyAboutTitleStyles: SxProps<Theme> = (theme) => ({
     color: '#1b1f27',
     [theme.breakpoints.down('sm')]: {
         fontSize: '1.4rem',
+        marginBottom: '1rem',
     },
     [theme.breakpoints.down('lg')]: {
         fontSize: '1.8rem',
@@ -173,8 +181,9 @@ export const typographyBodyStyles: SxProps<Theme> = (theme) => ({
     fontFamily: 'Poppins, sans-serif',
     color: '#1b1f27',
     paddingTop: '10px',
+    paddingBottom: '10px',
     textAlign: 'justify',
-    fontSize: '1.25rem',
+    fontSize: '1.3rem',
     lineHeight: '140%',
     [theme.breakpoints.down('sm')]: {
         fontSize: '1rem',
@@ -183,7 +192,6 @@ export const typographyBodyStyles: SxProps<Theme> = (theme) => ({
 
 // Style FAQ-------------------------------------------------------
 export const faqBoxStyles: SxProps<Theme> = (theme) => ({
-    //TODO(beatriz.andrade): adicionar backgorund
     ...globalBoxStyles(theme),
     backgroundImage: `url(${backgorundImage2})`,
     paddingTop: '3rem',
@@ -196,17 +204,14 @@ export const innerBoxStyles: SxProps<Theme> = (theme) => ({
     textAlign: 'center',
     flexDirection: 'column',
     width: '100%',
-    paddingLeft:'7rem',
-    paddingRight: '7rem',
-    [theme.breakpoints.down('sm')]: {
-        width: '100%',
-        paddingLeft:'1rem',
-        paddingRight: '1rem',
-    },
+    padding:'0rem 7rem',
     [theme.breakpoints.down('md')]: {
         width: '100%',
-        paddingLeft:'4rem',
-        paddingRight: '4rem',
+        padding:'0rem 4rem',
+    },
+    [theme.breakpoints.down('sm')]: {
+        width: '100%',
+        padding:'0rem 1.2rem',
     },
 });
 
@@ -305,7 +310,7 @@ export const BoxCardHollandStyles: SxProps<Theme> = (theme) => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    width: '90rem',
+    width: '70rem',
     height: '40rem',
     overflow: 'hidden',
     [theme.breakpoints.down('lg')]: {
@@ -358,7 +363,90 @@ export const ActiveIndicatorStyles = {
     backgroundColor: '#185D8E',
 };
 
-// Style Parceiros-------------------------------------------------------
+// Style Source -------------------------------------------------------
+export const SourceBoxStyles: SxProps<Theme> = (theme) => ({
+    ...globalBoxStyles(theme),
+    backgroundColor: '#FFFFFF',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
+    height: '100vh',
+});
+
+export const typographySourceTitle: SxProps<Theme> = (theme) => ({
+    fontFamily: 'Poppins, sans-serif',
+    fontWeight: 800,
+    fontSize: '2.4rem',
+    color: '#1b1f27',
+    [theme.breakpoints.down('lg')]: {
+        fontSize: '1.8rem',
+    },
+    [theme.breakpoints.down('sm')]: {
+        fontSize: '1.6rem',
+        padding: '1rem 1.5rem',
+        textAlign: 'center',
+    },
+});
+
+export const typographySourceBody1: SxProps<Theme> = (theme) => ({
+    fontFamily: 'Poppins, sans-serif',
+    color: '#1b1f27',
+    paddingTop: '4rem',
+    paddingBottom: '4rem',
+    textAlign: 'center',
+    fontSize: '1.3rem',
+    lineHeight: '140%',
+    [theme.breakpoints.down('sm')]: {
+        fontSize: '1rem',
+        padding: '1rem 1.5rem',
+        textAlign: 'justify',
+    },
+});
+
+export const typographySourceBody2: SxProps<Theme> = (theme) => ({
+    fontFamily: 'Poppins, sans-serif',
+    color: '#1b1f27',
+    paddingTop: '4rem',
+    textAlign: 'center',
+    fontSize: '1.3rem',
+    lineHeight: '140%',
+    [theme.breakpoints.down('sm')]: {
+        fontSize: '1rem',
+        padding: '2rem 1.5rem',
+        textAlign: 'justify',
+    },
+});
+
+export const typographySourceTitleGrid: SxProps<Theme> = (theme) => ({
+    fontFamily: 'Poppins, sans-serif',
+    fontWeight: 700,
+    fontSize: '1.3rem',
+    color: '#1b1f27',
+    [theme.breakpoints.down('lg')]: {
+        fontSize: '1.8rem',
+    },
+    [theme.breakpoints.down('sm')]: {
+        fontSize: '1.2rem',
+        textAlign: 'center',
+    },
+});
+
+export const typographySourceBodyGrid: SxProps<Theme> = (theme) => ({
+    fontFamily: 'Poppins, sans-serif',
+    color: '#1b1f27',
+    paddingTop: '10px',
+    paddingBottom: '10px',
+    textAlign: 'justify',
+    fontSize: '1.3rem',
+    lineHeight: '140%',
+    [theme.breakpoints.down('sm')]: {
+        fontSize: '1rem',
+        textAlign: 'center',
+    },
+});
+
+// Style Parceiros -------------------------------------------------------
 export const BoxCarouselStyles: SxProps<Theme> = (theme) => ({
     backgroundColor: 'white',
     maxWidth: '100%',
@@ -388,6 +476,7 @@ export const BoxCarouselStyles: SxProps<Theme> = (theme) => ({
 
 export const CarouselTitle: SxProps<Theme> = (theme) => ({
     marginTop: '1rem',
+    marginBottom: '1rem',
     textAlign: 'center',
     fontFamily: 'Poppins, sans-serif',
     fontWeight: 600,
