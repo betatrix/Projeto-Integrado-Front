@@ -17,10 +17,10 @@ interface Teste {
 }
 
 interface Pergunta {
-    id: number;
-    texto: string;
-    ativo: boolean;
-    testeId: number;
+    id: number,
+    texto: string,
+    textoIngles: string,
+    ativo: true
 }
 
 interface Usuario {
@@ -29,7 +29,7 @@ interface Usuario {
 
 const VocacionalTest: React.FC = () => {
     const apiUrl = import.meta.env.VITE_API_URL;
-    const{ t } = useTranslation();
+    const{ t, i18n } = useTranslation();
     const navigate = useNavigate();
 
     const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -43,7 +43,9 @@ const VocacionalTest: React.FC = () => {
     useEffect(() => {
         const fetchQuestions = async () => {
             try {
-                const response = await axios.get(`${apiUrl}/pergunta/teste/1`);
+                const response = await axios.get(`${apiUrl}/pergunta/teste/1`, {
+                    params: { language: i18n.language }
+                });
                 setQuestions(response.data);
             } catch (error) {
                 console.error('Erro ao buscar perguntas');
@@ -68,7 +70,14 @@ const VocacionalTest: React.FC = () => {
 
         fetchQuestions();
         fetchInitialData();
-    }, [apiUrl, teste?.id, usuario?.id]);
+    }, [apiUrl, i18n, teste?.id, usuario?.id]);
+
+    useEffect(() => {
+        const savedAnswers = localStorage.getItem('vocationalTestAnswers');
+        if (savedAnswers) {
+            setAnswers(JSON.parse(savedAnswers));
+        }
+    }, []);
 
     const handleNext = () => {
         if (currentQuestion < questions.length - 1) {
@@ -86,6 +95,8 @@ const VocacionalTest: React.FC = () => {
         const updatedAnswers = [...answers];
         updatedAnswers[currentQuestion] = value;
         setAnswers(updatedAnswers);
+
+        localStorage.setItem('vocationalTestAnswers', JSON.stringify(updatedAnswers));
     };
 
     const authcontext = useContext(AuthContext);
@@ -111,6 +122,8 @@ const VocacionalTest: React.FC = () => {
 
         try {
             const response = await axios.post(`${apiUrl}/resposta`, payload);
+
+            localStorage.removeItem('vocationalTestAnswers');
 
             navigate('/resultado', { state: { resultado: response.data } });
         } catch (error) {
@@ -148,7 +161,7 @@ const VocacionalTest: React.FC = () => {
                 startIcon={<ArrowBackIcon />}
 
             >
-                <CustomLink to={'/estudante'}> Voltar
+                <CustomLink to={'/estudante'}> {t('backButton')}
                 </CustomLink>
             </BackButton>
 
@@ -159,7 +172,7 @@ const VocacionalTest: React.FC = () => {
                     </IntroText>
                     <StyledLinearProgress variant="determinate" value={progress} />
                     <StyledTypography variant="h6" gutterBottom>
-                        {questions[currentQuestion]?.texto}
+                        {i18n.language === 'en' ? questions[currentQuestion]?.textoIngles : questions[currentQuestion]?.texto}
                     </StyledTypography>
                     <AnswerOptions
                         value={answers[currentQuestion]}
@@ -174,9 +187,19 @@ const VocacionalTest: React.FC = () => {
                         >
                             <NavigateBeforeIcon fontSize="inherit" />
                         </IconButton>
-                        <IntroText variant="body1">
-                            {currentQuestion + 1} - {questions.length}
-                        </IntroText>
+
+                        {currentQuestion === questions.length - 1 && allQuestionsAnswered ? (
+                            <CustomButton
+                                onClick={handleSubmit}
+                            >
+                                {t('sendButton')}
+                            </CustomButton>
+                        ) : (
+                            <IntroText marginTop={'20px'}>
+                                {currentQuestion + 1} - {questions.length}
+                            </IntroText>
+                        )}
+
                         <IconButton
                             onClick={handleNext}
                             disabled={currentQuestion === questions.length - 1 || !isAnswerSelected}
@@ -185,16 +208,6 @@ const VocacionalTest: React.FC = () => {
                             <NavigateNextIcon fontSize="inherit" />
                         </IconButton>
                     </ButtonGroup>
-                    {currentQuestion === questions.length - 1 && allQuestionsAnswered && (
-                        <CustomButton
-                            variant="contained"
-                            color="secondary"
-                            onClick={handleSubmit}
-                            style={{ marginTop: '30px' }}
-                        >
-                            {t('forgotButton')}
-                        </CustomButton>
-                    )}
                 </CenteredDiv>
             </Box>
 
@@ -223,9 +236,9 @@ const VocacionalTest: React.FC = () => {
                         {t('testIntro2')}
                     </ModalText>
                     <br />
-                    <ModalText>
+                    {/* <ModalText>
                         {t('testIntro3')}
-                    </ModalText>
+                    </ModalText> */}
                 </DialogContent>
 
                 <DialogActions>

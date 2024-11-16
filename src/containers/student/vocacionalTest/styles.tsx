@@ -1,6 +1,6 @@
 import styled, { createGlobalStyle } from 'styled-components';
 import { LinearProgress, Button, Typography, SxProps, Theme} from '@mui/material';
-import vocacionalTestImg from '../../../assets/img/background.png';
+import vocacionalTestImg from '../../../assets/img/test-background.png';
 import { Link } from 'react-router-dom';
 
 export const Global = createGlobalStyle`
@@ -19,19 +19,17 @@ export const Global = createGlobalStyle`
     font-style: normal;
     font-family: 'Exo', sans-serif;
     background-image: url(${vocacionalTestImg});
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
+    background-size: cover; /* Garante que a imagem cubra toda a área */
+    background-position: center; /* Centraliza a imagem */
+    background-repeat: no-repeat; /* Remove repetições */
+    background-attachment: fixed; /* Fixa o background na tela */
   }
 `;
 
 export const IntroText = styled(Typography)`
   font-size: 0.8rem;
   color: rgba(0, 0, 0, 0.6); 
-  margin-bottom: 20px;
   text-align: center;
-  font-family: 'Exo', sans-serif;
 `;
 
 export const ModalText = styled(Typography)`
@@ -53,7 +51,7 @@ export const CenteredDiv = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 550px;
+    height: 600px;
     width: 90%; 
     max-width: 1200px;
     background-color: white;
@@ -64,6 +62,7 @@ export const CenteredDiv = styled.div`
     max-height: 600px;
     margin-top: 9%;
     border: solid #185D8E; 
+    position: relative; /* Para usar posição absoluta no filho */
 `;
 
 export const ButtonGroup = styled.div`
@@ -87,7 +86,7 @@ export const StyledLinearProgress = styled(LinearProgress)`
     margin-bottom: 70px;
     
     & .MuiLinearProgress-barColorPrimary {
-        background: linear-gradient(90deg, #312ef4 0%, #0f1c5c 100%); /* Cor da barra de progresso */
+        background: linear-gradient(90deg, #A4BFD2 0%, #185D8E 100%); /* Cor da barra de progresso */
         height: 20px;
     }
     
@@ -123,31 +122,20 @@ export const StyledButton = styled(Button)`
 
 export const CustomButton = styled(Button)`
   &.MuiButton-root {
-    background: linear-gradient(90deg, rgba(53,51,205,1) 0%, rgba(16,24,64,1) 100%);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    margin-top: 5px;
-    margin-bottom: 2px;
+    background: #D9EEFF;
+    box-shadow: 5px 5px 0px 1px #B9D4F8;
     border-radius: 10px;
-    height: 55px;
-    color: #fff;
+    height: 40px;
+    color: #185D8E;
+    border: solid;
+    font-weight: bold;
+    width: 200px;
+    padding: 0.7rem 1.05rem;
+    margin-top: 10px;
 
     &:hover {
-        background: linear-gradient(269deg,#3533cd,#101840,#3533cd);
-        background-size: 180% 180%;
-        animation: gradient-animation 10s ease infinite;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-      
-      @keyframes gradient-animation {
-        0% {
-          background-position: 0% 50%;
-        }
-        50% {
-          background-position: 100% 50%;
-        }
-        100% {
-          background-position: 0% 50%;
-        }
-      }
+      background-color: #a7cae3;
+      transform: scale(1.1);
     }
   }
 `;
