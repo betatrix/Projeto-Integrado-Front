@@ -90,6 +90,13 @@ export const cadastrarEstudante = async (entidade: string, data: object) => {
     const response = await axios.post(`${API_URL}/${entidade}/cadastro`, data);
     return { data: response.data, status: response.status };
 };
+
+// Deletar estudante
+export const deletarEstudante = async (entidade: string, estudanteId: number) => {
+    const response = await axios.delete(`${API_URL}/${entidade}/${estudanteId}`);
+    return { data: response.data, status: response.status };
+};
+
 // Atualizar estudante
 export const atualizarEstudante = async (entidade: string, data: object) => {
     const response = await axios.put(`${API_URL}/${entidade}`, data);
