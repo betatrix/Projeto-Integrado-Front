@@ -160,6 +160,9 @@
       "testWarningCancel": "Cancel",
       "testWarningExit": "Exit",
       "sendButton": "Send",
+      "testChooseCourseType": "Select the type of course that best matches what you're looking for: ",
+      "testGraduationButton": "Graduation",
+      "testTechnicalButton": "Technical",
 
       "dashboardTitle": "DISCOVER YOUR WAY!",
       "dashboardCard1": "Take our quiz and get access to six personalized courses.",

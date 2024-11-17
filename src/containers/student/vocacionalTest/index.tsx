@@ -5,7 +5,8 @@ import { IconButton, Box, Dialog, DialogActions, DialogContent, DialogTitle, But
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import { CenteredDiv, ButtonGroup, StyledLinearProgress, Global, IntroText, homePageBoxStyles, StyledTypography, CustomButton, ModalText, BackButton, CustomLink } from './styles';
+import { CenteredDiv, ButtonGroup, StyledLinearProgress, Global, IntroText, homePageBoxStyles, StyledTypography,
+    CustomButton, ModalText, BackButton, CustomLink, CourseCustomButton } from './styles';
 import axios from 'axios';
 import AnswerOptions from './answerOptions';
 import { AuthContext } from '../../../contexts/auth';
@@ -145,6 +146,33 @@ const VocacionalTest: React.FC = () => {
         setShowExitModal(false);
     };
 
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [selectedButton, setSelectedButton] = useState<string | null>(null);
+
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [modalStep, setModalStep] = useState(1);
+
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [isButtonSelected, setIsButtonSelected] = useState(false);
+
+    const handleNextModalStep = () => {
+        if (modalStep < 2) {
+            setModalStep(modalStep + 1);
+        }
+    };
+
+    const handleBeforeModalStep = () => {
+        if (modalStep === 2) {
+            setModalStep(modalStep - 1);
+        }
+    };
+
+    const handleCourseTypeSelection = (type: string) => {
+        setSelectedButton(type);
+        setIsButtonSelected(true);
+        console.log(`Tipo de curso selecionado: ${type}`);
+    };
+
     const allQuestionsAnswered = answers.every((answer) => answer !== 0);
     const isAnswerSelected = answers[currentQuestion] !== 0;
     const progress = ((currentQuestion + 1) / questions.length) * 100;
@@ -213,38 +241,103 @@ const VocacionalTest: React.FC = () => {
 
             <Dialog
                 open={showModal}
-                onClose={() => setShowModal(false)}
                 PaperProps={{
                     style: {
                         width: '90%',
                         maxWidth: '800px',
-                        margin: 'auto',
-                        borderRadius: '10px',
+                        borderRadius: '20px',
                         height: '470px',
-                        padding: '20px'
+                        padding: '20px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        border: 'solid',
+                        borderColor: '#185D8E'
                     },
                 }}
             >
-                <DialogTitle style={{ textAlign: 'center', fontSize: '22px', marginBottom: '15px' }}>{t('testIntroTitle')}</DialogTitle>
+                <DialogTitle
+                    style={{
+                        textAlign: 'center',
+                        fontSize: '22px',
+                        marginBottom: '15px',
+                        marginTop: '15px',
+                        fontWeight: 'bold',
+                        color: '#185D8E',
+                    }}
+                >
+                    {t('testIntroTitle')}
+                </DialogTitle>
 
-                <DialogContent>
-                    <ModalText variant="body1" style={{ fontSize: '16px' }}>
-                        {t('testIntro1')}
-                    </ModalText>
-                    <br />
-                    <ModalText>
-                        {t('testIntro2')}
-                    </ModalText>
-                    <br />
-                    {/* <ModalText>
-                        {t('testIntro3')}
-                    </ModalText> */}
+                <DialogContent
+                    style={{
+                        marginTop: '40px',
+                        fontSize: '20px',
+                        textAlign: 'center',
+                    }}
+                >
+                    {modalStep === 1 && (
+                        <>
+                            <ModalText variant="body1" style={{ fontSize: '18px' }}>
+                                {t('testIntro1')}
+                            </ModalText>
+                            <br />
+                            <ModalText style={{ fontSize: '18px' }}>
+                                {t('testIntro2')}
+                            </ModalText>
+                        </>
+                    )}
+
+                    {modalStep === 2 && (
+                        <>
+                            <ModalText variant="body1" style={{ fontSize: '18px' }}>
+                                {t('testChooseCourseType')}
+                            </ModalText>
+                            <ButtonGroup style={{ display: 'flex', justifyContent: 'space-between', width: '100%', marginTop: '30px' }}>
+                                <CourseCustomButton
+                                    onClick={() => handleCourseTypeSelection('graduation')}
+                                    style={{ marginRight: '10px', flexGrow: 1 }}
+                                    selected={selectedButton === 'graduation'}
+                                >
+                                    {t('testGraduationButton')}
+                                </CourseCustomButton>
+                                <CourseCustomButton
+                                    onClick={() => handleCourseTypeSelection('technical')}
+                                    style={{ marginLeft: '10px', flexGrow: 1 }}
+                                    selected={selectedButton === 'technical'}
+
+                                >
+                                    {t('testTechnicalButton')}
+                                </CourseCustomButton>
+                            </ButtonGroup>
+                        </>
+                    )}
                 </DialogContent>
 
                 <DialogActions>
-                    <CustomButton onClick={handleStartTest} color="primary" style={{ justifyItems: 'center', width: '200px', height: '40px' }}>
-                        {t('testIntroButton')}
-                    </CustomButton>
+                    {modalStep === 1 ? (
+                        <><IconButton onClick={handleBeforeModalStep} style={{ marginRight: '90px'}}>
+                            <NavigateBeforeIcon style={{ fontSize: '2rem', color: '#185D8E' }} />
+                        </IconButton><IconButton onClick={handleNextModalStep} style={{marginLeft: '90px'}}>
+                            <NavigateNextIcon style={{ fontSize: '2rem', color: '#185D8E' }} />
+                        </IconButton></>
+                    ) : (
+                        <><IconButton onClick={handleBeforeModalStep} style={{ marginRight: '10px'}}>
+                            <NavigateBeforeIcon style={{ fontSize: '2rem', color: '#185D8E' }} />
+                        </IconButton>
+                        <CustomButton
+                            onClick={handleStartTest}
+                            color="primary"
+                            style={{ justifyItems: 'center', width: '200px', height: '40px', marginBottom: '10px' }}
+                            disabled={!isButtonSelected}
+                        >
+                            {t('testIntroButton')}
+                        </CustomButton>
+                        <IconButton onClick={handleNextModalStep} style={{marginLeft: '10px'}}>
+                            <NavigateNextIcon style={{ fontSize: '2rem', color: '#185D8E' }} />
+                        </IconButton></>
+                    )}
                 </DialogActions>
             </Dialog>
 

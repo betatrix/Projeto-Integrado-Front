@@ -166,6 +166,9 @@
       "testWarningCancel": "Cancelar",
       "testWarningExit": "Sair",
       "sendButton": "Enviar",
+      "testChooseCourseType": "Selecione o tipo de curso que mais combina com o que você procura: ",
+      "testGraduationButton": "Graduação",
+      "testTechnicalButton": "Técnico",
 
       "dashboardTitle": "DESCUBRA SEU CAMINHO!",
       "dashboardCard1": "Responda nosso teste e tenha acesso a seis cursos personalizados.",

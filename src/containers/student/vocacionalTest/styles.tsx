@@ -140,6 +140,30 @@ export const CustomButton = styled(Button)`
   }
 `;
 
+export const CourseCustomButton = styled(Button)<{ selected?: boolean }>`
+  &.MuiButton-root {
+    background: #f7fbff;
+    box-shadow: 3px 3px 0px 1px #B9D4F8;
+    border-radius: 10px;
+    height: 100px;
+    color: #185D8E;
+    border: solid;
+    font-weight: bold;
+    width: 200px;
+    padding: 0.7rem 1.05rem;
+    margin-top: 10px;
+
+    &:hover {
+      background-color: #a7cae3;
+      transform: scale(1.1);
+    }
+
+    ${({ selected }) => selected && `
+      background-color: #a7cae3;
+      transform: scale(1.1);
+    `}
+  }
+`;
 // Background -------------------------------------------------------
 const globalBoxStyles: SxProps<Theme> = (theme) => ({
     minHeight: '90vh',
