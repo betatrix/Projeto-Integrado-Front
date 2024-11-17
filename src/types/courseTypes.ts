@@ -14,9 +14,8 @@ export type CourseForm = {
     tipo: TipoInstituicaoCurso;
     possiveisCarreiras?: string[];
     area?: Area;
-    // areaId?:number;
-    // perfil?: string; // Alterado para string
-    // perfilId?: number; // Você pode remover este campo se ele não for mais necessário
+    // perfil?: string;
+    // perfilId?: number;
     id: number;
     ativo?: string | boolean | number;
   };
@@ -24,13 +23,12 @@ export type CourseForm = {
 export type CourseFormCad = {
     descricao: string;
     empregabilidade: string;
-    // empregabilidade: NivelEmpregabilidade;
     tipo: TipoInstituicaoCurso;
     possiveisCarreiras?: string[];
     area?: Area;
     areaId?:number;
-    perfil?: string; // Alterado para string
-    perfilId?: number; // Você pode remover este campo se ele não for mais necessário
+    perfil?: string;
+    perfilId?: number;
     ativo?: string | boolean;
   };
 

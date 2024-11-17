@@ -115,6 +115,7 @@ const CourseManagement: React.FC = () => {
     };
 
     const handleEditModalOpen = (course: CourseForm) => {
+        console.log('Curso selecionado para edição:', course);
         setSelectedCourse({
             ...course,
             ativo: course.ativo ? 'Ativo' : 'Inativo'

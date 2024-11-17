@@ -185,7 +185,7 @@ const InstitutionManagement: React.FC = () => {
     const [showErrorMessage, setShowErrorMessage] = useState(false);
     const [policyCourseModalOpen, setPolicyCourseModalOpen] = useState(false);
     // Estados para o modal de políticas e cursos
-    const [courses, setCourses] = useState<CourseForm[]>([]);
+    const [courses, setCourses] = useState<CourseForm[]>([]); /////////////////////////////////////////////////////////////////////////////////////////////
     const [policies, setPolicies] = useState<PolicesInstitutionForm[]>([]);
     const [selectedCourses, setSelectedCourses] = useState<{ [key: number]: { notaMec: number | null } }>({});
     const [selectedPolicies, setSelectedPolicies] = useState<number[]>([]);

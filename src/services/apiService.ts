@@ -12,6 +12,11 @@ export const buscarEntidadesAtivas = async (entidade: string) => {
     return response.data;
 };
 
+export const buscarEntidades = async (entidade: string) => {
+    const response = await axios.get(`${API_URL}/${entidade}`);
+    return response.data;
+};
+
 export const buscarEntidadePorId = async (entidade: string, id: number) => {
     const response = await axios.get(`${API_URL}/${entidade}/${id}`);
     return response.data;

@@ -457,7 +457,7 @@ const AdminManagement: React.FC = () => {
                         textAlign: 'justify',
                         mb: '10px'
                     }}>
-                        Você está prestes a excluir {selectedAdmin?.nome}. Deseja Continuar?
+                        Você está prestes a excluir o administrador {selectedAdmin?.nome}. Deseja Continuar?
                     </Typography>
                     <Grid container spacing={2} justifyContent="center" sx={{ mt: '10px' }}>
                         <Grid item display="flex" justifyContent="center">

@@ -404,28 +404,66 @@ const UserManagement: React.FC = () => {
                         textAlign: 'center'
                     }}
                 >
-                    <Typography variant="h6" gutterBottom>
+                    <Typography variant="h6" gutterBottom sx={{
+                        color: '#185D8E',
+                        fontFamily: 'Roboto, monospace',
+                        marginTop: 1,
+                        fontWeight: 'bold',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        textAlign: 'justify',
+                        mb: '5px'
+                    }}>
                         Confirmar Exclusão
                     </Typography>
-                    <Typography variant="body1" sx={{ marginBottom: 2 }}>
-                        Tem certeza de que deseja excluir o usuário {selectedUser?.nome}?
+                    <Typography id="modal-modal-description" sx={{
+                        mt: 2,
+                        fontFamily: 'Poppins, sans-serif',
+                        textAlign: 'justify',
+                        mb: '10px'
+                    }}>
+                    Você está prestes a excluir o usuário {selectedUser?.nome}. Deseja Continuar?
                     </Typography>
-                    <Grid container spacing={2} justifyContent="center">
-                        <Grid item>
+                    <Grid container spacing={2} justifyContent="center" sx={{ mt: '10px' }}>
+                        <Grid item display="flex" justifyContent="center">
                             <Button
                                 variant="contained"
                                 color="secondary"
                                 onClick={handleDeleteUser}
+                                sx={{
+                                    height: '35px',
+                                    fontSize: '17px',
+                                    fontFamily: 'Roboto, monospace',
+                                    color: 'white',
+                                    backgroundColor: '#185D8E',
+                                    fontWeight: 'bold',
+                                    '&:hover': {
+                                        backgroundColor: '#104A6F',
+                                        color: 'white',
+                                    }
+                                }}
                             >
-                                Confirmar
+                                Sim
                             </Button>
                         </Grid>
-                        <Grid item>
+                        <Grid item display="flex" justifyContent="center">
                             <Button
                                 variant="outlined"
                                 onClick={handleDeleteModalClose}
+                                sx={{
+                                    height: '35px',
+                                    fontSize: '17px',
+                                    fontFamily: 'Roboto, monospace',
+                                    color: 'white',
+                                    backgroundColor: '#185D8E',
+                                    fontWeight: 'bold',
+                                    '&:hover': {
+                                        backgroundColor: '#104A6F',
+                                        color: 'white',
+                                    }
+                                }}
                             >
-                                Cancelar
+                                Não
                             </Button>
                         </Grid>
                     </Grid>
