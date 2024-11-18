@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../../components/vocacionalTestHeader';
-import { IconButton, Box, Dialog, DialogActions, DialogContent, DialogTitle, Button as MuiButton } from '@mui/material';
+import { IconButton, Box, Dialog, DialogActions, DialogContent, DialogTitle} from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import { CenteredDiv, ButtonGroup, StyledLinearProgress, Global, IntroText, homePageBoxStyles, StyledTypography,
-    CustomButton, ModalText, BackButton, CustomLink, CourseCustomButton } from './styles';
+import { CenteredDiv, ButtonGroup, Global, homePageBoxStyles, StyledTypography,
+    CustomButton, ModalText, BackButton, CustomLink, CourseCustomButton,
+    StyledLinearProgress} from './styles';
 import axios from 'axios';
 import AnswerOptions from './answerOptions';
 import { AuthContext } from '../../../contexts/auth';
@@ -39,7 +40,9 @@ const VocacionalTest: React.FC = () => {
     const [usuario, setUsuario] = useState<Usuario | null>(null);
     const [teste, setTeste] = useState<Teste | null>(null);
     const [showModal, setShowModal] = useState(true);
-    const [showExitModal, setShowExitModal] = useState(false);
+    const [selectedButton, setSelectedButton] = useState<string | null>(null);
+    const [modalStep, setModalStep] = useState(1);
+    const [isButtonSelected, setIsButtonSelected] = useState(false);
 
     useEffect(() => {
         const fetchQuestions = async () => {
@@ -137,24 +140,6 @@ const VocacionalTest: React.FC = () => {
         setShowModal(false);
     };
 
-    const confirmExit = () => {
-        setShowExitModal(false);
-        navigate('/estudante');
-    };
-
-    const cancelExit = () => {
-        setShowExitModal(false);
-    };
-
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [selectedButton, setSelectedButton] = useState<string | null>(null);
-
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [modalStep, setModalStep] = useState(1);
-
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [isButtonSelected, setIsButtonSelected] = useState(false);
-
     const handleNextModalStep = () => {
         if (modalStep < 2) {
             setModalStep(modalStep + 1);
@@ -174,8 +159,8 @@ const VocacionalTest: React.FC = () => {
     };
 
     const allQuestionsAnswered = answers.every((answer) => answer !== 0);
-    const isAnswerSelected = answers[currentQuestion] !== 0;
-    const progress = ((currentQuestion + 1) / questions.length) * 100;
+    // const isAnswerSelected = answers[currentQuestion] !== 0;
+    // const progress = ((currentQuestion + 1) / questions.length) * 100;
 
     return (
         <>
@@ -195,47 +180,72 @@ const VocacionalTest: React.FC = () => {
 
             <Box sx={homePageBoxStyles}>
                 <CenteredDiv>
-                    <IntroText variant="body1" align="center" paragraph>
+                    {/* <IntroText variant="body1" align="center" paragraph>
                         {t('testInstruction')}
-                    </IntroText>
-                    <StyledLinearProgress variant="determinate" value={progress} />
-                    <StyledTypography variant="h6" gutterBottom>
+                    </IntroText> */}
+
+                    <StyledTypography variant="h6" gutterBottom style={{marginTop: '15px', marginBottom: '10px'}}>
                         {i18n.language === 'en' ? questions[currentQuestion]?.textoIngles : questions[currentQuestion]?.texto}
                     </StyledTypography>
+
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            marginTop: '15px'
+                        }}
+                    >
+                        <IconButton
+                            onClick={handlePrev}
+                            style={{ fontSize: '3rem', left: -170, top: 25}}
+                            disabled={currentQuestion === 0}
+                        >
+                            <NavigateBeforeIcon fontSize="inherit" />
+                        </IconButton>
+
+                        <img
+                            src="src/assets/img/1pergunta.jpg"
+                            alt="Descrição da imagem"
+                            style={{
+                                maxWidth: '550px',
+                                height: 'auto',
+                                borderRadius: '20px',
+                                display: 'block',
+                                margin: '0 auto'
+                            }}
+                        />
+
+                        <IconButton
+                            onClick={handleNext}
+                            style={{ fontSize: '3rem', right: -170, top: 25 }}
+                            disabled={answers[currentQuestion] === 0}
+                        >
+                            <NavigateNextIcon fontSize="inherit"/>
+                        </IconButton>
+                    </Box>
+
                     <AnswerOptions
                         value={answers[currentQuestion]}
                         onChange={handleAnswerChange}
                         disabled={!questions[currentQuestion]?.ativo}
                     />
-                    <ButtonGroup>
-                        <IconButton
-                            onClick={handlePrev}
-                            disabled={currentQuestion === 0}
-                            style={{ fontSize: '3rem' }}
-                        >
-                            <NavigateBeforeIcon fontSize="inherit" />
-                        </IconButton>
 
-                        {currentQuestion === questions.length - 1 && allQuestionsAnswered ? (
-                            <CustomButton
-                                onClick={handleSubmit}
-                            >
-                                {t('sendButton')}
-                            </CustomButton>
-                        ) : (
-                            <IntroText marginTop={'20px'}>
-                                {currentQuestion + 1} - {questions.length}
-                            </IntroText>
-                        )}
-
-                        <IconButton
-                            onClick={handleNext}
-                            disabled={currentQuestion === questions.length - 1 || !isAnswerSelected}
-                            style={{ fontSize: '3rem' }}
+                    {currentQuestion === questions.length - 1 && allQuestionsAnswered ? (
+                        <CustomButton
+                            onClick={handleSubmit}
                         >
-                            <NavigateNextIcon fontSize="inherit" />
-                        </IconButton>
-                    </ButtonGroup>
+                            {t('sendButton')}
+                        </CustomButton>
+                    ) : (
+                        <Box sx={{ width: '100%', marginTop: '10px', display: 'flex', justifyContent: 'center' }}>
+                            <StyledLinearProgress
+                                variant="determinate"
+                                value={(currentQuestion + 1) / questions.length * 100}
+                            />
+                        </Box>
+                    )}
+
                 </CenteredDiv>
             </Box>
 
@@ -316,58 +326,41 @@ const VocacionalTest: React.FC = () => {
                 </DialogContent>
 
                 <DialogActions>
-                    {modalStep === 1 ? (
-                        <><IconButton onClick={handleBeforeModalStep} style={{ marginRight: '90px'}}>
-                            <NavigateBeforeIcon style={{ fontSize: '2rem', color: '#185D8E' }} />
-                        </IconButton><IconButton onClick={handleNextModalStep} style={{marginLeft: '90px'}}>
-                            <NavigateNextIcon style={{ fontSize: '2rem', color: '#185D8E' }} />
-                        </IconButton></>
-                    ) : (
-                        <><IconButton onClick={handleBeforeModalStep} style={{ marginRight: '10px'}}>
-                            <NavigateBeforeIcon style={{ fontSize: '2rem', color: '#185D8E' }} />
-                        </IconButton>
-                        <CustomButton
-                            onClick={handleStartTest}
-                            color="primary"
-                            style={{ justifyItems: 'center', width: '200px', height: '40px', marginBottom: '10px' }}
-                            disabled={!isButtonSelected}
-                        >
-                            {t('testIntroButton')}
-                        </CustomButton>
-                        <IconButton onClick={handleNextModalStep} style={{marginLeft: '10px'}}>
-                            <NavigateNextIcon style={{ fontSize: '2rem', color: '#185D8E' }} />
-                        </IconButton></>
-                    )}
-                </DialogActions>
-            </Dialog>
+                    <IconButton
+                        onClick={handleBeforeModalStep}
+                        style={{ marginRight: '5px' }}
+                        disabled={modalStep === 1}
+                    >
+                        <NavigateBeforeIcon style={{ fontSize: '2rem', color: modalStep === 1 ? 'gray' : '#185D8E' }} />
+                    </IconButton>
 
-            {/* Modal de Confirmação de Saída */}
-            <Dialog
-                open={showExitModal}
-                onClose={cancelExit}
-                PaperProps={{
-                    style: {
-                        width: '90%',
-                        maxWidth: '400px',
-                        margin: 'auto',
-                        borderRadius: '10px',
-                        padding: '20px',
-                    },
-                }}
-            >
-                <DialogTitle style={{ textAlign: 'center', fontSize: '18px', marginBottom: '15px' }}>{t('testWarningTitle')}</DialogTitle>
-                <DialogContent>
-                    <ModalText variant="body1" style={{ fontSize: '16px' }}>
-                        {t('testWarning')}
-                    </ModalText>
-                </DialogContent>
-                <DialogActions>
-                    <MuiButton onClick={confirmExit} color="primary">
-                        {t('testWarningExit')}
-                    </MuiButton>
-                    <MuiButton onClick={cancelExit} color="secondary">
-                        {t('testWarningCancel')}
-                    </MuiButton>
+                    {modalStep === 1 ? (
+                        <IconButton
+                            onClick={handleNextModalStep}
+                            style={{ marginLeft: '203px' }}
+                        >
+                            <NavigateNextIcon style={{ fontSize: '2rem', color: '#185D8E' }} />
+                        </IconButton>
+                    ) : (
+                        <>
+                            <CustomButton
+                                onClick={handleStartTest}
+                                color="primary"
+                                style={{ justifyItems: 'center', width: '200px', height: '40px', marginBottom: '10px' }}
+                                disabled={!isButtonSelected}
+                            >
+                                {t('testIntroButton')}
+                            </CustomButton>
+
+                            <IconButton
+                                onClick={handleNextModalStep}
+                                style={{ marginLeft: '8px' }}
+                                disabled={modalStep === 2}
+                            >
+                                <NavigateNextIcon style={{ fontSize: '2rem', color: modalStep === 2 ? 'gray' : '#185D8E' }} />
+                            </IconButton>
+                        </>
+                    )}
                 </DialogActions>
             </Dialog>
         </>

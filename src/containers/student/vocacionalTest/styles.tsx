@@ -51,7 +51,7 @@ export const CenteredDiv = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 600px;
+    height: 650px;
     width: 90%; 
     max-width: 1200px;
     background-color: white;
@@ -59,8 +59,8 @@ export const CenteredDiv = styled.div`
     padding: 20px; 
     /* box-shadow: 5px 5px 1px #185D8E; */
     margin: auto;
-    max-height: 600px;
-    margin-top: 9%;
+    max-height: 650px;
+    margin-top: 7%;
     border: solid #185D8E; 
     position: relative; /* Para usar posição absoluta no filho */
 `;
@@ -83,7 +83,6 @@ export const RadioContainer = styled.div`
 
 export const StyledLinearProgress = styled(LinearProgress)`
     width: 70%;
-    margin-bottom: 70px;
     
     & .MuiLinearProgress-barColorPrimary {
         background: linear-gradient(90deg, #A4BFD2 0%, #185D8E 100%); /* Cor da barra de progresso */

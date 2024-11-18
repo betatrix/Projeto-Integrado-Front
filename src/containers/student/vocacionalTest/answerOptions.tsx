@@ -17,7 +17,7 @@ const AnswerOptions: React.FC<AnswerOptionsProps> = ({ value, onChange, disabled
     ];
 
     return (
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '40px', marginBottom: '30px' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px'}}>
             {icons.map((iconData) => (
                 <Tooltip title={iconData.label} key={iconData.value}>
                     <span>
@@ -26,12 +26,13 @@ const AnswerOptions: React.FC<AnswerOptionsProps> = ({ value, onChange, disabled
                             color={value === iconData.value ? 'primary' : 'default'}
                             disabled={disabled}
                             style={{
-                                margin: '0 10px',
+                                marginLeft: '15px',
+                                marginRight: '15px',
                                 transition: 'filter 0.2s ease',
-                                filter: value === iconData.value ? 'brightness(0.7)' : 'brightness(1)', // Escurece a imagem selecionada
+                                filter: value === iconData.value ? 'brightness(0.7)' : 'brightness(1)',
                             }}
                         >
-                            <img src={iconData.src} alt={iconData.label} style={{ width: '175px', borderRadius: '8px' }} />
+                            <img src={iconData.src} alt={iconData.label} style={{ width: '85px',}} />
                         </IconButton>
                     </span>
                 </Tooltip>
