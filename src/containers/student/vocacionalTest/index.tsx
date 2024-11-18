@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../../components/vocacionalTestHeader';
-import { IconButton, Box, Dialog, DialogActions, DialogContent, DialogTitle} from '@mui/material';
+import { IconButton, Box, Dialog, DialogActions, DialogContent, DialogTitle, ThemeProvider} from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import { CenteredDiv, ButtonGroup, Global, homePageBoxStyles, StyledTypography,
     CustomButton, ModalText, BackButton, CustomLink, CourseCustomButton,
-    StyledLinearProgress} from './styles';
+    StyledLinearProgress,
+    componentTheme} from './styles';
 import axios from 'axios';
 import AnswerOptions from './answerOptions';
 import { AuthContext } from '../../../contexts/auth';
@@ -184,9 +185,12 @@ const VocacionalTest: React.FC = () => {
                         {t('testInstruction')}
                     </IntroText> */}
 
-                    <StyledTypography variant="h6" gutterBottom style={{marginTop: '15px', marginBottom: '10px'}}>
-                        {i18n.language === 'en' ? questions[currentQuestion]?.textoIngles : questions[currentQuestion]?.texto}
-                    </StyledTypography>
+                    <ThemeProvider theme={componentTheme}>
+                        <StyledTypography variant="h6" gutterBottom style={{marginTop: '15px', marginBottom: '10px'}}>
+                            {i18n.language === 'en' ? questions[currentQuestion]?.textoIngles : questions[currentQuestion]?.texto}
+                        </StyledTypography>
+
+                    </ThemeProvider>
 
                     <Box
                         sx={{
@@ -267,18 +271,20 @@ const VocacionalTest: React.FC = () => {
                     },
                 }}
             >
-                <DialogTitle
-                    style={{
-                        textAlign: 'center',
-                        fontSize: '22px',
-                        marginBottom: '15px',
-                        marginTop: '15px',
-                        fontWeight: 'bold',
-                        color: '#185D8E',
-                    }}
-                >
-                    {t('testIntroTitle')}
-                </DialogTitle>
+                <ThemeProvider theme={componentTheme}>
+                    <DialogTitle
+                        style={{
+                            textAlign: 'center',
+                            fontSize: '22px',
+                            marginBottom: '15px',
+                            marginTop: '15px',
+                            fontWeight: 'bold',
+                            color: '#185D8E',
+                        }}
+                    >
+                        {t('testIntroTitle')}
+                    </DialogTitle>
+                </ThemeProvider>
 
                 <DialogContent
                     style={{
@@ -289,21 +295,27 @@ const VocacionalTest: React.FC = () => {
                 >
                     {modalStep === 1 && (
                         <>
-                            <ModalText variant="body1" style={{ fontSize: '18px' }}>
-                                {t('testIntro1')}
-                            </ModalText>
-                            <br />
-                            <ModalText style={{ fontSize: '18px' }}>
-                                {t('testIntro2')}
-                            </ModalText>
+                            <ThemeProvider theme={componentTheme}>
+                                <ModalText variant="body1" style={{ fontSize: '18px' }}>
+                                    {t('testIntro1')}
+                                </ModalText>
+                                <br />
+                                <ModalText style={{ fontSize: '18px' }}>
+                                    {t('testIntro2')}
+                                </ModalText>
+                            </ThemeProvider>
+
                         </>
                     )}
 
                     {modalStep === 2 && (
                         <>
-                            <ModalText variant="body1" style={{ fontSize: '18px' }}>
-                                {t('testChooseCourseType')}
-                            </ModalText>
+                            <ThemeProvider theme={componentTheme}>
+                                <ModalText variant="body1" style={{ fontSize: '18px' }}>
+                                    {t('testChooseCourseType')}
+                                </ModalText>
+                            </ThemeProvider>
+
                             <ButtonGroup style={{ display: 'flex', justifyContent: 'space-between', width: '100%', marginTop: '30px' }}>
                                 <CourseCustomButton
                                     onClick={() => handleCourseTypeSelection('graduation')}

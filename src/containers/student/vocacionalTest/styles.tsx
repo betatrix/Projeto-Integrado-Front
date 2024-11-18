@@ -2,9 +2,17 @@ import styled, { createGlobalStyle } from 'styled-components';
 import { LinearProgress, Button, Typography, SxProps, Theme} from '@mui/material';
 import vocacionalTestImg from '../../../assets/img/test-background.png';
 import { Link } from 'react-router-dom';
+import { createTheme } from '@mui/material/styles';
+
+// eslint-disable-next-line react-refresh/only-export-components
+export const componentTheme = createTheme({
+    typography: {
+        fontFamily: '\'Poppins\', sans-serif',
+    },
+});
 
 export const Global = createGlobalStyle`
-  @import url('https://fonts.googleapis.com/css2?family=Exo:wght@400;600&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
   body, html, #root {
     height: 100%;
@@ -17,12 +25,15 @@ export const Global = createGlobalStyle`
     color: #030140;
     font-weight: 400;
     font-style: normal;
-    font-family: 'Exo', sans-serif;
+    font-family: 'Poppins', sans-serif;
     background-image: url(${vocacionalTestImg});
-    background-size: cover; /* Garante que a imagem cubra toda a área */
-    background-position: center; /* Centraliza a imagem */
-    background-repeat: no-repeat; /* Remove repetições */
-    background-attachment: fixed; /* Fixa o background na tela */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  * {
+    font-family: 'Poppins', sans-serif;
   }
 `;
 
