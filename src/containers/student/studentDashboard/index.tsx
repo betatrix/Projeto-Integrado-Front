@@ -125,7 +125,8 @@ const StudentDashboard: React.FC = () => {
             try {
                 if (user?.id) {
                     const profiles = await buscarPerfisRecorrentes(user.id);
-                    setRecorrentes(profiles);
+                    const profilesDescription = profiles.map((profile: { descricao: unknown; }) => profile.descricao);
+                    setRecorrentes(profilesDescription);
                     if (profiles.length > 0) {
                         // const perfilMaisRecorrente = profiles[0];
                         // const imageUrl = URL_DO_BACKEND/${perfilMaisRecorrente}.png;
