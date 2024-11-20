@@ -1,16 +1,17 @@
 import { Box, CardMedia, Grid, IconButton, Typography, useMediaQuery } from '@mui/material';
 import React, { useState } from 'react';
-import { useSwipeable } from 'react-swipeable'; // Importar a biblioteca de swipe
+import { useSwipeable } from 'react-swipeable';
 import Voquinho from '../../../assets/img/polvo-voquinho-de-oculos.png';
 import Realista from '../../../assets/img/perfil-realista.png';
-import Investigativo from '../../../assets/img/Investigativo.png';
+import Investigativo from '../../../assets/img/perfil-investigativo.png';
 import Artistico from '../../../assets/img/perfil-artistico.png';
-import Social from '../../../assets/img/Social.png';
+import Social from '../../../assets/img/perfil-social.png';
 import Empreendedor from '../../../assets/img/perfil-empreendedor.png';
 import Convencional from '../../../assets/img/perfil-convencional.png';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { BoxCardHollandStyles,
+import {
+    BoxCardHollandStyles,
     testInfBoxStyles,
     TestInfoContainerStyles,
     TestInfoContent,

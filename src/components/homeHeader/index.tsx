@@ -18,7 +18,8 @@ import {
     InfoOutlined,
     HelpOutline,
     Person2Outlined,
-    Close as CloseIcon
+    Close as CloseIcon,
+    BookOutlined
 } from '@mui/icons-material';
 import { Link as ScrollLink } from 'react-scroll';
 import { useNavigate } from 'react-router-dom';
@@ -88,6 +89,12 @@ const InitialPageHeader = () => {
                 <AssignmentIndOutlined style={{ color: '#185D8E' }} />
                 <ScrollLink to="testInformation" smooth={true} duration={500} onSetActive={handleCloseDrawer}>
                     <Button color="inherit" sx={linkButtonMobile}>{t('testInformation')}</Button>
+                </ScrollLink>
+            </ListItem>
+            <ListItem>
+                <BookOutlined style={{ color: '#185D8E' }} />
+                <ScrollLink to="sources" smooth={true} duration={500} onSetActive={handleCloseDrawer}>
+                    <Button color="inherit" sx={linkButtonMobile}>{t('sources')}</Button>
                 </ScrollLink>
             </ListItem>
             <ListItem>
@@ -166,6 +173,9 @@ const InitialPageHeader = () => {
                                 </ScrollLink>
                                 <ScrollLink to="testInformation" smooth={true} duration={500}>
                                     <Button color="inherit" sx={linkButton}>{t('testInformation')}</Button>
+                                </ScrollLink>
+                                <ScrollLink to="sources" smooth={true} duration={500}>
+                                    <Button color="inherit" sx={linkButton}>{t('sources')}</Button>
                                 </ScrollLink>
                                 <ScrollLink to="faq" smooth={true} duration={500}>
                                     <Button color="inherit" sx={linkButton}>{t('faq')}</Button>

@@ -19,7 +19,7 @@ import {
     contentResultStyle,
     IconStyles,
 } from './styles';
-import { buscarTestesDeEstudante, buscarPerfisRecorrentes,} from '../../../services/apiService';
+import { buscarTestesDeEstudante, buscarPerfisRecorrentes, buscarPerfilEstudante,} from '../../../services/apiService';
 import { AuthContext } from '../../../contexts/auth';
 import { decryptData } from '../../../services/encryptionService';
 import { useTranslation } from 'react-i18next';
@@ -35,11 +35,11 @@ import CardTravelIcon from '@mui/icons-material/CardTravel';
 import PsychologyIcon from '@mui/icons-material/Psychology';
 import CustomDrawer from '../../../components/sidemenu/CustomDrawer';
 import Footer from '../../../components/homeFooter';
-import perfilArtistico from '../../../assets/img/perfilArtistico.png';
+import perfilArtistico from '../../../assets/img/perfil-artistico.png';
 import Voquinho from '../../../assets/img/polvo-voquinho-de-oculos.png';
 
 const PROFILE_DETAILS: { [key: string]: { color: string; icon: React.ReactNode } } = {
-    'Artistico': { color: '#FF69B4', icon: <ColorLensIcon sx={IconStyles} /> },
+    'Artístico': { color: '#FF69B4', icon: <ColorLensIcon sx={IconStyles} /> },
     'Social': { color: '#7FFFD4', icon: <Diversity3Icon sx={IconStyles} /> },
     'Investigativo': { color: '#1E90FF', icon: <TravelExploreIcon sx={IconStyles} /> },
     'Empreendedor': { color: '#DC143C', icon: <PointOfSaleIcon sx={IconStyles} /> },
@@ -79,7 +79,7 @@ const StudentDashboard: React.FC = () => {
     const [sliderRef, setSliderRef] = useState<Slider | null>(null);
     // const [recorrenteImage, setRecorrenteImage] = useState<string | null>(null);
 
-    const [perfilImage, setPerfilImage] = useState<string | null>(null); // Estado para a imagem do perfil
+    const [perfilImage, setPerfilImage] = useState<string | null>(null);
 
     const authContext = useContext(AuthContext);
     const userData = authContext?.user ? decryptData(authContext.user) : null;
@@ -89,10 +89,8 @@ const StudentDashboard: React.FC = () => {
         const fetchPerfilImage = async () => {
             try {
                 if (user?.id) {
-                    const perfilData = await buscarPerfisRecorrentes(user.id);
-                    console.log('Dados do perfil recebidos:', perfilData); // Exibe a resposta completa
-                    console.log('Imagem do perfil recebida:', perfilData.imagem); //
-                    setPerfilImage(perfilData.imagem); // Define a imagem do perfil
+                    const perfilData = await buscarPerfilEstudante(user.id);
+                    setPerfilImage(perfilData.imagem);
                 }
             } catch (error) {
                 console.error('Erro ao buscar imagem do perfil do estudante:', error);
@@ -127,7 +125,8 @@ const StudentDashboard: React.FC = () => {
             try {
                 if (user?.id) {
                     const profiles = await buscarPerfisRecorrentes(user.id);
-                    setRecorrentes(profiles);
+                    const profilesDescription = profiles.map((profile: { descricao: unknown; }) => profile.descricao);
+                    setRecorrentes(profilesDescription);
                     if (profiles.length > 0) {
                         // const perfilMaisRecorrente = profiles[0];
                         // const imageUrl = URL_DO_BACKEND/${perfilMaisRecorrente}.png;
@@ -154,39 +153,30 @@ const StudentDashboard: React.FC = () => {
         arrows: false,
     };
 
-    // const generateChartData = (result: ResultItem[]) => {
-    //     const profileCounts = result.reduce((counts: { [key: string]: number }, item) => {
-    //         counts[item.perfil] = (counts[item.perfil] || 0) + 1;
-    //         return counts;
-    //     }, {});
-
-    //     return Object.entries(profileCounts).map(([name, value]) => ({ name, value }));
-    // };
-
     if (!authContext) {
         return <div>Não conseguiu pegar o contexto.</div>;
     }
     const showLockIcon = testHistory.length === 0;
 
     const legendStyle = {
-        itemMarkHeight: isSmallScreen ? 10 : isMediumScreen ? 18 : 18,
-        itemMarkWidth: isSmallScreen ? 10 : isMediumScreen ? 18 : 18,
+        itemMarkHeight: isSmallScreen ? 13 : isMediumScreen ? 18 : 18,
+        itemMarkWidth: isSmallScreen ? 13 : isMediumScreen ? 18 : 18,
         itemGap: isSmallScreen ? 5 : isMediumScreen ? 8 : 10,
-        padding: isSmallScreen ? -55 : isMediumScreen ? -70 : -80, // Ajusta o padding conforme o tamanho da tela
+        padding: isSmallScreen ? -55 : isMediumScreen ? -70 : -80,
         labelStyle: {
             fontFamily: 'Roboto, monospace',
-            fontSize: isSmallScreen ? 12 : isMediumScreen ? 16 : 20, // Tamanhos de fonte responsivos
+            fontSize: isSmallScreen ? 14 : isMediumScreen ? 16 : 20,
             fontWeight: 'bold',
             fill: '#0B2A40',
         },
     };
 
     const chartConfig = {
-        outerRadius: isSmallScreen ? 60 : isMediumScreen ? 83.125 : isLargeScreen ? 118.75 : 95,
-        cx: isSmallScreen ? 18 : isMediumScreen ? 113.75 : isLargeScreen ? 80 : 180,
+        outerRadius: isSmallScreen ? 65 : isMediumScreen ? 83.125 : isLargeScreen ? 118.75 : 95,
+        cx: isSmallScreen ? 18 : isMediumScreen ? 30 : isLargeScreen ? 80 : 180,
         cy: isSmallScreen ? 60 : isMediumScreen ? 79.45 : isLargeScreen ? 113.5 : 90,
-        width: isSmallScreen ? 150 : isMediumScreen ? 227.5 : isLargeScreen ? 325 : 260,
-        height: isSmallScreen ? 130 : isMediumScreen ? 175 : isLargeScreen ? 250 : 200,
+        width: isSmallScreen ? 180 : isMediumScreen ? 227.5 : isLargeScreen ? 325 : 260,
+        height: isSmallScreen ? 140 : isMediumScreen ? 175 : isLargeScreen ? 250 : 200,
         ArrowBackIosIcon: isSmallScreen ? 60 : isMediumScreen ? 83.125 : isLargeScreen ? 118.75 : 95,
     };
 
@@ -236,33 +226,34 @@ const StudentDashboard: React.FC = () => {
                                     display: 'flex',
                                     justifyContent: 'center',
                                     alignItems: 'center',
-                                    width: '34.375rem',
-                                    height: '20rem',
+                                    width: '33vw',
+                                    height: '22rem',
                                     borderRadius: '10px',
-
                                     backgroundColor: 'rgb(141, 169, 189)',
-                                    [theme.breakpoints.down('sm')]: {
-                                        width: '18rem',
-                                        height: '11rem',
-                                        marginBottom: '1rem',
-                                        borderRadius: '5px',
-                                    },
                                     [theme.breakpoints.down('md')]: {
-                                        width: '18rem',
-                                        height: '11rem',
-                                        marginBottom: '1rem',
+                                        width: '26rem',
+                                        height: '16rem',
+                                        marginBottom: '2rem',
                                         borderRadius: '5px',
                                     },
+                                    [theme.breakpoints.down('sm')]: {
+                                        width: '21rem',
+                                        height: '15rem',
+                                        marginBottom: '2rem',
+                                        borderRadius: '5px',
+                                    }
                                 }}>
                                     {showLockIcon ? (
                                         <Paper sx={{
                                             display: 'flex', justifyContent: 'center', alignItems: 'center',
                                             padding: '2.5rem',
-                                            width: '31.25rem',
-                                            height: '20rem',
+                                            width: '33vw',
+                                            height: '22rem',
                                             backgroundColor: ' rgb(141, 169, 189)', boxShadow: 'none', [theme.breakpoints.down('sm')]: {
+                                                width: '95px',
                                                 height: '11rem',
                                             }, [theme.breakpoints.down('md')]: {
+                                                width: '95px',
                                                 height: '11rem',
                                             },
 
@@ -272,7 +263,8 @@ const StudentDashboard: React.FC = () => {
                                                 color: '#0B2A40',
                                                 [theme.breakpoints.down('sm')]: {
                                                     fontSize: 70,
-                                                }, [theme.breakpoints.down('md')]: {
+                                                },
+                                                [theme.breakpoints.down('md')]: {
                                                     fontSize: 70,
                                                 },
                                             }} />
@@ -287,13 +279,13 @@ const StudentDashboard: React.FC = () => {
                                                     loading="lazy"
                                                     onError={() => console.log('Erro ao carregar imagem:', perfilImage)}
                                                     sx={{
-                                                        width: '139.25px',
-                                                        [theme.breakpoints.down('sm')]: {
-                                                            width: '80px',
-                                                        },
+                                                        width: '130.25px',
                                                         [theme.breakpoints.down('md')]: {
-                                                            width: '80px',
+                                                            width: '95px',
                                                         },
+                                                        [theme.breakpoints.down('sm')]: {
+                                                            width: '95px',
+                                                        }
                                                     }}
                                                 />
                                             </Paper>
@@ -302,7 +294,7 @@ const StudentDashboard: React.FC = () => {
                                                     <Paper key={index} sx={paperPerfisStyles}>
                                                         <Box display="flex" alignItems="center">
                                                             <Box sx={{ fontSize: 'small' }}>
-                                                                {PROFILE_DETAILS[profile].icon}
+                                                                {PROFILE_DETAILS[profile] ? PROFILE_DETAILS[profile].icon : null}
                                                             </Box>
                                                             <Typography sx={contentPerfilStyle(theme)} >
                                                                 {profile}
@@ -317,14 +309,15 @@ const StudentDashboard: React.FC = () => {
                             </Grid>
                         </Box>
                         <Box sx={{
-                            width: '15.8rem',
+                            width: '6vw',
                             [theme.breakpoints.down('sm')]: {
                                 width: '0px',
                             },
                             [theme.breakpoints.down('md')]: {
                                 width: '0px',
                             },
-                        }}></Box>
+                        }}>
+                        </Box>
                         <Grid item sx={gridItem2Styles}>
                             <Box sx={{ alignItems: 'center', textAlign: 'center' }}>
                                 <Typography sx={titleResultStyle} component="div">

@@ -99,7 +99,7 @@ const Login: React.FC = () => {
                     <Typography sx={paragraph}>{t('loginText')}</Typography>
 
                     <Formik initialValues={initialValues} onSubmit={handleSubmit}>
-                        {({ handleChange, handleBlur, handleSubmit, values }) => (
+                        {({ handleChange, isSubmitting, handleBlur, handleSubmit, values }) => (
                             <Box component="form" sx={formContainer} onSubmit={handleSubmit}>
                                 <FormControl variant="filled">
                                     <InputLabel htmlFor="login" sx={customInputLabel}>{t('loginField1')}</InputLabel>
@@ -147,12 +147,12 @@ const Login: React.FC = () => {
                                 </FormControl>
 
                                 <FormControl>
-                                    <Button sx={loginButton} type="submit">
-                                        {loading ? <CircularProgress size={24} color="inherit" /> : t('loginButton')}
+                                    <Button sx={loginButton} component="button" type="submit" disabled={isSubmitting}>
+                                        {loading ? <CircularProgress size={35} color="inherit" /> : t('loginButton')}
                                     </Button>
                                 </FormControl>
 
-                                {error && <div>{error}</div>}
+                                {error && <Box sx={{color:'red'}}>{error}</Box>}
                             </Box>
                         )}
                     </Formik>

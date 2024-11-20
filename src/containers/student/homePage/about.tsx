@@ -6,7 +6,7 @@ import {
     typographyBodyStyles,
     typographyAboutTitleStyles,
     gridAboutContainerStyles,
-    container,
+    containerAbout,
 } from './styles';
 import aboutImage from '../../../assets/img/menino-sobre-nos.png';
 import { useTranslation } from 'react-i18next';
@@ -18,7 +18,7 @@ export const About: React.FC = () => {
     return (
         <>
             <Box sx={aboutBoxStyles}>
-                <Box sx={container}>
+                <Box sx={containerAbout}>
                     <Box>
                         <Grid alignItems="left" justifyContent="left" sx={gridAboutContainerStyles}>
                             <Grid item xs={12} md={5} sx={gridItemTextStyles}>
@@ -35,8 +35,8 @@ export const About: React.FC = () => {
                         </Grid>
                     </Box>
                     {!isMobile && (
-                        <Box>
-                            <img src={aboutImage} alt="Imagem ilustrativa" style={{ width: '40%', marginLeft: '15rem', padding: '0rem 1rem', }} />
+                        <Box sx={{ marginRight:'5rem' }}>
+                            <img src={aboutImage} alt="Imagem ilustrativa" style={{ width: '90%' }} />
                         </Box>
                     )
                     }
