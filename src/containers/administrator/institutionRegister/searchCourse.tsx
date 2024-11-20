@@ -315,16 +315,31 @@ export const BuscaCurso: React.FC = () => {
                         borderRadius: '5px'
                     }}
                 >
-                    <Typography variant="h6" gutterBottom sx={{ textAlign: 'center', fontWeight: 'bold' }}>
+                    <Typography variant="h6" component="h2" gutterBottom sx={{
+                        color: '#185D8E',
+                        fontFamily: 'Roboto, monospace',
+                        marginTop: 1,
+                        fontWeight: 'bold',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        textAlign: 'justify',
+                        mb: '5px'
+                    }}>
                         Confirmação
                     </Typography>
-                    <Typography variant="body1" gutterBottom sx={{ marginBottom: '20px', textAlign: 'center' }}>
+                    <Typography variant="body1" gutterBottom sx={{
+                        mt: 2,
+                        fontFamily: 'Poppins, sans-serif',
+                        textAlign: 'justify',
+                        mb: '10px'
+                    }}>
                         Você está prestes a adicionar os cursos selecionados à instituição.
                         Deseja continuar?
                     </Typography>
-                    <Grid container spacing={2} justifyContent="space-between">
-                        <Grid item xs={6} display="flex" justifyContent="center">
-                            <Button variant="contained" onClick={handleConfirmCourses} sx={{
+                    <Grid container spacing={2} justifyContent="center"
+                        sx={{ mt: 2 }}>
+                        <Grid item >
+                            <Button variant="contained" color="primary" onClick={handleConfirmCourses} sx={{
                                 height: '35px',
                                 fontSize: '17px',
                                 fontFamily: 'Roboto, monospace',
@@ -339,7 +354,7 @@ export const BuscaCurso: React.FC = () => {
                                 Sim
                             </Button>
                         </Grid>
-                        <Grid item xs={6} display="flex" justifyContent="center">
+                        <Grid item>
                             <Button variant="contained" onClick={handleCloseConfirmModal} sx={{
                                 height: '35px',
                                 fontSize: '17px',

@@ -14,7 +14,12 @@ import {
     StepLabel,
     Grid,
     Modal,
-    InputAdornment
+    InputAdornment,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogContentText,
+    DialogActions
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { useInstitution } from '../../../context/institutionContext';
@@ -41,6 +46,7 @@ export const BuscaPoliticas: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(false);
     const [confirmModalOpen, setConfirmModalOpen] = useState(false);
+    const [finalModalOpen, setFinalModalOpen] = useState(false);
 
     // useEffect(() => {
     //     const fetchPolicies = async () => {
@@ -130,7 +136,8 @@ export const BuscaPoliticas: React.FC = () => {
 
             if (responses?.length > 0) {
                 // alert('Políticas cadastradas com sucesso na Instituição');
-                navigate('/gerenciamento-instituicao');
+                setFinalModalOpen(true); // Exibe o modal final
+                // navigate('/gerenciamento-instituicao');
             } else {
                 alert('Erro ao cadastrar políticas!');
             }
@@ -139,6 +146,11 @@ export const BuscaPoliticas: React.FC = () => {
             console.error('Erro ao cadastrar políticas na instituição:', error);
         }
         setConfirmModalOpen(false);
+    };
+
+    const handleCloseFinalModal = () => {
+        setFinalModalOpen(false);
+        navigate('/gerenciamento-instituicao');
     };
 
     return (
@@ -240,14 +252,31 @@ export const BuscaPoliticas: React.FC = () => {
                     position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
                     bgcolor: 'background.paper', boxShadow: 24, p: 4, width: '80%', maxWidth: 400, borderRadius: '5px'
                 }}>
-                    <Typography variant="h6" gutterBottom sx={{ textAlign: 'center', fontWeight: 'bold' }}>
+                    <Typography variant="h6" gutterBottom component="h2" sx={{
+                        color: '#185D8E',
+                        fontFamily: 'Roboto, monospace',
+                        marginTop: 1,
+                        fontWeight: 'bold',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        textAlign: 'justify',
+                        mb: '5px'
+                    }}>
                         Confirmação
                     </Typography>
-                    <Typography variant="body1" gutterBottom sx={{ marginBottom: '20px', textAlign: 'center' }}>
+                    <Typography gutterBottom sx={{
+                        mt: 2,
+                        fontFamily: 'Poppins, sans-serif',
+                        textAlign: 'justify',
+                        mb: '10px'
+                    }}>
                         Você está prestes a adicionar as políticas selecionadas à instituição. Deseja continuar?
                     </Typography>
-                    <Grid container spacing={8} justifyContent='space-between'>
-                        <Grid item xs={6} display="flex" justifyContent="center">
+                    <Grid container
+                        spacing={2}
+                        justifyContent="center"
+                        sx={{ mt: 2 }}>
+                        <Grid item>
                             <Button variant='contained' onClick={handleConfirmPolicies} sx={{
                                 height: '35px',
                                 fontSize: '17px',
@@ -261,7 +290,7 @@ export const BuscaPoliticas: React.FC = () => {
                                 }
                             }}>Sim</Button>
                         </Grid>
-                        <Grid item xs={6} display="flex" justifyContent="center">
+                        <Grid item>
                             <Button variant='contained' onClick={handleCloseConfirmModal} sx={{
                                 height: '35px',
                                 fontSize: '17px',
@@ -278,6 +307,46 @@ export const BuscaPoliticas: React.FC = () => {
                     </Grid>
                 </Box>
             </Modal>
+
+            {/* Modal de Confirmação de Cadstro Completo */}
+            <Dialog
+                open={finalModalOpen}
+                onClose={handleCloseFinalModal}
+                aria-labelledby="final-modal-title"
+                aria-describedby="final-modal-description"
+            >
+                <DialogTitle id="final-modal-title" variant="h6" gutterBottom sx={{ textAlign: 'center', fontWeight: 'bold' }}>
+                    Confirmação
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="final-modal-description" variant="h6" gutterBottom sx={{ textAlign: 'center', fontWeight: 'bold', fontFamily: 'Roboto, monospace' }}>
+                        Instituição cadastrada!
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+                        <Button
+                            onClick={handleCloseFinalModal}
+                            sx={{
+                                textAlign: 'center',
+                                height: '35px',
+                                fontSize: '17px',
+                                fontFamily: 'Roboto, monospace',
+                                color: 'white',
+                                backgroundColor: '#185D8E',
+                                fontWeight: 'bold',
+                                marginBottom: '10px',
+                                '&:hover': {
+                                    backgroundColor: '#104A6F',
+                                    color: 'white',
+                                },
+                            }}
+                        >
+                            OK
+                        </Button>
+                    </Box>
+                </DialogActions>
+            </Dialog>
 
             <Footer />
         </>

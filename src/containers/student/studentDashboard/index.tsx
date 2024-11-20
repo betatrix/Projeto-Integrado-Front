@@ -19,7 +19,7 @@ import {
     contentResultStyle,
     IconStyles,
 } from './styles';
-import { buscarTestesDeEstudante, buscarPerfisRecorrentes, buscarPerfilEstudante } from '../../../services/apiService';
+import { buscarTestesDeEstudante, buscarPerfisRecorrentes,} from '../../../services/apiService';
 import { AuthContext } from '../../../contexts/auth';
 import { decryptData } from '../../../services/encryptionService';
 import { useTranslation } from 'react-i18next';
@@ -89,7 +89,7 @@ const StudentDashboard: React.FC = () => {
         const fetchPerfilImage = async () => {
             try {
                 if (user?.id) {
-                    const perfilData = await buscarPerfilEstudante(user.id);
+                    const perfilData = await buscarPerfisRecorrentes(user.id);
                     console.log('Dados do perfil recebidos:', perfilData); // Exibe a resposta completa
                     console.log('Imagem do perfil recebida:', perfilData.imagem); //
                     setPerfilImage(perfilData.imagem); // Define a imagem do perfil
@@ -284,6 +284,7 @@ const StudentDashboard: React.FC = () => {
                                                     component="img"
                                                     src={perfilImage || perfilArtistico}
                                                     alt="Perfil do Estudante"
+                                                    loading="lazy"
                                                     onError={() => console.log('Erro ao carregar imagem:', perfilImage)}
                                                     sx={{
                                                         width: '139.25px',

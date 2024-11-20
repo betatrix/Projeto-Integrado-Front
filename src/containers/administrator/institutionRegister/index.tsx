@@ -1,5 +1,5 @@
 import React from 'react';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, } from 'formik';
 import { TextField, Select } from 'formik-mui';
 import { Button, Box, Typography, Grid, Paper, MenuItem, Stepper, StepLabel } from '@mui/material';
 import Step from '@mui/material/Step';
@@ -10,7 +10,6 @@ import { useNavigate } from 'react-router-dom';
 import { cadastrarInstituicao } from '../../../services/institutionService';
 import AdminHeader from '../../../components/adminHeader';
 import Footer from '../../../components/homeFooter';
-// import { TipoInstituicaoCurso } from '../../../types/institutionTypes';
 interface FormValues {
     nome: string;
     site: string;
@@ -29,9 +28,9 @@ interface FormValues {
     };
 }
 const tipoInstituicao = [
-    { label: 'Ensino Superior', value: 'SUPERIOR' },
-    { label: 'Ensino Técnico', value: 'TECNICO' },
-    { label: 'Ensino Técnico e Superior', value: 'AMBOS' },
+    { label: 'Superior', value: 'SUPERIOR' },
+    { label: 'Técnico', value: 'TECNICO' },
+    { label: 'Ambos', value: 'AMBOS' },
 ];
 
 export const CadastroInstituicao: React.FC = () => {
@@ -71,7 +70,7 @@ export const CadastroInstituicao: React.FC = () => {
             .nullable()
             .typeError('A nota deve ser um número')
             .min(1, 'A nota deve ser no mínimo 1')
-            .max(10, 'A nota deve ser no máximo 5')
+            .max(10, 'A nota deve ser no máximo 10')
             .required('A nota é obrigatória'),
         sigla: Yup.string()
             .matches(/^[A-Z]+$/, 'A sigla deve estar em letras maiúsculas')
@@ -210,6 +209,32 @@ export const CadastroInstituicao: React.FC = () => {
                                                             sx={{ marginBottom: 80 }}
                                                         />
                                                     </Grid>
+                                                    <Grid item xs={12}>
+
+                                                        <Box sx={{
+                                                            display: 'grid',
+                                                            width: '100%',
+                                                            marginLeft: '7px',
+                                                        }}>
+
+                                                            <Field
+                                                                variant="filled"
+                                                                component={Select}
+                                                                name="tipo"
+                                                                label="Tipo de Instituição"
+                                                                displayEmpty
+                                                                fullWidth
+                                                                inputProps={{ 'aria-label': 'Tipo de Instituição' }}
+                                                            >
+                                                                {tipoInstituicao.map((option) => (
+                                                                    <MenuItem key={option.value} value={option.value}>
+                                                                        {option.label}
+                                                                    </MenuItem>
+                                                                ))}
+                                                            </Field>
+                                                        </Box>
+
+                                                    </Grid>
                                                     <Grid item xs={6}>
                                                         <Field
                                                             component={TextField}
@@ -235,43 +260,6 @@ export const CadastroInstituicao: React.FC = () => {
                                                         />
                                                     </Grid>
                                                     {/* Novo Campo - Tipo de Instituição */}
-                                                    <Grid item xs={12} >
-                                                        <Grid container alignItems="center" >
-                                                            {/* Texto de instrução ao lado */}
-                                                            {/* <Typography variant="body1" color="textSecondary" sx={{ marginLeft: '5px', marginTop: '20px' }}>
-                                                                Selecione o Tipo de Ensino*
-                                                            </Typography> */}
-                                                            <Box sx={{
-                                                                display: 'grid',
-                                                                gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' },
-                                                                gap: '20px',
-                                                                width: '100%',
-                                                                marginLeft: '9px',
-                                                            }}>
-
-                                                                {/* <FormControl fullWidth variant="" sx={{ marginTop: '15px' }}> */}
-                                                                <Field
-                                                                    variant="standard"
-                                                                    component={Select}
-                                                                    name="tipo"
-                                                                    // label="Tipo de Ensino"
-                                                                    displayEmpty
-                                                                    fullWidth
-                                                                    inputProps={{ 'aria-label': 'Tipo de Instituição' }}
-                                                                >
-                                                                    <MenuItem value="" disabled sx={{color: '#757575'}}>
-                                                                       Tipo de Ensino*
-                                                                    </MenuItem>
-                                                                    {tipoInstituicao.map((option) => (
-                                                                        <MenuItem key={option.value} value={option.value} sx={{color: '#757575',}}>
-                                                                            {option.label}
-                                                                        </MenuItem>
-                                                                    ))}
-                                                                </Field>
-                                                            </Box>
-
-                                                        </Grid>
-                                                    </Grid>
                                                 </Grid>
                                             </Paper>
                                         </Box>
