@@ -27,6 +27,7 @@ import UserManagement from '../containers/administrator/userManagement';
 import AdminManagement from '../containers/administrator/userManagement/adminManagement';
 import TestManagement from '../containers/administrator/questionManagement';
 import QuestionRegister from '../containers/administrator/questionRegister';
+import CadastroAdministrador from '../containers/administrator/userManagement/registerAdm';
 
 export const AppRoutes = () => {
     return (
@@ -65,6 +66,7 @@ export const AppRoutes = () => {
                             <Route path="/gerenciamento-usuario" element={<UserManagement />} />
                             <Route path="/gerenciamento-administrador" element={<AdminManagement />} />
                             <Route path="/gerenciamento-teste" element={<TestManagement />} />
+                            <Route path="/cadastro-administrador" element={<CadastroAdministrador />} />
                             <Route path='/admin' element={<Dashboard />} />
                         </Route>
 

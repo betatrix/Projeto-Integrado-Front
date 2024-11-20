@@ -128,7 +128,7 @@ export const CadastroInstituicao: React.FC = () => {
     return (
         <>
             <AdminHeader />
-            <Box sx={{ backgroundColor: '#F3F3F3' }}>
+            <Box sx={{ backgroundColor: '#F3F3F3', padding: '20px' }}>
                 <Box sx={{ height: 50 }}></Box>
                 <Box sx={{ backgroundColor: '#F3F3F3', marginTop: 10 }}>
                     <Stepper activeStep={0} alternativeLabel>
@@ -155,26 +155,27 @@ export const CadastroInstituicao: React.FC = () => {
                                     }}
                                 >
                                     <Form>
-                                        <Box sx={{ '& .MuiTextField-root': { m: 1 } }}>
-                                            <Paper sx={{ marginTop: '30px', marginBottom: '25px', backgroundColor: 'white', paddingBottom: 3 }}>
+                                        <Box sx={{
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            gap: 2,
+                                            maxWidth: 600,
+                                            margin: 'auto',
+                                        }}>
+                                            <Paper sx={{ padding: 4, marginBottom: 3, paddingBottom: 8, paddingLeft: 7, paddingRight: 7 }}>
+                                                <Typography variant="h6" sx={{
+                                                    fontSize: '25px', textAlign: 'left',
+                                                    fontFamily: 'Roboto, monospace',
+                                                    color: '#757575',
+                                                    fontWeight: 'bold',
+                                                }}>
+                                                    Dados Gerais
+                                                </Typography>
                                                 <Grid
                                                     container
                                                     spacing={2}
-                                                    sx={{
-                                                        maxWidth: 500,
-                                                        paddingLeft: '60px',
-                                                        paddingTop: '20px',
-                                                        paddingBottom: '30px',
-                                                    }}
                                                 >
-                                                    <Typography variant="h6" sx={{
-                                                        fontSize: '25px', textAlign: 'left',
-                                                        fontFamily: 'Roboto, monospace',
-                                                        color: '#757575',
-                                                        fontWeight: 'bold',
-                                                    }}>
-                                                        Dados Gerais
-                                                    </Typography>
+
                                                     <Grid item xs={12}>
                                                         <Field
                                                             component={TextField}
@@ -206,15 +207,12 @@ export const CadastroInstituicao: React.FC = () => {
                                                             size="small"
                                                             fullWidth
                                                             required
-                                                            sx={{ marginBottom: 80 }}
                                                         />
                                                     </Grid>
                                                     <Grid item xs={12}>
-
                                                         <Box sx={{
                                                             display: 'grid',
                                                             width: '100%',
-                                                            marginLeft: '7px',
                                                         }}>
 
                                                             <Field
@@ -233,7 +231,6 @@ export const CadastroInstituicao: React.FC = () => {
                                                                 ))}
                                                             </Field>
                                                         </Box>
-
                                                     </Grid>
                                                     <Grid item xs={6}>
                                                         <Field
@@ -259,36 +256,33 @@ export const CadastroInstituicao: React.FC = () => {
                                                             required
                                                         />
                                                     </Grid>
-                                                    {/* Novo Campo - Tipo de Instituição */}
                                                 </Grid>
                                             </Paper>
                                         </Box>
 
-                                        <Box sx={{ '& .MuiTextField-root': { m: 1 } }}>
-                                            <Paper sx={{ marginTop: '20px', marginBottom: '15px', backgroundColor: 'white', paddingBottom: 3 }}>
+                                        <Box sx={{
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            gap: 2,
+                                            maxWidth: 600,
+                                            margin: 'auto',
+                                        }}>
+                                            <Paper sx={{ padding: 4, marginBottom: 1, paddingBottom: 8, paddingLeft: 7, paddingRight: 7 }}>
+                                                <Typography
+                                                    variant="h6"
+                                                    sx={{
+                                                        fontSize: '25px', textAlign: 'left',
+                                                        fontFamily: 'Roboto, monospace',
+                                                        color: '#757575',
+                                                        fontWeight: 'bold',
+                                                    }}
+                                                >
+                                                    Endereço
+                                                </Typography>
                                                 <Grid
                                                     container
                                                     spacing={2}
-                                                    sx={{
-                                                        maxWidth: 500,
-                                                        paddingLeft: '60px',
-                                                        paddingTop: '20px',
-                                                        paddingBottom: '30px',
-                                                    }}
                                                 >
-                                                    <Grid item xs={12}>
-                                                        <Typography
-                                                            variant="h6"
-                                                            sx={{
-                                                                fontSize: '25px', textAlign: 'left',
-                                                                fontFamily: 'Roboto, monospace',
-                                                                color: '#757575',
-                                                                fontWeight: 'bold',
-                                                            }}
-                                                        >
-                                                            Endereço
-                                                        </Typography>
-                                                    </Grid>
                                                     <Grid item xs={6}>
                                                         <Field
                                                             component={TextField}

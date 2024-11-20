@@ -29,3 +29,12 @@ export type Endereco = {
   complemento: string;
   bairro: string;
 };
+
+export type AdmRegister = {
+  nome: string;
+  cpf: string;
+  email: string;
+  cargo: string;
+  celular: string;
+  endereco: Endereco;
+};

@@ -157,7 +157,7 @@ const AdminManagement: React.FC = () => {
         <>
             <AdminHeader />
             <Box sx={{ marginTop: '20px', minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: '#F3F3F3' }}>
-                <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', marginTop: 20, gap: 2, width: '100%', maxWidth: '110rem', paddingLeft: 55 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', marginTop: 20, gap: 2, width: '100%', maxWidth: '110rem', paddingLeft: 70 }}>
                     <TextField
                         label="Pesquisar Administradores"
                         variant="outlined"
@@ -171,10 +171,9 @@ const AdminManagement: React.FC = () => {
                             ),
                         }}
                     />
-                    <Link to="/gerenciamento-usuario">
+                    <Link to="/cadastro-administrador">
                         <Button sx={{
                             height: '50px',
-                            width:  '21rem',
                             fontSize: '17px',
                             fontFamily: 'Roboto, monospace',
                             color: 'white',
@@ -183,7 +182,7 @@ const AdminManagement: React.FC = () => {
                             '&:hover': {
                                 backgroundColor: '#104A6F',
                             },
-                        }}>Gerenciamento de Usuários</Button>
+                        }}>Cadastrar</Button>
                     </Link>
                 </Box>
                 <Box sx={{ paddingTop: 10, paddingLeft: 45, paddingRight: 45, marginBottom: 10 }}>
@@ -512,7 +511,7 @@ const AdminManagement: React.FC = () => {
             >
                 <Box sx={{
                     position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
-                    bgcolor: 'background.paper', boxShadow: 24, p: 4, width: '80%', maxWidth: 600, borderRadius: '5px'
+                    bgcolor: 'background.paper', boxShadow: 24, p: 4, width: '80%', maxWidth: 700, borderRadius: '5px'
                 }}>
                     {selectedAdmin && (
                         <Grid container spacing={3}>
