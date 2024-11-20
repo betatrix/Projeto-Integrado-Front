@@ -24,6 +24,7 @@ interface Pergunta {
     texto: string,
     textoIngles: string,
     ativo: true
+    imagem: string,
 }
 
 interface Usuario {
@@ -115,6 +116,7 @@ const VocacionalTest: React.FC = () => {
 
     const handleSubmit = async () => {
         const payload = {
+            tipo: selectedButton === 'graduation' ? 'SUPERIOR' : 'TECNICO',
             estudanteTeste: {
                 testeId: teste?.id,
                 usuarioId: user.id,
@@ -160,8 +162,6 @@ const VocacionalTest: React.FC = () => {
     };
 
     const allQuestionsAnswered = answers.every((answer) => answer !== 0);
-    // const isAnswerSelected = answers[currentQuestion] !== 0;
-    // const progress = ((currentQuestion + 1) / questions.length) * 100;
 
     return (
         <>
@@ -181,9 +181,6 @@ const VocacionalTest: React.FC = () => {
 
             <Box sx={homePageBoxStyles}>
                 <CenteredDiv>
-                    {/* <IntroText variant="body1" align="center" paragraph>
-                        {t('testInstruction')}
-                    </IntroText> */}
 
                     <ThemeProvider theme={componentTheme}>
                         <StyledTypography variant="h6" gutterBottom style={{marginTop: '15px', marginBottom: '10px'}}>
@@ -208,7 +205,7 @@ const VocacionalTest: React.FC = () => {
                             <NavigateBeforeIcon fontSize="inherit" />
                         </IconButton>
 
-                        <img
+                        {/* <img
                             src="src/assets/img/1pergunta.jpg"
                             alt="Descrição da imagem"
                             style={{
@@ -218,7 +215,21 @@ const VocacionalTest: React.FC = () => {
                                 display: 'block',
                                 margin: '0 auto'
                             }}
-                        />
+                        /> */}
+
+                        {questions[currentQuestion] && questions[currentQuestion].imagem && (
+                            <img
+                                src={`${apiUrl}/arquivos/download/test/${questions[currentQuestion].imagem}`}
+                                alt={`Imagem para a pergunta ${currentQuestion + 1}`}
+                                style={{
+                                    maxWidth: '550px',
+                                    height: 'auto',
+                                    borderRadius: '20px',
+                                    display: 'block',
+                                    margin: '0 auto'
+                                }}
+                            />
+                        )}
 
                         <IconButton
                             onClick={handleNext}
