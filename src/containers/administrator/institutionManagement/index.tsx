@@ -174,18 +174,22 @@ const InstitutionManagement: React.FC = () => {
 
     const [selectedInstitutions, setSelectedInstitutions] = useState<number[]>([]);
     const [deleteMultipleModalOpen, setDeleteMultipleModalOpen] = useState(false);
-    const [institutionsToDeleteMultiple, setInstitutionsToDeleteMultiple] = useState<FormValues[]>([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5); // Número de linhas por página
 
     // const [searchValue, setSearchValue] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(true);
 
+    const [showSuccessDeleteMessage, setShowSuccessDeleteMessage] = useState(false);
+    const [showErrorDeleteMessage, setShowErrorDeleteMessage] = useState(false);
+    const [showSuccessMassDeleteMessage, setShowSuccessMassDeleteMessage] = useState(false);
+    const [showErrorMassDeleteMessage, setShowErrorMassDeleteMessage] = useState(false);
+
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     const [showErrorMessage, setShowErrorMessage] = useState(false);
     const [policyCourseModalOpen, setPolicyCourseModalOpen] = useState(false);
     // Estados para o modal de políticas e cursos
-    const [courses, setCourses] = useState<CourseForm[]>([]); /////////////////////////////////////////////////////////////////////////////////////////////
+    const [courses, setCourses] = useState<CourseForm[]>([]);
     const [policies, setPolicies] = useState<PolicesInstitutionForm[]>([]);
     const [selectedCourses, setSelectedCourses] = useState<{ [key: number]: { notaMec: number | null } }>({});
     const [selectedPolicies, setSelectedPolicies] = useState<number[]>([]);
@@ -198,6 +202,15 @@ const InstitutionManagement: React.FC = () => {
     const [selectedCoursesToDelete, setSelectedCoursesToDelete] = useState<number[]>([]);
     const [selectedPoliciesToDelete, setSelectedPoliciesToDelete] = useState<number[]>([]);
     const [loadingDeleteData, setLoadingDeleteData] = useState(false);
+
+    const sortInstitutionsAlphabetically = (institutions: FormValues[]) => {
+        return institutions.sort((a, b) => {
+            // Remove espaços extras e converte tudo para minúsculas para garantir consistência
+            const nameA = a.nome?.trim().toLowerCase() || '';
+            const nameB = b.nome?.trim().toLowerCase() || '';
+            return nameA.localeCompare(nameB);
+        });
+    };
 
     const handleCloseSuccessMessage = () => {
         setShowSuccessMessage(false);
@@ -261,13 +274,10 @@ const InstitutionManagement: React.FC = () => {
     const isDeleteButtonDisabled = selectedInstitutions.length <= 1;
 
     const handleDeleteMultipleModalOpen = () => {
-        const selectedInstitutionsToDelete = institutions.filter(inst => selectedInstitutions.includes(inst.id));
-        setInstitutionsToDeleteMultiple(selectedInstitutionsToDelete);
         setDeleteMultipleModalOpen(true);
     };
 
     const handleDeleteMultipleModalClose = () => {
-        setInstitutionsToDeleteMultiple([]);
         setDeleteMultipleModalOpen(false);
     };
 
@@ -285,11 +295,18 @@ const InstitutionManagement: React.FC = () => {
 
     const searchInstitution = useCallback((searchText: string) => {
         try {
-            const filteredInstitutions = loadedInstitutions.filter((i) =>
-                i.nome.toLowerCase().includes(searchText.toLowerCase())
-            );
+            const filteredInstitutions = loadedInstitutions.filter((i) => {
+                const searchLower = searchText.toLowerCase();
+                const matchesName = i.nome.toLowerCase().includes(searchLower);
+                const matchesSigla = i.sigla.toLowerCase().includes(searchLower);
+                const matchesId = i.id.toString().includes(searchText);
+
+                return matchesName || matchesSigla || matchesId;
+            });
+
+            console.log('Instituições filtradas:', filteredInstitutions); // Log para depuração
             setInstitutions(filteredInstitutions);
-            setCurrentPage(1); // Reinicia para a primeira página após a busca
+            setCurrentPage(0); // Reinicia para a primeira página após a busca
         } catch (error) {
             console.error('Erro ao buscar instituições:', error);
         }
@@ -353,9 +370,11 @@ const InstitutionManagement: React.FC = () => {
             setLoading(true);
             try {
                 const data = await buscarInstituicoesPorNome('');
-                setLoadedInstitutions(data);
-                setInstitutions(data);
-                setCurrentPage(1); // Reinicia para a primeira página
+                console.log('Dados retornados pela API:', data); // Adicione este log
+                const sortedData = sortInstitutionsAlphabetically(data);
+                setLoadedInstitutions(sortedData);
+                setInstitutions(sortedData);
+                setCurrentPage(0); // Reinicia para a primeira página
             } catch (error) {
                 console.error('Erro ao buscar instituições:', error);
             } finally {
@@ -975,20 +994,6 @@ const InstitutionManagement: React.FC = () => {
                                                     }}
                                                 />
                                             </Grid>
-                                            {/* <Grid item xs={6}>
-                                                <FormControl fullWidth>
-                                                    <InputLabel>Status</InputLabel>
-                                                    <Select
-                                                        name="ativo"
-                                                        value={values.ativo}
-                                                        onChange={(e) => setFieldValue('ativo', Number(e.target.value))}
-                                                        label="Status"
-                                                    >
-                                                        <MenuItem value={1}>Ativo</MenuItem>
-                                                        <MenuItem value={0}>Inativo</MenuItem>
-                                                    </Select>
-                                                </FormControl>
-                                            </Grid> */}
 
                                             <Grid item xs={6}>
                                                 <FormControl fullWidth variant="filled">
@@ -1553,9 +1558,12 @@ const InstitutionManagement: React.FC = () => {
                                     try {
                                         await excluirInstituicao(institutionToDelete.id);
                                         console.log(`Instituição ${institutionToDelete.nome} excluída com sucesso`);
-                                        setInstitutions(institutions.filter(institution => institution.id !== institutionToDelete.id));
+                                        setInstitutions((prevInstitutions) => prevInstitutions.filter(institution => institution.id !== institutionToDelete.id));
+                                        setLoadedInstitutions((prevLoadedInstitutions) => prevLoadedInstitutions.filter(institution => institution.id !== institutionToDelete.id));
+                                        setShowSuccessDeleteMessage(true); // Exibe mensagem de sucesso
                                     } catch (error) {
                                         console.error('Erro ao excluir instituição:', error);
+                                        setShowErrorDeleteMessage(true); // Exibe mensagem de erro
                                     } finally {
                                         handleDeleteModalClose();
                                     }
@@ -1624,21 +1632,8 @@ const InstitutionManagement: React.FC = () => {
                         textAlign: 'justify',
                         mb: '10px'
                     }} >
-                        Você está prestes a excluir as seguintes instituições selecionadas. Deseja continuar?
+                        Você está prestes a excluir as instituições selecionadas. Deseja continuar?
                     </Typography>
-                    <Box sx={{ ml: '5px', backgroundColor: '#ddd', padding: '20px', borderRadius: '5px' }}>
-
-                        {institutionsToDeleteMultiple.map(inst => (
-                            <ul key={inst.id}>
-                                <li><Typography sx={{
-                                    fontFamily: 'Roboto, monospace', fontWeight: 'bold', textAlign: 'justify',
-                                    justifyContent: 'center', fontSize: '4x'
-                                }}>
-                                    {inst.nome}</Typography></li>
-                            </ul>
-
-                        ))}
-                    </Box>
 
                     <Grid item container justifyContent="center" spacing={2} sx={{ mt: '10px' }}>
                         <Grid item display="flex" justifyContent="center">
@@ -1646,9 +1641,12 @@ const InstitutionManagement: React.FC = () => {
                             <Button onClick={async () => {
                                 try {
                                     await excluirInstituicoesEmMassa(selectedInstitutions);
-                                    setInstitutions(institutions.filter(inst => !selectedInstitutions.includes(inst.id)));
+                                    setInstitutions((prevInstitutions) => prevInstitutions.filter(inst => !selectedInstitutions.includes(inst.id)));
+                                    setLoadedInstitutions((prevLoadedInstitutions) => prevLoadedInstitutions.filter(inst => !selectedInstitutions.includes(inst.id)));
+                                    setShowSuccessMassDeleteMessage(true); // Exibe mensagem de sucesso
                                 } catch (error) {
                                     console.error('Erro ao excluir instituições:', error);
+                                    setShowErrorMassDeleteMessage(true); // Exibe mensagem de erro
                                 } finally {
                                     handleDeleteMultipleModalClose();
                                 }
@@ -1685,25 +1683,72 @@ const InstitutionManagement: React.FC = () => {
                 </Box>
             </Modal>
 
-            {/* Mensagens de feedback */}
+            {/* Mensagem de sucesso na atualização */}
             <Snackbar
                 open={showSuccessMessage}
                 autoHideDuration={6000}
-                onClose={handleCloseSuccessMessage}
+                onClose={() => setShowSuccessMessage(false)}
             >
-                <Alert onClose={handleCloseSuccessMessage} severity="success" sx={{ width: '100%' }}>
+                <Alert onClose={() => setShowSuccessMessage(false)} severity="success" sx={{ width: '100%' }}>
                     Instituição atualizada com sucesso!
                 </Alert>
             </Snackbar>
+
+            {/* Mensagem de erro na atualização */}
             <Snackbar
                 open={showErrorMessage}
                 autoHideDuration={6000}
-                onClose={handleCloseErrorMessage}
+                onClose={() => setShowErrorMessage(false)}
             >
-                <Alert onClose={handleCloseErrorMessage} severity="error" sx={{ width: '100%' }}>
+                <Alert onClose={() => setShowErrorMessage(false)} severity="error" sx={{ width: '100%' }}>
                     Erro ao atualizar a instituição.
                 </Alert>
             </Snackbar>
+
+            {/* Mensagem de sucesso na exclusão */}
+            <Snackbar
+                open={showSuccessDeleteMessage}
+                autoHideDuration={6000}
+                onClose={() => setShowSuccessDeleteMessage(false)}
+            >
+                <Alert onClose={() => setShowSuccessDeleteMessage(false)} severity="success" sx={{ width: '100%' }}>
+                    Instituição excluída com sucesso!
+                </Alert>
+            </Snackbar>
+
+            {/* Mensagem de erro na exclusão */}
+            <Snackbar
+                open={showErrorDeleteMessage}
+                autoHideDuration={6000}
+                onClose={() => setShowErrorDeleteMessage(false)}
+            >
+                <Alert onClose={() => setShowErrorDeleteMessage(false)} severity="error" sx={{ width: '100%' }}>
+                    Erro ao excluir a instituição.
+                </Alert>
+            </Snackbar>
+
+            {/* Mensagem de sucesso na exclusão múltipla */}
+            <Snackbar
+                open={showSuccessMassDeleteMessage}
+                autoHideDuration={6000}
+                onClose={() => setShowSuccessMassDeleteMessage(false)}
+            >
+                <Alert onClose={() => setShowSuccessMassDeleteMessage(false)} severity="success" sx={{ width: '100%' }}>
+                    Instituições excluídas com sucesso!
+                </Alert>
+            </Snackbar>
+
+            {/* Mensagem de erro na exclusão múltipla */}
+            <Snackbar
+                open={showErrorMassDeleteMessage}
+                autoHideDuration={6000}
+                onClose={() => setShowErrorMassDeleteMessage(false)}
+            >
+                <Alert onClose={() => setShowErrorMassDeleteMessage(false)} severity="error" sx={{ width: '100%' }}>
+                    Erro ao excluir as instituições.
+                </Alert>
+            </Snackbar>
+
         </>
 
     );

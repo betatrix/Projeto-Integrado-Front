@@ -20,6 +20,8 @@ import {
     Paper,
     TableHead,
     Checkbox,
+    Snackbar,
+    Alert,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -76,6 +78,16 @@ const CourseManagement: React.FC = () => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
+    const [showSuccessDeleteMessage, setShowSuccessDeleteMessage] = useState(false);
+    const [showErrorDeleteMessage, setShowErrorDeleteMessage] = useState(false);
+    const [showSuccessMassDeleteMessage, setShowSuccessMassDeleteMessage] = useState(false);
+    const [showErrorMassDeleteMessage, setShowErrorMassDeleteMessage] = useState(false);
+
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+    const [showErrorMessage, setShowErrorMessage] = useState(false);
+
+    const [deleteMultipleModalOpen, setDeleteMultipleModalOpen] = useState(false);
+
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
@@ -86,17 +98,25 @@ const CourseManagement: React.FC = () => {
                 const fetchedCourses = await buscarCursosListaCompleta();
 
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                const mappedCourses = fetchedCourses.map((course: { area: any; }) => {
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    const areaObject = fetchedAreas.find((area: { descricao: any; }) => area.descricao === course.area);
+                const mappedCourses = fetchedCourses.map((course: { area: any }) => {
+                    const areaObject = fetchedAreas.find(
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        (area: { descricao: any }) => area.descricao === course.area
+                    );
                     return {
                         ...course,
-                        area: areaObject || null
+                        area: areaObject || null,
                     };
                 });
 
-                setCourses(mappedCourses);
-                setFilteredCourses(mappedCourses);
+                // Ordena cursos em ordem alfabética pela descrição
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                const sortedCourses = mappedCourses.sort((a: { descricao: string; }, b: { descricao: any; }) =>
+                    a.descricao.localeCompare(b.descricao, 'pt', { sensitivity: 'base' })
+                );
+
+                setCourses(sortedCourses);
+                setFilteredCourses(sortedCourses);
             } catch (error) {
                 console.error('Erro ao buscar cursos ou áreas:', error);
             }
@@ -106,12 +126,27 @@ const CourseManagement: React.FC = () => {
     }, []);
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchTerm(event.target.value);
-        const filtered = courses.filter((course) =>
-            course?.descricao?.toLowerCase().includes(event.target.value.toLowerCase())
-        );
+        const searchTerm = event.target.value.toLowerCase();
+        setSearchTerm(searchTerm);
+
+        if (searchTerm.trim() === '') {
+            // Restaura a lista completa em ordem alfabética
+            setFilteredCourses(courses);
+            setPage(0);
+            return;
+        }
+
+        const filtered = courses.filter((course) => {
+            // Verifica se o termo é um número e corresponde ao ID do curso
+            if (!isNaN(Number(searchTerm))) {
+                return course.id === Number(searchTerm);
+            }
+            // Verifica se o termo corresponde à descrição do curso
+            return course.descricao.toLowerCase().includes(searchTerm);
+        });
+
         setFilteredCourses(filtered);
-        setPage(0); // Resetar para a primeira página após a pesquisa
+        setPage(0); // Resetar para a primeira página
     };
 
     const handleEditModalOpen = (course: CourseForm) => {
@@ -142,15 +177,19 @@ const CourseManagement: React.FC = () => {
         if (selectedCourse) {
             try {
                 await excluirCurso(selectedCourse.id);
+                // Atualize a lista de cursos e exiba a mensagem de sucesso
                 setCourses(courses.map((c) =>
                     c.id === selectedCourse.id ? { ...c, ativo: false } : c
                 ));
                 setFilteredCourses(filteredCourses.map((c) =>
                     c.id === selectedCourse.id ? { ...c, ativo: false } : c
                 ));
-                handleDeleteModalClose();
+                setShowSuccessDeleteMessage(true); // Exibe mensagem de sucesso
             } catch (error) {
                 console.error('Erro ao excluir curso:', error);
+                setShowErrorDeleteMessage(true); // Exibe mensagem de erro
+            } finally {
+                handleDeleteModalClose(); // Fecha o modal
             }
         }
     };
@@ -181,12 +220,23 @@ const CourseManagement: React.FC = () => {
             for (const courseId of selectedCourses) {
                 await excluirCurso(courseId);
             }
+            // Atualize a lista de cursos e exiba a mensagem de sucesso
             setCourses(courses.filter((course) => !selectedCourses.includes(course.id)));
             setFilteredCourses(filteredCourses.filter((course) => !selectedCourses.includes(course.id)));
             setSelectedCourses([]);
+            setShowSuccessMassDeleteMessage(true); // Exibe mensagem de sucesso para exclusão em massa
         } catch (error) {
             console.error('Erro ao excluir cursos selecionados:', error);
+            setShowErrorMassDeleteMessage(true); // Exibe mensagem de erro
         }
+    };
+
+    const handleDeleteMultipleModalOpen = () => {
+        setDeleteMultipleModalOpen(true);
+    };
+
+    const handleDeleteMultipleModalClose = () => {
+        setDeleteMultipleModalOpen(false);
     };
 
     const toggleSelectCourse = (courseId: number) => {
@@ -251,7 +301,7 @@ const CourseManagement: React.FC = () => {
                                             <Button
                                                 variant="contained"
                                                 color="secondary"
-                                                onClick={handleDeleteSelectedCourses}
+                                                onClick={handleDeleteMultipleModalOpen}
                                                 disabled={selectedCourses.length === 0}
                                                 sx={{
                                                     color: 'white',
@@ -359,20 +409,24 @@ const CourseManagement: React.FC = () => {
                                     const finalValues = {
                                         ...values,
                                         ativo: values.ativo === 'Ativo', // Converte para booleano
-                                        areaId: values.area?.id
+                                        areaId: values.area?.id,
                                     };
                                     await editarCurso(finalValues);
+                                    // Atualize a lista de cursos e exiba a mensagem de sucesso
                                     setCourses(courses.map((course) =>
                                         course.id === values.id ? { ...course, ...finalValues } : course
                                     ));
                                     setFilteredCourses(filteredCourses.map((course) =>
                                         course.id === values.id ? { ...course, ativo: finalValues.ativo } : course
                                     ));
-                                    handleEditModalClose();
+                                    setShowSuccessMessage(true); // Exibe mensagem de sucesso
                                 } catch (error) {
                                     console.error('Erro ao atualizar curso:', error);
+                                    setShowErrorMessage(true); // Exibe mensagem de erro
+                                } finally {
+                                    setSubmitting(false);
+                                    handleEditModalClose(); // Fecha o modal
                                 }
-                                setSubmitting(false);
                             }}
                         >
                             {({ values, setFieldValue, errors, touched }) => (
@@ -670,6 +724,166 @@ const CourseManagement: React.FC = () => {
                     )}
                 </Box>
             </Modal>
+            <Modal
+                open={deleteMultipleModalOpen}
+                onClose={handleDeleteMultipleModalClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box
+                    sx={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        bgcolor: 'background.paper',
+                        boxShadow: 24,
+                        p: 4,
+                        maxWidth: 400,
+                        width: '90%',
+                        borderRadius: '5px',
+                    }}
+                >
+                    <Typography
+                        id="modal-modal-title"
+                        variant="h6"
+                        component="h2"
+                        sx={{
+                            color: '#185D8E',
+                            fontFamily: 'Roboto, monospace',
+                            marginTop: 1,
+                            fontWeight: 'bold',
+                            textAlign: 'center',
+                            mb: '5px',
+                        }}
+                    >
+                        Confirmar exclusão
+                    </Typography>
+                    <Typography
+                        id="modal-modal-description"
+                        sx={{
+                            mt: 2,
+                            fontFamily: 'Poppins, sans-serif',
+                            textAlign: 'justify',
+                            mb: '10px',
+                        }}
+                    >
+                        Você está prestes a excluir os cursos selecionados. Deseja continuar?
+                    </Typography>
+                    <Grid container justifyContent="center" spacing={2} sx={{ mt: 2 }}>
+                        <Grid item>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={async () => {
+                                    await handleDeleteSelectedCourses();
+                                    handleDeleteMultipleModalClose();
+                                }}
+                                sx={{
+                                    height: '35px',
+                                    fontSize: '17px',
+                                    fontFamily: 'Roboto, monospace',
+                                    color: 'white',
+                                    backgroundColor: '#185D8E',
+                                    fontWeight: 'bold',
+                                    '&:hover': {
+                                        backgroundColor: '#104A6F',
+                                        color: 'white',
+                                    },
+                                }}
+                            >
+                                Sim
+                            </Button>
+                        </Grid>
+                        <Grid item>
+                            <Button
+                                variant="outlined"
+                                onClick={handleDeleteMultipleModalClose}
+                                sx={{
+                                    height: '35px',
+                                    fontSize: '17px',
+                                    fontFamily: 'Roboto, monospace',
+                                    color: 'white',
+                                    backgroundColor: '#185D8E',
+                                    fontWeight: 'bold',
+                                    '&:hover': {
+                                        backgroundColor: '#104A6F',
+                                        color: 'white',
+                                    },
+                                }}
+                            >
+                                Não
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </Box>
+            </Modal>
+
+            {/* Mensagem de sucesso na atualização */}
+            <Snackbar
+                open={showSuccessMessage}
+                autoHideDuration={6000}
+                onClose={() => setShowSuccessMessage(false)}
+            >
+                <Alert onClose={() => setShowSuccessMessage(false)} severity="success" sx={{ width: '100%' }}>
+                    Curso atualizado com sucesso!
+                </Alert>
+            </Snackbar>
+
+            {/* Mensagem de erro na atualização */}
+            <Snackbar
+                open={showErrorMessage}
+                autoHideDuration={6000}
+                onClose={() => setShowErrorMessage(false)}
+            >
+                <Alert onClose={() => setShowErrorMessage(false)} severity="error" sx={{ width: '100%' }}>
+                    Erro ao atualizar curso.
+                </Alert>
+            </Snackbar>
+
+            {/* Mensagem de sucesso na exclusão */}
+            <Snackbar
+                open={showSuccessDeleteMessage}
+                autoHideDuration={6000}
+                onClose={() => setShowSuccessDeleteMessage(false)}
+            >
+                <Alert onClose={() => setShowSuccessDeleteMessage(false)} severity="success" sx={{ width: '100%' }}>
+                    Curso excluído com sucesso!
+                </Alert>
+            </Snackbar>
+
+            {/* Mensagem de erro na exclusão */}
+            <Snackbar
+                open={showErrorDeleteMessage}
+                autoHideDuration={6000}
+                onClose={() => setShowErrorDeleteMessage(false)}
+            >
+                <Alert onClose={() => setShowErrorDeleteMessage(false)} severity="error" sx={{ width: '100%' }}>
+                    Erro ao excluir curso.
+                </Alert>
+            </Snackbar>
+
+            {/* Mensagem de sucesso na exclusão múltipla */}
+            <Snackbar
+                open={showSuccessMassDeleteMessage}
+                autoHideDuration={6000}
+                onClose={() => setShowSuccessMassDeleteMessage(false)}
+            >
+                <Alert onClose={() => setShowSuccessMassDeleteMessage(false)} severity="success" sx={{ width: '100%' }}>
+                    Cursos excluídos com sucesso!
+                </Alert>
+            </Snackbar>
+
+            {/* Mensagem de erro na exclusão múltipla */}
+            <Snackbar
+                open={showErrorMassDeleteMessage}
+                autoHideDuration={6000}
+                onClose={() => setShowErrorMassDeleteMessage(false)}
+            >
+                <Alert onClose={() => setShowErrorMassDeleteMessage(false)} severity="error" sx={{ width: '100%' }}>
+                    Erro ao excluir cursos.
+                </Alert>
+            </Snackbar>
         </>
     );
 };

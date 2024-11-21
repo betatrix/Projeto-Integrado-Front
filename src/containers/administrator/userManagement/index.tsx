@@ -17,7 +17,9 @@ import {
     InputAdornment,
     Checkbox,
     Paper,
-    TablePagination
+    TablePagination,
+    Snackbar,
+    Alert
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -43,14 +45,24 @@ const UserManagement: React.FC = () => {
 
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [deleteMultipleModalOpen, setDeleteMultipleModalOpen] = useState(false);
+
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+    const [showErrorMessage, setShowErrorMessage] = useState(false);
+    const [showSuccessDeleteMessage, setShowSuccessDeleteMessage] = useState(false);
+    const [showErrorDeleteMessage, setShowErrorDeleteMessage] = useState(false);
+    const [showSuccessMassDeleteMessage, setShowSuccessMassDeleteMessage] = useState(false);
+    const [showErrorMassDeleteMessage, setShowErrorMassDeleteMessage] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
             try {
                 const fetchedUsers = await buscarUsuarios();
-                setUsers(fetchedUsers);
-                setFilteredUsers(fetchedUsers);
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                const sortedUsers = fetchedUsers.sort((a: { nome: string; }, b: { nome: any; }) => a.nome.localeCompare(b.nome)); // Ordena pelo nome
+                setUsers(sortedUsers);
+                setFilteredUsers(sortedUsers);
             } catch (error) {
                 console.error('Erro ao buscar usuários:', error);
             }
@@ -60,11 +72,19 @@ const UserManagement: React.FC = () => {
     }, []);
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchTerm(event.target.value);
-        const filtered = users.filter((user) =>
-            user?.nome?.toLowerCase().includes(event.target.value.toLowerCase())
-        );
-        setFilteredUsers(filtered);
+        const searchValue = event.target.value.toLowerCase();
+        setSearchTerm(searchValue);
+
+        if (searchValue === '') {
+            // Reseta a lista ao limpar a pesquisa
+            setFilteredUsers(users);
+        } else {
+            const filtered = users.filter((user) =>
+                user?.nome?.toLowerCase().includes(searchValue) || // Pesquisa por nome
+                user?.id?.toString().includes(searchValue) // Pesquisa por ID
+            );
+            setFilteredUsers(filtered);
+        }
     };
 
     const handleChangePage = (_event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
@@ -104,9 +124,12 @@ const UserManagement: React.FC = () => {
                 await excluirUsuario(selectedUser.id);
                 setUsers(users.filter((u) => u.id !== selectedUser.id));
                 setFilteredUsers(filteredUsers.filter((u) => u.id !== selectedUser.id));
-                handleDeleteModalClose();
+                setShowSuccessDeleteMessage(true); // Mostra mensagem de sucesso
             } catch (error) {
                 console.error('Erro ao excluir usuário:', error);
+                setShowErrorDeleteMessage(true); // Mostra mensagem de erro
+            } finally {
+                handleDeleteModalClose(); // Fecha o modal
             }
         }
     };
@@ -129,9 +152,19 @@ const UserManagement: React.FC = () => {
             setUsers(users.filter((user) => !selectedUsers.includes(user.id)));
             setFilteredUsers(filteredUsers.filter((user) => !selectedUsers.includes(user.id)));
             setSelectedUsers([]);
+            setShowSuccessMassDeleteMessage(true); // Mostra mensagem de sucesso
         } catch (error) {
             console.error('Erro ao excluir usuários selecionados:', error);
+            setShowErrorMassDeleteMessage(true); // Mostra mensagem de erro
         }
+    };
+
+    const handleDeleteMultipleModalOpen = () => {
+        setDeleteMultipleModalOpen(true);
+    };
+
+    const handleDeleteMultipleModalClose = () => {
+        setDeleteMultipleModalOpen(false);
     };
 
     const toggleSelectUser = (userId: number) => {
@@ -164,7 +197,7 @@ const UserManagement: React.FC = () => {
                     <Link to="/gerenciamento-administrador">
                         <Button sx={{
                             height: '50px',
-                            width:  '21rem',
+                            width: '21rem',
                             fontSize: '17px',
                             fontFamily: 'Roboto, monospace',
                             color: 'white',
@@ -196,7 +229,7 @@ const UserManagement: React.FC = () => {
                                             <Button
                                                 variant="contained"
                                                 color="secondary"
-                                                onClick={handleDeleteSelectedUsers}
+                                                onClick={handleDeleteMultipleModalOpen}
                                                 disabled={selectedUsers.length === 0}
                                                 sx={{
                                                     color: 'white',
@@ -293,9 +326,11 @@ const UserManagement: React.FC = () => {
                                     setFilteredUsers(filteredUsers.map((user) =>
                                         user.id === values.id ? { ...user, ...values } : user
                                     ));
+                                    setShowSuccessMessage(true); // Mostra mensagem de sucesso
                                     handleEditModalClose();
                                 } catch (error) {
                                     console.error('Erro ao atualizar usuário:', error);
+                                    setShowErrorMessage(true);
                                 }
                                 setSubmitting(false);
                             }}
@@ -317,6 +352,7 @@ const UserManagement: React.FC = () => {
                                                 fullWidth
                                                 value={values.email}
                                                 onChange={handleChange}
+                                                disabled={!values.ativo} // Desabilita se o usuário estiver inativo
                                             />
                                         </Grid>
                                         <Grid item xs={12}>
@@ -422,7 +458,7 @@ const UserManagement: React.FC = () => {
                         textAlign: 'justify',
                         mb: '10px'
                     }}>
-                    Você está prestes a excluir o usuário {selectedUser?.nome}. Deseja Continuar?
+                        Você está prestes a excluir o usuário {selectedUser?.nome}. Deseja Continuar?
                     </Typography>
                     <Grid container spacing={2} justifyContent="center" sx={{ mt: '10px' }}>
                         <Grid item display="flex" justifyContent="center">
@@ -506,6 +542,166 @@ const UserManagement: React.FC = () => {
                     )}
                 </Box>
             </Modal>
+            <Modal
+                open={deleteMultipleModalOpen}
+                onClose={handleDeleteMultipleModalClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box
+                    sx={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        bgcolor: 'background.paper',
+                        boxShadow: 24,
+                        p: 4,
+                        maxWidth: 400,
+                        width: '90%',
+                        borderRadius: '5px',
+                    }}
+                >
+                    <Typography
+                        id="modal-modal-title"
+                        variant="h6"
+                        component="h2"
+                        sx={{
+                            color: '#185D8E',
+                            fontFamily: 'Roboto, monospace',
+                            marginTop: 1,
+                            fontWeight: 'bold',
+                            textAlign: 'center',
+                            mb: '5px',
+                        }}
+                    >
+                        Confirmar Exclusão
+                    </Typography>
+                    <Typography
+                        id="modal-modal-description"
+                        sx={{
+                            mt: 2,
+                            fontFamily: 'Poppins, sans-serif',
+                            textAlign: 'justify',
+                            mb: '10px',
+                        }}
+                    >
+                        Você está prestes a excluir os usuários selecionados. Deseja continuar?
+                    </Typography>
+                    <Grid container justifyContent="center" spacing={2} sx={{ mt: 2 }}>
+                        <Grid item>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={async () => {
+                                    await handleDeleteSelectedUsers();
+                                    handleDeleteMultipleModalClose();
+                                }}
+                                sx={{
+                                    height: '35px',
+                                    fontSize: '17px',
+                                    fontFamily: 'Roboto, monospace',
+                                    color: 'white',
+                                    backgroundColor: '#185D8E',
+                                    fontWeight: 'bold',
+                                    '&:hover': {
+                                        backgroundColor: '#104A6F',
+                                        color: 'white',
+                                    },
+                                }}
+                            >
+                                Sim
+                            </Button>
+                        </Grid>
+                        <Grid item>
+                            <Button
+                                variant="outlined"
+                                onClick={handleDeleteMultipleModalClose}
+                                sx={{
+                                    height: '35px',
+                                    fontSize: '17px',
+                                    fontFamily: 'Roboto, monospace',
+                                    color: 'white',
+                                    backgroundColor: '#185D8E',
+                                    fontWeight: 'bold',
+                                    '&:hover': {
+                                        backgroundColor: '#104A6F',
+                                        color: 'white',
+                                    },
+                                }}
+                            >
+                                Não
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </Box>
+            </Modal>
+            {/* Mensagem de sucesso na atualização */}
+            <Snackbar
+                open={showSuccessMessage}
+                autoHideDuration={6000}
+                onClose={() => setShowSuccessMessage(false)}
+            >
+                <Alert onClose={() => setShowSuccessMessage(false)} severity="success" sx={{ width: '100%' }}>
+                    Usuário atualizado com sucesso!
+                </Alert>
+            </Snackbar>
+
+            {/* Mensagem de erro na atualização */}
+            <Snackbar
+                open={showErrorMessage}
+                autoHideDuration={6000}
+                onClose={() => setShowErrorMessage(false)}
+            >
+                <Alert onClose={() => setShowErrorMessage(false)} severity="error" sx={{ width: '100%' }}>
+                    Erro ao atualizar usuário.
+                </Alert>
+            </Snackbar>
+
+            {/* Mensagem de sucesso na exclusão */}
+            <Snackbar
+                open={showSuccessDeleteMessage}
+                autoHideDuration={6000}
+                onClose={() => setShowSuccessDeleteMessage(false)}
+            >
+                <Alert onClose={() => setShowSuccessDeleteMessage(false)} severity="success" sx={{ width: '100%' }}>
+                    Usuário excluído com sucesso!
+                </Alert>
+            </Snackbar>
+
+            {/* Mensagem de erro na exclusão */}
+            <Snackbar
+                open={showErrorDeleteMessage}
+                autoHideDuration={6000}
+                onClose={() => setShowErrorDeleteMessage(false)}
+            >
+                <Alert onClose={() => setShowErrorDeleteMessage(false)} severity="error" sx={{ width: '100%' }}>
+                    Erro ao excluir usuário.
+                </Alert>
+            </Snackbar>
+
+            {/* Mensagem de sucesso na exclusão múltipla */}
+            <Snackbar
+                open={showSuccessMassDeleteMessage}
+                autoHideDuration={6000}
+                onClose={() => setShowSuccessMassDeleteMessage(false)}
+            >
+                <Alert onClose={() => setShowSuccessMassDeleteMessage(false)} severity="success" sx={{ width: '100%' }}>
+                    Usuários excluídos com sucesso!
+                </Alert>
+            </Snackbar>
+
+            {/* Mensagem de erro na exclusão múltipla */}
+            <Snackbar
+                open={showErrorMassDeleteMessage}
+                autoHideDuration={6000}
+                onClose={() => setShowErrorMassDeleteMessage(false)}
+            >
+                <Alert onClose={() => setShowErrorMassDeleteMessage(false)} severity="error" sx={{ width: '100%' }}>
+                    Erro ao excluir usuários.
+                </Alert>
+            </Snackbar>
+
         </>
     );
 };
