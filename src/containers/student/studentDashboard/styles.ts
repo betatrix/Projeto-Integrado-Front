@@ -182,12 +182,12 @@ export const contentPerfilStyle = (theme: Theme) => ({
     [theme.breakpoints.down('md')]: {
         textAlign: 'center',
         fontSize: '1.3rem',
-        marginLeft:'0.7rem',
+        marginLeft:'0.3rem',
     },
     [theme.breakpoints.down('sm')]: {
         textAlign: 'center',
         fontSize: '1.3rem',
-        marginLeft:'0.7rem',
+        marginLeft:'0.3rem',
     },
 });
 
@@ -286,38 +286,42 @@ export const paperPerfisStyles: SxProps<Theme> = (theme) => ({
     margin: '0.475rem',
     [theme.breakpoints.down('md')]: {
         width: '12.5rem',
-        height: '5.7rem',
+        height: '6.65rem',
         border: '2px solid rgb(11, 42, 64)',
     },
     [theme.breakpoints.down('sm')]: {
         width: '12.5rem',
-        height: '5.7rem',
+        height: '6.65rem',
         border: '2px solid rgb(11, 42, 64)',
     },
 });
 
 export const paperImgStyles: SxProps<Theme> = (theme) => ({
-    backgroundColor: ' rgb(141, 169, 189)',
+    boxShadow: 'rgba(10, 41, 81, 0.2) 5px 5px 0px 1.25px',
+    border: '3px solid rgb(11, 42, 64)',
+    backgroundColor: 'rgb(215, 230, 241)',
+    borderRadius: '10px',
     alignItems: 'center',
     justifyContent: 'center',
     textAlign: 'center',
     width: '11.25rem',
     height: '18.125rem',
     marginLeft: '0.375rem',
-    boxShadow: 'none',
     [theme.breakpoints.down('md')]: {
         justifyContent:'center',
         alignItems:'center',
         display:'flex',
-        width: '5.5rem',
-        height: '10rem',
+        width: '7rem',
+        height: '13.7rem',
+        border: '2px solid rgb(11, 42, 64)',
     },
     [theme.breakpoints.down('sm')]: {
         justifyContent:'center',
         alignItems:'center',
         display:'flex',
-        width: '5.5rem',
-        height: '10rem',
+        width: '7rem',
+        height: '13.7rem',
+        border: '2px solid rgb(11, 42, 64)',
     },
 });
 

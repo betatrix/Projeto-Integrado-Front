@@ -33,7 +33,6 @@ import SearchIcon from '@mui/icons-material/Search';
 import { Link } from 'react-router-dom';
 import { Formik, Form, Field } from 'formik';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
-// import * as yup from 'yup';
 
 const niveisEmpregabilidade = [
     { label: 'Alta', value: 'ALTA' },
@@ -109,7 +108,6 @@ const CourseManagement: React.FC = () => {
                     };
                 });
 
-                // Ordena cursos em ordem alfabética pela descrição
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const sortedCourses = mappedCourses.sort((a: { descricao: string; }, b: { descricao: any; }) =>
                     a.descricao.localeCompare(b.descricao, 'pt', { sensitivity: 'base' })
@@ -130,23 +128,20 @@ const CourseManagement: React.FC = () => {
         setSearchTerm(searchTerm);
 
         if (searchTerm.trim() === '') {
-            // Restaura a lista completa em ordem alfabética
             setFilteredCourses(courses);
             setPage(0);
             return;
         }
 
         const filtered = courses.filter((course) => {
-            // Verifica se o termo é um número e corresponde ao ID do curso
             if (!isNaN(Number(searchTerm))) {
                 return course.id === Number(searchTerm);
             }
-            // Verifica se o termo corresponde à descrição do curso
             return course.descricao.toLowerCase().includes(searchTerm);
         });
 
         setFilteredCourses(filtered);
-        setPage(0); // Resetar para a primeira página
+        setPage(0);
     };
 
     const handleEditModalOpen = (course: CourseForm) => {
@@ -154,7 +149,7 @@ const CourseManagement: React.FC = () => {
         setSelectedCourse({
             ...course,
             ativo: course.ativo ? 'Ativo' : 'Inativo'
-        }); // Usa o curso completo com `area` como um objeto completo
+        });
         setEditModalOpen(true);
     };
 
@@ -164,7 +159,7 @@ const CourseManagement: React.FC = () => {
     };
 
     const handleDeleteModalOpen = (course: CourseForm) => {
-        setSelectedCourse(course); // Apenas define o curso selecionado diretamente
+        setSelectedCourse(course);
         setDeleteModalOpen(true);
     };
 
@@ -177,19 +172,18 @@ const CourseManagement: React.FC = () => {
         if (selectedCourse) {
             try {
                 await excluirCurso(selectedCourse.id);
-                // Atualize a lista de cursos e exiba a mensagem de sucesso
                 setCourses(courses.map((c) =>
                     c.id === selectedCourse.id ? { ...c, ativo: false } : c
                 ));
                 setFilteredCourses(filteredCourses.map((c) =>
                     c.id === selectedCourse.id ? { ...c, ativo: false } : c
                 ));
-                setShowSuccessDeleteMessage(true); // Exibe mensagem de sucesso
+                setShowSuccessDeleteMessage(true);
             } catch (error) {
                 console.error('Erro ao excluir curso:', error);
-                setShowErrorDeleteMessage(true); // Exibe mensagem de erro
+                setShowErrorDeleteMessage(true);
             } finally {
-                handleDeleteModalClose(); // Fecha o modal
+                handleDeleteModalClose();
             }
         }
     };
@@ -396,8 +390,6 @@ const CourseManagement: React.FC = () => {
                 >
                     {selectedCourse && (
                         <Formik
-                            // initialValues={selectedCourse}
-                            // enableReinitialize
                             initialValues={{
                                 ...selectedCourse,
                                 ativo: selectedCourse?.ativo as string
@@ -408,24 +400,23 @@ const CourseManagement: React.FC = () => {
                                 try {
                                     const finalValues = {
                                         ...values,
-                                        ativo: values.ativo === 'Ativo', // Converte para booleano
+                                        ativo: values.ativo === 'Ativo',
                                         areaId: values.area?.id,
                                     };
                                     await editarCurso(finalValues);
-                                    // Atualize a lista de cursos e exiba a mensagem de sucesso
                                     setCourses(courses.map((course) =>
                                         course.id === values.id ? { ...course, ...finalValues } : course
                                     ));
                                     setFilteredCourses(filteredCourses.map((course) =>
                                         course.id === values.id ? { ...course, ativo: finalValues.ativo } : course
                                     ));
-                                    setShowSuccessMessage(true); // Exibe mensagem de sucesso
+                                    setShowSuccessMessage(true);
                                 } catch (error) {
                                     console.error('Erro ao atualizar curso:', error);
-                                    setShowErrorMessage(true); // Exibe mensagem de erro
+                                    setShowErrorMessage(true);
                                 } finally {
                                     setSubmitting(false);
-                                    handleEditModalClose(); // Fecha o modal
+                                    handleEditModalClose();
                                 }
                             }}
                         >
@@ -485,7 +476,7 @@ const CourseManagement: React.FC = () => {
                                                     getOptionLabel={(option) => option.descricao}
                                                     value={values.area || null}
                                                     onChange={(_, value) => setFieldValue('area', value || null)}
-                                                    isOptionEqualToValue={(option, value) => option.id === value?.id} // Compara pelo `id`
+                                                    isOptionEqualToValue={(option, value) => option.id === value?.id}
                                                     renderInput={(params) => (
                                                         <TextField
                                                             {...params}
@@ -543,9 +534,9 @@ const CourseManagement: React.FC = () => {
                                                 <Autocomplete
                                                     disablePortal
                                                     options={['Ativo', 'Inativo']}
-                                                    value={values.ativo || 'Inativo'} // Define o valor como string
+                                                    value={values.ativo || 'Inativo'}
                                                     onChange={(_, value) => setFieldValue('ativo', value)}
-                                                    isOptionEqualToValue={(option, value) => option === value} // Customiza a igualdade
+                                                    isOptionEqualToValue={(option, value) => option === value}
                                                     renderInput={(params) => (
                                                         <TextField
                                                             {...params}

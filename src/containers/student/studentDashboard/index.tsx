@@ -19,7 +19,7 @@ import {
     contentResultStyle,
     IconStyles,
 } from './styles';
-import { buscarTestesDeEstudante, buscarPerfisRecorrentes, buscarPerfilEstudante,} from '../../../services/apiService';
+import { buscarTestesDeEstudante, buscarPerfisRecorrentes, buscarPerfilEstudante, } from '../../../services/apiService';
 import { AuthContext } from '../../../contexts/auth';
 import { decryptData } from '../../../services/encryptionService';
 import { useTranslation } from 'react-i18next';
@@ -59,6 +59,11 @@ interface ResultItem {
     compatibilidade: number;
 }
 
+interface Profile {
+    descricao: string;
+    imagem: string;
+}
+
 const StudentDashboard: React.FC = () => {
     const theme = useTheme();
     const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
@@ -77,10 +82,7 @@ const StudentDashboard: React.FC = () => {
     const [testHistory, setTestHistory] = useState<{ date: string, result: ResultItem[] }[]>([]);
     const [recorrentes, setRecorrentes] = useState<string[]>([]);
     const [sliderRef, setSliderRef] = useState<Slider | null>(null);
-    // const [recorrenteImage, setRecorrenteImage] = useState<string | null>(null);
-
     const [perfilImage, setPerfilImage] = useState<string | null>(null);
-
     const authContext = useContext(AuthContext);
     const userData = authContext?.user ? decryptData(authContext.user) : null;
     const user = userData ? JSON.parse(userData) : null;
@@ -124,13 +126,15 @@ const StudentDashboard: React.FC = () => {
         const fetchPerfisRecorrentes = async () => {
             try {
                 if (user?.id) {
-                    const profiles = await buscarPerfisRecorrentes(user.id);
-                    const profilesDescription = profiles.map((profile: { descricao: unknown; }) => profile.descricao);
+                    const profiles: Profile[] = await buscarPerfisRecorrentes(user.id);
+                    const updatedProfiles = profiles.map((profile) => ({
+                        descricao: profile.descricao,
+                        imagem: `${import.meta.env.VITE_API_URL}/arquivos/download/test/${profile.imagem}`, // Adiciona o caminho completo
+                    }));
+                    const profilesDescription = updatedProfiles.map((profile) => profile.descricao);
                     setRecorrentes(profilesDescription);
-                    if (profiles.length > 0) {
-                        // const perfilMaisRecorrente = profiles[0];
-                        // const imageUrl = URL_DO_BACKEND/${perfilMaisRecorrente}.png;
-                        // setRecorrenteImage(imageUrl);
+                    if (updatedProfiles.length > 0) {
+                        setPerfilImage(updatedProfiles[0].imagem);
                     }
                 }
             } catch (error) {
@@ -277,15 +281,20 @@ const StudentDashboard: React.FC = () => {
                                                     src={perfilImage || perfilArtistico}
                                                     alt="Perfil do Estudante"
                                                     loading="lazy"
-                                                    onError={() => console.log('Erro ao carregar imagem:', perfilImage)}
+                                                    onError={(e) => {
+                                                        e.currentTarget.src = perfilArtistico;
+                                                        console.error('Erro ao carregar imagem:', perfilImage);
+                                                    }}
                                                     sx={{
-                                                        width: '130.25px',
+                                                        width: '125.25px',
+                                                        marginTop:'8px',
+                                                        marginRight:'10px',
                                                         [theme.breakpoints.down('md')]: {
                                                             width: '95px',
                                                         },
                                                         [theme.breakpoints.down('sm')]: {
                                                             width: '95px',
-                                                        }
+                                                        },
                                                     }}
                                                 />
                                             </Paper>
@@ -296,7 +305,7 @@ const StudentDashboard: React.FC = () => {
                                                             <Box sx={{ fontSize: 'small' }}>
                                                                 {PROFILE_DETAILS[profile] ? PROFILE_DETAILS[profile].icon : null}
                                                             </Box>
-                                                            <Typography sx={contentPerfilStyle(theme)} >
+                                                            <Typography sx={contentPerfilStyle(theme)}>
                                                                 {profile}
                                                             </Typography>
                                                         </Box>
