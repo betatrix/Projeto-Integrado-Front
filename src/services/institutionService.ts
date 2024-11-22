@@ -25,9 +25,6 @@ export const buscarInstituicaoPorId = async (id: number) => {
 };
 
 // Editar uma instituição existente
-// export const editarInstituicao = async (institutionData: InstituicaoForm) => {
-//     return await substituirEntidade('instituicao', institutionData);
-// };
 export const editarInstituicao = async ( institutionData: InstituicaoForm) => {
     return await substituirEntidade('instituicao', institutionData);
 };
@@ -44,7 +41,7 @@ export const excluirInstituicoesEmMassa = async (ids: number[]) => {
             await excluirEntidade('instituicao', id);
         }));
     } catch (error) {
-        console.error('Erro ao excluir instituições em massa:', error);
+        console.error('Erro ao excluir instituições em massa');
         throw error;
     }
 };

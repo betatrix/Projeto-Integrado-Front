@@ -117,6 +117,7 @@ const CourseManagement: React.FC = () => {
                 setFilteredCourses(sortedCourses);
             } catch (error) {
                 console.error('Erro ao buscar cursos ou áreas:', error);
+                throw error;
             }
             setLoading(false);
         };
@@ -145,7 +146,6 @@ const CourseManagement: React.FC = () => {
     };
 
     const handleEditModalOpen = (course: CourseForm) => {
-        console.log('Curso selecionado para edição:', course);
         setSelectedCourse({
             ...course,
             ativo: course.ativo ? 'Ativo' : 'Inativo'
@@ -207,14 +207,30 @@ const CourseManagement: React.FC = () => {
         setPage(0);
     };
 
-    const paginatedCourses = filteredCourses.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+    const paginatedCourses = filteredCourses
+        .sort((a, b) => b.id - a.id)
+        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+
+    const totalPages = Math.ceil(filteredCourses.length / rowsPerPage);
+
+    const goToFirstPage = () => {
+        setPage(0);
+    };
+
+    const goToLastPage = () => {
+        setPage(totalPages - 1);
+    };
+
+    useEffect(() => {
+        setPage(0);
+    }, [filteredCourses]);
 
     const handleDeleteSelectedCourses = async () => {
         try {
             for (const courseId of selectedCourses) {
                 await excluirCurso(courseId);
             }
-            // Atualize a lista de cursos e exiba a mensagem de sucesso
+
             setCourses(courses.filter((course) => !selectedCourses.includes(course.id)));
             setFilteredCourses(filteredCourses.filter((course) => !selectedCourses.includes(course.id)));
             setSelectedCourses([]);
@@ -296,7 +312,7 @@ const CourseManagement: React.FC = () => {
                                                 variant="contained"
                                                 color="secondary"
                                                 onClick={handleDeleteMultipleModalOpen}
-                                                disabled={selectedCourses.length === 0}
+                                                disabled={selectedCourses.length <= 1}
                                                 sx={{
                                                     color: 'white',
                                                     backgroundColor: '#185D8E',
@@ -353,7 +369,14 @@ const CourseManagement: React.FC = () => {
                         </TableContainer>
                     )}
                 </Box>
-                <Box sx={{ display: 'flex', justifyContent: 'center', marginBottom: 7 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 7, marginBottom: 7 }}>
+                    <Button
+                        onClick={goToFirstPage}
+                        disabled={page === 0}
+                        sx={{ marginRight: 2, fontFamily: 'Roboto, monospace', fontWeight: 'bold' }}
+                    >
+                        Primeira Página
+                    </Button>
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 25]}
                         component="div"
@@ -363,7 +386,15 @@ const CourseManagement: React.FC = () => {
                         onPageChange={handleChangePage}
                         onRowsPerPageChange={handleChangeRowsPerPage}
                     />
+                    <Button
+                        onClick={goToLastPage}
+                        disabled={page === totalPages - 1}
+                        sx={{ marginLeft: 2, fontFamily: 'Roboto, monospace', fontWeight: 'bold' }}
+                    >
+                        Última Página
+                    </Button>
                 </Box>
+
             </Box>
             <Footer />
 
@@ -626,7 +657,7 @@ const CourseManagement: React.FC = () => {
                     <Grid
                         container
                         spacing={2}
-                        justifyContent="center"
+                        justifyContent="space-between"
                         sx={{ mt: 2 }}
                     >
                         <Grid item>

@@ -48,50 +48,21 @@ export const BuscaPoliticas: React.FC = () => {
     const [confirmModalOpen, setConfirmModalOpen] = useState(false);
     const [finalModalOpen, setFinalModalOpen] = useState(false);
 
-    // useEffect(() => {
-    //     const fetchPolicies = async () => {
-    //         setLoading(true); // Ativa o estado de carregamento
-    //         try {
-    //             const fetchedPolicies = await buscarPoliticas(); // Busca as políticas da API
-    //             const sortedPolicies = fetchedPolicies.sort((a: { descricao: string; }, b: { descricao: string; }) =>
-    //                 a.descricao.localeCompare(b.descricao)
-    //             ); // Ordena as políticas em ordem alfabética
-    //             setPolicies(sortedPolicies); // Armazena as políticas ordenadas
-    //             setFilteredPolicies(sortedPolicies); // Armazena as políticas ordenadas no filtro também
-    //         } catch (error) {
-    //             console.error('Failed to fetch policies:', error);
-    //         }
-    //         setLoading(false); // Desativa o estado de carregamento
-    //     };
-    //     fetchPolicies(); // Chama a função diretamente
-    // }, []); // O useEffect será executado uma vez quando o componente for montado// O useEffect será executado uma vez quando o componente for montado
     useEffect(() => {
-        if (!institutionId) {
-            console.log('No institution ID, navigating to /cadastro-instituicao');
-            // navigate('/cadastro');
-        } else {
-            const fetchPolicies = async () => {
-                setLoading(true);
-                try {
-                    const fetchedPolicies = await buscarPoliticas(); // Pode precisar adicionar institutionId como parâmetro dependendo da API
-                    setPolicies(fetchedPolicies);
-                    setFilteredPolicies(fetchedPolicies);
-                } catch (error) {
-                    console.error('Failed to fetch policies:', error);
-                }
-                setLoading(false);
-            };
-            fetchPolicies();
-        }
+        const fetchPolicies = async () => {
+            setLoading(true);
+            try {
+                const fetchedPolicies = await buscarPoliticas();
+                setPolicies(fetchedPolicies);
+                setFilteredPolicies(fetchedPolicies);
+            } catch (error) {
+                console.error('Failed to fetch policies:', error);
+                throw error;
+            }
+            setLoading(false);
+        };
+        fetchPolicies();
     }, [institutionId, navigate]);
-
-    // const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    //     setSearchTerm(event.target.value);
-    //     const filtered = policies.filter(policy => policy.descricao.toLowerCase().includes(event.target.value.toLowerCase()));
-    //     .filter(policy => policy.descricao.toLowerCase().includes(event.target.value.toLowerCase()))
-    //         .sort((a, b) => a.descricao.localeCompare(b.descricao)); // Ord
-    //     setFilteredPolicies(filtered);
-    // };
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
@@ -132,18 +103,18 @@ export const BuscaPoliticas: React.FC = () => {
                 .map(([id, _]) => id);
             const responses = await Promise.all(selectedPolicyIds.map(policyId =>
                 cadastrarPoliticasInstituicao(institutionId, Number(policyId))));
-            console.log('Respostas:', responses);
 
             if (responses?.length > 0) {
-                // alert('Políticas cadastradas com sucesso na Instituição');
+                alert('Políticas cadastradas com sucesso na Instituição');
                 setFinalModalOpen(true); // Exibe o modal final
-                // navigate('/gerenciamento-instituicao');
+                navigate('/gerenciamento-instituicao');
             } else {
                 alert('Erro ao cadastrar políticas!');
             }
 
         } catch (error) {
             console.error('Erro ao cadastrar políticas na instituição:', error);
+            throw error;
         }
         setConfirmModalOpen(false);
     };
@@ -308,7 +279,7 @@ export const BuscaPoliticas: React.FC = () => {
                 </Box>
             </Modal>
 
-            {/* Modal de Confirmação de Cadstro Completo */}
+            {/* Modal de Confirmação de Cadastro Completo */}
             <Dialog
                 open={finalModalOpen}
                 onClose={handleCloseFinalModal}

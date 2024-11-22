@@ -95,7 +95,8 @@ const StudentDashboard: React.FC = () => {
                     setPerfilImage(perfilData.imagem);
                 }
             } catch (error) {
-                console.error('Erro ao buscar imagem do perfil do estudante:', error);
+                console.error('Erro ao buscar imagem do perfil do estudante');
+                throw error;
             }
         };
         fetchPerfilImage();
@@ -118,7 +119,8 @@ const StudentDashboard: React.FC = () => {
                     setTestHistory(formattedTests);
                 }
             } catch (error) {
-                console.error('Erro ao buscar histórico de testes:', error);
+                console.error('Erro ao buscar histórico de testes');
+                throw error;
             }
 
         };
@@ -138,7 +140,8 @@ const StudentDashboard: React.FC = () => {
                     }
                 }
             } catch (error) {
-                console.error('Erro ao buscar perfis recorrentes:', error);
+                console.error('Erro ao buscar perfis recorrentes');
+                throw error;
             }
         };
 
@@ -283,7 +286,6 @@ const StudentDashboard: React.FC = () => {
                                                     loading="lazy"
                                                     onError={(e) => {
                                                         e.currentTarget.src = perfilArtistico;
-                                                        console.error('Erro ao carregar imagem:', perfilImage);
                                                     }}
                                                     sx={{
                                                         width: '125.25px',

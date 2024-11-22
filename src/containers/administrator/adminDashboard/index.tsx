@@ -20,7 +20,6 @@ const QuantidadesCadastradas = () => {
         instituicoes: '-',
         cursos: '-',
         estudantes: '-',
-        // testes:'-'
     });
 
     useEffect(() => {
@@ -32,21 +31,19 @@ const QuantidadesCadastradas = () => {
             const instituicoesResponse = await fetch(`${apiUrl}/instituicao/ativos/contagem`);
             const cursosResponse = await fetch(`${apiUrl}/curso/ativos/contagem`);
             const estudantesResponse = await fetch(`${apiUrl}/estudante/ativos/contagem`);
-            // const testesResponse = await fetch(`${apiUrl}/teste/ativos/contagem`);
 
             const instituicoesData = await instituicoesResponse.json();
             const cursosData = await cursosResponse.json();
             const estudantesData = await estudantesResponse.json();
-            // const testesData = await testesResponse.json();
 
             setQuantidades({
                 instituicoes: instituicoesData,
                 cursos: cursosData,
                 estudantes: estudantesData,
-                // testes: testesData,
             });
         } catch (error) {
             console.error('Erro ao buscar quantidades:', error);
+            throw error;
         }
     };
 
@@ -75,12 +72,6 @@ const QuantidadesCadastradas = () => {
                             <b>{quantidades.estudantes}</b>
                         </SquareDisplay>
                     </Grid>
-                    {/* <Grid item>
-                        <SquareDisplay>
-                            Testes Realizados
-                            <b>-</b>
-                        </SquareDisplay>
-                    </Grid> */}
                 </Grid>
             </Grid>
         </Box>

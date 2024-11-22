@@ -65,6 +65,7 @@ const UserManagement: React.FC = () => {
                 setFilteredUsers(sortedUsers);
             } catch (error) {
                 console.error('Erro ao buscar usuários:', error);
+                throw error;
             }
             setLoading(false);
         };
@@ -96,7 +97,23 @@ const UserManagement: React.FC = () => {
         setPage(0);
     };
 
-    const paginatedUsers = filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+    const paginatedUsers = filteredUsers
+        .sort((a, b) => b.id - a.id)
+        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+
+    const totalPages = Math.ceil(filteredUsers.length / rowsPerPage);
+
+    const goToFirstPage = () => {
+        setPage(0);
+    };
+
+    const goToLastPage = () => {
+        setPage(totalPages - 1);
+    };
+
+    useEffect(() => {
+        setPage(0);
+    }, [filteredUsers]);
 
     const handleEditModalOpen = (user: UserForm) => {
         setSelectedUser(user);
@@ -284,7 +301,14 @@ const UserManagement: React.FC = () => {
                         </TableContainer>
                     )}
                 </Box>
-                <Box sx={{ display: 'flex', justifyContent: 'center', marginBottom: 7 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 7, marginBottom: 7 }}>
+                    <Button
+                        onClick={goToFirstPage}
+                        disabled={page === 0}
+                        sx={{ marginRight: 2, fontFamily: 'Roboto, monospace', fontWeight: 'bold' }}
+                    >
+                        Primeira Página
+                    </Button>
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 25]}
                         component="div"
@@ -294,6 +318,13 @@ const UserManagement: React.FC = () => {
                         onPageChange={handleChangePage}
                         onRowsPerPageChange={handleChangeRowsPerPage}
                     />
+                    <Button
+                        onClick={goToLastPage}
+                        disabled={page === totalPages - 1}
+                        sx={{ marginLeft: 2, fontFamily: 'Roboto, monospace', fontWeight: 'bold' }}
+                    >
+                        Última Página
+                    </Button>
                 </Box>
             </Box>
             <Footer />
@@ -460,8 +491,13 @@ const UserManagement: React.FC = () => {
                     }}>
                         Você está prestes a excluir o usuário {selectedUser?.nome}. Deseja Continuar?
                     </Typography>
-                    <Grid container spacing={2} justifyContent="center" sx={{ mt: '10px' }}>
-                        <Grid item display="flex" justifyContent="center">
+                    <Grid
+                        container
+                        spacing={2}
+                        justifyContent="space-between"
+                        sx={{ mt: 2 }}
+                    >
+                        <Grid item>
                             <Button
                                 variant="contained"
                                 color="secondary"
@@ -482,7 +518,7 @@ const UserManagement: React.FC = () => {
                                 Sim
                             </Button>
                         </Grid>
-                        <Grid item display="flex" justifyContent="center">
+                        <Grid item>
                             <Button
                                 variant="outlined"
                                 onClick={handleDeleteModalClose}

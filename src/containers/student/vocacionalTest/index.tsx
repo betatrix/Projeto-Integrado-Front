@@ -47,7 +47,8 @@ const VocacionalTest: React.FC = () => {
                 const response = await axios.get(`${apiUrl}/pergunta/teste/1`);
                 setQuestions(response.data);
             } catch (error) {
-                console.error('Erro ao buscar perguntas:', error);
+                console.error('Erro ao buscar perguntas');
+                throw error;
             }
         };
 
@@ -61,7 +62,8 @@ const VocacionalTest: React.FC = () => {
                     setUsuario(usuarioResponse.data);
                 }
             } catch (error) {
-                console.error('Erro ao buscar dados iniciais:', error);
+                console.error('Erro ao buscar dados iniciais');
+                throw error;
             }
         };
 
@@ -110,11 +112,11 @@ const VocacionalTest: React.FC = () => {
 
         try {
             const response = await axios.post(`${apiUrl}/resposta`, payload);
-            console.log('Respostas enviadas com sucesso:', response.data);
 
             navigate('/resultado', { state: { resultado: response.data } });
         } catch (error) {
-            console.error('Erro ao enviar as respostas:', error);
+            console.error('Erro ao enviar as respostas');
+            throw error;
         }
     };
 

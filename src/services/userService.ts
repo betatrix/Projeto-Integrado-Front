@@ -26,11 +26,10 @@ export const buscarAdministrador = async () => {
 export const buscarAdministradorPorId = async (id: number) => {
     try {
         const response = await buscarEntidadePorId('administrador', id);
-        // console.log('Resposta do backend para administrador por ID:', response); // Verificar dados completos
         return response;
     } catch (error) {
         console.error('Erro ao buscar administrador por ID:', error);
-        throw error; // Opcional: lance o erro para que ele possa ser tratado em outro lugar
+        throw error;
     }
 };
 

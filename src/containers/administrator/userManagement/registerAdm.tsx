@@ -108,6 +108,7 @@ export const CadastroAdministrador: React.FC = () => {
             setModalOpen(true); // Abre o modal de confirmação
         } catch (error) {
             console.error('Erro ao cadastrar administrador:', error);
+            throw error;
         } finally {
             setSubmitting(false);
         }

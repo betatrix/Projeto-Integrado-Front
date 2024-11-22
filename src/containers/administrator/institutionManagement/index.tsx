@@ -58,14 +58,14 @@ import { cadastrarPoliticasInstituicao } from '../../../services/policiesInstitu
 import { buscarCursosPorInstituicao, buscarPoliticasPorInstituicao } from '../../../services/apiService';
 import { excluirCursoInstituicao } from '../../../services/courseInstitutionService';
 import { excluirPoliticasInstituicao } from '../../../services/policiesInstitutionService';
+import { deburr } from 'lodash';
 
 const notaMecSchema = yup
     .number()
     .nullable()
     .typeError('A nota deve ser um número')
     .min(1, 'Nota mínima 1')
-    .max(10, 'Nota máxima 10')
-    .required('A nota é obrigatória');
+    .max(10, 'Nota máxima 10');
 
 interface FormValues {
     id: number;
@@ -190,13 +190,18 @@ const InstitutionManagement: React.FC = () => {
     const [policyCourseModalOpen, setPolicyCourseModalOpen] = useState(false);
     // Estados para o modal de políticas e cursos
     const [courses, setCourses] = useState<CourseForm[]>([]);
+    const [searchCourses, setSearchCourses] = useState<CourseForm[]>([]); // Dados originais
     const [policies, setPolicies] = useState<PolicesInstitutionForm[]>([]);
+    const [searchPolicies, setSearchPolicies] = useState<PolicesInstitutionForm[]>([]); // Dados originais
+    const [searchTermCourse, setSearchTermCourse] = useState('');
+    const [searchTermPolicy, setSearchTermPolicy] = useState('');
     const [selectedCourses, setSelectedCourses] = useState<{ [key: number]: { notaMec: number | null } }>({});
     const [selectedPolicies, setSelectedPolicies] = useState<number[]>([]);
     const [validationErrors, setValidationErrors] = useState<{ [key: number]: string }>({});
 
     // Estados para o modal de exclusão de cursos e políticas
     const [deletePolicyCourseModalOpen, setDeletePolicyCourseModalOpen] = useState(false);
+    const [deletePolicyCourseConfirmationModalOpen, setDeletePolicyCourseConfirmationModalOpen] = useState(false);
     const [institutionCourses, setInstitutionCourses] = useState<InstitutionCourseForm[]>([]);
     const [institutionPolicies, setInstitutionPolicies] = useState<InstitutionPolicyForm[]>([]);
     const [selectedCoursesToDelete, setSelectedCoursesToDelete] = useState<number[]>([]);
@@ -228,6 +233,7 @@ const InstitutionManagement: React.FC = () => {
             setDetailModalOpen(true);
         } catch (error) {
             console.error('Erro ao obter detalhes da instituição:', error);
+            throw error;
         }
     };
 
@@ -244,6 +250,7 @@ const InstitutionManagement: React.FC = () => {
             setEditModalOpen(true); // Abrir o modal de edição
         } catch (error) {
             console.error('Erro ao carregar dados da instituição:', error);
+            throw error;
         }
     };
 
@@ -261,6 +268,14 @@ const InstitutionManagement: React.FC = () => {
     const handleDeleteModalClose = () => {
         setInstitutionToDelete(null);
         setDeleteModalOpen(false);
+    };
+
+    const handleDeletePolicyCourseConfirmationOpen = () => {
+        setDeletePolicyCourseConfirmationModalOpen(true);
+    };
+
+    const handleDeletePolicyCourseConfirmationClose = () => {
+        setDeletePolicyCourseConfirmationModalOpen(false);
     };
 
     const handleCheckboxChange = (id: number) => {
@@ -304,11 +319,11 @@ const InstitutionManagement: React.FC = () => {
                 return matchesName || matchesSigla || matchesId;
             });
 
-            console.log('Instituições filtradas:', filteredInstitutions); // Log para depuração
             setInstitutions(filteredInstitutions);
             setCurrentPage(0); // Reinicia para a primeira página após a busca
         } catch (error) {
             console.error('Erro ao buscar instituições:', error);
+            throw error;
         }
     }, [loadedInstitutions]);
 
@@ -343,9 +358,12 @@ const InstitutionManagement: React.FC = () => {
 
                     // Atualizar os estados com os cursos e políticas disponíveis
                     setCourses(availableCourses);
+                    setSearchCourses(availableCourses);
                     setPolicies(availablePolicies);
+                    setSearchPolicies(availablePolicies);
                 } catch (error) {
                     console.error('Erro ao buscar cursos e políticas:', error);
+                    throw error;
                 }
             };
             fetchData();
@@ -356,6 +374,19 @@ const InstitutionManagement: React.FC = () => {
         setCurrentPage(newPage);
     };
 
+    const handleFirstPage = () => {
+        setCurrentPage(0);
+    };
+
+    const handleLastPage = () => {
+        const lastPage = Math.ceil((institutions.length / rowsPerPage) - 1);
+        setCurrentPage(lastPage);
+    };
+
+    useEffect(() => {
+        setCurrentPage(0);
+    }, [institutions]);
+
     const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setCurrentPage(0);
@@ -363,20 +394,23 @@ const InstitutionManagement: React.FC = () => {
 
     const indexOfLastItem = (currentPage + 1) * rowsPerPage;
     const indexOfFirstItem = indexOfLastItem - rowsPerPage;
-    const currentInstitutions = institutions.slice(indexOfFirstItem, indexOfLastItem);
+    const currentInstitutions = institutions
+        .sort((a, b) => b.id - a.id)
+        .slice(indexOfFirstItem, indexOfLastItem);
 
     useEffect(() => {
         async function fetchInstitutions() {
             setLoading(true);
             try {
                 const data = await buscarInstituicoesPorNome('');
-                console.log('Dados retornados pela API:', data); // Adicione este log
                 const sortedData = sortInstitutionsAlphabetically(data);
+
                 setLoadedInstitutions(sortedData);
                 setInstitutions(sortedData);
-                setCurrentPage(0); // Reinicia para a primeira página
+                setCurrentPage(0);
             } catch (error) {
                 console.error('Erro ao buscar instituições:', error);
+                throw error;
             } finally {
                 setLoading(false);
             }
@@ -478,6 +512,7 @@ const InstitutionManagement: React.FC = () => {
                 setInstitutionPolicies(policies);
             } catch (error) {
                 console.error('Erro ao buscar cursos ou políticas:', error);
+                throw error;
             }
             setLoadingDeleteData(false);
             setDeletePolicyCourseModalOpen(true);
@@ -513,6 +548,44 @@ const InstitutionManagement: React.FC = () => {
         });
     };
 
+    const handleSearchChangeCourses = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const searchTerm = event.target.value.toLowerCase();
+        setSearchTermCourse(searchTerm);
+
+        if (searchTerm.trim() === '') {
+            setSearchCourses(courses);
+            return;
+        }
+
+        const filtered = courses.filter((course) => {
+            if (!isNaN(Number(searchTerm))) {
+                return course.id === Number(searchTerm);
+            }
+            return deburr(course.descricao.toLowerCase()).includes(searchTerm);
+        });
+
+        setSearchCourses(filtered);
+    };
+
+    const handleSearchChangePolicies = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const searchTerm = event.target.value.toLowerCase();
+        setSearchTermPolicy(searchTerm);
+
+        if (searchTerm.trim() === '') {
+            setSearchPolicies(policies);
+            return;
+        }
+
+        const filtered = policies.filter((policy) => {
+            if (!isNaN(Number(searchTerm))) {
+                return policy.id === Number(searchTerm);
+            }
+            return deburr(policy.descricao.toLowerCase()).includes(searchTerm);
+        });
+
+        setSearchPolicies(filtered);
+    };
+
     // Função para excluir cursos e políticas selecionados
     const handleDeleteSelectedCoursesAndPolicies = async () => {
         if (!selectedEditInstitution) return;
@@ -526,7 +599,7 @@ const InstitutionManagement: React.FC = () => {
                         await excluirCursoInstituicao(cursoInstituicaoId);
                     } catch (error) {
                         console.error(`Erro ao excluir curso ID ${cursoInstituicaoId}:`, error);
-                        throw error; // Repassa o erro para tratamento
+                        throw error;
                     }
                 })
             );
@@ -538,11 +611,12 @@ const InstitutionManagement: React.FC = () => {
                         await excluirPoliticasInstituicao(politicaInstituicaoId);
                     } catch (error) {
                         console.error(`Erro ao excluir política ID ${politicaInstituicaoId}:`, error);
-                        throw error; // Repassa o erro para tratamento
+                        throw error;
                     }
                 })
             );
 
+            handleDeletePolicyCourseConfirmationClose();
             handleDeletePolicyCourseModalClose();
         } catch (error) {
             console.error('Erro ao excluir cursos e políticas:', error);
@@ -683,6 +757,13 @@ const InstitutionManagement: React.FC = () => {
                     )}
 
                     <Box sx={{ display: 'flex', justifyContent: 'center', marginBottom: 7, marginTop: 10 }}>
+                        <Button
+                            onClick={handleFirstPage}
+                            disabled={currentPage === 1}
+                            sx={{ marginRight: 2, fontFamily: 'Roboto, monospace', fontWeight: 'bold' }}
+                        >
+                        Primeira Página
+                        </Button>
                         <TablePagination
                             rowsPerPageOptions={[5, 10, 25]}
                             component="div"
@@ -692,8 +773,14 @@ const InstitutionManagement: React.FC = () => {
                             onPageChange={handlePageChange}
                             onRowsPerPageChange={handleChangeRowsPerPage}
                         />
+                        <Button
+                            onClick={handleLastPage}
+                            disabled={currentPage === (institutions.length/rowsPerPage) - 1}
+                            sx={{ marginLeft: 2, fontFamily: 'Roboto, monospace', fontWeight: 'bold' }}
+                        >
+                        Última Página
+                        </Button>
                     </Box>
-
                 </Box>
 
             </Box>
@@ -812,9 +899,8 @@ const InstitutionManagement: React.FC = () => {
                             onSubmit={async (values, { setSubmitting }) => {
                                 try {
                                     await editarInstituicao(values);
-                                    console.log(`Instituição ${values.nome} atualizada com sucesso!`);
                                     setShowSuccessMessage(true);
-                                    // Converta 'ativo' para boolean antes de atualizar o estado
+
                                     const updatedInstitution = { ...values, ativo: values.ativo === 1 };
 
                                     setInstitutions(prevInstitutions =>
@@ -1227,15 +1313,30 @@ const InstitutionManagement: React.FC = () => {
                         marginBottom: '30px', marginTop: '10px', color: '#185D8E',
                         fontFamily: 'Roboto, monospace', fontWeight: 'bold',
                     }}>
-                        Selecione cursos e políticas para adicionar na Instiutição:
+                        Selecione cursos e políticas para adicionar na Instituição:
                     </Typography>
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+
                         {/* Seção de Cursos */}
                         <Box>
                             <Typography variant="subtitle1" gutterBottom sx={{ fontFamily: 'Poppins, sans-serif' }}>
                                 Cursos
                             </Typography>
-                            {courses.length === 0 ? (
+                            <TextField
+                                label="Pesquisar Cursos"
+                                variant="outlined"
+                                value={searchTermCourse}
+                                onChange={handleSearchChangeCourses}
+                                sx={{ width: '70%', fontFamily: 'Roboto, monospace', marginBottom: '0.3rem' }}
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <SearchIcon />
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
+                            {searchCourses.length === 0 ? (
                                 <Box
                                     sx={{
                                         display: 'flex',
@@ -1247,7 +1348,6 @@ const InstitutionManagement: React.FC = () => {
                                     <CircularProgress />
                                 </Box>
                             ) : (
-
                                 <List
                                     sx={{
                                         maxHeight: 200,
@@ -1257,7 +1357,7 @@ const InstitutionManagement: React.FC = () => {
                                         padding: 1,
                                     }}
                                 >
-                                    {courses.map((course) => (
+                                    {searchCourses.map((course) => (
                                         <ListItem key={course.id} divider>
                                             <Checkbox
                                                 checked={!!selectedCourses[course.id]}
@@ -1269,19 +1369,13 @@ const InstitutionManagement: React.FC = () => {
                                                     style={{ marginLeft: '10px', minWidth: '120px' }}
                                                     error={!!validationErrors[course.id]}
                                                 >
-                                                    <InputLabel htmlFor={`notaMec-${course.id}`}>
-                                                        Nota MEC|IDEB
-                                                    </InputLabel>
+                                                    <InputLabel htmlFor={`notaMec-${course.id}`}>Nota MEC|IDEB</InputLabel>
                                                     <Input
                                                         id={`notaMec-${course.id}`}
                                                         value={selectedCourses[course.id]?.notaMec || ''}
-                                                        onChange={(e) =>
-                                                            handleNotaMecChange(
-                                                                course.id,
-                                                                Number(e.target.value)
-                                                            )
-                                                        }
+                                                        onChange={(e) => handleNotaMecChange(course.id, Number(e.target.value))}
                                                         type="number"
+                                                        defaultValue={''}
                                                         inputProps={{ min: 1, max: 10 }}
                                                     />
                                                     <FormHelperText>
@@ -1300,7 +1394,21 @@ const InstitutionManagement: React.FC = () => {
                             <Typography variant="subtitle1" gutterBottom sx={{ fontFamily: 'Poppins, sans-serif' }}>
                                 Políticas
                             </Typography>
-                            {policies.length === 0 ? (
+                            <TextField
+                                label="Pesquisar Políticas"
+                                variant="outlined"
+                                value={searchTermPolicy}
+                                onChange={handleSearchChangePolicies}
+                                sx={{ width:'70%', fontFamily: 'Roboto, monospace', marginBottom:'0.3rem' }}
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <SearchIcon />
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
+                            {searchPolicies.length === 0 ? (
                                 <Box
                                     sx={{
                                         display: 'flex',
@@ -1321,7 +1429,7 @@ const InstitutionManagement: React.FC = () => {
                                         padding: 1,
                                     }}
                                 >
-                                    {policies.map((policy) => (
+                                    {searchPolicies.map((policy) => (
                                         <ListItem key={policy.id} divider>
                                             <Checkbox
                                                 checked={selectedPolicies.includes(policy.id)}
@@ -1498,7 +1606,7 @@ const InstitutionManagement: React.FC = () => {
                         </Button>
                         <Button
                             variant="contained"
-                            onClick={handleDeleteSelectedCoursesAndPolicies}
+                            onClick={handleDeletePolicyCourseConfirmationOpen}
                             sx={{
                                 height: '50px',
                                 width: '100px',
@@ -1513,9 +1621,84 @@ const InstitutionManagement: React.FC = () => {
                             }}
                         >
                             Excluir
-                        </Button>
+                        </Button> .
                     </Box>
                 </Box>
+            </Modal>
+
+            {/* Modal confirmar de exclusão da associação de políticas e cursos */}
+            <Modal
+                open={deletePolicyCourseConfirmationModalOpen}
+                onClose={handleDeletePolicyCourseConfirmationClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={{
+                    position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+                    bgcolor: 'background.paper', boxShadow: 24, p: 4, maxWidth: 400, width: '90%', borderRadius: '5px'
+                }}>
+
+                    <Typography id="modal-modal-title" variant="h6" component="h2" sx={{
+                        color: '#185D8E',
+                        fontFamily: 'Roboto, monospace',
+                        marginTop: 1,
+                        fontWeight: 'bold',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        textAlign: 'justify',
+                        mb: '5px'
+                    }}>
+                        Confirmar Exclusão
+                    </Typography>
+
+                    <Typography id="modal-modal-description" sx={{
+                        mt: 2,
+                        fontFamily: 'Poppins, sans-serif',
+                        textAlign: 'justify',
+                        mb: '10px'
+                    }}>
+                        Tem certeza que deseja excluir a associação?
+                    </Typography>
+                    <Grid
+                        container
+                        spacing={2}
+                        justifyContent="space-between"
+                        sx={{ mt: 2 }}
+                    >
+                        <Grid item>
+                            <Button
+                                onClick={handleDeleteSelectedCoursesAndPolicies}
+                                sx={{
+                                    height: '35px',
+                                    fontSize: '17px',
+                                    fontFamily: 'Roboto, monospace',
+                                    color: 'white',
+                                    backgroundColor: '#185D8E',
+                                    fontWeight: 'bold',
+                                    '&:hover': {
+                                        backgroundColor: '#104A6F',
+                                        color: 'white',
+                                    }
+                                }}>Sim</Button>
+                        </Grid>
+                        <Grid item>
+                            <Button onClick={handleDeletePolicyCourseConfirmationClose} sx={{
+                                height: '35px',
+                                fontSize: '17px',
+                                fontFamily: 'Roboto, monospace',
+                                color: 'white',
+                                backgroundColor: '#185D8E',
+                                fontWeight: 'bold',
+                                '&:hover': {
+                                    backgroundColor: '#104A6F',
+                                    color: 'white',
+                                }
+                            }}>Não</Button>
+                        </Grid>
+                    </Grid>
+
+                </Box>
+
             </Modal>
 
             {/* Modal de exclusão */}
@@ -1551,13 +1734,18 @@ const InstitutionManagement: React.FC = () => {
                     }}>
                         Você está prestes a excluir a instituição {institutionToDelete?.nome}. Deseja continuar?
                     </Typography>
-                    <Grid container justifyContent="center" spacing={2} sx={{ mt: '10px' }}>
-                        <Grid item display="flex" justifyContent="center">
+                    <Grid
+                        container
+                        spacing={2}
+                        justifyContent="space-between"
+                        sx={{ mt: 2 }}
+                    >
+                        <Grid item>
                             <Button onClick={async () => {
                                 if (institutionToDelete) {
                                     try {
                                         await excluirInstituicao(institutionToDelete.id);
-                                        console.log(`Instituição ${institutionToDelete.nome} excluída com sucesso`);
+
                                         setInstitutions((prevInstitutions) => prevInstitutions.filter(institution => institution.id !== institutionToDelete.id));
                                         setLoadedInstitutions((prevLoadedInstitutions) => prevLoadedInstitutions.filter(institution => institution.id !== institutionToDelete.id));
                                         setShowSuccessDeleteMessage(true); // Exibe mensagem de sucesso
@@ -1581,8 +1769,7 @@ const InstitutionManagement: React.FC = () => {
                                 }
                             }}>Sim</Button>
                         </Grid>
-                        <Grid item display="flex" justifyContent="center">
-
+                        <Grid item>
                             <Button onClick={handleDeleteModalClose} sx={{
                                 height: '35px',
                                 fontSize: '17px',

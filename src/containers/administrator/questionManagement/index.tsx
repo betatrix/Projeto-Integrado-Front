@@ -62,6 +62,7 @@ function TestManagement() {
             return questionDetails;
         } catch (error) {
             console.error('Erro ao buscar detalhes da pergunta:', error);
+            throw error;
             return null;
         }
     };
@@ -96,6 +97,7 @@ function TestManagement() {
                 setFilteredQuestions(filteredQuestions);
             } catch (error) {
                 console.error('Erro ao buscar perguntas:', error);
+                throw error;
             }
 
             setLoading(false);
@@ -110,6 +112,7 @@ function TestManagement() {
             setDetailModalOpen(true);
         } catch (error) {
             console.error('Erro ao obter detalhes da pergunta:', error);
+            throw error;
         }
     };
 
@@ -138,7 +141,6 @@ function TestManagement() {
 
     const handleDeleteModalOpen = (question: TestForm) => {
         setSelectedQuestion(question);
-        console.log(question);
         setDeleteModalOpen(true);
     };
 
@@ -160,6 +162,7 @@ function TestManagement() {
                 handleDeleteModalClose();
             } catch (error) {
                 console.error('Erro ao excluir pergunta:', error);
+                throw error;
             }
         }
     };
@@ -176,7 +179,23 @@ function TestManagement() {
         setPage(0);
     };
 
-    const paginatedQuestions = filteredQuestions.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+    const paginatedQuestions = filteredQuestions
+        .sort((a, b) => b.id - a.id)
+        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+
+    const totalPages = Math.ceil(filteredQuestions.length / rowsPerPage);
+
+    const goToFirstPage = () => {
+        setPage(0);
+    };
+
+    const goToLastPage = () => {
+        setPage(totalPages - 1);
+    };
+
+    useEffect(() => {
+        setPage(0);
+    }, [filteredQuestions]);
 
     return (
         <>
@@ -212,6 +231,9 @@ function TestManagement() {
                     </Link>
                 </Box>
                 <Box sx={{ paddingTop: 10, paddingLeft: 45, paddingRight: 45, marginBottom: 10 }}>
+                    <Typography variant="h6" gutterBottom sx={{ textAlign: 'center', fontWeight: 'bold', fontFamily: 'Poppins, sans-serif' }}>
+                        Teste Vocacional de John Holland
+                    </Typography>
                     {loading ? (
                         <Box sx={{
                             display: 'flex',
@@ -262,14 +284,14 @@ function TestManagement() {
                         </TableContainer>
                     )}
                 </Box>
-                <Box
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        marginTop: 7,
-                        marginBottom: 7
-                    }}
-                >
+                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 7, marginBottom: 7 }}>
+                    <Button
+                        onClick={goToFirstPage}
+                        disabled={page === 0}
+                        sx={{ marginRight: 2, fontFamily: 'Roboto, monospace', fontWeight: 'bold' }}
+                    >
+        Primeira Página
+                    </Button>
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 25]}
                         component="div"
@@ -279,7 +301,15 @@ function TestManagement() {
                         onPageChange={handleChangePage}
                         onRowsPerPageChange={handleChangeRowsPerPage}
                     />
+                    <Button
+                        onClick={goToLastPage}
+                        disabled={page === totalPages - 1}
+                        sx={{ marginLeft: 2, fontFamily: 'Roboto, monospace', fontWeight: 'bold' }}
+                    >
+        Última Página
+                    </Button>
                 </Box>
+
             </Box>
             <Footer />
 
@@ -381,6 +411,7 @@ function TestManagement() {
                                     handleEditModalClose();
                                 } catch (error) {
                                     console.error('Erro ao atualizar pergunta:', error);
+                                    throw error;
                                 }
                                 setSubmitting(false);
                             }}
@@ -506,10 +537,24 @@ function TestManagement() {
                         width: '90%',
                     }}
                 >
-                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                    <Typography id="modal-modal-title" variant="h6" component="h2" sx={{
+                        color: '#185D8E',
+                        fontFamily: 'Roboto, monospace',
+                        marginTop: 1,
+                        fontWeight: 'bold',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        textAlign: 'justify',
+                        mb: '5px'
+                    }}>
                             Confirmar exclusão
                     </Typography>
-                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                    <Typography id="modal-modal-description" sx={{
+                        mt: 2,
+                        fontFamily: 'Poppins, sans-serif',
+                        textAlign: 'justify',
+                        mb: '10px'
+                    }}>
                             Tem certeza que deseja excluir a pergunta?
                     </Typography>
                     <Grid
@@ -519,17 +564,41 @@ function TestManagement() {
                         sx={{ mt: 2 }}
                     >
                         <Grid item>
-                            <Button variant="outlined" onClick={handleDeleteModalClose}>
-                                    Não
+                            <Button
+                                onClick={handleDeleteCourse}
+                                sx={{
+                                    height: '35px',
+                                    fontSize: '17px',
+                                    fontFamily: 'Roboto, monospace',
+                                    color: 'white',
+                                    backgroundColor: '#185D8E',
+                                    fontWeight: 'bold',
+                                    '&:hover': {
+                                        backgroundColor: '#104A6F',
+                                        color: 'white',
+                                    }
+                                }}
+                            >
+                                    Sim
                             </Button>
                         </Grid>
                         <Grid item>
                             <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={handleDeleteCourse}
+                                onClick={handleDeleteModalClose}
+                                sx={{
+                                    height: '35px',
+                                    fontSize: '17px',
+                                    fontFamily: 'Roboto, monospace',
+                                    color: 'white',
+                                    backgroundColor: '#185D8E',
+                                    fontWeight: 'bold',
+                                    '&:hover': {
+                                        backgroundColor: '#104A6F',
+                                        color: 'white',
+                                    }
+                                }}
                             >
-                                    Sim
+                                    Não
                             </Button>
                         </Grid>
                     </Grid>

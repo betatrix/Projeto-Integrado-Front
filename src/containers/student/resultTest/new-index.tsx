@@ -67,16 +67,14 @@ const ResultScreen: React.FC = () => {
         try {
             const response = await fetch(`${apiUrl}/cursoInstituicao/curso/mec/${cursoId}`);
             const data: ResultData['instituicao'][] = await response.json();
-
-            // Extraindo apenas as informações de `instituicao`
             const institutionData = data.map((item: any) => item.instituicao);
+
             setInstitutions(institutionData);
             setFilteredInstitutions(institutionData);
-
             setOpenModal(true);
-            console.log('data intitições: ', data);
         } catch (error) {
-            console.error('Erro ao buscar instituições:', error);
+            console.error('Erro ao buscar instituições');
+            throw error;
         }
     };
 

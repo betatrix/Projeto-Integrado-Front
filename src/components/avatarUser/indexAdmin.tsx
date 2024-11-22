@@ -27,6 +27,7 @@ const AvatarUserAdmin = () => {
                 setImagem(fetchedImage || '/static/images/avatar/2.jpg');
             } catch (error) {
                 console.error('Erro ao buscar foto:', error);
+                throw error;
             }
         };
         fetchData();

@@ -140,7 +140,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                     setAdmin(admin);
                 }
             } catch (error) {
-                console.error('Erro ao analisar os dados do usuário:', error);
+                console.error('Erro ao analisar os dados do usuário');
                 logout();
             }
         }

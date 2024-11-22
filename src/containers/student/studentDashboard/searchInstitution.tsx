@@ -178,7 +178,8 @@ const InstitutionList: React.FC = () => {
             const institutionDetails = await buscarEntidadePorId('instituicao', institutionId);
             return institutionDetails;
         } catch (error) {
-            console.error('Erro ao buscar detalhes da instituição:', error);
+            console.error('Erro ao buscar detalhes da instituição');
+            throw error;
             return null;
         }
     };
@@ -200,7 +201,8 @@ const InstitutionList: React.FC = () => {
 
                 setInstitutions(institutionsWithDetails);
             } catch (error) {
-                console.error('Erro ao buscar instituições:', error);
+                console.error('Erro ao buscar instituições');
+                throw error;
             }
             finally{
                 setLoading(false);
@@ -269,7 +271,8 @@ const InstitutionList: React.FC = () => {
             setSelectedInstitution({ ...institutionDetails, cursos: institutionCourses, politicas: institutionPolicies });
             setDetailModalOpen(true);
         } catch (error) {
-            console.error('Erro ao obter detalhes da instituição:', error);
+            console.error('Erro ao obter detalhes da instituição');
+            throw error;
         }
     };
 

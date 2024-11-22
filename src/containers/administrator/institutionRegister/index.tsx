@@ -104,23 +104,19 @@ export const CadastroInstituicao: React.FC = () => {
                 setFieldValue('endereco.estado', uf);
             } catch (error) {
                 console.error('Erro ao buscar CEP:', error);
+                throw error;
             }
         }
     };
 
     const handleSubmit = async (values: FormValues, { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }) => {
-        console.log(values); // Adicione este console.log
-        console.log('Tipo de Instituição:', values.tipo);
-
         try {
             const response = await cadastrarInstituicao(values);
-            console.log(values);
-            console.log('Instituição cadastrada com sucesso:', response);
             setInstitutionId(response.id);
             navigate('/cursos', { state: { institutionId: response.id } });
         } catch (error) {
-            console.log(values);
             console.error('Erro ao cadastrar instituição:', error);
+            throw error;
         }
         setSubmitting(false);
     };
