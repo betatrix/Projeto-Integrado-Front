@@ -66,6 +66,7 @@ const AdminManagement: React.FC = () => {
                 setFilteredAdmins(sortedAdmins);
             } catch (error) {
                 console.error('Erro ao buscar administradores:', error);
+                throw error;
             }
             setLoading(false);
         };
@@ -99,7 +100,23 @@ const AdminManagement: React.FC = () => {
         setPage(0);
     };
 
-    const paginatedAdmins = filteredAdmins.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+    const paginatedAdmins = filteredAdmins
+        .sort((a, b) => b.id - a.id)
+        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+
+    const totalPages = Math.ceil(filteredAdmins.length / rowsPerPage);
+
+    const goToFirstPage = () => {
+        setPage(0);
+    };
+
+    const goToLastPage = () => {
+        setPage(totalPages - 1);
+    };
+
+    useEffect(() => {
+        setPage(0);
+    }, [filteredAdmins]);
 
     const handleDetailModalOpen = async (admin: AdmForm) => {
         try {
@@ -108,6 +125,7 @@ const AdminManagement: React.FC = () => {
             setDetailModalOpen(true);
         } catch (error) {
             console.error('Erro ao buscar dados do administrador:', error);
+            throw error;
         }
     };
 
@@ -123,6 +141,7 @@ const AdminManagement: React.FC = () => {
             setEditModalOpen(true);
         } catch (error) {
             console.error('Erro ao buscar dados completos do administrador:', error);
+            throw error;
         }
     };
 
@@ -295,7 +314,14 @@ const AdminManagement: React.FC = () => {
                         </TableContainer>
                     )}
                 </Box>
-                <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 7, marginBottom: 7 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 7, marginBottom: 7 }}>
+                    <Button
+                        onClick={goToFirstPage}
+                        disabled={page === 0}
+                        sx={{ marginRight: 2, fontFamily: 'Roboto, monospace', fontWeight: 'bold' }}
+                    >
+                        Primeira Página
+                    </Button>
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 25]}
                         component="div"
@@ -305,6 +331,13 @@ const AdminManagement: React.FC = () => {
                         onPageChange={handleChangePage}
                         onRowsPerPageChange={handleChangeRowsPerPage}
                     />
+                    <Button
+                        onClick={goToLastPage}
+                        disabled={page === totalPages - 1}
+                        sx={{ marginLeft: 2, fontFamily: 'Roboto, monospace', fontWeight: 'bold' }}
+                    >
+                        Última Página
+                    </Button>
                 </Box>
             </Box>
             <Footer />
@@ -502,8 +535,13 @@ const AdminManagement: React.FC = () => {
                     }}>
                         Você está prestes a excluir o administrador {selectedAdmin?.nome}. Deseja Continuar?
                     </Typography>
-                    <Grid container spacing={2} justifyContent="center" sx={{ mt: '10px' }}>
-                        <Grid item display="flex" justifyContent="center">
+                    <Grid
+                        container
+                        spacing={2}
+                        justifyContent="space-between"
+                        sx={{ mt: 2 }}
+                    >
+                        <Grid item>
                             <Button
                                 variant="contained"
                                 color="secondary"
@@ -523,7 +561,7 @@ const AdminManagement: React.FC = () => {
                                 Sim
                             </Button>
                         </Grid>
-                        <Grid item display="flex" justifyContent="center">
+                        <Grid item>
                             <Button
                                 variant="outlined"
                                 onClick={handleDeleteModalClose}

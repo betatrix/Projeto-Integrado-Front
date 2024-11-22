@@ -41,6 +41,7 @@ const QuestionRegister: React.FC = () => {
                 setPerfil(fetchedPerfil);
             } catch (error) {
                 console.error('Erro ao buscar perfis:', error);
+                throw error;
             }
         };
         fetchAreas();

@@ -8,9 +8,7 @@ export const buscarCursos = async () => {
 
 export const buscarCursosListaCompleta = async () => {
     const response = await buscarEntidades('curso');
-    console.log(response);
     return response;
-
 };
 
 export const buscarCursoPorId = async (id: number) => {

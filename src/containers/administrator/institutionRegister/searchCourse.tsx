@@ -61,38 +61,20 @@ export const BuscaCurso: React.FC = () => {
     const [confirmModalOpen, setConfirmModalOpen] = useState(false);
 
     useEffect(() => {
-        if (!institutionId) {
-            // navigate('/cadastro');
-        } else {
-            const fetchCourses = async () => {
-                setLoading(true);
-                try {
-                    const fetchedCourses = await buscarCursos();
-                    setCourses(fetchedCourses);
-                    setFilteredCourses(fetchedCourses);
-                } catch (error) {
-                    console.error('Failed to fetch courses:', error);
-                }
-                setLoading(false);
-            };
-            fetchCourses();
-        }
+        const fetchCourses = async () => {
+            setLoading(true);
+            try {
+                const fetchedCourses = await buscarCursos();
+                setCourses(fetchedCourses);
+                setFilteredCourses(fetchedCourses);
+            } catch (error) {
+                console.error('Failed to fetch courses:', error);
+                throw error;
+            }
+            setLoading(false);
+        };
+        fetchCourses();
     }, [institutionId, navigate]);
-
-    // useEffect(() => {
-    //     const fetchCourses = async () => {
-    //         setLoading(true);
-    //         try {
-    //             const fetchedCourses = await buscarCursos(); // Busca cursos independentemente de institutionId
-    //             setCourses(fetchedCourses);
-    //             setFilteredCourses(fetchedCourses);
-    //         } catch (error) {
-    //             console.error('Failed to fetch courses:', error);
-    //         }
-    //         setLoading(false);
-    //     };
-    //     fetchCourses();
-    // }, []);
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
@@ -156,23 +138,20 @@ export const BuscaCurso: React.FC = () => {
                     notaMec,
                 }));
             if (selectedEntries.length > 0) {
-                for (const { notaMec, courseId } of selectedEntries) {
+                for (const { notaMec } of selectedEntries) {
                     await notaMecSchema.validate(notaMec);
-                    console.log(courseId);
                 }
-                const responses = await Promise.all(
+                await Promise.all(
                     selectedEntries.map(({ notaMec, courseId }) =>
                         cadastrarCursoInstituicao(institutionId, notaMec, courseId)
                     )
                 );
                 navigate('/politicas', { state: { institutionId } });
-                console.log('Cursos cadastrados com sucesso:', responses);
-                // alert('Cursos cadastrados com sucesso na Instituição');
+                alert('Cursos cadastrados com sucesso na Instituição');
             } else {
                 alert('Selecione um curso para continuar!');
             }
         } catch (error) {
-            console.error('Erro ao cadastrar cursos na instituição:', error);
             alert('Erro na validação das notas MEC.');
         }
         setConfirmModalOpen(false);

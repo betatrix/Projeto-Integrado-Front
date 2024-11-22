@@ -5,9 +5,7 @@ export const cadastrarPoliticasInstituicao = async (instituicaoId: number, polit
         instituicaoId,
         politicaId
     });
-    console.log(response);
     return response;
-
 };
 
 export const excluirPoliticasInstituicao = async (id: number) => {

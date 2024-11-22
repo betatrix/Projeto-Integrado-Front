@@ -56,14 +56,11 @@ const RecuperarSenha: React.FC = () => {
 
             if (response === 200) {
                 setShowSuccessMessage(true);
-                console.log('Sucesso ao enviar email:', response);
             } else {
                 setShowErrorMessage(true);
-                console.error(response);
             }
         } catch (error) {
             setShowErrorMessage(true);
-            console.error('Erro ao enviar email:', error);
         } finally {
             setLoading(false);
         }

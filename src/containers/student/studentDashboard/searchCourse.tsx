@@ -104,7 +104,8 @@ const CourseList: React.FC = () => {
             const cursoDetails = await buscarEntidadePorId('curso', cursoId);
             return cursoDetails;
         } catch (error) {
-            console.error('Erro ao buscar detalhes do curso:', error);
+            console.error('Erro ao buscar detalhes do curso');
+            throw error;
             return null;
         }
     };
@@ -132,7 +133,8 @@ const CourseList: React.FC = () => {
 
                 setCourses(sortedCourses);
             } catch (error) {
-                console.error('Erro ao buscar instituições:', error);
+                console.error('Erro ao buscar instituições');
+                throw error;
             }
             finally{
                 setLoading(false);

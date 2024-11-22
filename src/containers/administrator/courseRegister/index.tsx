@@ -67,7 +67,6 @@ const courseValidationSchema = yup.object().shape({
 
 const CadastroCurso: React.FC = () => {
     const [areas, setAreas] = useState<Area[]>([]);
-    // const [loadingAreas, setLoadingAreas] = useState<boolean>(true);
     const [message, setMessage] = useState<string | null>(null); // Estado para a mensagem de sucesso/erro
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false); // Estado para controlar o modal
     const navigate = useNavigate(); // Hook para navegação
@@ -80,8 +79,7 @@ const CadastroCurso: React.FC = () => {
                 if (isMounted) setAreas(fetchedAreas);
             } catch (error) {
                 console.error('Erro ao buscar áreas:', error);
-            } finally {
-                // if (isMounted) setLoadingAreas(false);
+                throw error;
             }
         };
         fetchAreas();
