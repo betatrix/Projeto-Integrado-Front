@@ -1,14 +1,15 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../../components/vocacionalTestHeader';
-import { IconButton, Box, Dialog, DialogActions, DialogContent, DialogTitle, ThemeProvider} from '@mui/material';
+import { IconButton, Box, Dialog, DialogActions, DialogContent, DialogTitle, ThemeProvider, useMediaQuery} from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import { CenteredDiv, ButtonGroup, Global, homePageBoxStyles, StyledTypography,
     CustomButton, ModalText, BackButton, CustomLink, CourseCustomButton,
     StyledLinearProgress,
-    componentTheme} from './styles';
+    componentTheme,
+    CountDisplay} from './styles';
 import axios from 'axios';
 import AnswerOptions from './answerOptions';
 import { AuthContext } from '../../../contexts/auth';
@@ -35,6 +36,7 @@ const VocacionalTest: React.FC = () => {
     const apiUrl = import.meta.env.VITE_API_URL;
     const{ t, i18n } = useTranslation();
     const navigate = useNavigate();
+    const isMobile = useMediaQuery('(max-width:600px)');
 
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [answers, setAnswers] = useState<number[]>(new Array(30).fill(0));
@@ -180,14 +182,39 @@ const VocacionalTest: React.FC = () => {
             </BackButton>
 
             <Box sx={homePageBoxStyles}>
-                <CenteredDiv>
+                <CenteredDiv
+                    style={{
+                        marginTop: isMobile ? '25%' : '7%'
+                    }}
+                >
 
-                    <ThemeProvider theme={componentTheme}>
-                        <StyledTypography variant="h6" gutterBottom style={{marginTop: '15px', marginBottom: '10px'}}>
-                            {i18n.language === 'en' ? questions[currentQuestion]?.textoIngles : questions[currentQuestion]?.texto}
-                        </StyledTypography>
+                    {isMobile && (
+                        <ThemeProvider theme={componentTheme}>
+                            <StyledTypography variant="h6" gutterBottom style={{marginTop: '15px', marginBottom: '10px', fontSize: '18px'}}>
+                                {i18n.language === 'en' ? questions[currentQuestion]?.textoIngles : questions[currentQuestion]?.texto}
+                            </StyledTypography>
 
-                    </ThemeProvider>
+                        </ThemeProvider>
+                    )}
+
+                    {!isMobile && (
+                        <ThemeProvider theme={componentTheme}>
+                            <StyledTypography variant="h6" gutterBottom style={{marginTop: '15px', marginBottom: '10px'}}>
+                                {i18n.language === 'en' ? questions[currentQuestion]?.textoIngles : questions[currentQuestion]?.texto}
+                            </StyledTypography>
+
+                        </ThemeProvider>
+                    )}
+
+                    <CountDisplay
+                        style={{
+                            fontSize: isMobile ? '14px' : '16px',
+                            top: isMobile ? '15px' : '18px',
+                            right: isMobile ? '13px' : '18px'
+                        }}
+                    >
+                        {currentQuestion + 1} / {questions.length}
+                    </CountDisplay>
 
                     <Box
                         sx={{
@@ -222,7 +249,7 @@ const VocacionalTest: React.FC = () => {
                                 src={`${apiUrl}/arquivos/download/test/${questions[currentQuestion].imagem}`}
                                 alt={`Imagem para a pergunta ${currentQuestion + 1}`}
                                 style={{
-                                    maxWidth: '550px',
+                                    maxWidth: isMobile ? '350px' : '550px',
                                     height: 'auto',
                                     borderRadius: '20px',
                                     display: 'block',

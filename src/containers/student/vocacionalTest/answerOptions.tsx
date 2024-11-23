@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconButton, Tooltip } from '@mui/material';
+import { IconButton, Tooltip, useMediaQuery } from '@mui/material';
 
 interface AnswerOptionsProps {
     value: number;
@@ -8,6 +8,7 @@ interface AnswerOptionsProps {
 }
 
 const AnswerOptions: React.FC<AnswerOptionsProps> = ({ value, onChange, disabled }) => {
+    const isMobile = useMediaQuery('(max-width:600px)');
     const icons = [
         { value: 1, src: 'src/assets/img/SVG-emoji-voquinho-chorando.svg', label: 'Não me identifico com isso de forma alguma' },
         { value: 2, src: 'src/assets/img/SVG-emoji-voquinho-triste.svg', label: 'Isso não reflete muito quem eu sou' },
@@ -32,7 +33,12 @@ const AnswerOptions: React.FC<AnswerOptionsProps> = ({ value, onChange, disabled
                                 filter: value === iconData.value ? 'brightness(0.7)' : 'brightness(1)',
                             }}
                         >
-                            <img src={iconData.src} alt={iconData.label} style={{ width: '85px',}} />
+                            <img src={iconData.src} alt={iconData.label}
+                                style={{
+                                    width: isMobile ? '60px' : '85px',
+                                    marginTop: isMobile ? '15px' : '5px',
+                                    marginBottom: isMobile ? '20px' : '5px'
+                                }} />
                         </IconButton>
                     </span>
                 </Tooltip>

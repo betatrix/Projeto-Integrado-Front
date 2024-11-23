@@ -73,7 +73,26 @@ export const CenteredDiv = styled.div`
     max-height: 650px;
     margin-top: 7%;
     border: solid #185D8E; 
-    position: relative; /* Para usar posição absoluta no filho */
+    position: relative;
+
+    @media (max-width: 600px) {
+    width: 90%;
+    height: 725px;
+    max-height: 800px;
+  }
+`;
+
+export const CountDisplay = styled.div`
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    /* background-color: #A4BFD2; */
+    color: #A4BFD2;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    z-index: 10;
 `;
 
 export const ButtonGroup = styled.div`
@@ -101,7 +120,7 @@ export const StyledLinearProgress = styled(LinearProgress)`
     }
     
     &.MuiLinearProgress-colorPrimary {
-        background-color: #d3d3d3; /* Cor de fundo da barra */
+        background-color: #060404; /* Cor de fundo da barra */
     }
 `;
 
