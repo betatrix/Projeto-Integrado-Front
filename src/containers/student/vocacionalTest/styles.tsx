@@ -120,7 +120,7 @@ export const StyledLinearProgress = styled(LinearProgress)`
     }
     
     &.MuiLinearProgress-colorPrimary {
-        background-color: #060404; /* Cor de fundo da barra */
+        background-color: #f3f0f0; /* Cor de fundo da barra */
     }
 `;
 
