@@ -15,6 +15,7 @@ import AnswerOptions from './answerOptions';
 import { AuthContext } from '../../../contexts/auth';
 import { decryptData } from '../../../services/encryptionService';
 import { useTranslation } from 'react-i18next';
+import { images } from './images';
 
 interface Teste {
     id: number;
@@ -232,19 +233,8 @@ const VocacionalTest: React.FC = () => {
                             <NavigateBeforeIcon fontSize="inherit" />
                         </IconButton>
 
-                        {/* <img
-                            src="src/assets/img/1pergunta.jpg"
-                            alt="Descrição da imagem"
-                            style={{
-                                maxWidth: '550px',
-                                height: 'auto',
-                                borderRadius: '20px',
-                                display: 'block',
-                                margin: '0 auto'
-                            }}
-                        /> */}
-
-                        {questions[currentQuestion] && questions[currentQuestion].imagem && (
+                        {/* imagem do S3 */}
+                        {/* {questions[currentQuestion] && questions[currentQuestion].imagem && (
                             <img
                                 src={`${apiUrl}/arquivos/download/test/${questions[currentQuestion].imagem}`}
                                 alt={`Imagem para a pergunta ${currentQuestion + 1}`}
@@ -256,7 +246,20 @@ const VocacionalTest: React.FC = () => {
                                     margin: '0 auto'
                                 }}
                             />
-                        )}
+                        )} */}
+
+                        {/* imagem do array fixo */}
+                        <img
+                            src={images[currentQuestion]}
+                            alt={`Imagem para a pergunta ${currentQuestion + 1}`}
+                            style={{
+                                maxWidth: isMobile ? '350px' : '550px',
+                                height: 'auto',
+                                borderRadius: '20px',
+                                display: 'block',
+                                margin: '0 auto'
+                            }}
+                        />
 
                         <IconButton
                             onClick={handleNext}
