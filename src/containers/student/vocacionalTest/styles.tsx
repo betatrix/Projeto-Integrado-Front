@@ -115,12 +115,12 @@ export const StyledLinearProgress = styled(LinearProgress)`
     width: 70%;
     
     & .MuiLinearProgress-barColorPrimary {
-        background: linear-gradient(90deg, #A4BFD2 0%, #185D8E 100%); /* Cor da barra de progresso */
+        background: linear-gradient(90deg, #A4BFD2 0%, #185D8E 100%);
         height: 20px;
     }
     
     &.MuiLinearProgress-colorPrimary {
-        background-color: #060404; /* Cor de fundo da barra */
+        background-color: #e6e4e4;
     }
 `;
 
