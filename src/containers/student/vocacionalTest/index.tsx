@@ -254,7 +254,7 @@ const VocacionalTest: React.FC = () => {
                             alt={`Imagem para a pergunta ${currentQuestion + 1}`}
                             style={{
                                 maxWidth: isMobile ? '350px' : '550px',
-                                height: '376px', // NÃO ESQUECER DE TROCAR PARA AUTO DEPOIS
+                                height: 'auto',
                                 borderRadius: '20px',
                                 display: 'block',
                                 margin: '0 auto'
