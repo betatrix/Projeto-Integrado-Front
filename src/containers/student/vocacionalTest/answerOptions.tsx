@@ -1,5 +1,10 @@
 import React from 'react';
 import { IconButton, Tooltip, useMediaQuery } from '@mui/material';
+import EmojiVoquinhoChorando from '../../../assets/img/SVG-emoji-voquinho-chorando.svg';
+import EmojiVoquinhoTriste from '../../../assets/img/SVG-emoji-voquinho-triste.svg';
+import EmojiVoquinhoNeutro from '../../../assets/img/SVG-emoji-voquinho-neutro.svg';
+import EmojiVoquinhoFeliz from '../../../assets/img/SVG-emoji-voquinho-feliz.svg';
+import EmojiVoquinhoApaixonado from '../../../assets/img/SVG-emoji-voquinho-apaixonado.svg';
 
 interface AnswerOptionsProps {
     value: number;
@@ -10,11 +15,11 @@ interface AnswerOptionsProps {
 const AnswerOptions: React.FC<AnswerOptionsProps> = ({ value, onChange, disabled }) => {
     const isMobile = useMediaQuery('(max-width:600px)');
     const icons = [
-        { value: 1, src: 'src/assets/img/SVG-emoji-voquinho-chorando.svg', label: 'Não me identifico com isso de forma alguma' },
-        { value: 2, src: 'src/assets/img/SVG-emoji-voquinho-triste.svg', label: 'Isso não reflete muito quem eu sou' },
-        { value: 3, src: 'src/assets/img/SVG-emoji-voquinho-neutro.svg', label: 'Não tenho uma opinião definida sobre isso' },
-        { value: 4, src: 'src/assets/img/SVG-emoji-voquinho-feliz.svg', label: 'Tenho uma conexão razoável com isso' },
-        { value: 5, src: 'src/assets/img/SVG-emoji-voquinho-apaixonado.svg', label: 'Isso reflete muito quem eu sou!' },
+        { value: 1, src: EmojiVoquinhoChorando, label: 'Não me identifico com isso de forma alguma' },
+        { value: 2, src: EmojiVoquinhoTriste, label: 'Isso não reflete muito quem eu sou' },
+        { value: 3, src: EmojiVoquinhoNeutro, label: 'Não tenho uma opinião definida sobre isso' },
+        { value: 4, src: EmojiVoquinhoFeliz, label: 'Tenho uma conexão razoável com isso' },
+        { value: 5, src: EmojiVoquinhoApaixonado, label: 'Isso reflete muito quem eu sou!' },
     ];
 
     return (
