@@ -1,24 +1,46 @@
 import styled, { createGlobalStyle } from 'styled-components';
 import { LinearProgress, Button, Typography, SxProps, Theme} from '@mui/material';
-import vocacionalTestImg from '../../../assets/img/vocacionaTest.png';
+import vocacionalTestImg from '../../../assets/img/test-background.png';
 import { Link } from 'react-router-dom';
+import { createTheme } from '@mui/material/styles';
+
+// eslint-disable-next-line react-refresh/only-export-components
+export const componentTheme = createTheme({
+    typography: {
+        fontFamily: '\'Poppins\', sans-serif',
+    },
+});
 
 export const Global = createGlobalStyle`
-  @import url('https://fonts.googleapis.com/css2?family=Exo:wght@400;600&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+  body, html, #root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
 
   body {
     color: #030140;
     font-weight: 400;
     font-style: normal;
-}
+    font-family: 'Poppins', sans-serif;
+    background-image: url(${vocacionalTestImg});
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  * {
+    font-family: 'Poppins', sans-serif;
+  }
 `;
 
 export const IntroText = styled(Typography)`
   font-size: 0.8rem;
   color: rgba(0, 0, 0, 0.6); 
-  margin-bottom: 20px;
   text-align: center;
-  font-family: 'Exo', sans-serif;
 `;
 
 export const ModalText = styled(Typography)`
@@ -40,15 +62,37 @@ export const CenteredDiv = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 70vh;
+    height: 650px;
     width: 90%; 
-    max-width: 800px;
+    max-width: 1200px;
     background-color: white;
-    border-radius: 10px; 
+    border-radius: 20px; 
     padding: 20px; 
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    /* box-shadow: 5px 5px 1px #185D8E; */
     margin: auto;
-    max-height: 450px;
+    max-height: 650px;
+    margin-top: 7%;
+    border: solid #185D8E; 
+    position: relative;
+
+    @media (max-width: 600px) {
+    width: 90%;
+    height: 725px;
+    max-height: 800px;
+  }
+`;
+
+export const CountDisplay = styled.div`
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    /* background-color: #A4BFD2; */
+    color: #A4BFD2;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    z-index: 10;
 `;
 
 export const ButtonGroup = styled.div`
@@ -69,15 +113,14 @@ export const RadioContainer = styled.div`
 
 export const StyledLinearProgress = styled(LinearProgress)`
     width: 70%;
-    margin-bottom: 70px;
     
     & .MuiLinearProgress-barColorPrimary {
-        background: linear-gradient(90deg, #312ef4 0%, #0f1c5c 100%); /* Cor da barra de progresso */
+        background: linear-gradient(90deg, #A4BFD2 0%, #185D8E 100%); /* Cor da barra de progresso */
         height: 20px;
     }
     
     &.MuiLinearProgress-colorPrimary {
-        background-color: #d3d3d3; /* Cor de fundo da barra */
+        background-color: #060404; /* Cor de fundo da barra */
     }
 `;
 
@@ -108,41 +151,54 @@ export const StyledButton = styled(Button)`
 
 export const CustomButton = styled(Button)`
   &.MuiButton-root {
-    background: linear-gradient(90deg, rgba(53,51,205,1) 0%, rgba(16,24,64,1) 100%);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    margin-top: 5px;
-    margin-bottom: 2px;
+    background: #D9EEFF;
+    box-shadow: 5px 5px 0px 1px #B9D4F8;
     border-radius: 10px;
-    height: 55px;
-    color: #fff;
+    height: 40px;
+    color: #185D8E;
+    border: solid;
+    font-weight: bold;
+    width: 200px;
+    padding: 0.7rem 1.05rem;
+    margin-top: 10px;
 
     &:hover {
-        background: linear-gradient(269deg,#3533cd,#101840,#3533cd);
-        background-size: 180% 180%;
-        animation: gradient-animation 10s ease infinite;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-      
-      @keyframes gradient-animation {
-        0% {
-          background-position: 0% 50%;
-        }
-        50% {
-          background-position: 100% 50%;
-        }
-        100% {
-          background-position: 0% 50%;
-        }
-      }
+      background-color: #a7cae3;
+      transform: scale(1.1);
     }
   }
 `;
 
+export const CourseCustomButton = styled(Button)<{ selected?: boolean }>`
+  &.MuiButton-root {
+    background: #f7fbff;
+    box-shadow: 3px 3px 0px 1px #B9D4F8;
+    border-radius: 10px;
+    height: 100px;
+    color: #185D8E;
+    border: solid;
+    font-weight: bold;
+    width: 200px;
+    padding: 0.7rem 1.05rem;
+    margin-top: 10px;
+
+    &:hover {
+      background-color: #a7cae3;
+      transform: scale(1.1);
+    }
+
+    ${({ selected }) => selected && `
+      background-color: #a7cae3;
+      transform: scale(1.1);
+    `}
+  }
+`;
 // Background -------------------------------------------------------
 const globalBoxStyles: SxProps<Theme> = (theme) => ({
     minHeight: '90vh',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    backgroundColor: '#caddff',
+    backgroundColor: '#0b2e6a',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -164,21 +220,23 @@ export const BackButton = styled(Button)`
     position: absolute;
     top: 80px;
     left: 20px;
-    color: #3533cd;
+    left: 5%;
+    color: #185D8E;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 15px;
+    font-weight: 600;
+    width: 150px;
+    font-size: 18px;
     
     &:hover {
-      background-color: rgba(89,87,230,0.1) !important;
+      color: #0B2A40;
+      background-color: #D9EEFF !important;
     }
   }
 `;
 
 export const CustomLink = styled(Link)`
   text-decoration: none;
-  font-weight: 600;
-  color: #735FE4;
-  transition: 0.3s;
-
-  &:hover {
-    color: #452DCB;
-  }
+  color: #185D8E;
 `;
