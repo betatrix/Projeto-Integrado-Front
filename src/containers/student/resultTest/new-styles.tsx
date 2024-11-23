@@ -1,6 +1,14 @@
 import { Container, Typography, ListItem, Box, Button } from '@mui/material';
 import styled, { createGlobalStyle } from 'styled-components';
 import { Link } from 'react-router-dom';
+import { createTheme } from '@mui/material/styles';
+
+// eslint-disable-next-line react-refresh/only-export-components
+export const componentTheme = createTheme({
+    typography: {
+        fontFamily: '\'Poppins\', sans-serif',
+    },
+});
 
 export const Global = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');

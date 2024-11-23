@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable max-len */
 import React, { useState } from 'react';
-import { Grid, CardContent, List, Box, Button, Typography, Modal, TextField, IconButton, ListItem, useMediaQuery } from '@mui/material';
+import { Grid, CardContent, List, Box, Button, Typography, Modal, TextField, IconButton, ListItem, useMediaQuery, ThemeProvider } from '@mui/material';
 import Header from '../../../components/resultTestHeader';
-import { DetailsResult, Global, CourseTitle, CareerListItem, PageTile, CourseCard, BackButton, CustomLink, ScrollableList, ModalContent, MobileBackButton } from './new-styles';
+import { DetailsResult, Global, CourseTitle, CareerListItem, PageTile, CourseCard, BackButton, CustomLink, ScrollableList, ModalContent, MobileBackButton, componentTheme } from './new-styles';
 import { useLocation } from 'react-router-dom';
 import Footer from '../../../components/homeFooter';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
@@ -13,10 +13,13 @@ import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 import PaidIcon from '@mui/icons-material/Paid';
 import BookIcon from '@mui/icons-material/Book';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import PolvoVoquinho from '../../../assets/img/polvo_voquinho.png';
+import { useTranslation } from 'react-i18next';
 
 interface ResultData {
     id: number;
     mensagem: string;
+    mensagemIngles: string;
     cursos: {
         cursosPerfilPrimario: Array<{
             id: number;
@@ -25,6 +28,7 @@ interface ResultData {
             area: string;
             empregabilidade: string;
             possiveisCarreiras: string[];
+            tipo: string;
         }>;
         cursosPerfilSecundario: Array<{
             id: number;
@@ -33,11 +37,13 @@ interface ResultData {
             area: string;
             empregabilidade: string;
             possiveisCarreiras: string[];
+            tipo: string;
         }>;
     };
     perfis: Array<{
         id: number;
         descricao: string;
+        descricaoIngles: string;
     }>;
     instituicao: {
       id: number,
@@ -55,15 +61,16 @@ const ResultScreen: React.FC = () => {
     const location = useLocation();
     const { resultado } = location.state as { resultado: ResultData };
     const isMobile = useMediaQuery('(max-width:600px)');
+    const{ t, i18n } = useTranslation();
 
     const [openModal, setOpenModal] = useState(false);
     const [institutions, setInstitutions] = useState<ResultData['instituicao'][]>([]);
-    const [selectedCourse, setSelectedCourse] = useState<{ id: number, descricao: string } | null>(null);
+    const [selectedCourse, setSelectedCourse] = useState<{ id: number, descricao: string, tipo: string } | null>(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredInstitutions, setFilteredInstitutions] = useState<ResultData['instituicao'][]>([]);
 
-    const handleOpenModal = async (cursoId: number, descricao: string) => {
-        setSelectedCourse({ id: cursoId, descricao });
+    const handleOpenModal = async (cursoId: number, descricao: string, tipo: string ) => {
+        setSelectedCourse({ id: cursoId, descricao, tipo });
         try {
             const response = await fetch(`${apiUrl}/cursoInstituicao/curso/mec/${cursoId}`);
             const data: ResultData['instituicao'][] = await response.json();
@@ -90,10 +97,20 @@ const ResultScreen: React.FC = () => {
         ));
     };
 
-    // Formatação da mensagem
-    const formattedMessage = resultado.mensagem.replace('estruturados.Abaixo', 'estruturados. Abaixo');
-    const formattedMessage2 = formattedMessage.replace('Abaixo listamos alguns cursos que podem te interessar, boa sorte!', '');
-    const words = formattedMessage2.split(' ');
+    const portugueseMessage = resultado.mensagem.replace('Abaixo listamos alguns cursos que podem te interessar, boa sorte!', '');
+    const englishMessage = resultado.mensagemIngles.replace('Below, we have listed some courses that may interest you. Good luck!', '');
+
+    const formattedMessage3 = i18n.language === 'en' ? englishMessage : portugueseMessage;
+
+    // count words in title course
+    const countWords = (str: string) => {
+        return str.trim().split(/\s+/).length;
+    };
+
+    const getFontSize = (descricao: string) => {
+        const wordCount = countWords(descricao);
+        return wordCount > 5 ? '18px' : '23px';
+    };
 
     return (
         <>
@@ -114,7 +131,7 @@ const ResultScreen: React.FC = () => {
                     startIcon={<ArrowBackIcon />}
 
                 >
-                    <CustomLink to={'/estudante'}> Voltar
+                    <CustomLink to={'/estudante'}> {t('resultTestBackButton')}
                     </CustomLink>
                 </BackButton>
 
@@ -128,62 +145,61 @@ const ResultScreen: React.FC = () => {
                 marginTop={isMobile ? '12%' : '5%'}
                 marginBottom={isMobile ? '12%' : '5%'}
                 width={'100%'}>
-                <PageTile variant="h4" gutterBottom
-                    style={{ fontWeight: 'bold' }}
-                    fontSize={isMobile ? '25px' : '30px'}
-                    marginTop={isMobile ? '8%' : '3%'}
-                    marginBottom={isMobile ? '8%' : '0'}
-                >
-                    Resultado do Teste
-                </PageTile>
+                <ThemeProvider theme={componentTheme}>
+                    <PageTile variant="h4" gutterBottom
+                        style={{ fontWeight: 'bold' }}
+                        fontSize={isMobile ? '25px' : '30px'}
+                        marginTop={isMobile ? '8%' : '3%'}
+                        marginBottom={isMobile ? '8%' : '0'}
+                    >
+                        {t('resultTestTitle')}
+                    </PageTile>
+                </ThemeProvider>
+
                 {/* Grid para o texto e a imagem */}
                 <Grid container spacing={2} style={{ maxWidth: '80%', alignItems: 'center', marginBottom: '2%' }}>
                     <Grid item xs={12} md={9} style={{width: '100%'}}
                         maxWidth={isMobile ? '90%' : '75%'}
                     >
-                        <Typography
-                            component="div"
-                            style={{ fontSize: '20px', lineHeight: '1.8' }}
-                            textAlign={isMobile ? 'justify' : 'left'}
-                            marginBottom={isMobile ? '8%' : '0'}
-                        >
-                            {words.map((word, index) => {
-                                if (index === 11 || index === 17) {
-                                    // Destacar a 12ª e a 18ª palavras
-                                    return (
-                                        <span key={index} style={{ fontWeight: 'bold', color: '#185D8E', fontSize: '22px' }}>
-                                            {word}{' '}
-                                        </span>
-                                    );
-                                } else if (word === ':') {
-                                    return null;
-                                } else if (index === words.length - 1) {
-                                    // Adicionar margem na última frase
-                                    return (
-                                        <span key={index} style={{ marginTop: '20px', display: 'inline-block' }}>
-                                            {word}
-                                        </span>
-                                    );
-                                } else {
-                                    return word + ' ';
-                                }
-                            })}
-                        </Typography>
-                        <Typography
-                            style={{
-                                fontSize: '20px',
-                                lineHeight: '1.8',
-                                marginTop: '30px',
-                                display: 'inline-block'
-                            }}
-                            marginBottom={isMobile ? '40px' : '0'}
-                        >Abaixo listamos alguns cursos que podem te interessar, boa sorte!</Typography>
+                        <ThemeProvider theme={componentTheme}>
+                            <Typography component="div" style={{ fontSize: '20px', lineHeight: '1.8' }} textAlign={isMobile ? 'justify' : 'left'}>
+                                {formattedMessage3.split(' ').map((word, index) => {
+                                    if (index === 11 || index === 16) {
+                                        return (
+                                            <span key={index} style={{ fontWeight: 'bold', color: '#185D8E', fontSize: '22px' }}>
+                                                {word}{' '}
+                                            </span>
+                                        );
+                                    } else if (word === ':') {
+                                        return null;
+                                    } else if (index === formattedMessage3.split(' ').length - 1) {
+                                        return (
+                                            <span key={index} style={{ marginTop: '20px', display: 'inline-block' }}>
+                                                {word}
+                                            </span>
+                                        );
+                                    } else {
+                                        return word + ' ';
+                                    }
+                                })}
+                            </Typography>
+                            <Typography
+                                style={{
+                                    fontSize: '20px',
+                                    lineHeight: '1.8',
+                                    marginTop: '30px',
+                                    display: 'inline-block'
+                                }}
+                                marginBottom={isMobile ? '40px' : '0'}
+                            >{t('resultTestGoodLuckPhrase')}</Typography>
+                        </ThemeProvider>
+
                     </Grid>
                     {!isMobile && (
                         <Grid item xs={12} md={3} >
                             <Box display="flex" justifyContent="center">
                                 <img
-                                    src="src/assets/img/polvo_voquinho.png"
+                                    src={PolvoVoquinho}
                                     alt="Polvo Voquinho"
                                     style={{
                                         marginLeft: '70px',
@@ -198,12 +214,15 @@ const ResultScreen: React.FC = () => {
 
                 {/* Cursos para o perfil primário */}
                 <Box display="flex" justifyContent="flex-start" width="80%" marginBottom="2%">
-                    <Typography variant="h5" style={{ fontWeight: 'bold', color: '#185D8E' }}
-                        fontSize={isMobile ? '20px' : '25px'}
-                        marginBottom={isMobile ? '5%' : '0'}
-                    >
-        Cursos recomendados para o perfil {resultado.perfis[0].descricao.toLowerCase()}
-                    </Typography>
+                    <ThemeProvider theme={componentTheme}>
+                        <Typography variant="h5" style={{ fontWeight: 'bold', color: '#185D8E' }}
+                            fontSize={isMobile ? '20px' : '25px'}
+                            marginBottom={isMobile ? '5%' : '0'}
+                        >
+                            {t('resultTestRecomendationTitle')} {i18n.language === 'en' ? resultado.perfis[0].descricaoIngles.toLowerCase() : resultado.perfis[0].descricao.toLowerCase()}
+                        </Typography>
+                    </ThemeProvider>
+
                 </Box>
 
                 <Grid container spacing={6}
@@ -218,107 +237,119 @@ const ResultScreen: React.FC = () => {
                                     flexDirection: 'column',
                                     justifyContent: 'space-between' }}>
                                 <CardContent>
-                                    <CourseTitle
-                                        style={{
-                                            fontSize: '23px',
-                                            color: '#185D8E',
-                                            fontWeight: 'bold',
-                                            marginBottom: '25px'
-                                        }}>
-                                        {curso.descricao}
-                                    </CourseTitle>
-                                    <DetailsResult
-                                        style={{
-                                            fontSize: '18px',
-                                            color: 'black',
-                                            textAlign: 'left',
-                                            marginBottom: '12px'
-                                        }}>
-                                        <strong
+                                    <ThemeProvider theme={componentTheme}>
+                                        <CourseTitle
                                             style={{
-                                                fontSize: '20px',
+                                                fontSize: getFontSize(curso.descricao),
+                                                color: '#185D8E',
                                                 fontWeight: 'bold',
+                                                marginBottom: '25px'
+                                            }}>
+                                            {curso.descricao}
+                                        </CourseTitle>
+                                    </ThemeProvider>
+
+                                    <ThemeProvider theme={componentTheme}>
+                                        <DetailsResult
+                                            style={{
+                                                fontSize: '18px',
                                                 color: 'black',
-                                                marginBottom: '17px'
+                                                textAlign: 'left',
+                                                marginBottom: '12px'
                                             }}>
-
-                                            <BookIcon style={{
-                                                width: '20px',
-                                                height: '20px',
-                                                marginRight: '8px',
-                                                color: '#185D8E'
-                                            }}></BookIcon>
-                                            Área:
-                                        </strong> {curso.area}
-                                    </DetailsResult>
-                                    <DetailsResult
-                                        style={{
-                                            fontSize: '18px',
-                                            color: 'black',
-                                            textAlign: 'left',
-                                            marginBottom: '12px'
-                                        }}>
-                                        <strong
-                                            style={{
-                                                fontSize: '20px',
-                                                fontWeight: 'bold',
-                                                color: 'black'
-                                            }}>
-                                            <PaidIcon style={{
-                                                width: '20px',
-                                                height: '20px',
-                                                marginRight: '8px',
-                                                color: '#185D8E'
-                                            }}></PaidIcon>
-
-                                            Empregabilidade:
-                                        </strong> {curso.empregabilidade}
-                                    </DetailsResult>
-                                    <DetailsResult
-                                        style={{
-                                            fontSize: '18px',
-                                            color: 'black',
-                                            textAlign: 'left',
-                                            marginBottom: '10px'
-                                        }}>
-                                        <strong
-                                            style={{
-                                                fontSize: '20px',
-                                                fontWeight: 'bold',
-                                                color: 'black'
-                                            }}>
-                                            <BusinessCenterIcon style={{
-                                                width: '20px',
-                                                height: '20px',
-                                                marginRight: '8px',
-                                                color: '#185D8E'
-                                            }}></BusinessCenterIcon>
-
-                                            Possíveis Carreiras:
-                                        </strong>
-                                    </DetailsResult>
-
-                                    <ScrollableList>
-                                        <List>
-                                            {curso.possiveisCarreiras.map((carreira, i) => (
-                                                <CareerListItem style={{
-                                                    fontSize: '18px',
+                                            <strong
+                                                style={{
+                                                    fontSize: '20px',
+                                                    fontWeight: 'bold',
                                                     color: 'black',
-                                                    textAlign: 'left',
-                                                }} key={i}>
-                                                    <strong style={{
-                                                        fontSize: '20px',
-                                                        fontWeight: 'bold',
-                                                        color: 'black',
+                                                    marginBottom: '17px'
+                                                }}>
 
-                                                    }}> •<strong style={{fontWeight: 'normal', textAlign: 'left'}} > { carreira }</strong></strong>
-                                                </CareerListItem>
-                                            ))}
-                                        </List>
-                                    </ScrollableList>
+                                                <BookIcon style={{
+                                                    width: '20px',
+                                                    height: '20px',
+                                                    marginRight: '8px',
+                                                    color: '#185D8E'
+                                                }}></BookIcon>
+                                                {t('resultTestArea')}
+                                            </strong> {curso.area}
+                                        </DetailsResult>
+                                    </ThemeProvider>
+
+                                    <ThemeProvider theme={componentTheme}>
+                                        <DetailsResult
+                                            style={{
+                                                fontSize: '18px',
+                                                color: 'black',
+                                                textAlign: 'left',
+                                                marginBottom: '12px'
+                                            }}>
+                                            <strong
+                                                style={{
+                                                    fontSize: '20px',
+                                                    fontWeight: 'bold',
+                                                    color: 'black'
+                                                }}>
+                                                <PaidIcon style={{
+                                                    width: '20px',
+                                                    height: '20px',
+                                                    marginRight: '8px',
+                                                    color: '#185D8E'
+                                                }}></PaidIcon>
+
+                                                {t('resultTestEmployability')}
+                                            </strong> {curso.empregabilidade}
+                                        </DetailsResult>
+                                    </ThemeProvider>
+
+                                    <ThemeProvider theme={componentTheme}>
+                                        <DetailsResult
+                                            style={{
+                                                fontSize: '18px',
+                                                color: 'black',
+                                                textAlign: 'left',
+                                                marginBottom: '10px'
+                                            }}>
+                                            <strong
+                                                style={{
+                                                    fontSize: '20px',
+                                                    fontWeight: 'bold',
+                                                    color: 'black'
+                                                }}>
+                                                <BusinessCenterIcon style={{
+                                                    width: '20px',
+                                                    height: '20px',
+                                                    marginRight: '8px',
+                                                    color: '#185D8E'
+                                                }}></BusinessCenterIcon>
+
+                                                {t('resultTestPossibleCareers')}
+                                            </strong>
+                                        </DetailsResult>
+
+                                        <ScrollableList>
+                                            <List>
+                                                {curso.possiveisCarreiras.map((carreira, i) => (
+                                                    <CareerListItem style={{
+                                                        fontSize: '18px',
+                                                        color: 'black',
+                                                        textAlign: 'left',
+                                                    }} key={i}>
+                                                        <strong style={{
+                                                            fontSize: '20px',
+                                                            fontWeight: 'bold',
+                                                            color: 'black',
+
+                                                        }}> •<strong style={{fontWeight: 'normal', textAlign: 'left'}} > { carreira }</strong></strong>
+                                                    </CareerListItem>
+                                                ))}
+                                            </List>
+                                        </ScrollableList>
+                                    </ThemeProvider>
+
                                 </CardContent>
                                 <Box display="flex" justifyContent="center" marginTop="1rem">
-                                    <Button onClick={() => handleOpenModal(curso.id, curso.descricao)}
+                                    <Button onClick={() => handleOpenModal(curso.id, curso.descricao, curso.tipo)}
                                         sx={{
                                             color: '#185D8E',
                                             border: 'solid',
@@ -333,7 +364,7 @@ const ResultScreen: React.FC = () => {
                                                 backgroundColor: '#a7cae3',
                                                 transform: 'scale(1.1)',
                                             } }}>
-                                        Ver Instituições
+                                        {t('resultTestInstitutionsButton')}
                                     </Button>
                                 </Box>
                             </CourseCard>
@@ -343,13 +374,15 @@ const ResultScreen: React.FC = () => {
 
                 {/* Cursos recomendados para o perfil secundario */}
                 <Box display="flex" justifyContent="flex-start" width="80%" marginBottom="2%" marginTop='6%'>
-                    <Typography variant="h5" style={{ fontWeight: 'bold', color: '#185D8E' }}
-                        fontSize={isMobile ? '20px' : '25px'}
-                        marginBottom={isMobile ? '5%' : '0'}
-                        marginTop={isMobile ? '5%' : '0'}
-                    >
-        Cursos recomendados para o perfil {resultado.perfis[1].descricao.toLowerCase()}
-                    </Typography>
+                    <ThemeProvider theme={componentTheme}>
+                        <Typography variant="h5" style={{ fontWeight: 'bold', color: '#185D8E' }}
+                            fontSize={isMobile ? '20px' : '25px'}
+                            marginBottom={isMobile ? '5%' : '0'}
+                            marginTop={isMobile ? '5%' : '0'}
+                        >
+                            {t('resultTestRecomendationTitle')} {i18n.language === 'en' ? resultado.perfis[1].descricaoIngles.toLowerCase() : resultado.perfis[1].descricao.toLowerCase()}
+                        </Typography>
+                    </ThemeProvider>
                 </Box>
 
                 <Grid container spacing={6}
@@ -364,104 +397,110 @@ const ResultScreen: React.FC = () => {
                                     flexDirection: 'column',
                                     justifyContent: 'space-between' }}>
                                 <CardContent>
-                                    <CourseTitle
-                                        style={{
-                                            fontSize: '23px',
-                                            color: '#185D8E',
-                                            fontWeight: 'bold',
-                                            marginBottom: '25px'
-                                        }}>
-                                        {curso.descricao}
-                                    </CourseTitle>
-                                    <DetailsResult
-                                        style={{
-                                            fontSize: '18px',
-                                            color: 'black',
-                                            textAlign: 'left',
-                                            marginBottom: '12px'
-                                        }}>
-                                        <strong
+                                    <ThemeProvider theme={componentTheme}>
+                                        <CourseTitle
                                             style={{
-                                                fontSize: '20px',
+                                                fontSize: getFontSize(curso.descricao),
+                                                color: '#185D8E',
                                                 fontWeight: 'bold',
+                                                marginBottom: '25px'
+                                            }}>
+                                            {curso.descricao}
+                                        </CourseTitle>
+                                    </ThemeProvider>
+
+                                    <ThemeProvider theme={componentTheme}>
+                                        <DetailsResult
+                                            style={{
+                                                fontSize: '18px',
                                                 color: 'black',
-                                                marginBottom: '17px'
+                                                textAlign: 'left',
+                                                marginBottom: '12px'
                                             }}>
-                                            <BookIcon style={{
-                                                width: '20px',
-                                                height: '20px',
-                                                marginRight: '8px',
-                                                color: '#185D8E'
-                                            }}></BookIcon>
-                                            Área:
-                                        </strong> {curso.area}
-                                    </DetailsResult>
-                                    <DetailsResult
-                                        style={{
-                                            fontSize: '18px',
-                                            color: 'black',
-                                            textAlign: 'left',
-                                            marginBottom: '12px'
-                                        }}>
-                                        <strong
-                                            style={{
-                                                fontSize: '20px',
-                                                fontWeight: 'bold',
-                                                color: 'black'
-                                            }}>
-                                            <PaidIcon style={{
-                                                width: '20px',
-                                                height: '20px',
-                                                marginRight: '8px',
-                                                color: '#185D8E'
-                                            }}></PaidIcon>
-                                            Empregabilidade:
-                                        </strong> {curso.empregabilidade}
-                                    </DetailsResult>
-                                    <DetailsResult
-                                        style={{
-                                            fontSize: '18px',
-                                            color: 'black',
-                                            textAlign: 'left',
-                                            marginBottom: '10px'
-                                        }}>
-                                        <strong
-                                            style={{
-                                                fontSize: '20px',
-                                                fontWeight: 'bold',
-                                                color: 'black'
-                                            }}>
-                                            <BusinessCenterIcon style={{
-                                                width: '20px',
-                                                height: '20px',
-                                                marginRight: '8px',
-                                                color: '#185D8E'
-                                            }}></BusinessCenterIcon>
-                                            Possíveis Carreiras:
-                                        </strong>
-                                    </DetailsResult>
-
-                                    <ScrollableList>
-                                        <List>
-                                            {curso.possiveisCarreiras.map((carreira, i) => (
-                                                <CareerListItem style={{
-                                                    fontSize: '18px',
+                                            <strong
+                                                style={{
+                                                    fontSize: '20px',
+                                                    fontWeight: 'bold',
                                                     color: 'black',
-                                                    textAlign: 'left',
-                                                }} key={i}>
-                                                    <strong style={{
-                                                        fontSize: '20px',
-                                                        fontWeight: 'bold',
-                                                        color: 'black',
+                                                    marginBottom: '17px'
+                                                }}>
+                                                <BookIcon style={{
+                                                    width: '20px',
+                                                    height: '20px',
+                                                    marginRight: '8px',
+                                                    color: '#185D8E'
+                                                }}></BookIcon>
+                                                {t('resultTestArea')}
+                                            </strong> {curso.area}
+                                        </DetailsResult>
+                                        <DetailsResult
+                                            style={{
+                                                fontSize: '18px',
+                                                color: 'black',
+                                                textAlign: 'left',
+                                                marginBottom: '12px'
+                                            }}>
+                                            <strong
+                                                style={{
+                                                    fontSize: '20px',
+                                                    fontWeight: 'bold',
+                                                    color: 'black'
+                                                }}>
+                                                <PaidIcon style={{
+                                                    width: '20px',
+                                                    height: '20px',
+                                                    marginRight: '8px',
+                                                    color: '#185D8E'
+                                                }}></PaidIcon>
+                                                {t('resultTestEmployability')}
+                                            </strong> {curso.empregabilidade}
+                                        </DetailsResult>
+                                        <DetailsResult
+                                            style={{
+                                                fontSize: '18px',
+                                                color: 'black',
+                                                textAlign: 'left',
+                                                marginBottom: '10px'
+                                            }}>
+                                            <strong
+                                                style={{
+                                                    fontSize: '20px',
+                                                    fontWeight: 'bold',
+                                                    color: 'black'
+                                                }}>
+                                                <BusinessCenterIcon style={{
+                                                    width: '20px',
+                                                    height: '20px',
+                                                    marginRight: '8px',
+                                                    color: '#185D8E'
+                                                }}></BusinessCenterIcon>
+                                                {t('resultTestPossibleCareers')}
+                                            </strong>
+                                        </DetailsResult>
 
-                                                    }}> •<strong style={{fontWeight: 'normal', textAlign: 'left'}} > { carreira }</strong></strong>
-                                                </CareerListItem>
-                                            ))}
-                                        </List>
-                                    </ScrollableList>
+                                        <ScrollableList>
+                                            <List>
+                                                {curso.possiveisCarreiras.map((carreira, i) => (
+                                                    <CareerListItem style={{
+                                                        fontSize: '18px',
+                                                        color: 'black',
+                                                        textAlign: 'left',
+                                                    }} key={i}>
+                                                        <strong style={{
+                                                            fontSize: '20px',
+                                                            fontWeight: 'bold',
+                                                            color: 'black',
+
+                                                        }}> •<strong style={{fontWeight: 'normal', textAlign: 'left'}} > { carreira }</strong></strong>
+                                                    </CareerListItem>
+                                                ))}
+                                            </List>
+                                        </ScrollableList>
+                                    </ThemeProvider>
+
                                 </CardContent>
                                 <Box display="flex" justifyContent="center" marginTop="1rem">
-                                    <Button onClick={() => handleOpenModal(curso.id, curso.descricao)}
+                                    <Button onClick={() => handleOpenModal(curso.id, curso.descricao, curso.tipo)}
                                         sx={{
                                             color: '#185D8E',
                                             border: 'solid',
@@ -476,7 +515,7 @@ const ResultScreen: React.FC = () => {
                                                 backgroundColor: '#a7cae3',
                                                 transform: 'scale(1.1)',
                                             } }}>
-                                        Ver Instituições
+                                        {t('resultTestInstitutionsButton')}
                                     </Button>
                                 </Box>
                             </CourseCard>
@@ -515,12 +554,15 @@ const ResultScreen: React.FC = () => {
                         <CloseIcon />
                     </IconButton>
 
-                    <Typography variant="h6" gutterBottom style={{textAlign: 'center', fontWeight: 'bold', color: '#0B2A40', marginTop: '15px', marginBottom: '15px'}}>
-                            Instituições que oferecem o curso de {selectedCourse?.descricao}
-                    </Typography>
+                    <ThemeProvider theme={componentTheme}>
+                        <Typography variant="h6" gutterBottom style={{textAlign: 'center', fontWeight: 'bold', color: '#185D8E', marginTop: '15px', marginBottom: '15px'}}>
+                            {t('resultTestModalTitle')} {selectedCourse?.descricao}
+                        </Typography>
+                    </ThemeProvider>
+
                     <TextField
                         variant="outlined"
-                        placeholder="Pesquisar instituições..."
+                        placeholder={t('resultTestModalField')}
                         fullWidth
                         style={{ marginBottom: '15px' }}
                         InputProps={{
@@ -535,24 +577,31 @@ const ResultScreen: React.FC = () => {
                     />
                     {institutions.length > 0 ? (
                         <List>
-                            {filteredInstitutions.map((inst) => (
-                                <ListItem key={inst.id}>
-                                    <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'left' }}>
-                                        <Typography variant="body1" style={{ fontWeight: 'bold', color: '#185D8E' }}>
-                                            {inst.nome} ({inst.sigla})
-                                        </Typography>
-                                        <Typography variant="body2" style={{ marginLeft: '8px' }}>
-                                            <strong>Site:</strong> {inst.site}
-                                        </Typography>
-                                        <Typography variant="body2" style={{ marginLeft: '8px' }}>
-                                            <strong>Nota MEC do Curso:</strong> {inst.notaMec}
-                                        </Typography>
-                                    </div>
-                                </ListItem>
-                            ))}
+                            <ThemeProvider theme={componentTheme}>
+                                {filteredInstitutions.map((inst) => (
+                                    <ListItem key={inst.id}>
+                                        <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'left' }}>
+                                            <Typography variant="body1" style={{ fontWeight: 'bold', color: '#185D8E' }}>
+                                                {inst.nome}
+                                                {selectedCourse?.tipo === 'SUPERIOR' && ` (${inst.sigla})` || selectedCourse?.tipo === 'TECNICO' && ' '}
+                                            </Typography>
+                                            <Typography variant="body2" style={{ marginLeft: '8px' }}>
+                                                <strong>Site:</strong> {inst.site}
+                                            </Typography>
+                                            <Typography variant="body2" style={{ marginLeft: '8px' }}>
+                                                <strong>{t('resultTestModalRatingMEC')}</strong> {inst.notaMec}
+                                            </Typography>
+                                        </div>
+                                    </ListItem>
+                                ))}
+                            </ThemeProvider>
+
                         </List>
                     ) : (
-                        <Typography variant="body1" style={{textAlign: 'justify'}}>Nenhuma instituição encontrada.</Typography>
+                        <ThemeProvider theme={componentTheme}>
+                            <Typography variant="body1" style={{textAlign: 'center', marginTop: '20px'}}>{t('resultTestZeroInstitutions')}</Typography>
+
+                        </ThemeProvider>
                     )}
                 </ModalContent>
             </Modal>
