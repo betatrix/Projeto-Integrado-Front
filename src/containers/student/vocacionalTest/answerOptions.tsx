@@ -1,10 +1,10 @@
 import React from 'react';
 import { IconButton, Tooltip, useMediaQuery } from '@mui/material';
-import EmojiVoquinhoChorando from '../../../assets/img/SVG-emoji-voquinho-chorando.svg';
-import EmojiVoquinhoTriste from '../../../assets/img/SVG-emoji-voquinho-triste.svg';
-import EmojiVoquinhoNeutro from '../../../assets/img/SVG-emoji-voquinho-neutro.svg';
-import EmojiVoquinhoFeliz from '../../../assets/img/SVG-emoji-voquinho-feliz.svg';
-import EmojiVoquinhoApaixonado from '../../../assets/img/SVG-emoji-voquinho-apaixonado.svg';
+import EmojiVoquinhoChorando from '../../../assets/img/emoji-voquinho-chorando.png';
+import EmojiVoquinhoTriste from '../../../assets/img/emoji-voquinho-triste.png';
+import EmojiVoquinhoNeutro from '../../../assets/img/emoji-voquinho-neutro.png';
+import EmojiVoquinhoFeliz from '../../../assets/img/emoji-voquinho-feliz.png';
+import EmojiVoquinhoApaixonado from '../../../assets/img/emoji-voquinho-apaixonado.png';
 
 interface AnswerOptionsProps {
     value: number;
@@ -32,15 +32,15 @@ const AnswerOptions: React.FC<AnswerOptionsProps> = ({ value, onChange, disabled
                             color={value === iconData.value ? 'primary' : 'default'}
                             disabled={disabled}
                             style={{
-                                marginLeft: '15px',
-                                marginRight: '15px',
+                                marginLeft: '23px',
+                                marginRight: '23px',
                                 transition: 'filter 0.2s ease',
                                 filter: value === iconData.value ? 'brightness(0.7)' : 'brightness(1)',
                             }}
                         >
                             <img src={iconData.src} alt={iconData.label}
                                 style={{
-                                    width: isMobile ? '60px' : '85px',
+                                    width: isMobile ? '60px' : '75px',
                                     marginTop: isMobile ? '15px' : '5px',
                                     marginBottom: isMobile ? '20px' : '5px'
                                 }} />
