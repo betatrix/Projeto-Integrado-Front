@@ -235,6 +235,17 @@ function StudentHeader() {
                                 </>
                             ) : (
                                 <>
+                                    <Typography
+                                        sx={{
+                                            marginRight: '0.7rem',
+                                            fontFamily: 'Poppins, sans-serif',
+                                            color: '#185D8E',
+                                            fontWeight: 600,
+                                        }}
+                                    >
+                                        Hey, {student ? student.nome.split(' ')[0] : 'usuário'}!
+                                    </Typography>
+
                                     {/* Menu de Logout e Avatar para telas maiores */}
                                     <Tooltip title="Opções de Perfil">
                                         <IconButton onClick={handleOpenUserMenu} sx={styles.avatarButton}>
@@ -269,11 +280,11 @@ function StudentHeader() {
                                                 textAlign="center"
                                                 sx={{ fontFamily: 'Roboto, monospace', textDecoration: 'none', color: 'inherit' }}
                                             >
-                                                Minha conta
+                                                {t('myAccount')}
                                             </Typography>
                                         </MenuItem>
                                         <MenuItem onClick={handleMenuItemClick}>
-                                            <Typography textAlign="center" sx={{ fontFamily: 'Roboto, monospace' }}>Logout</Typography>
+                                            <Typography textAlign="center" sx={{ fontFamily: 'Roboto, monospace' }}>{t('logout')}</Typography>
                                         </MenuItem>
                                     </Menu>
                                 </>

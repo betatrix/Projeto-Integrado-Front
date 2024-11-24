@@ -280,9 +280,9 @@ const StudentDashboard: React.FC = () => {
                                     {showLockIcon ? (
                                         <Paper sx={{
                                             display: 'flex', justifyContent: 'center', alignItems: 'center',
-                                            padding: '2.5rem',
                                             width: '33vw',
                                             height: '22rem',
+                                            borderRadius: '10px',
                                             backgroundColor: ' rgb(141, 169, 189)', boxShadow: 'none', [theme.breakpoints.down('sm')]: {
                                                 width: '95px',
                                                 height: '11rem',
@@ -346,15 +346,19 @@ const StudentDashboard: React.FC = () => {
                                 </Paper>
                             </Grid>
                         </Box>
-                        <Box sx={{
-                            width: '6vw',
-                            [theme.breakpoints.down('sm')]: {
-                                width: '0px',
-                            },
-                            [theme.breakpoints.down('md')]: {
-                                width: '0px',
-                            },
-                        }}>
+                        <Box
+                            sx={{
+                                width: showLockIcon ? '12vw' : '6vw',
+                                transition: 'width 0.3s ease-in-out',
+                                overflow: 'hidden',
+                                [theme.breakpoints.down('sm')]: {
+                                    width: showLockIcon ? '6vw' : '0px',
+                                },
+                                [theme.breakpoints.down('md')]: {
+                                    width: showLockIcon ? '6vw' : '0px',
+                                },
+                            }}
+                        >
                         </Box>
                         <Grid item sx={gridItem2Styles}>
                             <Box sx={{ alignItems: 'center', textAlign: 'center' }}>
