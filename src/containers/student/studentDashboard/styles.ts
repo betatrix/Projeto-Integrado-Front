@@ -217,6 +217,11 @@ export const paperResultStyles: SxProps<Theme> = (theme) => ({
     display: 'flex',
     backgroundColor: '#A4BFD2',
     borderRadius: '10px',
+    cursor: 'pointer',
+    transition: 'transform 0.8s ease',
+    '&:hover': {
+        transform: 'scale(1.1)',
+    },
     [theme.breakpoints.down('sm')]: {
         backgroundColor: '#A4BFD2',
         width: '18rem',
@@ -240,6 +245,8 @@ export const boxResultStyles: SxProps<Theme> = (theme) => ({
     height: '22rem',
     boxShadow: 'none',
     borderRadius: '10px',
+    cursor: 'pointer',
+    transition: 'transform 0.8s ease',
     [theme.breakpoints.down('md')]: {
         flexDirection: 'column',
         alignItems: 'center',

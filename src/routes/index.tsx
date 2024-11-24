@@ -28,6 +28,7 @@ import AdminManagement from '../containers/administrator/userManagement/adminMan
 import TestManagement from '../containers/administrator/questionManagement';
 import QuestionRegister from '../containers/administrator/questionRegister';
 import CadastroAdministrador from '../containers/administrator/userManagement/registerAdm';
+import OldResultTest from '../containers/student/oldResultTest/index';
 
 export const AppRoutes = () => {
     return (
@@ -52,6 +53,7 @@ export const AppRoutes = () => {
                             <Route path='/minha-conta' element={<PerfilStudent />} />
                             <Route path='/instituicao' element={<InstitutionList />} />
                             <Route path='/curso' element={<CourseList />} />
+                            <Route path='/resultados-anteriores' element={<OldResultTest />} />
                         </Route>
 
                         {/* Private Routes - Admin */}

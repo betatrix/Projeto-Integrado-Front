@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { styled, useTheme } from '@mui/material/styles';
 import React, { useEffect, useState, useContext } from 'react';
 import { Grid, Box, Typography, Paper, Button, IconButton } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Slider from 'react-slick';
 import { PieChart } from '@mui/x-charts/PieChart';
 import {
@@ -79,7 +80,7 @@ const StudentDashboard: React.FC = () => {
     };
     const { t } = useTranslation();
 
-    const [testHistory, setTestHistory] = useState<{ date: string, result: ResultItem[] }[]>([]);
+    const [testHistory, setTestHistory] = useState<{ date: string, result: ResultItem[], id: any }[]>([]);
     const [recorrentes, setRecorrentes] = useState<string[]>([]);
     const [sliderRef, setSliderRef] = useState<Slider | null>(null);
     const [perfilImage, setPerfilImage] = useState<string | null>(null);
@@ -112,6 +113,7 @@ const StudentDashboard: React.FC = () => {
                         const date = new Date(test.data);
                         const utcDate = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
                         return {
+                            id: test.id,
                             date: utcDate.toLocaleDateString('pt-BR'),
                             result: test.perfis,
                         };
@@ -185,6 +187,31 @@ const StudentDashboard: React.FC = () => {
         width: isSmallScreen ? 180 : isMediumScreen ? 227.5 : isLargeScreen ? 325 : 260,
         height: isSmallScreen ? 140 : isMediumScreen ? 175 : isLargeScreen ? 250 : 200,
         ArrowBackIosIcon: isSmallScreen ? 60 : isMediumScreen ? 83.125 : isLargeScreen ? 118.75 : 95,
+    };
+
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const navigate = useNavigate();
+
+    const handleClick = async (testId: string) => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/resultado/estudanteTeste/${testId}`);
+            if (!response.ok) {
+                throw new Error('Erro ao buscar resultado do teste');
+            }
+            const data = await response.json();
+
+            /// Encontrar a data do teste pelo testId
+            const selectedTest = testHistory.find(test => test.id === testId);
+
+            // Salvar o testId e a data no localStorage
+            if (selectedTest) {
+                localStorage.setItem('testId', testId);
+                localStorage.setItem('testDate', selectedTest.date); // Salvar a data
+            }
+            navigate('/resultados-anteriores', { state: { testId, data } });
+        } catch (error) {
+            console.error('ERRO', error);
+        }
     };
 
     return (
@@ -348,13 +375,13 @@ const StudentDashboard: React.FC = () => {
                                     )}
 
                                     <Paper sx={boxResultStyles}>
+
                                         {testHistory.length > 0 ? (
                                             testHistory.length === 1 ? (
-                                                <Box sx={{ textAlign: 'right' }}>
+                                                <Box sx={{ textAlign: 'right' }} onClick={() => handleClick(testHistory[0].id)}>
                                                     <Typography sx={contentStyle}>
                                                         {testHistory[0].date}
                                                     </Typography>
-
                                                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                                                         <PieChart
                                                             series={[{
@@ -380,23 +407,19 @@ const StudentDashboard: React.FC = () => {
                                                                     position: { vertical: 'middle', horizontal: 'right' },
                                                                     ...legendStyle,
                                                                 },
-
                                                             }}
-
                                                         />
                                                     </Box>
-
                                                 </Box>
                                             ) : (
-
                                                 <Slider ref={setSliderRef} {...carouselSettings}>
+
                                                     {testHistory.map((test, index) => (
-                                                        <Box key={index} sx={{ textAlign: 'right' }}>
+                                                        <Box key={index} sx={{ textAlign: 'right' }} onClick={() => handleClick(test.id)}>
                                                             <Typography sx={contentStyle}>
                                                                 {test.date}
                                                             </Typography>
                                                             <Box sx={{ display: 'flex' }}>
-
                                                                 <PieChart
                                                                     series={[{
                                                                         data: test.result.map(item => ({
@@ -416,15 +439,12 @@ const StudentDashboard: React.FC = () => {
                                                                     }]}
                                                                     width={chartConfig.width}
                                                                     height={chartConfig.height}
-
                                                                     slotProps={{
                                                                         legend: {
                                                                             position: { vertical: 'middle', horizontal: 'right' },
                                                                             ...legendStyle,
                                                                         },
-
                                                                     }}
-
                                                                 />
                                                             </Box>
                                                         </Box>
