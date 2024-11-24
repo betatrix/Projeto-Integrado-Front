@@ -150,6 +150,7 @@
       "studentAccountButton5": "Cancel",
       "studentAccountTextDelete1": "Delete Confirmation",
       "studentAccountTextDelete2": "Are you sure you want to delete your account? This action cannot be undone!",
+
       "testIntroTitle": "Before we starting...",
       "testIntro1": "Our vocational test is inspired by psychologist John L. Holland's theory, known as RIASEC - Realistic, Investigative, Artistic, Social, Enterprising and Conventional.",
       "testIntro2": "Based on your answers, we identify your profile and suggest careers, fields of study, courses, and universities that are a perfect match for you. Ready to discover your path? 🚀",
@@ -163,6 +164,19 @@
       "testChooseCourseType": "Select the type of course that best matches what you're looking for: ",
       "testGraduationButton": "Graduation",
       "testTechnicalButton": "Technical",
+
+      "resultTestTitle": "Test Result",
+      "resultTestGoodLuckPhrase": "Below we have listed some courses that might interest you. Good luck!",
+      "resultTestRecomendationTitle": "Recommended courses for the profile:",
+      "resultTestArea": "Area:",
+      "resultTestEmployability": "Employability:",
+      "resultTestPossibleCareers": "Possible Careers:",
+      "resultTestInstitutionsButton": "View Institutions",
+      "resultTestModalTitle": "Institutions that offer the course of:",
+      "resultTestModalField": "Search institutions...",
+      "resultTestModalRatingMEC": "MEC Course Rating:",
+      "resultTestBackButton": "Back",
+      "resultTestZeroInstitutions": "No institution found.",
 
       "dashboardTitle": "DISCOVER YOUR WAY!",
       "dashboardCard1": "Take our quiz and get access to six personalized courses.",
