@@ -220,7 +220,7 @@ export const paperResultStyles: SxProps<Theme> = (theme) => ({
     cursor: 'pointer',
     transition: 'transform 0.8s ease',
     '&:hover': {
-        transform: 'scale(1.1)',
+        transform: 'scale(1.05)',
     },
     [theme.breakpoints.down('sm')]: {
         backgroundColor: '#A4BFD2',
