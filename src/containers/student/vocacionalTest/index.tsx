@@ -161,7 +161,6 @@ const VocacionalTest: React.FC = () => {
     const handleCourseTypeSelection = (type: string) => {
         setSelectedButton(type);
         setIsButtonSelected(true);
-        console.log(`Tipo de curso selecionado: ${type}`);
     };
 
     const allQuestionsAnswered = answers.every((answer) => answer !== 0);

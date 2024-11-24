@@ -26,10 +26,7 @@ const AvatarUserStudent = ({ sx, selectedImage }: { sx?: any, selectedImage?: st
             try {
                 const fetchedImage = await recuperarImagem(user.fotoDePerfil);
                 setImagem(fetchedImage || '/static/images/avatar/2.jpg');
-            } catch (error) {
-                console.error('Erro ao buscar foto:', error);
-                throw error;
-            }
+            } catch (error) { /* empty */ }
         };
         fetchData();
     }, [user?.fotoDePerfil]);
