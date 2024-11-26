@@ -16,6 +16,7 @@ import { AuthContext } from '../../../contexts/auth';
 import { decryptData } from '../../../services/encryptionService';
 import { useTranslation } from 'react-i18next';
 import { images } from './images';
+import { useSwipeable } from 'react-swipeable';
 
 interface Teste {
     id: number;
@@ -108,6 +109,16 @@ const VocacionalTest: React.FC = () => {
         localStorage.setItem('vocationalTestAnswers', JSON.stringify(updatedAnswers));
     };
 
+    // configura o swiping
+    const handlers = useSwipeable({
+        onSwipedLeft: () => {
+            if (answers[currentQuestion] !== 0) {
+                handleNext();
+            }
+        },
+        onSwipedRight: handlePrev,
+        trackMouse: true,
+    });
     const authcontext = useContext(AuthContext);
 
     if (!authcontext) {
@@ -181,7 +192,10 @@ const VocacionalTest: React.FC = () => {
                 </CustomLink>
             </BackButton>
 
-            <Box sx={homePageBoxStyles}>
+            <Box sx={homePageBoxStyles}
+                {...handlers}
+
+            >
                 <CenteredDiv
                     style={{
                         marginTop: isMobile ? '25%' : '7%',
@@ -270,6 +284,12 @@ const VocacionalTest: React.FC = () => {
                         </IconButton>
                     </Box>
 
+                    <AnswerOptions
+                        value={answers[currentQuestion]}
+                        onChange={handleAnswerChange}
+                        disabled={!questions[currentQuestion]?.ativo}
+                    />
+
                     {currentQuestion === questions.length - 1 && allQuestionsAnswered ? (
                         <CustomButton
                             onClick={handleSubmit}
@@ -277,19 +297,13 @@ const VocacionalTest: React.FC = () => {
                             {t('sendButton')}
                         </CustomButton>
                     ) : (
-                        <Box>
-                            <AnswerOptions
-                                value={answers[currentQuestion]}
-                                onChange={handleAnswerChange}
-                                disabled={!questions[currentQuestion]?.ativo}
-                            />
-                            <Box sx={{ width: '100%', marginTop: '10px', display: 'flex', justifyContent: 'center' }}>
 
-                                <StyledLinearProgress
-                                    variant="determinate"
-                                    value={(currentQuestion + 1) / questions.length * 100}
-                                />
-                            </Box>
+                        <Box sx={{ width: '100%', marginTop: '10px', display: 'flex', justifyContent: 'center' }}>
+
+                            <StyledLinearProgress
+                                variant="determinate"
+                                value={(currentQuestion + 1) / questions.length * 100}
+                            />
                         </Box>
 
                     )}
@@ -301,17 +315,17 @@ const VocacionalTest: React.FC = () => {
                 open={showModal}
                 PaperProps={{
                     style: {
-                        width: '90%',
+                        width: isMobile ? '90%' : '800px',
                         maxWidth: '800px',
+                        height: isMobile ? 'auto' : '470px',
                         borderRadius: '20px',
-                        height: '470px',
                         padding: '20px',
                         display: 'flex',
                         flexDirection: 'column',
                         justifyContent: 'center',
                         alignItems: 'center',
                         border: 'solid',
-                        borderColor: '#185D8E'
+                        borderColor: '#185D8E',
                     },
                 }}
             >
@@ -360,19 +374,16 @@ const VocacionalTest: React.FC = () => {
                                 </ModalText>
                             </ThemeProvider>
 
-                            <ButtonGroup style={{ display: 'flex', justifyContent: 'space-between', width: '100%', marginTop: '30px' }}>
+                            <ButtonGroup>
                                 <CourseCustomButton
                                     onClick={() => handleCourseTypeSelection('graduation')}
-                                    style={{ marginRight: '10px', flexGrow: 1 }}
                                     selected={selectedButton === 'graduation'}
                                 >
                                     {t('testGraduationButton')}
                                 </CourseCustomButton>
                                 <CourseCustomButton
                                     onClick={() => handleCourseTypeSelection('technical')}
-                                    style={{ marginLeft: '10px', flexGrow: 1 }}
                                     selected={selectedButton === 'technical'}
-
                                 >
                                     {t('testTechnicalButton')}
                                 </CourseCustomButton>
