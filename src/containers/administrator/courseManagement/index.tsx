@@ -33,6 +33,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import { Link } from 'react-router-dom';
 import { Formik, Form, Field } from 'formik';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import * as yup from 'yup';
 
 const niveisEmpregabilidade = [
     { label: 'Alta', value: 'ALTA' },
@@ -47,20 +48,13 @@ const tiposInstituicao = [
     { label: 'Ambos', value: 'AMBOS' },
 ];
 
-// const courseValidationSchema = yup.object().shape({
-//     descricao: yup.string().required('Descrição é obrigatória'),
-//     empregabilidade: yup
-//         .mixed<NivelEmpregabilidade>()
-//         .oneOf(Object.values(NivelEmpregabilidade))
-//         .required('Nível de Empregabilidade é obrigatório'),
-//     possiveisCarreiras: yup.array().of(yup.string()).nullable(),
-//     areaId: yup.number().required('Área é obrigatória'),
-//     perfil: yup.string().required('Perfil é obrigatório'),
-//     tipoInstituicaoCurso: yup
-//         .mixed<TipoInstituicaoCurso>()
-//         .oneOf(Object.values(TipoInstituicaoCurso))
-//         .required('Tipo de Instituição é obrigatório'),
-// });
+const courseValidationSchema = yup.object().shape({
+    descricao: yup.string().required('Descrição é obrigatória'),
+    possiveisCarreiras: yup
+        .array()
+        .of(yup.string().required())
+        .min(1, 'Possíveis carreiras é um campo obrigatório'),
+});
 
 const CourseManagement: React.FC = () => {
     const [courses, setCourses] = useState<CourseForm[]>([]);
@@ -426,7 +420,7 @@ const CourseManagement: React.FC = () => {
                                 ativo: selectedCourse?.ativo as string
                             }}
                             enableReinitialize
-                            // validationSchema={courseValidationSchema}
+                            validationSchema={courseValidationSchema}
                             onSubmit={async (values, { setSubmitting }) => {
                                 try {
                                     const finalValues = {
@@ -435,12 +429,16 @@ const CourseManagement: React.FC = () => {
                                         areaId: values.area?.id,
                                     };
                                     await editarCurso(finalValues);
-                                    setCourses(courses.map((course) =>
-                                        course.id === values.id ? { ...course, ...finalValues } : course
-                                    ));
-                                    setFilteredCourses(filteredCourses.map((course) =>
-                                        course.id === values.id ? { ...course, ativo: finalValues.ativo } : course
-                                    ));
+                                    setCourses((prevCourses) =>
+                                        prevCourses.map((course) =>
+                                            course.id === finalValues.id ? { ...course, ...finalValues } : course
+                                        )
+                                    );
+                                    setFilteredCourses((prevFilteredCourses) =>
+                                        prevFilteredCourses.map((course) =>
+                                            course.id === finalValues.id ? { ...course, ...finalValues } : course
+                                        )
+                                    );
                                     setShowSuccessMessage(true);
                                 } catch (error) {
                                     console.error('Erro ao atualizar curso:', error);

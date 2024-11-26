@@ -762,7 +762,7 @@ const InstitutionManagement: React.FC = () => {
                             disabled={currentPage === 1}
                             sx={{ marginRight: 2, fontFamily: 'Roboto, monospace', fontWeight: 'bold' }}
                         >
-                        Primeira Página
+                            Primeira Página
                         </Button>
                         <TablePagination
                             rowsPerPageOptions={[5, 10, 25]}
@@ -775,10 +775,10 @@ const InstitutionManagement: React.FC = () => {
                         />
                         <Button
                             onClick={handleLastPage}
-                            disabled={currentPage === (institutions.length/rowsPerPage) - 1}
+                            disabled={currentPage === (institutions.length / rowsPerPage) - 1}
                             sx={{ marginLeft: 2, fontFamily: 'Roboto, monospace', fontWeight: 'bold' }}
                         >
-                        Última Página
+                            Última Página
                         </Button>
                     </Box>
                 </Box>
@@ -1399,7 +1399,7 @@ const InstitutionManagement: React.FC = () => {
                                 variant="outlined"
                                 value={searchTermPolicy}
                                 onChange={handleSearchChangePolicies}
-                                sx={{ width:'70%', fontFamily: 'Roboto, monospace', marginBottom:'0.3rem' }}
+                                sx={{ width: '70%', fontFamily: 'Roboto, monospace', marginBottom: '0.3rem' }}
                                 InputProps={{
                                     endAdornment: (
                                         <InputAdornment position="end">
@@ -1744,16 +1744,22 @@ const InstitutionManagement: React.FC = () => {
                             <Button onClick={async () => {
                                 if (institutionToDelete) {
                                     try {
+                                        // Realiza a operação de exclusão
                                         await excluirInstituicao(institutionToDelete.id);
 
-                                        setInstitutions((prevInstitutions) => prevInstitutions.filter(institution => institution.id !== institutionToDelete.id));
-                                        setLoadedInstitutions((prevLoadedInstitutions) => prevLoadedInstitutions.filter(institution => institution.id !== institutionToDelete.id));
+                                        // Atualiza o status da instituição localmente para "Inativo"
+                                        setInstitutions((prevInstitutions) =>
+                                            prevInstitutions.map((inst) =>
+                                                inst.id === institutionToDelete.id ? { ...inst, ativo: false } : inst
+                                            )
+                                        );
+
                                         setShowSuccessDeleteMessage(true); // Exibe mensagem de sucesso
                                     } catch (error) {
                                         console.error('Erro ao excluir instituição:', error);
                                         setShowErrorDeleteMessage(true); // Exibe mensagem de erro
                                     } finally {
-                                        handleDeleteModalClose();
+                                        handleDeleteModalClose(); // Fecha o modal
                                     }
                                 }
                             }} sx={{

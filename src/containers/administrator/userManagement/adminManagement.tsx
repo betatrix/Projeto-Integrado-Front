@@ -32,6 +32,32 @@ import Footer from '../../../components/homeFooter';
 import { Link } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import * as yup from 'yup';
+
+const adminValidationSchema = yup.object().shape({
+    nome: yup.string().required('O nome é obrigatório'),
+    cpf: yup
+        .string()
+        .required('O CPF é obrigatório'),
+    email: yup
+        .string()
+        .email('E-mail inválido')
+        .required('O e-mail é obrigatório'),
+    celular: yup
+        .string()
+        .required('O celular é obrigatório'),
+    cargo: yup.string().required('O cargo é obrigatório'),
+    endereco: yup.object().shape({
+        logradouro: yup.string().required('O logradouro é obrigatório'),
+        numero: yup.string().required('Obrigatório'),
+        cep: yup
+            .string()
+            .required('O CEP é obrigatório'),
+        estado: yup.string().required('O estado é obrigatório'),
+        cidade: yup.string().required('A cidade é obrigatória'),
+        bairro: yup.string().required('O bairro é obrigatório'),
+    }),
+});
 
 const AdminManagement: React.FC = () => {
     const [admins, setAdmins] = useState<AdmForm[]>([]);
@@ -163,12 +189,19 @@ const AdminManagement: React.FC = () => {
     const handleDeleteAdmin = async () => {
         if (selectedAdmin) {
             try {
-                await excluirAdministrador(selectedAdmin.id);
-                setAdmins(admins.filter((a) => a.id !== selectedAdmin.id));
-                setFilteredAdmins(filteredAdmins.filter((a) => a.id !== selectedAdmin.id));
+                // Atualiza o status do administrador no backend
+                await editarAdministrador({ ...selectedAdmin, ativo: false });
+
+                // Atualiza o estado local para refletir a mudança
+                const updatedAdmins = admins.map((admin) =>
+                    admin.id === selectedAdmin.id ? { ...admin, ativo: false } : admin
+                );
+                setAdmins(updatedAdmins);
+                setFilteredAdmins(updatedAdmins);
+
                 setShowSuccessDeleteMessage(true); // Mostra mensagem de sucesso na exclusão
             } catch (error) {
-                console.error('Erro ao excluir administrador:', error);
+                console.error('Erro ao alterar status do administrador:', error);
                 setShowErrorDeleteMessage(true); // Mostra mensagem de erro na exclusão
             } finally {
                 handleDeleteModalClose();
@@ -284,7 +317,15 @@ const AdminManagement: React.FC = () => {
                                                     onChange={() => toggleSelectAdmin(admin.id)}
                                                     sx={{ '& .MuiSvgIcon-root': { fontSize: 18 } }}
                                                 />
-                                                <IconButton onClick={() => handleEditModalOpen(admin)}>
+                                                <IconButton onClick={() => handleEditModalOpen(admin)}
+                                                    disabled={!admin.ativo} // Desabilita o botão se o administrador estiver inativo
+                                                    sx={{
+                                                        color: admin.ativo ? 'inherit' : '#ccc', // Aplica uma cor desbotada se inativo
+                                                        '&:hover': {
+                                                            color: admin.ativo ? 'primary.main' : '#ccc', // Não altera a cor ao passar o mouse se inativo
+                                                        },
+                                                    }}
+                                                >
                                                     <EditIcon sx={{ fontSize: 18 }} />
                                                 </IconButton>
                                                 <IconButton onClick={() => handleDeleteModalOpen(admin)}>
@@ -362,6 +403,7 @@ const AdminManagement: React.FC = () => {
                         <Formik
                             initialValues={selectedAdmin}
                             enableReinitialize
+                            validationSchema={adminValidationSchema}
                             onSubmit={async (values, { setSubmitting }) => {
                                 try {
                                     await editarAdministrador(values);
@@ -384,7 +426,7 @@ const AdminManagement: React.FC = () => {
                                 }
                             }}
                         >
-                            {({ values, handleChange, handleSubmit }) => (
+                            {({ values, errors, touched, handleChange, handleSubmit }) => (
                                 <Form onSubmit={handleSubmit}>
                                     <Grid container spacing={2} sx={{ marginBottom: '10px' }}>
 
@@ -409,19 +451,59 @@ const AdminManagement: React.FC = () => {
                                     <Grid container spacing={2} sx={{ marginBottom: '10px' }}>
 
                                         <Grid item xs={12}>
-                                            <TextField label="Nome" name="nome" fullWidth value={values.nome} onChange={handleChange} />
+                                            <TextField
+                                                label="Nome"
+                                                name="nome"
+                                                fullWidth
+                                                value={values.nome}
+                                                onChange={handleChange}
+                                                error={touched.nome && Boolean(errors.nome)}
+                                                helperText={touched.nome && errors.nome}
+                                            />
                                         </Grid>
                                         <Grid item xs={6}>
-                                            <TextField label="CPF" name="cpf" fullWidth value={values.cpf} onChange={handleChange} />
+                                            <TextField
+                                                label="CPF"
+                                                name="cpf"
+                                                fullWidth
+                                                value={values.cpf}
+                                                onChange={handleChange}
+                                                error={touched.cpf && Boolean(errors.cpf)}
+                                                helperText={touched.cpf && errors.cpf}
+                                            />
                                         </Grid>
                                         <Grid item xs={6}>
-                                            <TextField label="Email" name="email" fullWidth value={values.email} onChange={handleChange} disabled={!values.ativo} />
+                                            <TextField
+                                                label="Email"
+                                                name="email"
+                                                fullWidth
+                                                value={values.email}
+                                                onChange={handleChange}
+                                                error={touched.email && Boolean(errors.email)}
+                                                helperText={touched.email && errors.email}
+                                            />
                                         </Grid>
                                         <Grid item xs={6}>
-                                            <TextField label="Cargo" name="cargo" fullWidth value={values.cargo} onChange={handleChange} />
+                                            <TextField
+                                                label="Cargo"
+                                                name="cargo"
+                                                fullWidth
+                                                value={values.cargo}
+                                                onChange={handleChange}
+                                                error={touched.cargo && Boolean(errors.cargo)}
+                                                helperText={touched.cargo && errors.cargo}
+                                            />
                                         </Grid>
                                         <Grid item xs={6}>
-                                            <TextField label="Celular" name="celular" fullWidth value={values.celular} onChange={handleChange} />
+                                            <TextField
+                                                label="Celular"
+                                                name="celular"
+                                                fullWidth
+                                                value={values.celular}
+                                                onChange={handleChange}
+                                                error={touched.celular && Boolean(errors.celular)}
+                                                helperText={touched.celular && errors.celular}
+                                            />
                                         </Grid>
                                         <Grid item xs={12}>
                                             <Typography variant="h6" gutterBottom sx={{
@@ -432,25 +514,73 @@ const AdminManagement: React.FC = () => {
                                             </Typography>
                                         </Grid>
                                         <Grid item xs={6}>
-                                            <TextField label="Logradouro" name="endereco.logradouro" fullWidth value={values.endereco.logradouro} onChange={handleChange} />
+                                            <TextField
+                                                label="Logradouro"
+                                                name="endereco.logradouro"
+                                                fullWidth
+                                                value={values.endereco.logradouro}
+                                                onChange={handleChange}
+                                                error={touched.endereco?.logradouro && Boolean(errors.endereco?.logradouro)}
+                                                helperText={touched.endereco?.logradouro && errors.endereco?.logradouro}
+                                            />
                                         </Grid>
                                         <Grid item xs={2}>
-                                            <TextField label="Número" name="endereco.numero" fullWidth value={values.endereco.numero} onChange={handleChange} />
+                                            <TextField
+                                                label="Número"
+                                                name="endereco.numero"
+                                                fullWidth
+                                                value={values.endereco.numero}
+                                                onChange={handleChange}
+                                                error={touched.endereco?.numero && Boolean(errors.endereco?.numero)}
+                                                helperText={touched.endereco?.numero && errors.endereco?.numero}
+                                            />
                                         </Grid>
                                         <Grid item xs={4}>
-                                            <TextField label="CEP" name="endereco.cep" fullWidth value={values.endereco.cep} onChange={handleChange} />
+                                            <TextField
+                                                label="CEP"
+                                                name="endereco.cep"
+                                                fullWidth
+                                                value={values.endereco.cep}
+                                                onChange={handleChange}
+                                                error={touched.endereco?.cep && Boolean(errors.endereco?.cep)}
+                                                helperText={touched.endereco?.cep && errors.endereco?.cep}
+                                            />
                                         </Grid>
                                         <Grid item xs={6}>
-                                            <TextField label="Estado" name="endereco.estado" fullWidth value={values.endereco.estado} onChange={handleChange} />
+                                            <TextField
+                                                label="Estado"
+                                                name="endereco.estado"
+                                                fullWidth
+                                                value={values.endereco.estado}
+                                                onChange={handleChange}
+                                                error={touched.endereco?.estado && Boolean(errors.endereco?.estado)}
+                                                helperText={touched.endereco?.estado && errors.endereco?.estado}
+                                            />
                                         </Grid>
                                         <Grid item xs={6}>
-                                            <TextField label="Cidade" name="endereco.cidade" fullWidth value={values.endereco.cidade} onChange={handleChange} />
+                                            <TextField
+                                                label="Cidade"
+                                                name="endereco.cidade"
+                                                fullWidth
+                                                value={values.endereco.cidade}
+                                                onChange={handleChange}
+                                                error={touched.endereco?.cidade && Boolean(errors.endereco?.cidade)}
+                                                helperText={touched.endereco?.cidade && errors.endereco?.cidade}
+                                            />
                                         </Grid>
                                         <Grid item xs={6}>
                                             <TextField label="Complemento" name="endereco.complemento" fullWidth value={values.endereco.complemento} onChange={handleChange} />
                                         </Grid>
                                         <Grid item xs={6}>
-                                            <TextField label="Bairro" name="endereco.bairro" fullWidth value={values.endereco.bairro} onChange={handleChange} />
+                                            <TextField
+                                                label="Bairro"
+                                                name="endereco.bairro"
+                                                fullWidth
+                                                value={values.endereco.bairro}
+                                                onChange={handleChange}
+                                                error={touched.endereco?.bairro && Boolean(errors.endereco?.bairro)}
+                                                helperText={touched.endereco?.bairro && errors.endereco?.bairro}
+                                            />
                                         </Grid>
 
                                         <Grid item xs={12}>

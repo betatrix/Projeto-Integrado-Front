@@ -342,29 +342,37 @@ export const CadastroAdministrador: React.FC = () => {
                                                 </Grid>
                                             </Grid>
                                         </Paper>
-                                    </Box>
 
-                                    <Grid container spacing={2} justifyContent="center" sx={{ marginBottom: 10, marginTop: 1 }}>
-                                        <Grid item xs={3.94}>
-                                            <Button
-                                                type="submit"
-                                                variant="contained"
-                                                color="primary"
-                                                fullWidth
-                                                sx={{
-                                                    fontSize: '20px',
-                                                    fontFamily: 'Roboto, monospace',
-                                                    color: 'white',
-                                                    backgroundColor: '#185D8E',
-                                                    fontWeight: 'bold',
-                                                    width: '100%',
-                                                    height: '45px',
-                                                }}
+                                        <Grid
+                                            container
+                                            spacing={2}
+                                            justifyContent="center"
+                                            sx={{ marginBottom: 10}}>
+                                            <Grid
+                                                item
+                                                xs={12}
+                                                display="flex"
+                                                justifyContent="center"
                                             >
-                                                Cadastrar
-                                            </Button>
+                                                <Button
+                                                    type="submit"
+                                                    variant="contained"
+                                                    color="primary"
+                                                    sx={{
+                                                        fontSize: '20px',
+                                                        fontFamily: 'Roboto, monospace',
+                                                        color: 'white',
+                                                        backgroundColor: '#185D8E',
+                                                        fontWeight: 'bold',
+                                                        width: '100%',
+                                                        height: '45px',
+                                                    }}
+                                                >
+                                                    Cadastrar
+                                                </Button>
+                                            </Grid>
                                         </Grid>
-                                    </Grid>
+                                    </Box>
                                 </Form>
                             )}
                         </Formik>

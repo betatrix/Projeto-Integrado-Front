@@ -31,6 +31,18 @@ import Footer from '../../../components/homeFooter';
 import { Link } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import * as yup from 'yup';
+
+const userValidationSchema = yup.object().shape({
+    email: yup
+        .string()
+        .email('E-mail inválido')
+        .required('O e-mail é obrigatório'),
+    celular: yup
+        .string()
+        .matches(/^\(\d{2}\)\s\d{4,5}-\d{4}$/, 'O celular deve estar no formato (XX) XXXXX-XXXX')
+        .required('O celular é obrigatório'),
+});
 
 const UserManagement: React.FC = () => {
     const [users, setUsers] = useState<UserForm[]>([]);
@@ -139,14 +151,19 @@ const UserManagement: React.FC = () => {
         if (selectedUser) {
             try {
                 await excluirUsuario(selectedUser.id);
-                setUsers(users.filter((u) => u.id !== selectedUser.id));
-                setFilteredUsers(filteredUsers.filter((u) => u.id !== selectedUser.id));
-                setShowSuccessDeleteMessage(true); // Mostra mensagem de sucesso
+
+                const updatedUsers = users.map((user) =>
+                    user.id === selectedUser.id ? { ...user, ativo: false } : user
+                );
+                setUsers(updatedUsers);
+                setFilteredUsers(updatedUsers);
+
+                setShowSuccessDeleteMessage(true);
             } catch (error) {
-                console.error('Erro ao excluir usuário:', error);
-                setShowErrorDeleteMessage(true); // Mostra mensagem de erro
+                console.error('Erro ao inativar usuário:', error);
+                setShowErrorDeleteMessage(true);
             } finally {
-                handleDeleteModalClose(); // Fecha o modal
+                handleDeleteModalClose();
             }
         }
     };
@@ -166,13 +183,18 @@ const UserManagement: React.FC = () => {
             for (const userId of selectedUsers) {
                 await excluirUsuario(userId);
             }
-            setUsers(users.filter((user) => !selectedUsers.includes(user.id)));
-            setFilteredUsers(filteredUsers.filter((user) => !selectedUsers.includes(user.id)));
+
+            const updatedUsers = users.map((user) =>
+                selectedUsers.includes(user.id) ? { ...user, ativo: false } : user
+            );
+            setUsers(updatedUsers);
+            setFilteredUsers(updatedUsers);
+
             setSelectedUsers([]);
-            setShowSuccessMassDeleteMessage(true); // Mostra mensagem de sucesso
+            setShowSuccessMassDeleteMessage(true);
         } catch (error) {
-            console.error('Erro ao excluir usuários selecionados:', error);
-            setShowErrorMassDeleteMessage(true); // Mostra mensagem de erro
+            console.error('Erro ao inativar usuários selecionados:', error);
+            setShowErrorMassDeleteMessage(true);
         }
     };
 
@@ -196,7 +218,7 @@ const UserManagement: React.FC = () => {
         <>
             <AdminHeader />
             <Box sx={{ marginTop: '20px', minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: '#F3F3F3' }}>
-                <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', marginTop: 20, gap: 2, width: '100%', maxWidth: '110rem', paddingLeft: 55 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', marginTop: 20, gap: 2, paddingLeft: 65 }}>
                     <TextField
                         label="Pesquisar Usuários"
                         variant="outlined"
@@ -214,7 +236,6 @@ const UserManagement: React.FC = () => {
                     <Link to="/gerenciamento-administrador">
                         <Button sx={{
                             height: '50px',
-                            width: '21rem',
                             fontSize: '17px',
                             fontFamily: 'Roboto, monospace',
                             color: 'white',
@@ -223,7 +244,7 @@ const UserManagement: React.FC = () => {
                             '&:hover': {
                                 backgroundColor: '#104A6F',
                             },
-                        }}>Gerenciamento de Administrador</Button>
+                        }}>Administradores</Button>
                     </Link>
                 </Box>
 
@@ -272,7 +293,15 @@ const UserManagement: React.FC = () => {
                                                     onChange={() => toggleSelectUser(user.id)}
                                                     sx={{ '& .MuiSvgIcon-root': { fontSize: 18 } }}
                                                 />
-                                                <IconButton onClick={() => handleEditModalOpen(user)}>
+                                                <IconButton onClick={() => handleEditModalOpen(user)}
+                                                    disabled={!user.ativo}
+                                                    sx={{
+                                                        color: user.ativo ? 'inherit' : '#ccc',
+                                                        '&:hover': {
+                                                            color: user.ativo ? 'primary.main' : '#ccc',
+                                                        },
+                                                    }}
+                                                >
                                                     <EditIcon sx={{ fontSize: 18 }} />
                                                 </IconButton>
                                                 <IconButton onClick={() => handleDeleteModalOpen(user)}>
@@ -346,8 +375,9 @@ const UserManagement: React.FC = () => {
                 >
                     {selectedUser && (
                         <Formik
-                            initialValues={selectedUser}
+                            initialValues={selectedUser || { email: '', celular: '' }} // Valores padrão para evitar erro
                             enableReinitialize
+                            validationSchema={userValidationSchema}
                             onSubmit={async (values, { setSubmitting }) => {
                                 try {
                                     await editarUsuario(values);
@@ -366,7 +396,7 @@ const UserManagement: React.FC = () => {
                                 setSubmitting(false);
                             }}
                         >
-                            {({ values, handleChange, handleSubmit }) => (
+                            {({ values, errors, touched, handleChange, handleSubmit }) => (
                                 <Form onSubmit={handleSubmit}>
                                     <Grid container spacing={2}>
                                         <Grid item xs={12}>
@@ -374,7 +404,9 @@ const UserManagement: React.FC = () => {
                                                 fontSize: '20px',
                                                 marginBottom: '10px', marginTop: '10px', color: '#185D8E',
                                                 fontFamily: 'Roboto, monospace', fontWeight: 'bold', textAlign: 'justify'
-                                            }}>Edite os campos  do Usuário selecionado:</Typography>
+                                            }}>
+                                                Edite os campos do Usuário selecionado:
+                                            </Typography>
                                         </Grid>
                                         <Grid item xs={12}>
                                             <TextField
@@ -383,6 +415,8 @@ const UserManagement: React.FC = () => {
                                                 fullWidth
                                                 value={values.email}
                                                 onChange={handleChange}
+                                                error={touched.email && Boolean(errors.email)} // Exibe erro se o campo foi tocado e há erro
+                                                helperText={touched.email && errors.email} // Mostra a mensagem de erro
                                                 disabled={!values.ativo} // Desabilita se o usuário estiver inativo
                                             />
                                         </Grid>
@@ -393,24 +427,10 @@ const UserManagement: React.FC = () => {
                                                 fullWidth
                                                 value={values.celular}
                                                 onChange={handleChange}
+                                                error={touched.celular && Boolean(errors.celular)} // Exibe erro se o campo foi tocado e há erro
+                                                helperText={touched.celular && errors.celular} // Mostra a mensagem de erro
                                             />
                                         </Grid>
-                                        {/* <Grid item xs={12}>
-                                            <TextField
-                                                label="Status"
-                                                name="ativo"
-                                                select
-                                                fullWidth
-                                                SelectProps={{
-                                                    native: true,
-                                                }}
-                                                value={values.ativo ? 'Ativo' : 'Inativo'}
-                                                onChange={handleChange}
-                                            >
-                                                <option value="Ativo">Ativo</option>
-                                                <option value="Inativo">Inativo</option>
-                                            </TextField>
-                                        </Grid> */}
                                         <Grid item xs={12}>
                                             <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, marginTop: 3 }}>
                                                 <Button
@@ -428,7 +448,8 @@ const UserManagement: React.FC = () => {
                                                             backgroundColor: '#104A6F',
                                                         },
                                                     }}
-                                                > Cancelar
+                                                >
+                                                    Cancelar
                                                 </Button>
                                                 <Button type="submit" variant="contained" color="primary" sx={{
                                                     height: '50px',
@@ -450,6 +471,7 @@ const UserManagement: React.FC = () => {
                                 </Form>
                             )}
                         </Formik>
+
                     )}
                 </Box>
             </Modal>

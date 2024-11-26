@@ -14,7 +14,6 @@ import {
 } from '@mui/material';
 import { AuthContext } from '../../contexts/auth';
 import { decryptData } from '../../services/encryptionService';
-import LanguageMenu from '../translationButton';
 import { Link } from 'react-router-dom';
 import { ButtonMenu } from './styles';
 
@@ -101,7 +100,6 @@ function AdminHeader() {
                         </Link>
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
-                        <LanguageMenu />
 
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={styles.avatarButton}>
