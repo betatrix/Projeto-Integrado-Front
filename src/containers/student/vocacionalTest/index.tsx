@@ -184,7 +184,8 @@ const VocacionalTest: React.FC = () => {
             <Box sx={homePageBoxStyles}>
                 <CenteredDiv
                     style={{
-                        marginTop: isMobile ? '25%' : '7%'
+                        marginTop: isMobile ? '25%' : '7%',
+                        height: '100vh'
                     }}
                 >
 
@@ -269,12 +270,6 @@ const VocacionalTest: React.FC = () => {
                         </IconButton>
                     </Box>
 
-                    <AnswerOptions
-                        value={answers[currentQuestion]}
-                        onChange={handleAnswerChange}
-                        disabled={!questions[currentQuestion]?.ativo}
-                    />
-
                     {currentQuestion === questions.length - 1 && allQuestionsAnswered ? (
                         <CustomButton
                             onClick={handleSubmit}
@@ -282,12 +277,21 @@ const VocacionalTest: React.FC = () => {
                             {t('sendButton')}
                         </CustomButton>
                     ) : (
-                        <Box sx={{ width: '100%', marginTop: '10px', display: 'flex', justifyContent: 'center' }}>
-                            <StyledLinearProgress
-                                variant="determinate"
-                                value={(currentQuestion + 1) / questions.length * 100}
+                        <Box>
+                            <AnswerOptions
+                                value={answers[currentQuestion]}
+                                onChange={handleAnswerChange}
+                                disabled={!questions[currentQuestion]?.ativo}
                             />
+                            <Box sx={{ width: '100%', marginTop: '10px', display: 'flex', justifyContent: 'center' }}>
+
+                                <StyledLinearProgress
+                                    variant="determinate"
+                                    value={(currentQuestion + 1) / questions.length * 100}
+                                />
+                            </Box>
                         </Box>
+
                     )}
 
                 </CenteredDiv>
