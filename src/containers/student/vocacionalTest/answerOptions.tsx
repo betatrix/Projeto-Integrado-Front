@@ -40,7 +40,7 @@ const AnswerOptions: React.FC<AnswerOptionsProps> = ({ value, onChange, disabled
                         >
                             <img src={iconData.src} alt={iconData.label}
                                 style={{
-                                    width: isMobile ? '60px' : '75px',
+                                    width: isMobile ? '60px' : '60px',
                                     marginTop: isMobile ? '15px' : '5px',
                                     marginBottom: isMobile ? '20px' : '5px'
                                 }} />

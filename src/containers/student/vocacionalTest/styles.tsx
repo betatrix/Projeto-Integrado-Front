@@ -62,24 +62,27 @@ export const CenteredDiv = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 650px;
-    width: 90%; 
+    width: 90%;
     max-width: 1200px;
+    min-height: 50vh;
+    max-height: 80vh;
     background-color: white;
     border-radius: 20px; 
     padding: 20px; 
-    /* box-shadow: 5px 5px 1px #185D8E; */
     margin: auto;
-    max-height: 650px;
-    margin-top: 7%;
     border: solid #185D8E; 
     position: relative;
 
     @media (max-width: 600px) {
-    width: 90%;
-    height: 725px;
-    max-height: 800px;
-  }
+        width: 95%;
+        min-height: 60vh;
+        padding: 15px;
+    }
+
+    @media (max-width: 400px) {
+        padding: 10px;
+        border-radius: 10px;
+    }
 `;
 
 export const CountDisplay = styled.div`
@@ -160,7 +163,9 @@ export const CustomButton = styled(Button)`
     font-weight: bold;
     width: 200px;
     padding: 0.7rem 1.05rem;
-    margin-top: 10px;
+    margin-top: 40px;
+    align-self: center;
+    transition: transform 0.8s ease;
 
     &:hover {
       background-color: #a7cae3;
@@ -219,19 +224,26 @@ export const BackButton = styled(Button)`
   &.MuiButton-root {
     position: absolute;
     top: 80px;
-    left: 20px;
-    left: 5%;
+    left: 2%;
     color: #185D8E;
     padding: 5px;
     padding-left: 10px;
     padding-right: 15px;
     font-weight: 600;
-    width: 150px;
+    width: 125px;
     font-size: 18px;
     
     &:hover {
       color: #0B2A40;
       background-color: #D9EEFF !important;
+    }
+
+    @media (max-width: 768px) {
+      top: 60px;
+      left: 3%;
+      width: 120px;
+      font-size: 16px;
+      padding: 5px 10px;
     }
   }
 `;
