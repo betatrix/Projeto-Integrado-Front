@@ -35,14 +35,14 @@ const AnswerOptions: React.FC<AnswerOptionsProps> = ({ value, onChange, disabled
                                 marginLeft: '23px',
                                 marginRight: '23px',
                                 transition: 'filter 0.2s ease',
-                                filter: value === iconData.value ? 'brightness(0.7)' : 'brightness(1)',
+                                filter: value === iconData.value ? 'brightness(0.35)' : 'brightness(1)',
                             }}
                         >
                             <img src={iconData.src} alt={iconData.label}
                                 style={{
-                                    width: isMobile ? '60px' : '60px',
-                                    marginTop: isMobile ? '15px' : '5px',
-                                    marginBottom: isMobile ? '20px' : '5px'
+                                    width: isMobile ? '40px' : '57px',
+                                    marginTop: isMobile ? '25px' : '0px',
+                                    marginBottom: isMobile ? '20px' : '0px'
                                 }} />
                         </IconButton>
                     </span>

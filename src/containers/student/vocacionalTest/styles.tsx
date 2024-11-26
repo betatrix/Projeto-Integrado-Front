@@ -65,7 +65,7 @@ export const CenteredDiv = styled.div`
     width: 90%;
     max-width: 1200px;
     min-height: 50vh;
-    max-height: 80vh;
+    max-height: 83vh;
     background-color: white;
     border-radius: 20px; 
     padding: 20px; 
@@ -99,12 +99,19 @@ export const CountDisplay = styled.div`
 `;
 
 export const ButtonGroup = styled.div`
-    margin-top: 20px;
-    display: flex;
-    justify-content: space-between;
-    width: 300px;
-`;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
 
+  @media (max-width: 530px) {
+    flex-direction: column;
+    width: auto;
+    gap: 10px;
+  }
+`;
 export const RadioContainer = styled.div`
     display: flex;
     flex-direction: column;
@@ -163,7 +170,7 @@ export const CustomButton = styled(Button)`
     font-weight: bold;
     width: 200px;
     padding: 0.7rem 1.05rem;
-    margin-top: 40px;
+    /* margin-top: 5px; */
     align-self: center;
     transition: transform 0.8s ease;
 
@@ -179,13 +186,14 @@ export const CourseCustomButton = styled(Button)<{ selected?: boolean }>`
     background: #f7fbff;
     box-shadow: 3px 3px 0px 1px #B9D4F8;
     border-radius: 10px;
-    height: 100px;
+    height: 90px;
     color: #185D8E;
     border: solid;
     font-weight: bold;
     width: 200px;
     padding: 0.7rem 1.05rem;
-    margin-top: 10px;
+    margin-top: 8px;
+    transition: transform 0.3s ease;
 
     &:hover {
       background-color: #a7cae3;
@@ -196,6 +204,10 @@ export const CourseCustomButton = styled(Button)<{ selected?: boolean }>`
       background-color: #a7cae3;
       transform: scale(1.1);
     `}
+
+    @media (max-width: 530px) {
+      margin: 0; /* Remove margens laterais em telas menores */
+    }
   }
 `;
 // Background -------------------------------------------------------
