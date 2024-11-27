@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconButton, Tooltip, useMediaQuery } from '@mui/material';
+import { Box, IconButton, Tooltip, useMediaQuery } from '@mui/material';
 import EmojiVoquinhoChorando from '../../../assets/img/emoji-voquinho-chorando.png';
 import EmojiVoquinhoTriste from '../../../assets/img/emoji-voquinho-triste.png';
 import EmojiVoquinhoNeutro from '../../../assets/img/emoji-voquinho-neutro.png';
@@ -14,6 +14,7 @@ interface AnswerOptionsProps {
 
 const AnswerOptions: React.FC<AnswerOptionsProps> = ({ value, onChange, disabled }) => {
     const isMobile = useMediaQuery('(max-width:600px)');
+    const isSmallScreen = useMediaQuery('(max-width:540px)');
     const icons = [
         { value: 1, src: EmojiVoquinhoChorando, label: 'Não me identifico com isso de forma alguma' },
         { value: 2, src: EmojiVoquinhoTriste, label: 'Isso não reflete muito quem eu sou' },
@@ -23,7 +24,16 @@ const AnswerOptions: React.FC<AnswerOptionsProps> = ({ value, onChange, disabled
     ];
 
     return (
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px'}}>
+        <Box sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            gap: isSmallScreen ? 0.05 : 2,
+            flexWrap: isSmallScreen ? 'wrap' : 'nowrap',
+            marginTop: isSmallScreen ? '0' : '25px',
+            marginBottom: isSmallScreen ? '0' : '18px'
+        }}
+        >
+
             {icons.map((iconData) => (
                 <Tooltip title={iconData.label} key={iconData.value}>
                     <span>
@@ -31,6 +41,9 @@ const AnswerOptions: React.FC<AnswerOptionsProps> = ({ value, onChange, disabled
                             onClick={() => onChange(iconData.value)}
                             color={value === iconData.value ? 'primary' : 'default'}
                             disabled={disabled}
+                            // sx={{
+                            //     fontSize: isSmallScreen ? '2rem' : '3rem',
+                            // }}
                             style={{
                                 marginLeft: '23px',
                                 marginRight: '23px',
@@ -48,7 +61,9 @@ const AnswerOptions: React.FC<AnswerOptionsProps> = ({ value, onChange, disabled
                     </span>
                 </Tooltip>
             ))}
-        </div>
+
+        </Box>
+
     );
 };
 
