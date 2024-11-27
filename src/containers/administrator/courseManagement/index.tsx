@@ -221,14 +221,28 @@ const CourseManagement: React.FC = () => {
 
     const handleDeleteSelectedCourses = async () => {
         try {
-            for (const courseId of selectedCourses) {
-                await excluirCurso(courseId);
-            }
+            // Faz a exclusão em massa
+            await Promise.all(
+                selectedCourses.map(async (courseId) => {
+                    await excluirCurso(courseId);
+                })
+            );
 
-            setCourses(courses.filter((course) => !selectedCourses.includes(course.id)));
-            setFilteredCourses(filteredCourses.filter((course) => !selectedCourses.includes(course.id)));
-            setSelectedCourses([]);
-            setShowSuccessMassDeleteMessage(true); // Exibe mensagem de sucesso para exclusão em massa
+            // Atualiza o status dos cursos localmente para "Inativo"
+            setCourses((prevCourses) =>
+                prevCourses.map((course) =>
+                    selectedCourses.includes(course.id) ? { ...course, ativo: false } : course
+                )
+            );
+
+            setFilteredCourses((prevFilteredCourses) =>
+                prevFilteredCourses.map((course) =>
+                    selectedCourses.includes(course.id) ? { ...course, ativo: false } : course
+                )
+            );
+
+            setSelectedCourses([]); // Limpa a seleção
+            setShowSuccessMassDeleteMessage(true); // Exibe mensagem de sucesso
         } catch (error) {
             console.error('Erro ao excluir cursos selecionados:', error);
             setShowErrorMassDeleteMessage(true); // Exibe mensagem de erro
@@ -656,7 +670,7 @@ const CourseManagement: React.FC = () => {
                         container
                         spacing={2}
                         justifyContent="space-between"
-                        sx={{ mt: 2 }}
+                        sx={{ mt: 1 }}
                     >
                         <Grid item>
                             <Button
@@ -790,7 +804,7 @@ const CourseManagement: React.FC = () => {
                     >
                         Você está prestes a excluir os cursos selecionados. Deseja continuar?
                     </Typography>
-                    <Grid container justifyContent="center" spacing={2} sx={{ mt: 2 }}>
+                    <Grid container justifyContent="space-between" spacing={2} sx={{ mt: 1 }}>
                         <Grid item>
                             <Button
                                 variant="contained"

@@ -211,16 +211,31 @@ const AdminManagement: React.FC = () => {
 
     const handleDeleteSelectedAdmins = async () => {
         try {
-            for (const adminId of selectedAdmins) {
-                await excluirAdministrador(adminId);
-            }
-            setAdmins(admins.filter((admin) => !selectedAdmins.includes(admin.id)));
-            setFilteredAdmins(filteredAdmins.filter((admin) => !selectedAdmins.includes(admin.id)));
-            setSelectedAdmins([]);
-            setShowSuccessMassDeleteMessage(true); // Mostra mensagem de sucesso na exclusão múltipla
+            // Exclui os administradores no backend
+            await Promise.all(
+                selectedAdmins.map(async (adminId) => {
+                    await excluirAdministrador(adminId);
+                })
+            );
+
+            // Atualiza o estado local para marcar os administradores como inativos
+            setAdmins((prevAdmins) =>
+                prevAdmins.map((admin) =>
+                    selectedAdmins.includes(admin.id) ? { ...admin, ativo: false } : admin
+                )
+            );
+
+            setFilteredAdmins((prevFilteredAdmins) =>
+                prevFilteredAdmins.map((admin) =>
+                    selectedAdmins.includes(admin.id) ? { ...admin, ativo: false } : admin
+                )
+            );
+
+            setSelectedAdmins([]); // Limpa a seleção
+            setShowSuccessMassDeleteMessage(true); // Exibe mensagem de sucesso
         } catch (error) {
             console.error('Erro ao excluir administradores selecionados:', error);
-            setShowErrorMassDeleteMessage(true); // Mostra mensagem de erro na exclusão múltipla
+            setShowErrorMassDeleteMessage(true); // Exibe mensagem de erro
         }
     };
 
@@ -318,11 +333,11 @@ const AdminManagement: React.FC = () => {
                                                     sx={{ '& .MuiSvgIcon-root': { fontSize: 18 } }}
                                                 />
                                                 <IconButton onClick={() => handleEditModalOpen(admin)}
-                                                    disabled={!admin.ativo} // Desabilita o botão se o administrador estiver inativo
+                                                    disabled={!admin.ativo}
                                                     sx={{
-                                                        color: admin.ativo ? 'inherit' : '#ccc', // Aplica uma cor desbotada se inativo
+                                                        color: admin.ativo ? '#757575' : '#ccc',
                                                         '&:hover': {
-                                                            color: admin.ativo ? 'primary.main' : '#ccc', // Não altera a cor ao passar o mouse se inativo
+                                                            color: admin.ativo ? 'primary.main' : '#ccc',
                                                         },
                                                     }}
                                                 >
@@ -669,7 +684,7 @@ const AdminManagement: React.FC = () => {
                         container
                         spacing={2}
                         justifyContent="space-between"
-                        sx={{ mt: 2 }}
+                        sx={{ mt: 1 }}
                     >
                         <Grid item>
                             <Button
@@ -820,7 +835,7 @@ const AdminManagement: React.FC = () => {
                     >
                         Você está prestes a excluir os administradores selecionados. Deseja continuar?
                     </Typography>
-                    <Grid container justifyContent="center" spacing={2} sx={{ mt: 2 }}>
+                    <Grid container justifyContent="space-between" spacing={2} sx={{ mt: 1 }}>
                         <Grid item>
                             <Button
                                 variant="contained"

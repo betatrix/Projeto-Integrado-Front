@@ -245,8 +245,8 @@ export const BuscaPoliticas: React.FC = () => {
                     </Typography>
                     <Grid container
                         spacing={2}
-                        justifyContent="center"
-                        sx={{ mt: 2 }}>
+                        justifyContent="space-between"
+                        sx={{ mt: 1 }}>
                         <Grid item>
                             <Button variant='contained' onClick={handleConfirmPolicies} sx={{
                                 height: '35px',

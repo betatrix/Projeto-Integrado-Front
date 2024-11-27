@@ -296,13 +296,13 @@ const UserManagement: React.FC = () => {
                                                 <IconButton onClick={() => handleEditModalOpen(user)}
                                                     disabled={!user.ativo}
                                                     sx={{
-                                                        color: user.ativo ? 'inherit' : '#ccc',
+                                                        color: user.ativo ? '#757575' : '#ccc',
                                                         '&:hover': {
                                                             color: user.ativo ? 'primary.main' : '#ccc',
                                                         },
                                                     }}
                                                 >
-                                                    <EditIcon sx={{ fontSize: 18 }} />
+                                                    <EditIcon sx={{ fontSize: 18}} />
                                                 </IconButton>
                                                 <IconButton onClick={() => handleDeleteModalOpen(user)}>
                                                     <DeleteIcon sx={{ fontSize: 18 }} />
@@ -517,7 +517,7 @@ const UserManagement: React.FC = () => {
                         container
                         spacing={2}
                         justifyContent="space-between"
-                        sx={{ mt: 2 }}
+                        sx={{ mt: 1 }}
                     >
                         <Grid item>
                             <Button
@@ -646,7 +646,7 @@ const UserManagement: React.FC = () => {
                     >
                         Você está prestes a excluir os usuários selecionados. Deseja continuar?
                     </Typography>
-                    <Grid container justifyContent="center" spacing={2} sx={{ mt: 2 }}>
+                    <Grid container justifyContent="space-between" spacing={2} sx={{ mt: 1 }}>
                         <Grid item>
                             <Button
                                 variant="contained"

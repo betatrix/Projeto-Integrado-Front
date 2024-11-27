@@ -1342,7 +1342,7 @@ const InstitutionManagement: React.FC = () => {
                                         display: 'flex',
                                         justifyContent: 'center',
                                         alignItems: 'center',
-                                        height: 150, // Altura para centralizar
+                                        height: 150,
                                     }}
                                 >
                                     <CircularProgress />
@@ -1663,7 +1663,7 @@ const InstitutionManagement: React.FC = () => {
                         container
                         spacing={2}
                         justifyContent="space-between"
-                        sx={{ mt: 2 }}
+                        sx={{ mt: 1 }}
                     >
                         <Grid item>
                             <Button
@@ -1738,28 +1738,26 @@ const InstitutionManagement: React.FC = () => {
                         container
                         spacing={2}
                         justifyContent="space-between"
-                        sx={{ mt: 2 }}
+                        sx={{ mt: 1 }}
                     >
                         <Grid item>
                             <Button onClick={async () => {
                                 if (institutionToDelete) {
                                     try {
-                                        // Realiza a operação de exclusão
                                         await excluirInstituicao(institutionToDelete.id);
 
-                                        // Atualiza o status da instituição localmente para "Inativo"
                                         setInstitutions((prevInstitutions) =>
                                             prevInstitutions.map((inst) =>
                                                 inst.id === institutionToDelete.id ? { ...inst, ativo: false } : inst
                                             )
                                         );
 
-                                        setShowSuccessDeleteMessage(true); // Exibe mensagem de sucesso
+                                        setShowSuccessDeleteMessage(true);
                                     } catch (error) {
                                         console.error('Erro ao excluir instituição:', error);
-                                        setShowErrorDeleteMessage(true); // Exibe mensagem de erro
+                                        setShowErrorDeleteMessage(true);
                                     } finally {
-                                        handleDeleteModalClose(); // Fecha o modal
+                                        handleDeleteModalClose();
                                     }
                                 }
                             }} sx={{
@@ -1828,19 +1826,31 @@ const InstitutionManagement: React.FC = () => {
                         Você está prestes a excluir as instituições selecionadas. Deseja continuar?
                     </Typography>
 
-                    <Grid item container justifyContent="center" spacing={2} sx={{ mt: '10px' }}>
+                    <Grid item container justifyContent="space-between" spacing={2} sx={{ mt: 1 }}>
                         <Grid item display="flex" justifyContent="center">
 
                             <Button onClick={async () => {
                                 try {
                                     await excluirInstituicoesEmMassa(selectedInstitutions);
-                                    setInstitutions((prevInstitutions) => prevInstitutions.filter(inst => !selectedInstitutions.includes(inst.id)));
-                                    setLoadedInstitutions((prevLoadedInstitutions) => prevLoadedInstitutions.filter(inst => !selectedInstitutions.includes(inst.id)));
-                                    setShowSuccessMassDeleteMessage(true); // Exibe mensagem de sucesso
+
+                                    setInstitutions((prevInstitutions) =>
+                                        prevInstitutions.map((inst) =>
+                                            selectedInstitutions.includes(inst.id) ? { ...inst, ativo: false } : inst
+                                        )
+                                    );
+
+                                    setLoadedInstitutions((prevLoadedInstitutions) =>
+                                        prevLoadedInstitutions.map((inst) =>
+                                            selectedInstitutions.includes(inst.id) ? { ...inst, ativo: false } : inst
+                                        )
+                                    );
+
+                                    setShowSuccessMassDeleteMessage(true);
                                 } catch (error) {
                                     console.error('Erro ao excluir instituições:', error);
-                                    setShowErrorMassDeleteMessage(true); // Exibe mensagem de erro
+                                    setShowErrorMassDeleteMessage(true);
                                 } finally {
+                                    setSelectedInstitutions([]);
                                     handleDeleteMultipleModalClose();
                                 }
                             }} sx={{

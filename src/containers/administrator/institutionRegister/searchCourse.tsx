@@ -315,8 +315,8 @@ export const BuscaCurso: React.FC = () => {
                         Você está prestes a adicionar os cursos selecionados à instituição.
                         Deseja continuar?
                     </Typography>
-                    <Grid container spacing={2} justifyContent="center"
-                        sx={{ mt: 2 }}>
+                    <Grid container spacing={2} justifyContent="space-between"
+                        sx={{ mt: 1 }}>
                         <Grid item >
                             <Button variant="contained" color="primary" onClick={handleConfirmCourses} sx={{
                                 height: '35px',

@@ -10,12 +10,9 @@ import {
     Avatar,
     Menu,
     MenuItem,
-    Button, // Importando o Button correto do Material-UI
 } from '@mui/material';
 import { AuthContext } from '../../contexts/auth';
 import { decryptData } from '../../services/encryptionService';
-import { Link } from 'react-router-dom';
-import { ButtonMenu } from './styles';
 
 const styles = {
     logo: {
@@ -43,7 +40,7 @@ const styles = {
     },
 };
 
-function AdminHeader() {
+function AdminHeaderMenu() {
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
     const authContext = useContext(AuthContext);
 
@@ -82,24 +79,18 @@ function AdminHeader() {
                             VOCCO
                         </Typography>
                     </Box>
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Link to="/admin" style={{ textDecoration: 'none' }}>
-                            <Button sx={ButtonMenu}>DASHBOARD</Button>
-                        </Link>
-                        <Link to="/gerenciamento-instituicao" style={{ textDecoration: 'none' }}>
-                            <Button sx={ButtonMenu}>INSTITUIÇÕES</Button>
-                        </Link>
-                        <Link to="/gerenciamento-curso" style={{ textDecoration: 'none' }}>
-                            <Button sx={ButtonMenu}>CURSOS</Button>
-                        </Link>
-                        <Link to="/gerenciamento-teste" style={{ textDecoration: 'none' }}>
-                            <Button sx={ButtonMenu}>TESTE</Button>
-                        </Link>
-                        <Link to="/gerenciamento-usuario" style={{ textDecoration: 'none' }}>
-                            <Button sx={ButtonMenu}>USUÁRIOS</Button>
-                        </Link>
-                    </Box>
                     <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+                        <Typography
+                            sx={{
+                                marginRight: '0.7rem',
+                                fontFamily: 'Poppins, sans-serif',
+                                color: '#185D8E',
+                                fontWeight: 600,
+                                mb:'0.4rem'
+                            }}
+                        >
+                            Olá, {admin ? admin.nome.split(' ')[0] : 'usuário'}!
+                        </Typography>
 
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={styles.avatarButton}>
@@ -131,4 +122,4 @@ function AdminHeader() {
     );
 }
 
-export default AdminHeader;
+export default AdminHeaderMenu;
