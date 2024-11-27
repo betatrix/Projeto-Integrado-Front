@@ -27,10 +27,11 @@ const AnswerOptions: React.FC<AnswerOptionsProps> = ({ value, onChange, disabled
         <Box sx={{
             display: 'flex',
             justifyContent: 'center',
-            gap: isSmallScreen ? 0.05 : 2,
+            gap: isSmallScreen ? 3 : 7,
             flexWrap: isSmallScreen ? 'wrap' : 'nowrap',
             marginTop: isSmallScreen ? '0' : '25px',
-            marginBottom: isSmallScreen ? '0' : '18px'
+            marginBottom: isSmallScreen ? '0' : '18px',
+            overflow: 'visible',
         }}
         >
 
@@ -47,14 +48,17 @@ const AnswerOptions: React.FC<AnswerOptionsProps> = ({ value, onChange, disabled
                             style={{
                                 marginLeft: '23px',
                                 marginRight: '23px',
-                                transition: 'filter 0.2s ease',
-                                filter: value === iconData.value ? 'brightness(0.35)' : 'brightness(1)',
+                                transition: 'filter 0.3s ease',
+                                filter: value === iconData.value ? 'brightness(0.3)' : 'brightness(1)',
+                                boxShadow: 'none',
                             }}
                             id={iconData.id}
                         >
                             <img src={iconData.src} alt={iconData.label}
                                 style={{
-                                    width: isMobile ? '40px' : '57px',
+                                    // maxWidth: '100%',
+                                    // height: 'auto',
+                                    width: isMobile ? '55px' : '67px',
                                     marginTop: isMobile ? '25px' : '0px',
                                     marginBottom: isMobile ? '20px' : '0px'
                                 }} />

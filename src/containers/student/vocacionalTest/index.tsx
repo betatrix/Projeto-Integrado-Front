@@ -49,7 +49,7 @@ const VocacionalTest: React.FC = () => {
     const [selectedButton, setSelectedButton] = useState<string | null>(null);
     const [modalStep, setModalStep] = useState(1);
     const [isButtonSelected, setIsButtonSelected] = useState(false);
-    const [showSwipeHint, setShowSwipeHint] = useState(isMobile);
+    // const [showSwipeHint, setShowSwipeHint] = useState(isMobile);
 
     useEffect(() => {
         const fetchQuestions = async () => {
@@ -92,10 +92,10 @@ const VocacionalTest: React.FC = () => {
 
     const handleStartTest = () => {
         setShowModal(false);
-        setShowSwipeHint(true);
-        setTimeout(() => {
-            setShowSwipeHint(false);
-        }, 3500);
+        // setShowSwipeHint(true);
+        // setTimeout(() => {
+        //     setShowSwipeHint(false);
+        // }, 3500);
     };
 
     const handleNext = () => {
@@ -222,7 +222,7 @@ const VocacionalTest: React.FC = () => {
                     }}
                 >
 
-                    {isMobile && showSwipeHint && (
+                    {/* {isMobile && showSwipeHint && (
                         <Box
                             sx={{
                                 position: 'absolute',
@@ -239,7 +239,7 @@ const VocacionalTest: React.FC = () => {
                         >
                             {t('testSwipeHint')}
                         </Box>
-                    )}
+                    )} */}
 
                     {isMobile && (
                         <ThemeProvider theme={componentTheme}>
