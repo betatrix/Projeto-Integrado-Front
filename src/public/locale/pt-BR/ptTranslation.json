@@ -169,6 +169,7 @@
       "testChooseCourseType": "Selecione o tipo de curso que mais combina com o que você procura: ",
       "testGraduationButton": "Superior",
       "testTechnicalButton": "Técnico",
+      "testSwipeHint": "Deslize para o lado e vá para a próxima pergunta!",
 
       "resultTestTitle": "Resultado do teste",
       "resultTestGoodLuckPhrase": "Abaixo listamos alguns cursos que podem te interessar, boa sorte!",

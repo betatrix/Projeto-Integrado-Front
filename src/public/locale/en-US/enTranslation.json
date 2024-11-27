@@ -164,6 +164,7 @@
       "testChooseCourseType": "Select the type of course that best matches what you're looking for: ",
       "testGraduationButton": "Graduation",
       "testTechnicalButton": "Technical",
+      "testSwipeHint": "Swipe to the side to go to the next question!",
 
       "resultTestTitle": "Test Result",
       "resultTestGoodLuckPhrase": "Below we have listed some courses that might interest you. Good luck!",
