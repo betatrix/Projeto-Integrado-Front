@@ -53,8 +53,14 @@ export const ModalText = styled(Typography)`
 `;
 
 export const StyledTypography = styled(Typography)`
-  font-family: 'Exo', sans-serif;
   text-align: center;
+  font-size: 20px;
+
+  @media (max-width: 600px) {
+    font-size: 14px;
+  }
+  margin-top: 15px;
+  margin-bottom: 10px;
 `;
 
 export const CenteredDiv = styled.div`
@@ -72,8 +78,23 @@ export const CenteredDiv = styled.div`
     margin: auto;
     border: solid #185D8E; 
     position: relative;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 
-    @media (max-width: 600px) {
+    img {
+    max-width: 550px;
+    height: auto;
+    border-radius: 20px;
+
+    @media (max-width: 400px) {
+      width: 290px;
+      max-width: 290px;
+    }
+  }
+
+    @media (max-width: 630px) {
         width: 95%;
         min-height: 60vh;
         padding: 15px;
@@ -206,7 +227,7 @@ export const CourseCustomButton = styled(Button)<{ selected?: boolean }>`
     `}
 
     @media (max-width: 530px) {
-      margin: 0; /* Remove margens laterais em telas menores */
+      margin: 0;
     }
   }
 `;
