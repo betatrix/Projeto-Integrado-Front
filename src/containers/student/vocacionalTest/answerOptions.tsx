@@ -27,7 +27,7 @@ const AnswerOptions: React.FC<AnswerOptionsProps> = ({ value, onChange, disabled
         <Box sx={{
             display: 'flex',
             justifyContent: 'center',
-            gap: isSmallScreen ? 1 : 7,
+            gap: isSmallScreen ? 0.5 : 7,
             flexWrap: isSmallScreen ? 'wrap' : 'nowrap',
             marginTop: isSmallScreen ? '0' : '25px',
             marginBottom: isSmallScreen ? '0' : '18px',
@@ -58,7 +58,7 @@ const AnswerOptions: React.FC<AnswerOptionsProps> = ({ value, onChange, disabled
                                 style={{
                                     // maxWidth: '100%',
                                     // height: 'auto',
-                                    width: isMobile ? '50px' : '67px',
+                                    width: isMobile ? '40px' : '67px',
                                     marginTop: isMobile ? '25px' : '0px',
                                     marginBottom: isMobile ? '20px' : '0px'
                                 }} />

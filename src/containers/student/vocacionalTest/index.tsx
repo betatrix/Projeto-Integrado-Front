@@ -217,7 +217,7 @@ const VocacionalTest: React.FC = () => {
             >
                 <CenteredDiv
                     style={{
-                        // marginTop: isMobile ? '25%' : '7%',
+                        marginTop: isMobile ? '10px' : '0',
                         height: '100vh'
                     }}
                 >
