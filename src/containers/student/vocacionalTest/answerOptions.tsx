@@ -15,11 +15,11 @@ interface AnswerOptionsProps {
 const AnswerOptions: React.FC<AnswerOptionsProps> = ({ value, onChange, disabled }) => {
     const isMobile = useMediaQuery('(max-width:600px)');
     const icons = [
-        { value: 1, src: EmojiVoquinhoChorando, label: 'Não me identifico com isso de forma alguma' },
-        { value: 2, src: EmojiVoquinhoTriste, label: 'Isso não reflete muito quem eu sou' },
-        { value: 3, src: EmojiVoquinhoNeutro, label: 'Não tenho uma opinião definida sobre isso' },
-        { value: 4, src: EmojiVoquinhoFeliz, label: 'Tenho uma conexão razoável com isso' },
-        { value: 5, src: EmojiVoquinhoApaixonado, label: 'Isso reflete muito quem eu sou!' },
+        { id: 'emoji1', value: 1, src: EmojiVoquinhoChorando, label: 'Não me identifico com isso de forma alguma' },
+        { id: 'emoji2', value: 2, src: EmojiVoquinhoTriste, label: 'Isso não reflete muito quem eu sou' },
+        { id: 'emoji3', value: 3, src: EmojiVoquinhoNeutro, label: 'Não tenho uma opinião definida sobre isso' },
+        { id: 'emoji4', value: 4, src: EmojiVoquinhoFeliz, label: 'Tenho uma conexão razoável com isso' },
+        { id: 'emoji5', value: 5, src: EmojiVoquinhoApaixonado, label: 'Isso reflete muito quem eu sou!' },
     ];
 
     return (
@@ -37,6 +37,7 @@ const AnswerOptions: React.FC<AnswerOptionsProps> = ({ value, onChange, disabled
                                 transition: 'filter 0.2s ease',
                                 filter: value === iconData.value ? 'brightness(0.35)' : 'brightness(1)',
                             }}
+                            id={iconData.id}
                         >
                             <img src={iconData.src} alt={iconData.label}
                                 style={{

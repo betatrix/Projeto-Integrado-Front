@@ -199,6 +199,8 @@ const InstitutionList: React.FC = () => {
                     })
                 );
 
+                console.log(institutionsWithDetails);
+
                 setInstitutions(institutionsWithDetails);
             } catch (error) {
                 console.error('Erro ao buscar instituições');
@@ -347,6 +349,7 @@ const InstitutionList: React.FC = () => {
                     </Typography>
                     <Box sx={searchBox}>
                         <TextField
+                            id='institutionTitleSearch'
                             label={t('institutionTitleSearch')}
                             variant='outlined'
                             onChange={(e) => setSearchValue(e.target.value)}

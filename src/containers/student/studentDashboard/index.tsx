@@ -234,7 +234,7 @@ const StudentDashboard: React.FC = () => {
                                         {t('dashboardCard1')}
                                     </Typography>
                                     <Link to="/teste-vocacional" style={{ textDecoration: 'none' }}>
-                                        <Button variant="text" size="large" sx={TestButton} component="div">
+                                        <Button id='testButton' variant="text" size="large" sx={TestButton} component="div">
                                             {t('dashboardTest1')}
                                         </Button>
                                     </Link>

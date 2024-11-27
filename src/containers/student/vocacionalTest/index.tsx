@@ -141,9 +141,11 @@ const VocacionalTest: React.FC = () => {
             })),
         };
 
+        console.log(payload);
+
         try {
             const response = await axios.post(`${apiUrl}/resposta`, payload);
-
+            console.log(response);
             localStorage.removeItem('vocationalTestAnswers');
 
             navigate('/resultado', { state: { resultado: response.data } });
@@ -279,6 +281,7 @@ const VocacionalTest: React.FC = () => {
                             onClick={handleNext}
                             style={{ fontSize: '3rem', right: -170, top: 25 }}
                             disabled={answers[currentQuestion] === 0}
+                            id='navigateNextTestButton'
                         >
                             <NavigateNextIcon fontSize="inherit"/>
                         </IconButton>
@@ -293,6 +296,7 @@ const VocacionalTest: React.FC = () => {
                     {currentQuestion === questions.length - 1 && allQuestionsAnswered ? (
                         <CustomButton
                             onClick={handleSubmit}
+                            id='sendTestButton'
                         >
                             {t('sendButton')}
                         </CustomButton>
@@ -378,6 +382,7 @@ const VocacionalTest: React.FC = () => {
                                 <CourseCustomButton
                                     onClick={() => handleCourseTypeSelection('graduation')}
                                     selected={selectedButton === 'graduation'}
+                                    id='graduationButton'
                                 >
                                     {t('testGraduationButton')}
                                 </CourseCustomButton>
@@ -405,6 +410,7 @@ const VocacionalTest: React.FC = () => {
                         <IconButton
                             onClick={handleNextModalStep}
                             style={{ marginLeft: '203px' }}
+                            id='navigateNextButton'
                         >
                             <NavigateNextIcon style={{ fontSize: '2rem', color: '#185D8E' }} />
                         </IconButton>
@@ -415,6 +421,7 @@ const VocacionalTest: React.FC = () => {
                                 color="primary"
                                 style={{ justifyItems: 'center', width: '200px', height: '40px', marginBottom: '10px' }}
                                 disabled={!isButtonSelected}
+                                id='testIntroButton'
                             >
                                 {t('testIntroButton')}
                             </CustomButton>
