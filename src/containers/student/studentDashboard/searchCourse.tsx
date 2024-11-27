@@ -253,6 +253,7 @@ const CourseList: React.FC = () => {
                     </Typography>
                     <Box sx={searchBox}>
                         <TextField
+                            id='courseTitleSearch'
                             label={t('courseTitleSearch')}
                             variant='outlined'
                             onChange={(e) => setSearchValue(e.target.value)}

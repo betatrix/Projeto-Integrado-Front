@@ -464,7 +464,7 @@ export const StudentRegister = () => {
                                     id="termosPoliticas"
                                     sx={{ gridColumn: 'span 2' }}
                                     required
-                                    control={<Checkbox />}
+                                    control={<Checkbox id='checkboxTerms' />}
                                     label={
                                         <span>
                                             {t('studentRegisterTerms1')}{' '}
@@ -488,7 +488,7 @@ export const StudentRegister = () => {
                                 />
 
                                 <FormControl sx={{ gridColumn: 'span 2' }}>
-                                    <Box component="button" sx={registerButton} type="submit" disabled={isSubmitting}>
+                                    <Box component="button" id='registerButton' sx={registerButton} type="submit" disabled={isSubmitting}>
                                         {loading ? <CircularProgress size={24} color="inherit" /> : t('studentRegisterButton')}
                                     </Box>
                                 </FormControl>

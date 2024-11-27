@@ -147,7 +147,7 @@ const Login: React.FC = () => {
                                 </FormControl>
 
                                 <FormControl>
-                                    <Button sx={loginButton} component="button" type="submit" disabled={isSubmitting}>
+                                    <Button sx={loginButton} id='loginButton' component="button" type="submit" disabled={isSubmitting}>
                                         {loading ? <CircularProgress size={35} color="inherit" /> : t('loginButton')}
                                     </Button>
                                 </FormControl>
@@ -158,7 +158,7 @@ const Login: React.FC = () => {
                     </Formik>
 
                     <Typography variant="body1" sx={subText}>
-                        {t('loginRegister1')}<Typography sx={customLink} component={RouterLink} to="/register"> {t('loginRegister2')}</Typography>
+                        {t('loginRegister1')}<Typography id='registerLink' sx={customLink} component={RouterLink} to="/register"> {t('loginRegister2')}</Typography>
                     </Typography>
                 </Box>
 

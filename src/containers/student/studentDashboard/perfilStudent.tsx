@@ -427,7 +427,7 @@ const PerfilStudent: React.FC = () => {
                                             width: '100%',
                                         }}
                                     >
-                                        <Button sx={deleteButton} onClick={handleDelete}>{t('studentAccountButton2')}</Button>
+                                        <Button id='deleteButton' sx={deleteButton} onClick={handleDelete}>{t('studentAccountButton2')}</Button>
                                         <Button sx={registerButton} type="submit" disabled={isSubmitting}>
                                             {loading ? <CircularProgress size={24} color="inherit" /> : t('studentAccountButton3')}
                                         </Button>
@@ -477,6 +477,7 @@ const PerfilStudent: React.FC = () => {
                                 onClick={confirmDelete}
                                 color="secondary"
                                 autoFocus
+                                id='confirmDeleteButton'
                             >
                                 {t('studentAccountButton4')}
                             </Button>

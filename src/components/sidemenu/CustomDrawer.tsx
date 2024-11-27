@@ -109,14 +109,14 @@ const CustomDrawer: React.FC<CustomDrawerProps> = ({ open, handleDrawerOpen, han
     };
 
     const iconMap: {
-        [key: string]: { icon: React.ReactNode; link?: string; onClick?: () => void }
+        [key: string]: { id: string; icon: React.ReactNode; link?: string; onClick?: () => void }
     } = {
-        'dashboard': { icon: <DashboardOutlined sx={{ fontSize: '1.8rem' }} />, link: '/estudante' },
-        'test': { icon: <AssignmentOutlined sx={{ fontSize: '1.8rem' }} />, link: '/teste-vocacional' },
-        'myAccount': { icon: <AccountBoxOutlined sx={{ fontSize: '1.8rem' }} />, link: '/minha-conta' },
-        'courses': { icon: <LocalLibraryRoundedIcon sx={{ fontSize: '1.8rem' }} />, link: '/curso' },
-        'institution': { icon: <SchoolOutlined sx={{ fontSize: '1.8rem' }} />, link: '/instituicao' },
-        'logout': { icon: <LogoutOutlined sx={{ fontSize: '1.8rem' }} />, onClick: handleLogout },
+        'dashboard': { id: 'dashboardButton', icon: <DashboardOutlined sx={{ fontSize: '1.8rem' }} />, link: '/estudante' },
+        'test': { id: 'testButton', icon: <AssignmentOutlined sx={{ fontSize: '1.8rem' }} />, link: '/teste-vocacional' },
+        'myAccount': { id: 'myAccountButton', icon: <AccountBoxOutlined sx={{ fontSize: '1.8rem' }} />, link: '/minha-conta' },
+        'courses': { id: 'coursesButton', icon: <LocalLibraryRoundedIcon sx={{ fontSize: '1.8rem' }} />, link: '/curso' },
+        'institution': { id: 'institutionButton', icon: <SchoolOutlined sx={{ fontSize: '1.8rem' }} />, link: '/instituicao' },
+        'logout': { id: 'logoutButton', icon: <LogoutOutlined sx={{ fontSize: '1.8rem' }} />, onClick: handleLogout },
     };
 
     return (
@@ -194,6 +194,7 @@ const CustomDrawer: React.FC<CustomDrawerProps> = ({ open, handleDrawerOpen, han
                             key !== 'logout' && (
                                 <ListItem key={key} disablePadding sx={{ display: 'block' }}>
                                     <ListItemButton
+                                        id={iconMap[key].id}
                                         component={Link}
                                         to={iconMap[key]?.link || ''}
                                         sx={[
@@ -227,6 +228,7 @@ const CustomDrawer: React.FC<CustomDrawerProps> = ({ open, handleDrawerOpen, han
                     <List sx={{ backgroundColor: '#E3EDF4', boxShadow: 'none', color: '#185D8E' }}>
                         <ListItem disablePadding sx={{ marginTop: 'auto', marginBottom: '25px' }}>
                             <ListItemButton
+                                id={iconMap['logout'].id}
                                 onClick={iconMap['logout'].onClick}
                                 sx={[
                                     { minHeight: 48, px: 2.5 },

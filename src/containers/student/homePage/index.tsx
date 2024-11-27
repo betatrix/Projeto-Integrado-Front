@@ -42,7 +42,7 @@ export const HomePage: React.FC = () => {
                             <Typography sx={typographySubtitleStyles}>
                                 {t('welcomeText2')}
                             </Typography>
-                            <Button type="button" onClick={handleLogin} variant="outlined" sx={buttonStyles}>
+                            <Button type="button" id='loginHomePageButton' onClick={handleLogin} variant="outlined" sx={buttonStyles}>
                                 {t('registerButton')}
                             </Button>
                         </Grid>

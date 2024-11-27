@@ -5,7 +5,7 @@ import { IconButton, Box, Dialog, DialogActions, DialogContent, DialogTitle, The
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import { CenteredDiv, ButtonGroup, Global, homePageBoxStyles, StyledTypography,
+import { CenteredDiv, ButtonGroup, Global, StyledTypography,
     CustomButton, ModalText, BackButton, CustomLink, CourseCustomButton,
     StyledLinearProgress,
     componentTheme,
@@ -49,6 +49,7 @@ const VocacionalTest: React.FC = () => {
     const [selectedButton, setSelectedButton] = useState<string | null>(null);
     const [modalStep, setModalStep] = useState(1);
     const [isButtonSelected, setIsButtonSelected] = useState(false);
+    const [showSwipeHint, setShowSwipeHint] = useState(isMobile);
 
     useEffect(() => {
         const fetchQuestions = async () => {
@@ -88,6 +89,14 @@ const VocacionalTest: React.FC = () => {
             setAnswers(JSON.parse(savedAnswers));
         }
     }, []);
+
+    const handleStartTest = () => {
+        setShowModal(false);
+        setShowSwipeHint(true);
+        setTimeout(() => {
+            setShowSwipeHint(false);
+        }, 3500);
+    };
 
     const handleNext = () => {
         if (currentQuestion < questions.length - 1) {
@@ -141,9 +150,11 @@ const VocacionalTest: React.FC = () => {
             })),
         };
 
+        console.log(payload);
+
         try {
             const response = await axios.post(`${apiUrl}/resposta`, payload);
-
+            console.log(response);
             localStorage.removeItem('vocationalTestAnswers');
 
             navigate('/resultado', { state: { resultado: response.data } });
@@ -153,9 +164,9 @@ const VocacionalTest: React.FC = () => {
         }
     };
 
-    const handleStartTest = () => {
-        setShowModal(false);
-    };
+    // const handleStartTest = () => {
+    //     setShowModal(false);
+    // };
 
     const handleNextModalStep = () => {
         if (modalStep < 2) {
@@ -192,20 +203,47 @@ const VocacionalTest: React.FC = () => {
                 </CustomLink>
             </BackButton>
 
-            <Box sx={homePageBoxStyles}
-                {...handlers}
+            <Box sx={{
+                position: 'relative',
+                width: '100%',
+                height: '100vh',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                marginTop: '50px'
+            }}
+            {...handlers}
 
             >
                 <CenteredDiv
                     style={{
-                        marginTop: isMobile ? '25%' : '7%',
+                        // marginTop: isMobile ? '25%' : '7%',
                         height: '100vh'
                     }}
                 >
 
+                    {isMobile && showSwipeHint && (
+                        <Box
+                            sx={{
+                                position: 'absolute',
+                                top: '30px',
+                                left: '50%',
+                                transform: 'translateX(-50%)',
+                                backgroundColor: 'rgba(164, 191, 210, 0.7)',
+                                color: 'white',
+                                padding: '10px 20px',
+                                borderRadius: '10px',
+                                fontSize: '13px',
+                                textAlign: 'center',
+                            }}
+                        >
+                            {t('testSwipeHint')}
+                        </Box>
+                    )}
+
                     {isMobile && (
                         <ThemeProvider theme={componentTheme}>
-                            <StyledTypography variant="h6" gutterBottom style={{marginTop: '15px', marginBottom: '10px', fontSize: '18px'}}>
+                            <StyledTypography variant="h6" gutterBottom style={{marginTop: '15px', marginBottom: '10px', fontSize: isMobile ? '15px' : '18px'}}>
                                 {i18n.language === 'en' ? questions[currentQuestion]?.textoIngles : questions[currentQuestion]?.texto}
                             </StyledTypography>
 
@@ -279,6 +317,7 @@ const VocacionalTest: React.FC = () => {
                             onClick={handleNext}
                             style={{ fontSize: '3rem', right: -170, top: 25 }}
                             disabled={answers[currentQuestion] === 0}
+                            id='navigateNextTestButton'
                         >
                             <NavigateNextIcon fontSize="inherit"/>
                         </IconButton>
@@ -293,6 +332,7 @@ const VocacionalTest: React.FC = () => {
                     {currentQuestion === questions.length - 1 && allQuestionsAnswered ? (
                         <CustomButton
                             onClick={handleSubmit}
+                            id='sendTestButton'
                         >
                             {t('sendButton')}
                         </CustomButton>
@@ -354,11 +394,11 @@ const VocacionalTest: React.FC = () => {
                     {modalStep === 1 && (
                         <>
                             <ThemeProvider theme={componentTheme}>
-                                <ModalText variant="body1" style={{ fontSize: '18px' }}>
+                                <ModalText variant="body1" style={{ fontSize: isMobile ? '15px' : '18px' }}>
                                     {t('testIntro1')}
                                 </ModalText>
                                 <br />
-                                <ModalText style={{ fontSize: '18px' }}>
+                                <ModalText style={{ fontSize:  isMobile ? '15px' : '18px' }}>
                                     {t('testIntro2')}
                                 </ModalText>
                             </ThemeProvider>
@@ -369,7 +409,7 @@ const VocacionalTest: React.FC = () => {
                     {modalStep === 2 && (
                         <>
                             <ThemeProvider theme={componentTheme}>
-                                <ModalText variant="body1" style={{ fontSize: '18px' }}>
+                                <ModalText variant="body1" style={{ fontSize:  isMobile ? '15px' : '18px' }}>
                                     {t('testChooseCourseType')}
                                 </ModalText>
                             </ThemeProvider>
@@ -378,6 +418,7 @@ const VocacionalTest: React.FC = () => {
                                 <CourseCustomButton
                                     onClick={() => handleCourseTypeSelection('graduation')}
                                     selected={selectedButton === 'graduation'}
+                                    id='graduationButton'
                                 >
                                     {t('testGraduationButton')}
                                 </CourseCustomButton>
@@ -405,6 +446,7 @@ const VocacionalTest: React.FC = () => {
                         <IconButton
                             onClick={handleNextModalStep}
                             style={{ marginLeft: '203px' }}
+                            id='navigateNextButton'
                         >
                             <NavigateNextIcon style={{ fontSize: '2rem', color: '#185D8E' }} />
                         </IconButton>
@@ -415,6 +457,7 @@ const VocacionalTest: React.FC = () => {
                                 color="primary"
                                 style={{ justifyItems: 'center', width: '200px', height: '40px', marginBottom: '10px' }}
                                 disabled={!isButtonSelected}
+                                id='testIntroButton'
                             >
                                 {t('testIntroButton')}
                             </CustomButton>
