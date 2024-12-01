@@ -173,7 +173,7 @@ const StudentDashboard: React.FC = () => {
         itemGap: isSmallScreen ? 5 : isMediumScreen ? 8 : 10,
         padding: isSmallScreen ? -55 : isMediumScreen ? -70 : -80,
         labelStyle: {
-            fontFamily: 'Roboto, monospace',
+            fontFamily: 'Poppins, sans-serif',
             fontSize: isSmallScreen ? 14 : isMediumScreen ? 16 : 20,
             fontWeight: 'bold',
             fill: '#0B2A40',
@@ -406,6 +406,7 @@ const StudentDashboard: React.FC = () => {
                                                             }]}
                                                             width={chartConfig.width}
                                                             height={chartConfig.height}
+                                                            tooltip={{ trigger: 'none' }}
                                                             slotProps={{
                                                                 legend: {
                                                                     position: { vertical: 'middle', horizontal: 'right' },
@@ -443,6 +444,7 @@ const StudentDashboard: React.FC = () => {
                                                                     }]}
                                                                     width={chartConfig.width}
                                                                     height={chartConfig.height}
+                                                                    tooltip={{ trigger: 'none' }}
                                                                     slotProps={{
                                                                         legend: {
                                                                             position: { vertical: 'middle', horizontal: 'right' },

@@ -36,7 +36,7 @@ export const container: SxProps<Theme> = (theme) => ({
     display: 'flex',
     flexDirection: 'grid',
     alignItems: 'center',
-    marginBottom: '4rem',
+    marginBottom: '1rem',
     [theme.breakpoints.down('sm')]: {
         marginBottom: '0rem',
     },

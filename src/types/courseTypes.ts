@@ -35,9 +35,9 @@ export type CourseFormCad = {
 export enum NivelEmpregabilidade {
     INDEFINIDO = 'Selecione a empregabilidade',
     ALTA = 'Alta',
-    MEDIA = 'Média',
+    MEDIA = 'Media',
     BAIXA = 'Baixa',
-    EM_QUEDA = 'Em Queda',
+    EM_QUEDA = 'Em_Queda',
 }
 
 export enum TipoInstituicaoCurso {

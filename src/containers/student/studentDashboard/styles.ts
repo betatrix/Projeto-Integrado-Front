@@ -573,11 +573,6 @@ export const cardContent: SxProps<Theme> = (theme) => ({
     borderRadius: '14px',
     boxShadow: '4px 4px 0px 1px rgba(0, 111, 255, 0.2)',
     transition: 'transform 0.3s ease-in-out',
-    '&:hover': {
-        backgroundColor: '#A4BFD2',
-        transform: 'scale(1.02)',
-        cursor:'pointer',
-    },
     [theme.breakpoints.down('lg')]: {
         margin: '0rem 0rem',
     },
@@ -692,6 +687,47 @@ export const styledModalDetails: SxProps<Theme> = (theme) => ({
         padding: '3rem 1rem 10rem 1rem',
         maxWidth: '65rem',
         maxHeight: '55rem',
+    },
+});
+
+export const detailsButton: SxProps<Theme> = (theme) => ({
+    mr: 0,
+    fontFamily: 'Poppins, sans-serif',
+    fontSize: '1.1rem',
+    padding: '0.5rem',
+    backgroundColor: '#D9EEFF',
+    color: '#185D8E',
+    fontWeight: 600,
+    border: 'solid 2px #185D8E',
+    borderRadius: '7px',
+    boxShadow: '4px 4px 0px 1px rgba(0, 111, 255, 0.2)',
+    textAlign: 'center',
+    width: '100%',
+    maxWidth: '150px',
+    whiteSpace: 'nowrap',
+    transition: 'transform 0.3s ease-in-out',
+    '&:hover': {
+        backgroundColor: '#C0E3FF',
+        borderColor: '#185D8E',
+        borderWidth: '2px',
+        transform: 'scale(1.02)',
+    },
+    [theme.breakpoints.down('lg')]: {
+        padding: '0.5rem',
+        fontSize: '1rem',
+        minWidth: '200px',
+    },
+    [theme.breakpoints.down('md')]: {
+        margin: '0.5rem',
+        padding: '0.5rem',
+        fontSize: '1rem',
+        minWidth: '200px',
+    },
+    [theme.breakpoints.down('sm')]: {
+        margin: '0.1rem',
+        padding: '0.8rem',
+        fontSize: '0.9rem',
+        minWidth: '140px',
     },
 });
 

@@ -51,7 +51,7 @@ export const HomePage: React.FC = () => {
                                 <img
                                     src={initialImage}
                                     alt="Imagem ilustrativa"
-                                    style={{ width: '100%', maxWidth: '45rem', height: 'auto', marginLeft:'7rem' }}
+                                    style={{ width: '100%', maxWidth: '47rem', height: 'auto', marginLeft:'7.5rem' }}
                                 />
                             </Grid>
                         )}

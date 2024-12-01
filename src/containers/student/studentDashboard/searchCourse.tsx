@@ -146,7 +146,7 @@ const CourseList: React.FC = () => {
     // Função de filtro
     const filteredCourses = courses.filter(course => {
         const matchesSearchValue = deburr(course.descricao ?? '').toLowerCase().includes(deburr(searchValue).toLowerCase());
-        const matchesEmpregabilidade = empregabilidadeValue === '' || course.empregabilidade.toLowerCase().includes(empregabilidadeValue.toLowerCase());
+        const matchesEmpregabilidade = empregabilidadeValue === '' ||course.empregabilidade.toLowerCase().includes(empregabilidadeValue.toLowerCase());
         const matchesPossiveisCarreiras = possiveisCarreirasValue === '' || course.possiveisCarreiras?.toLowerCase().includes(possiveisCarreirasValue.toLowerCase());
         const matchesTipo = tipoValue === '' || course.tipo === tipoValue;
         const matchesArea = areaValue === '' || (course.area && course.area.toLowerCase() === areaValue.toLowerCase());
@@ -490,35 +490,52 @@ const CourseList: React.FC = () => {
                 ) : (
                     <Box sx={gridContainer}>
                         <Grid container spacing={4}>
-                            {currentCourses.map((course) => (
-                                <Grid item xs={12} sm={12} md={6} key={course.id}>
-                                    <Card sx={cardCourseContent}>
-                                        <CardContent>
-                                            <Typography variant="h5" sx={cardTitle}>
-                                                {course.descricao ? changeCase.capitalCase(course.descricao) : 'Nome não disponível'}
-                                            </Typography>
+                            {currentCourses.length === 0 ? (
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        width: '100%',
+                                        height: '100%',
+                                        textAlign: 'center',
+                                        padding: 4,
+                                    }}
+                                >
+                                    <Typography variant="body2" color="textSecondary">
+                                        Não há cursos disponíveis com esse filtro.
+                                    </Typography>
+                                </Box>
+                            ) : (
+                                currentCourses.map((course) => (
+                                    <Grid item xs={12} sm={12} md={6} key={course.id}>
+                                        <Card sx={cardCourseContent}>
+                                            <CardContent>
+                                                <Typography variant="h5" sx={cardTitle}>
+                                                    {course.descricao ? changeCase.capitalCase(course.descricao) : 'Nome não disponível'}
+                                                </Typography>
 
-                                            <Typography variant="body2" sx={cardText}>
-                                                <b>{t('courseCardArea')}:</b> {course.area || 'Não disponível'}
-                                            </Typography>
-                                            <Typography variant="body2" sx={cardText}>
-                                                <b>{t('courseCardEmpregabilidade')}:</b> {course.empregabilidade
-                                                    ? changeCase.capitalCase(course.empregabilidade) : 'Não disponível'}
-                                            </Typography>
-                                            <Typography variant="body2" sx={cardText}>
-                                                <b>{t('courseCardTipo')}:</b> {course.tipo ? changeCase.capitalCase(course.tipo) : 'Não disponível'}
-                                            </Typography>
-                                            <Typography variant="body2" sx={cardText}><b>{t('courseCardPerfil')}:</b> {course.perfil || 'Não disponível'}</Typography>
-                                            <Typography variant="body2" sx={cardText}>
-                                                <b>{t('courseCardCarreiras')}: </b>
-                                                {Array.isArray(course.possiveisCarreiras) ? course.possiveisCarreiras.join(', ') : 'Não disponível'}
-                                            </Typography>
+                                                <Typography variant="body2" sx={cardText}>
+                                                    <b>{t('courseCardArea')}:</b> {course.area || 'Não disponível'}
+                                                </Typography>
+                                                <Typography variant="body2" sx={cardText}>
+                                                    <b>{t('courseCardEmpregabilidade')}:</b> {course.empregabilidade
+                                                        ? changeCase.capitalCase(course.empregabilidade) : 'Não disponível'}
+                                                </Typography>
+                                                <Typography variant="body2" sx={cardText}>
+                                                    <b>{t('courseCardTipo')}:</b> {course.tipo ? changeCase.capitalCase(course.tipo) : 'Não disponível'}
+                                                </Typography>
+                                                <Typography variant="body2" sx={cardText}><b>{t('courseCardPerfil')}:</b> {course.perfil || 'Não disponível'}</Typography>
+                                                <Typography variant="body2" sx={cardText}>
+                                                    <b>{t('courseCardCarreiras')}: </b>
+                                                    {Array.isArray(course.possiveisCarreiras) ? course.possiveisCarreiras.join(', ') : 'Não disponível'}
+                                                </Typography>
 
-                                        </CardContent>
-                                    </Card>
-                                </Grid>
+                                            </CardContent>
+                                        </Card>
+                                    </Grid>
 
-                            ))}
+                                )))}
                         </Grid>
                         <Box
                             sx={{

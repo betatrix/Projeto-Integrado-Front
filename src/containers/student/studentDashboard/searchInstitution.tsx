@@ -26,7 +26,6 @@ import {
     Skeleton
 } from '@mui/material';
 import {
-    Add,
     BookOutlined,
     Circle,
     Close,
@@ -62,6 +61,7 @@ import {
     tabSubTitle1,
     tabSubTitle2,
     tabStyle,
+    detailsButton,
 } from './styles';
 import { useTranslation } from 'react-i18next';
 import CustomDrawer from '../../../components/sidemenu/CustomDrawer';
@@ -180,7 +180,6 @@ const InstitutionList: React.FC = () => {
         } catch (error) {
             console.error('Erro ao buscar detalhes da instituição');
             throw error;
-            return null;
         }
     };
 
@@ -595,46 +594,57 @@ const InstitutionList: React.FC = () => {
                 ) : (
                     <Box sx={gridContainer}>
                         <Grid container spacing={4}>
-                            {currentInstitutions.map((institution) => (
-                                <Grid item xs={12} sm={12} md={6} key={institution.id}>
-                                    <Card sx={cardContent}>
-                                        <CardContent onClick={() => handleDetailModalOpen(institution)}>
-                                            <Typography variant="h5" sx={cardTitle}>
-                                                {institution.nome ? changeCase.capitalCase(institution.nome) : 'Nome não disponível'}
-                                            </Typography>
-                                            <Typography variant="body2" sx={cardText}>
-                                                <b>{t('institutionCardSigla')}:</b> {institution.sigla || 'Não disponível'}
-                                            </Typography>
-                                            <Typography variant="body2" sx={cardText}>
-                                                <b>{t('institutionCardSite')}:</b> {institution.site || 'Não disponível'}
-                                            </Typography>
-                                            <Typography variant="body2" sx={cardText}>
-                                                <b>{t('institutionCardNota')}:</b> {institution.notaMec || 'Não disponível'}
-                                            </Typography>
-                                            <Typography variant="body2" sx={cardText}>
-                                                <b>{t('institutionCardTipo')}:</b> {institution.tipo ? changeCase.capitalCase(institution.tipo) : 'Não disponível'}
-                                            </Typography>
-                                            <Typography variant="body2" sx={cardText}>
-                                                <b>{t('institutionCardIngresso')}:</b> {institution.formaIngresso || 'Não disponível'}
-                                            </Typography>
-                                        </CardContent>
-                                        <CardActions
-                                            sx={{
-                                                justifyContent: 'flex-end'
-                                            }}
-                                        >
-                                            <IconButton
-                                                aria-label="Add"
-                                                onClick={() => handleDetailModalOpen(institution)}
-                                                sx={{ color: '#185D8E' }}
+                            {currentInstitutions.length === 0 ? (
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        width: '100%',
+                                        height: '100%',
+                                        textAlign: 'center',
+                                        padding: 4,
+                                    }}
+                                >
+                                    <Typography variant="body2" color="textSecondary">
+                                        Não há instituições disponíveis com esse filtro.
+                                    </Typography>
+                                </Box>
+                            ) : (
+                                currentInstitutions.map((institution) => (
+                                    <Grid item xs={12} sm={12} md={6} key={institution.id}>
+                                        <Card sx={cardContent}>
+                                            <CardContent>
+                                                <Typography variant="h5" sx={cardTitle}>
+                                                    {institution.nome ? changeCase.capitalCase(institution.nome) : 'Nome não disponível'}
+                                                </Typography>
+                                                <Typography variant="body2" sx={cardText}>
+                                                    <b>{t('institutionCardSigla')}:</b> {institution.sigla || 'Não disponível'}
+                                                </Typography>
+                                                <Typography variant="body2" sx={cardText}>
+                                                    <b>{t('institutionCardSite')}:</b> {institution.site || 'Não disponível'}
+                                                </Typography>
+                                                <Typography variant="body2" sx={cardText}>
+                                                    <b>{t('institutionCardNota')}:</b> {institution.notaMec || 'Não disponível'}
+                                                </Typography>
+                                                <Typography variant="body2" sx={cardText}>
+                                                    <b>{t('institutionCardTipo')}:</b> {institution.tipo ? changeCase.capitalCase(institution.tipo) : 'Não disponível'}
+                                                </Typography>
+                                                <Typography variant="body2" sx={cardText}>
+                                                    <b>{t('institutionCardIngresso')}:</b> {institution.formaIngresso || 'Não disponível'}
+                                                </Typography>
+                                            </CardContent>
+                                            <CardActions
+                                                sx={{
+                                                    justifyContent: 'flex-end'
+                                                }}
                                             >
-                                                <Add />
-                                            </IconButton>
-                                        </CardActions>
-                                    </Card>
-                                </Grid>
-
-                            ))}
+                                                <Button sx={detailsButton} onClick={() => handleDetailModalOpen(institution)}>{t('institutionFilterDetails')}</Button>
+                                            </CardActions>
+                                        </Card>
+                                    </Grid>
+                                ))
+                            )}
                         </Grid>
                         <Box
                             sx={{
@@ -703,11 +713,24 @@ const InstitutionList: React.FC = () => {
                                 scrollButtons
                                 allowScrollButtonsMobile
                                 sx={{
+                                    '@media (min-width: 900px)': {
+                                        padding: '0rem 3rem',
+                                    },
                                     '& .MuiTabs-indicator': {
                                         backgroundColor: '#0B2A40',
                                         height: '4px',
                                     },
                                     borderBottom: '2px solid #6B9ABC',
+                                    '@media (max-width: 600px)': {
+                                        '& .MuiTabs-scrollButtons': {
+                                            display: 'block', // Exibe os botões de rolagem no mobile
+                                        },
+                                    },
+                                    '@media (min-width: 601px)': {
+                                        '& .MuiTabs-scrollButtons': {
+                                            display: 'none', // Esconde os botões de rolagem em telas maiores
+                                        },
+                                    },
                                 }}
                             >
                                 <Tab sx={tabStyle} label={t('institutionCardInformacoes')} />

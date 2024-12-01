@@ -66,7 +66,7 @@
     
       "artisticoTitle": "Artístico",
       "artisticoContent": "Quem tem esse perfil adora se expressar de forma criativa e não curte nada muito engessado. Eles têm uma sensibilidade única e conseguem ver o mundo de um jeito bem diferente.",
-      "artisticoContent2": "São pessoas com uma imaginação super fértil, que se amariam áreas relacioandas à arte, música, dança, escrita e tudo o que envolva liberdade para criar.",
+      "artisticoContent2": "São pessoas com uma imaginação super fértil, que amariam áreas relacionadas à arte, música, dança, escrita e tudo o que envolva liberdade para criar.",
 
       "socialTitle": "Social",
       "socialContent": "Esse perfil é marcado pela empatia e disposição para ajudar. São pessoas que sabem trabalhar em equipe, oferecem apoio quando necessário e sempre buscam compartilhar conhecimento com os outros.",
@@ -150,7 +150,7 @@
       "studentAccountField7": "Confirme sua nova senha",
       "studentAccountButton1": "Selecionar foto",
       "studentAccountButton2": "Deletar conta",
-      "studentAccountButton3": "Enviar",
+      "studentAccountButton3": "Salvar",
       "studentAccountButton4": "Deletar",
       "studentAccountButton5": "Cancelar",
       "studentAccountTextDelete1": "Confirmação de Exclusão",
@@ -210,6 +210,7 @@
       "institutionFilter5": "Estado",
       "institutionFilterClean": "Limpar Filtros",
       "institutionFilterSearch": "Pesquisar",
+      "institutionFilterDetails": "Detalhes",
       "institutionCardSigla": "Sigla",
       "institutionCardSite": "Site",
       "institutionCardNota":"Nota MEC | IDEB",
