@@ -86,15 +86,23 @@ const ResultScreen: React.FC = () => {
     };
 
     const handleCloseModal = () => {
+        setSearchTerm('');
         setOpenModal(false);
     };
 
     const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const term = event.target.value.toLowerCase();
+        const removeDiacritics = (text: string) =>
+            text.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+        const term = removeDiacritics(event.target.value.toLowerCase());
         setSearchTerm(term);
-        setFilteredInstitutions(institutions.filter(inst =>
-            inst.nome.toLowerCase().includes(term) || inst.sigla.toLowerCase().includes(term)
-        ));
+
+        setFilteredInstitutions(
+            institutions.filter(inst =>
+                removeDiacritics(inst.nome.toLowerCase()).includes(term) ||
+                removeDiacritics(inst.sigla.toLowerCase()).includes(term)
+            )
+        );
     };
 
     const [previousResults, setPreviousResults] = useState<ResultData | null>(null);
@@ -118,6 +126,13 @@ const ResultScreen: React.FC = () => {
         handleFetchWithTestId();
     }, []);
 
+    const handleEnterSearch = () => {
+        setFilteredInstitutions(institutions.filter(inst =>
+            inst.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            inst.sigla.toLowerCase().includes(searchTerm.toLowerCase())
+        ));
+    };
+
     const portugueseMessage = previousResults?.mensagem.replace('Abaixo listamos alguns cursos que podem te interessar, boa sorte!', '');
     const englishMessage = previousResults?.mensagemIngles.replace('Below, we have listed some courses that may interest you. Good luck!', '');
 
@@ -130,35 +145,32 @@ const ResultScreen: React.FC = () => {
 
     const getFontSize = (descricao: string) => {
         const wordCount = countWords(descricao);
-        return wordCount > 5 ? '18px' : '23px';
+        return wordCount >= 5 ? (isMobile ? '14px' : '18px') : (isMobile ? '18px' : '20px');
     };
 
     const savedDate = localStorage.getItem('testDate');
     console.log('Data salva:', savedDate);
+
+    const formatString = (input: string): string => {
+        return input
+            .replace(/_/g, ' ')
+            .toLowerCase()
+            .replace(/^\w|\s\w/g, (match) => match.toUpperCase());
+    };
 
     return (
         <>
             <Global />
             <Header />
 
-            {isMobile && (
-                <MobileBackButton
-                    startIcon={<ArrowCircleLeftIcon style={{width: '30px', height: '30px'}} />}
-
-                >   <CustomLink to={'/estudante'}>
-                    </CustomLink>
+            {isMobile ? (
+                <MobileBackButton startIcon={<ArrowCircleLeftIcon style={{ width: '30px', height: '30px' }} />}>
+                    <CustomLink to="/estudante">{t('resultTestBackButton')}</CustomLink>
                 </MobileBackButton>
-            )}
-
-            {!isMobile && (
-                <BackButton
-                    startIcon={<ArrowBackIcon />}
-
-                >
-                    <CustomLink to={'/estudante'}> {t('resultTestBackButton')}
-                    </CustomLink>
+            ) : (
+                <BackButton startIcon={<ArrowBackIcon />}>
+                    <CustomLink to="/estudante">{t('resultTestBackButton')}</CustomLink>
                 </BackButton>
-
             )}
 
             <Box
@@ -172,8 +184,8 @@ const ResultScreen: React.FC = () => {
                 <ThemeProvider theme={componentTheme}>
                     <PageTile variant="h4" gutterBottom
                         style={{ fontWeight: 'bold' }}
-                        fontSize={isMobile ? '25px' : '30px'}
-                        marginTop={isMobile ? '8%' : '3%'}
+                        fontSize={isMobile ? '20px' : '30px'}
+                        marginTop={isMobile ? '12%' : '3%'}
                         marginBottom={isMobile ? '8%' : '0'}
                     >
                         {t('resultTestTitle')}
@@ -189,11 +201,11 @@ const ResultScreen: React.FC = () => {
                         maxWidth={isMobile ? '90%' : '75%'}
                     >
                         <ThemeProvider theme={componentTheme}>
-                            <Typography component="div" style={{ fontSize: '20px', lineHeight: '1.8' }} textAlign={isMobile ? 'justify' : 'left'}>
+                            <Typography component="div" style={{ fontSize: isMobile ? '14px' : '20px', lineHeight: '1.8' }} textAlign={isMobile ? 'justify' : 'left'}>
                                 {formattedMessage3?.split(' ').map((word, index) => {
                                     if (index === 11 || index === 16) {
                                         return (
-                                            <span key={index} style={{ fontWeight: 'bold', color: '#185D8E', fontSize: '22px' }}>
+                                            <span key={index} style={{ fontWeight: 'bold', color: '#185D8E', fontSize: isMobile ? '16px' : '22px' }}>
                                                 {word}{' '}
                                             </span>
                                         );
@@ -212,7 +224,7 @@ const ResultScreen: React.FC = () => {
                             </Typography>
                             <Typography
                                 style={{
-                                    fontSize: '20px',
+                                    fontSize: isMobile ? '14px' : '20px',
                                     lineHeight: '1.8',
                                     marginTop: '30px',
                                     display: 'inline-block'
@@ -243,7 +255,7 @@ const ResultScreen: React.FC = () => {
                 <Box display="flex" justifyContent="flex-start" width="80%" marginBottom="2%">
                     <ThemeProvider theme={componentTheme}>
                         <Typography variant="h5" style={{ fontWeight: 'bold', color: '#185D8E' }}
-                            fontSize={isMobile ? '20px' : '25px'}
+                            fontSize={isMobile ? '19px' : '25px'}
                             marginBottom={isMobile ? '5%' : '0'}
                         >
                             {t('resultTestRecomendationTitle')} {i18n.language === 'en' ? previousResults?.perfis[0].descricaoIngles.toLowerCase() : previousResults?.perfis[0].descricao.toLowerCase()}
@@ -325,7 +337,7 @@ const ResultScreen: React.FC = () => {
                                                 }}></PaidIcon>
 
                                                 {t('resultTestEmployability')}
-                                            </strong> {curso.empregabilidade}
+                                            </strong> {formatString(curso.empregabilidade)}
                                         </DetailsResult>
                                     </ThemeProvider>
 
@@ -367,7 +379,7 @@ const ResultScreen: React.FC = () => {
                                                             fontWeight: 'bold',
                                                             color: 'black',
 
-                                                        }}> •<strong style={{fontWeight: 'normal', textAlign: 'left'}} > { carreira }</strong></strong>
+                                                        }}> •<strong style={{fontWeight: 'normal', textAlign: 'left'}} > { formatString(carreira) }</strong></strong>
                                                     </CareerListItem>
                                                 ))}
                                             </List>
@@ -403,7 +415,7 @@ const ResultScreen: React.FC = () => {
                 <Box display="flex" justifyContent="flex-start" width="80%" marginBottom="2%" marginTop='6%'>
                     <ThemeProvider theme={componentTheme}>
                         <Typography variant="h5" style={{ fontWeight: 'bold', color: '#185D8E' }}
-                            fontSize={isMobile ? '20px' : '25px'}
+                            fontSize={isMobile ? '19px' : '25px'}
                             marginBottom={isMobile ? '5%' : '0'}
                             marginTop={isMobile ? '5%' : '0'}
                         >
@@ -480,7 +492,7 @@ const ResultScreen: React.FC = () => {
                                                     color: '#185D8E'
                                                 }}></PaidIcon>
                                                 {t('resultTestEmployability')}
-                                            </strong> {curso.empregabilidade}
+                                            </strong> {formatString(curso.empregabilidade)}
                                         </DetailsResult>
                                         <DetailsResult
                                             style={{
@@ -518,7 +530,7 @@ const ResultScreen: React.FC = () => {
                                                             fontWeight: 'bold',
                                                             color: 'black',
 
-                                                        }}> •<strong style={{fontWeight: 'normal', textAlign: 'left'}} > { carreira }</strong></strong>
+                                                        }}> •<strong style={{fontWeight: 'normal', textAlign: 'left'}} > { formatString(carreira) }</strong></strong>
                                                     </CareerListItem>
                                                 ))}
                                             </List>
@@ -601,6 +613,12 @@ const ResultScreen: React.FC = () => {
                         }}
                         value={searchTerm}
                         onChange={handleSearch}
+                        onKeyDown={(event) => {
+                            if (event.key === 'Enter') {
+                                event.preventDefault();
+                                handleEnterSearch();
+                            }
+                        }}
                     />
                     {institutions.length > 0 ? (
                         <List>
