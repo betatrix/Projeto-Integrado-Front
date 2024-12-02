@@ -139,40 +139,30 @@ const CadastroCurso: React.FC = () => {
                                         }}
                                     >
                                         <Paper
-                                            sx={{
-                                                marginTop: '30px',
-                                                marginBottom: '1px',
-                                                backgroundColor: 'white',
-                                                paddingBottom: 3,
-                                            }}
+                                            sx={{ padding: 4, paddingBottom: 8, paddingLeft: 7, paddingRight: 7 }}
                                         >
+                                            <Typography
+                                                variant="h6"
+                                                sx={{
+                                                    fontSize: '25px',
+                                                    textAlign: 'left',
+                                                    fontFamily: 'Roboto, monospace',
+                                                    color: '#757575',
+                                                    fontWeight: 'bold',
+                                                }}
+                                            >
+                                                Dados do Curso
+                                            </Typography>
                                             <Grid
                                                 container
                                                 spacing={2}
-                                                sx={{
-                                                    maxWidth: 500,
-                                                    marginLeft:'35px',
-                                                    paddingTop: '50px',
-                                                    paddingBottom: '30px',
-                                                }}
                                             >
-                                                <Typography
-                                                    variant="h6"
-                                                    sx={{
-                                                        fontSize: '25px',
-                                                        textAlign: 'left',
-                                                        fontFamily: 'Roboto, monospace',
-                                                        color: '#757575',
-                                                        fontWeight: 'bold',
-                                                    }}
-                                                >
-                                                    Dados Gerais
-                                                </Typography>
+
                                                 <Grid item xs={12}>
                                                     <Field
                                                         as={TextField}
                                                         name="descricao"
-                                                        label="Nome do Curso"
+                                                        label="Nome"
                                                         variant="standard"
                                                         size="small"
                                                         fullWidth
@@ -304,8 +294,13 @@ const CadastroCurso: React.FC = () => {
                                             </Grid>
                                         </Paper>
 
-                                        <Grid container spacing={2} justifyContent="center" sx={{ marginBottom: 10 }}>
-                                            <Grid item xs={12}>
+                                        <Grid container
+                                            spacing={2}
+                                            justifyContent="center"
+                                            sx={{ marginBottom: 10 }}>
+                                            <Grid item xs={12}
+                                                display="flex"
+                                                justifyContent="center">
                                                 <Button
                                                     type="submit"
                                                     disabled={isSubmitting}

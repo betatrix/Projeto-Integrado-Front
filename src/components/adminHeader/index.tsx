@@ -19,7 +19,6 @@ import { ButtonMenu } from './styles';
 
 const styles = {
     logo: {
-        mr: 2,
         fontFamily: 'Poppins, sans-serif',
         fontWeight: 700,
         letterSpacing: '.3rem',
@@ -82,7 +81,7 @@ function AdminHeader() {
                             VOCCO
                         </Typography>
                     </Box>
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', mr: '60px' }}>
                         <Link to="/admin" style={{ textDecoration: 'none' }}>
                             <Button sx={ButtonMenu}>DASHBOARD</Button>
                         </Link>

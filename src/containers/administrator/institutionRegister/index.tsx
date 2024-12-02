@@ -165,7 +165,7 @@ export const CadastroInstituicao: React.FC = () => {
                                                     color: '#757575',
                                                     fontWeight: 'bold',
                                                 }}>
-                                                    Dados Gerais
+                                                    Dados da Instituição
                                                 </Typography>
                                                 <Grid
                                                     container

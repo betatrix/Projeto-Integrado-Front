@@ -155,7 +155,7 @@ export const CadastroAdministrador: React.FC = () => {
                                                     color: '#757575',
                                                     fontWeight: 'bold',
                                                 }}>
-                                                Dados Gerais
+                                                Dados do Administrador
                                             </Typography>
                                             <Grid container spacing={2}>
                                                 <Grid item xs={12}>

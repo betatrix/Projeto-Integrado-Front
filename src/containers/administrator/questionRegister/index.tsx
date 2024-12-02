@@ -76,7 +76,7 @@ const QuestionRegister: React.FC = () => {
     return (
         <>
             <AdminHeader />
-            <Box sx={{ marginTop: '20px', minHeight: '90vh', display: 'flex', flexDirection: 'column', backgroundColor: '#F3F3F3' }}>
+            <Box sx={{ minHeight: '90vh', display: 'flex', flexDirection: 'column', backgroundColor: '#F3F3F3' }}>
                 <Box sx={{ height: 50 }}></Box>
                 <Box sx={{ backgroundColor: '#F3F3F3', marginTop: 10 }}>
                     <Box sx={{ marginTop: 5 }}>
@@ -97,35 +97,25 @@ const QuestionRegister: React.FC = () => {
                                         }}
                                     >
                                         <Paper
-                                            sx={{
-                                                marginTop: '30px',
-                                                marginBottom: '1px',
-                                                backgroundColor: 'white',
-                                                paddingBottom: 3,
-                                            }}
+                                            sx={{ padding: 4, paddingBottom: 8, paddingLeft: 7, paddingRight: 7 }}
                                         >
+                                            <Typography
+                                                variant="h6"
+                                                sx={{
+                                                    fontSize: '25px',
+                                                    textAlign: 'left',
+                                                    fontFamily: 'Roboto, monospace',
+                                                    color: '#757575',
+                                                    fontWeight: 'bold',
+                                                }}
+                                            >
+                                                Dados da Pergunta
+                                            </Typography>
                                             <Grid
                                                 container
                                                 spacing={2}
-                                                sx={{
-                                                    maxWidth: 500,
-                                                    paddingLeft: '60px',
-                                                    paddingTop: '50px',
-                                                    paddingBottom: '30px',
-                                                }}
                                             >
-                                                <Typography
-                                                    variant="h6"
-                                                    sx={{
-                                                        fontSize: '25px',
-                                                        textAlign: 'left',
-                                                        fontFamily: 'Roboto, monospace',
-                                                        color: '#757575',
-                                                        fontWeight: 'bold',
-                                                    }}
-                                                >
-                                                    Cadastro da pergunta
-                                                </Typography>
+
                                                 <Grid item xs={12}>
                                                     <Field
                                                         as={TextField}
