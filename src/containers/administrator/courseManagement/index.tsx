@@ -299,6 +299,10 @@ const CourseManagement: React.FC = () => {
                     </Link>
                 </Box>
                 <Box sx={{ paddingTop: 10, paddingLeft: 45, paddingRight: 45, marginBottom: 10 }}>
+                    <Typography variant="h6" gutterBottom sx={{ textAlign: 'center', fontWeight: 'bold', fontFamily: 'Poppins, sans-serif' }}>
+                        Cursos
+                    </Typography>
+
                     {loading ? (
                         <Box
                             sx={{
@@ -332,7 +336,7 @@ const CourseManagement: React.FC = () => {
                                             </Button>
                                         </TableCell>
                                         <TableCell sx={{ borderRight: '1px solid #ddd', textAlign: 'center', fontWeight: 'bold', color: '#757575', width: '5rem' }}>ID</TableCell>
-                                        <TableCell sx={{ borderRight: '1px solid #ddd', fontWeight: 'bold', color: '#757575' }}>CURSOS</TableCell>
+                                        <TableCell sx={{ borderRight: '1px solid #ddd', fontWeight: 'bold', color: '#757575' }}>NOME</TableCell>
                                         <TableCell sx={{ textAlign: 'center', fontWeight: 'bold', color: '#757575', width: '5rem' }}>STATUS</TableCell>
                                     </TableRow>
                                 </TableHead>
@@ -356,10 +360,8 @@ const CourseManagement: React.FC = () => {
                                             </TableCell>
                                             <TableCell sx={{ borderRight: '1px solid #ddd', textAlign: 'center' }}>{course.id}</TableCell>
                                             <TableCell sx={{ borderRight: '1px solid #ddd' }}>
-                                                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                                    <Typography sx={{
-                                                        fontSize: '15px', color: '#757575',
-                                                    }}>{course.descricao}</Typography>
+                                                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '1.1rem' }}>
+                                                    {course.descricao}
                                                     <IconButton size="small" onClick={() => handleDetailModalOpen(course)} sx={{
                                                         color: '#185D8E',
                                                     }}>
@@ -377,7 +379,7 @@ const CourseManagement: React.FC = () => {
                         </TableContainer>
                     )}
                 </Box>
-                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 7, marginBottom: 7 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'center', marginBottom: 7 }}>
                     <Button
                         onClick={goToFirstPage}
                         disabled={page === 0}
@@ -746,12 +748,12 @@ const CourseManagement: React.FC = () => {
                                     <Typography variant="h6" gutterBottom sx={{ textAlign: 'center', fontWeight: 'bold', fontFamily: 'Roboto, monospace', color: '#757575' }}>
                                         Dados do Curso
                                     </Typography>
-                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>ID: {selectedCourse.id}</Typography>
-                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>Status: {selectedCourse.ativo ? 'Ativo' : 'Inativo'}</Typography>
-                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>Nome: {selectedCourse.descricao}</Typography>
-                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>Empregabilidade: {selectedCourse.empregabilidade}</Typography>
-                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>Área: {selectedCourse.area?.descricao || 'Não especificada'}</Typography>
-                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>Tipo: {selectedCourse.tipo}</Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}><b>ID:</b> {selectedCourse.id}</Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}><b>Status:</b> {selectedCourse.ativo ? 'Ativo' : 'Inativo'}</Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}><b>Nome:</b> {selectedCourse.descricao}</Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}><b>Empregabilidade:</b> {selectedCourse.empregabilidade}</Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}><b>Área:</b> {selectedCourse.area?.descricao || 'Não especificada'}</Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}><b>Tipo:</b> {selectedCourse.tipo}</Typography>
                                 </Paper>
                             </Grid>
                         </Grid>

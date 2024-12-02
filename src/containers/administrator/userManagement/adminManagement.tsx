@@ -288,6 +288,9 @@ const AdminManagement: React.FC = () => {
                     </Link>
                 </Box>
                 <Box sx={{ paddingTop: 10, paddingLeft: 45, paddingRight: 45, marginBottom: 10 }}>
+                    <Typography variant="h6" gutterBottom sx={{ textAlign: 'center', fontWeight: 'bold', fontFamily: 'Poppins, sans-serif' }}>
+                        Administradores
+                    </Typography>
                     {loading ? (
                         <Box sx={{
                             display: 'flex',
@@ -349,10 +352,8 @@ const AdminManagement: React.FC = () => {
                                             </TableCell>
                                             <TableCell sx={{ borderRight: '1px solid #ddd', textAlign: 'center' }}>{admin.id}</TableCell>
                                             <TableCell sx={{ borderRight: '1px solid #ddd' }}>
-                                                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                                    <Typography sx={{
-                                                        fontSize: '15px', color: '#757575',
-                                                    }}>{admin.nome}</Typography>
+                                                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize:'1.1rem' }}>
+                                                    {admin.nome}
                                                     <IconButton size="small" onClick={() => handleDetailModalOpen(admin)} sx={{
                                                         color: '#185D8E',
                                                     }}>
@@ -764,13 +765,13 @@ const AdminManagement: React.FC = () => {
                                     <Typography variant="h6" gutterBottom sx={{ textAlign: 'center', fontWeight: 'bold', fontFamily: 'Roboto, monospace', color: '#757575' }}>
                                         Dados Gerais
                                     </Typography>
-                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>ID: {selectedAdmin.id}</Typography>
-                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>Ativo: {selectedAdmin.ativo ? 'Sim' : 'Não'}</Typography>
-                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>Nome: {selectedAdmin.nome}</Typography>
-                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>CPF: {selectedAdmin.cpf}</Typography>
-                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>Cargo: {selectedAdmin.cargo}</Typography>
-                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>Email: {selectedAdmin.email}</Typography>
-                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>Celular: {selectedAdmin.celular}</Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}><b>ID:</b> {selectedAdmin.id}</Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}><b>Ativo:</b> {selectedAdmin.ativo ? 'Sim' : 'Não'}</Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}><b>Nome:</b> {selectedAdmin.nome}</Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}><b>CPF:</b> {selectedAdmin.cpf}</Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}><b>Cargo:</b> {selectedAdmin.cargo}</Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}><b>Email:</b> {selectedAdmin.email}</Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}><b>Celular:</b> {selectedAdmin.celular}</Typography>
                                 </Paper>
                             </Grid>
                             <Grid item xs={6}>
@@ -778,11 +779,11 @@ const AdminManagement: React.FC = () => {
                                     <Typography variant="h6" gutterBottom sx={{ textAlign: 'center', fontWeight: 'bold', fontFamily: 'Roboto, monospace', color: '#757575' }}>
                                         Endereço
                                     </Typography>
-                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>Logradouro: {selectedAdmin.endereco?.logradouro}</Typography>
-                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>Número: {selectedAdmin.endereco?.numero}</Typography>
-                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>Cidade: {selectedAdmin.endereco?.cidade}</Typography>
-                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>Estado: {selectedAdmin.endereco?.estado}</Typography>
-                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>CEP: {selectedAdmin.endereco?.cep}</Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}><b>Logradouro:</b> {selectedAdmin.endereco?.logradouro}</Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}><b>Número:</b> {selectedAdmin.endereco?.numero}</Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}><b>Cidade:</b> {selectedAdmin.endereco?.cidade}</Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}><b>Estado:</b> {selectedAdmin.endereco?.estado}</Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}><b>CEP:</b> {selectedAdmin.endereco?.cep}</Typography>
                                 </Paper>
                             </Grid>
                         </Grid>

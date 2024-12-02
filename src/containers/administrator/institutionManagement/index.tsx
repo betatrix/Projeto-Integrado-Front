@@ -660,7 +660,9 @@ const InstitutionManagement: React.FC = () => {
                 </Box>
 
                 <Box sx={{ paddingTop: 10, paddingLeft: 45, paddingRight: 45, marginBottom: 10 }}>
-
+                    <Typography variant="h6" gutterBottom sx={{ textAlign: 'center', fontWeight: 'bold', fontFamily: 'Poppins, sans-serif' }}>
+                       Instituições Educacionais
+                    </Typography>
                     {loading ? (
                         <Box
                             sx={{
@@ -728,11 +730,9 @@ const InstitutionManagement: React.FC = () => {
                                         </TableCell>
 
                                         <TableCell sx={{ borderRight: '1px solid #ddd', textAlign: 'center' }}>{institution.id}</TableCell>
-                                        <TableCell sx={{ borderRight: '1px solid #ddd' }}>
+                                        <TableCell sx={{ borderRight: '1px solid #ddd', fontSize: '1.1rem', fontFamily: 'Poppins, sans-serif' }}>
                                             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                                <Typography sx={{
-                                                    fontSize: '15px', color: '#757575',
-                                                }}>{institution.nome}</Typography>
+                                                {institution.nome}
                                                 <IconButton
                                                     size="small"
                                                     onClick={(e) => { e.stopPropagation(); handleDetailModalOpen(institution); }}
@@ -759,7 +759,7 @@ const InstitutionManagement: React.FC = () => {
                     <Box sx={{ display: 'flex', justifyContent: 'center', marginBottom: 7, marginTop: 10 }}>
                         <Button
                             onClick={handleFirstPage}
-                            disabled={currentPage === 1}
+                            disabled={currentPage === 0}
                             sx={{ marginRight: 2, fontFamily: 'Roboto, monospace', fontWeight: 'bold' }}
                         >
                             Primeira Página
@@ -795,7 +795,7 @@ const InstitutionManagement: React.FC = () => {
             >
                 <Box sx={{
                     position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
-                    bgcolor: 'background.paper', boxShadow: 24, p: 4, width: '80%', maxWidth: 600, borderRadius: '5px'
+                    bgcolor: 'background.paper', boxShadow: 24, p: 4, width: '80%', maxWidth: 800, borderRadius: '5px'
                 }}>
                     {selectedDetailInstitutionWithAddress && (
 
@@ -823,25 +823,25 @@ const InstitutionManagement: React.FC = () => {
                                         Dados Gerais
                                     </Typography>
 
-                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>ID: {selectedDetailInstitutionWithAddress.id}</Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}><b>ID:</b> {selectedDetailInstitutionWithAddress.id}</Typography>
                                     <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>
-                                        Ativo: {selectedDetailInstitutionWithAddress.ativo ? 'Sim' : 'Não'}
+                                        <b>Ativo:</b> {selectedDetailInstitutionWithAddress.ativo ? 'Sim' : 'Não'}
                                     </Typography>
-                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>Sigla: {selectedDetailInstitutionWithAddress.sigla}</Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}><b>Sigla:</b> {selectedDetailInstitutionWithAddress.sigla}</Typography>
                                     <Typography sx={{
                                         fontFamily: 'Poppins, sans-serif',
                                         wordBreak: 'break-all', // quebra longas palavras automaticamente
                                         overflow: 'hidden', // esconde o texto que ultrapassar a largura do container
                                         textOverflow: 'ellipsis', // adiciona reticências ao final do texto
-                                    }}>Site: {selectedDetailInstitutionWithAddress.site || 'Não disponível'}</Typography>
+                                    }}><b>Site:</b> {selectedDetailInstitutionWithAddress.site || 'Não disponível'}</Typography>
                                     <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>
-                                        Nota MEC|IDEB: {selectedDetailInstitutionWithAddress.notaMec || 'Não disponível'}
+                                        <b>Nota MEC|IDEB:</b> {selectedDetailInstitutionWithAddress.notaMec || 'Não disponível'}
                                     </Typography>
                                     <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>
-                                        Forma de Ingresso: {selectedDetailInstitutionWithAddress.formaIngresso || 'Não disponível'}
+                                        <b>Forma de Ingresso:</b> {selectedDetailInstitutionWithAddress.formaIngresso || 'Não disponível'}
                                     </Typography>
                                     <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>
-                                        Tipo de Ensino: {selectedDetailInstitutionWithAddress.tipo || 'Não disponível'}
+                                        <b>Tipo de Ensino:</b> {selectedDetailInstitutionWithAddress.tipo || 'Não disponível'}
                                     </Typography>
 
                                 </Paper>
@@ -854,11 +854,11 @@ const InstitutionManagement: React.FC = () => {
                                         Endereço
                                     </Typography>
 
-                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>Rua: {selectedDetailInstitutionWithAddress.endereco.logradouro}</Typography>
-                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>Número: {selectedDetailInstitutionWithAddress.endereco.numero}</Typography>
-                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>Cidade: {selectedDetailInstitutionWithAddress.endereco.cidade}</Typography>
-                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>Estado: {selectedDetailInstitutionWithAddress.endereco.estado}</Typography>
-                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>CEP: {selectedDetailInstitutionWithAddress.endereco.cep}</Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}><b>Rua:</b> {selectedDetailInstitutionWithAddress.endereco.logradouro}</Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}><b>Número:</b> {selectedDetailInstitutionWithAddress.endereco.numero}</Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}><b>Cidade:</b> {selectedDetailInstitutionWithAddress.endereco.cidade}</Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}><b>Estado:</b> {selectedDetailInstitutionWithAddress.endereco.estado}</Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}><b>CEP:</b> {selectedDetailInstitutionWithAddress.endereco.cep}</Typography>
                                 </Paper>
 
                             </Grid>

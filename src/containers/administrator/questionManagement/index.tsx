@@ -284,7 +284,7 @@ function TestManagement() {
                         </TableContainer>
                     )}
                 </Box>
-                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 7, marginBottom: 7 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: 7 }}>
                     <Button
                         onClick={goToFirstPage}
                         disabled={page === 0}

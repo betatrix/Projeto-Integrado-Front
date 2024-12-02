@@ -249,6 +249,9 @@ const UserManagement: React.FC = () => {
                 </Box>
 
                 <Box sx={{ paddingTop: 10, paddingLeft: 45, paddingRight: 45, marginBottom: 10 }}>
+                    <Typography variant="h6" gutterBottom sx={{ textAlign: 'center', fontWeight: 'bold', fontFamily: 'Poppins, sans-serif' }}>
+                        Usuários
+                    </Typography>
                     {loading ? (
                         <Box sx={{
                             display: 'flex',
@@ -302,25 +305,24 @@ const UserManagement: React.FC = () => {
                                                         },
                                                     }}
                                                 >
-                                                    <EditIcon sx={{ fontSize: 18}} />
+                                                    <EditIcon sx={{ fontSize: 18 }} />
                                                 </IconButton>
                                                 <IconButton onClick={() => handleDeleteModalOpen(user)}>
                                                     <DeleteIcon sx={{ fontSize: 18 }} />
                                                 </IconButton>
                                             </TableCell>
                                             <TableCell sx={{ borderRight: '1px solid #ddd', textAlign: 'center' }}>{user.id}</TableCell>
-                                            <TableCell sx={{ borderRight: '1px solid #ddd' }}><Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', }}>
-                                                <Typography sx={{
-                                                    fontSize: '15px', color: '#757575',
-                                                }}>{user.nome}</Typography>
-                                                <IconButton size="small" onClick={() => handleDetailModalOpen(user)} sx={{
-                                                    color: '#185D8E',
-                                                }}>
-                                                    <VisibilityOutlinedIcon sx={{
-                                                        fontSize: '18px'
-                                                    }} />
-                                                </IconButton>
-                                            </Box>
+                                            <TableCell sx={{ borderRight: '1px solid #ddd', fontSize: '1.1rem' }}>
+                                                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', }}>
+                                                    {user.nome}
+                                                    <IconButton size="small" onClick={() => handleDetailModalOpen(user)} sx={{
+                                                        color: '#185D8E',
+                                                    }}>
+                                                        <VisibilityOutlinedIcon sx={{
+                                                            fontSize: '18px'
+                                                        }} />
+                                                    </IconButton>
+                                                </Box>
                                             </TableCell>
                                             <TableCell sx={{ textAlign: 'center' }}>{user.ativo ? 'Ativo' : 'Inativo'}</TableCell>
                                         </TableRow>
@@ -330,7 +332,7 @@ const UserManagement: React.FC = () => {
                         </TableContainer>
                     )}
                 </Box>
-                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 7, marginBottom: 7 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: 7 }}>
                     <Button
                         onClick={goToFirstPage}
                         disabled={page === 0}
@@ -590,10 +592,10 @@ const UserManagement: React.FC = () => {
                                     <Typography variant="h6" gutterBottom sx={{ textAlign: 'center', fontWeight: 'bold', color: '#757575' }}>
                                         Dados do Usuário
                                     </Typography>
-                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>ID: {selectedUser.id}</Typography>
-                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>Status: {selectedUser.ativo ? 'Ativo' : 'Inativo'}</Typography>
-                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>Email: {selectedUser.email}</Typography>
-                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>Celular: {selectedUser.celular}</Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}><b>ID:</b> {selectedUser.id}</Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}><b>Status:</b> {selectedUser.ativo ? 'Ativo' : 'Inativo'}</Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}><b>Email:</b> {selectedUser.email}</Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}><b>Celular:</b> {selectedUser.celular}</Typography>
                                 </Paper>
                             </Grid>
                         </Grid>
