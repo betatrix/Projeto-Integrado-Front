@@ -195,13 +195,17 @@ const VocacionalTest: React.FC = () => {
             </style>
             <Header />
 
-            <BackButton
-                startIcon={<ArrowBackIcon />}
-
+            <Box
+                sx={{
+                    position: 'relative',
+                    zIndex: 10,
+                }}
             >
-                <CustomLink to={'/estudante'}> {t('backButton')}
-                </CustomLink>
-            </BackButton>
+                <BackButton startIcon={<ArrowBackIcon />}>
+                    <CustomLink to={'/estudante'}> {t('backButton')} </CustomLink>
+                </BackButton>
+
+            </Box>
 
             <Box sx={{
                 position: 'relative',

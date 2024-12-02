@@ -1,5 +1,6 @@
 import { SxProps, Theme } from '@mui/material';
 import backgorundImage from '../../../assets/img/background.png';
+import backgroundImage2 from '../../../assets/img/background2.png';
 
 export const globalStyles: SxProps<Theme> = {
     body: {
@@ -208,7 +209,9 @@ export const image: SxProps<Theme> = {
 export const sidePanelStyles: SxProps<Theme> = (theme) => ({
     width: '50%',
     height: '100%',
-    backgroundColor: '#0B2A40',
+    backgroundImage: `url(${backgroundImage2})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',

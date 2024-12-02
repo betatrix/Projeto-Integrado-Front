@@ -78,9 +78,7 @@ const RecuperarSenha: React.FC = () => {
         <>
             <Box sx={globalStyles as SxProps<Theme>} />
             <Box sx={containerStyles}>
-                <Box sx={sidePanelStyles}>
-                    {/* <img src="" alt="Imagem ilustrativa" style={{ width: '100%' }} /> */}
-                </Box>
+                <Box sx={sidePanelStyles} />
                 <Box sx={headerRecover}>
                     <Button sx={backButton} startIcon={<ArrowBackIcon />}>
                         <Typography component="a" href="/login" sx={customLinkStyles}>

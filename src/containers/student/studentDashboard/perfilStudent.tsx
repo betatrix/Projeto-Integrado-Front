@@ -20,7 +20,7 @@ import Footer from '../../../components/homeFooter';
 import StudentHeader from '../../../components/studentHeader';
 import CustomDrawer from '../../../components/sidemenu/CustomDrawer';
 import { useTranslation } from 'react-i18next';
-import React, { useContext, useRef, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { atualizaEstudante, deletaEstudante, fotoEstudante } from '../../../services/studentService';
 import { AuthContext } from '../../../contexts/auth';
 import { decryptData } from '../../../services/encryptionService';
@@ -92,6 +92,25 @@ const PerfilStudent: React.FC = () => {
     const [showErrorMessage, setShowErrorMessage] = useState(false);
     const [open, setOpen] = React.useState(false);
     const [loading, setLoading] = useState(false);
+    const [isFormDirty, setIsFormDirty] = useState(false);
+
+    const handleBeforeUnload = useCallback(
+        (event: BeforeUnloadEvent) => {
+            if (isFormDirty) {
+                const message = 'Você tem alterações não salvas. Tem certeza que deseja sair?';
+                event.returnValue = message;
+                return message;
+            }
+        },
+        [isFormDirty]
+    );
+
+    useEffect(() => {
+        window.addEventListener('beforeunload', handleBeforeUnload);
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+    }, [handleBeforeUnload]);
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -149,6 +168,7 @@ const PerfilStudent: React.FC = () => {
             const reader = new FileReader();
             reader.onloadend = () => {
                 setSelectedImage(reader.result as string);
+                setIsFormDirty(true);
             };
             reader.readAsDataURL(file);
         }
@@ -292,7 +312,10 @@ const PerfilStudent: React.FC = () => {
                                             type="text"
                                             name="nome"
                                             value={values.nome}
-                                            onChange={handleChange}
+                                            onChange={ (e) => {
+                                                handleChange(e);
+                                                setIsFormDirty(true);
+                                            }}
                                             onBlur={handleBlur}
                                             required
                                             sx={customField}
@@ -310,7 +333,10 @@ const PerfilStudent: React.FC = () => {
                                             type="email"
                                             name="email"
                                             value={values.email}
-                                            onChange={handleChange}
+                                            onChange={ (e) => {
+                                                handleChange(e);
+                                                setIsFormDirty(true);
+                                            }}
                                             onBlur={handleBlur}
                                             required
                                             sx={customField}
@@ -328,7 +354,10 @@ const PerfilStudent: React.FC = () => {
                                             type="date"
                                             name="dataNascimento"
                                             value={values.dataNascimento}
-                                            onChange={handleChange}
+                                            onChange={ (e) => {
+                                                handleChange(e);
+                                                setIsFormDirty(true);
+                                            }}
                                             onBlur={handleBlur}
                                             required
                                             sx={customField}
@@ -384,7 +413,10 @@ const PerfilStudent: React.FC = () => {
                                                 type={showPassword ? 'text' : 'password'}
                                                 name="senha"
                                                 value={values.senha}
-                                                onChange={handleChange}
+                                                onChange={ (e) => {
+                                                    handleChange(e);
+                                                    setIsFormDirty(true);
+                                                }}
                                                 onBlur={handleBlur}
                                                 error={touched.senha && Boolean(errors.senha)}
                                                 endAdornment={
@@ -412,7 +444,10 @@ const PerfilStudent: React.FC = () => {
                                                 id="confirmarSenha"
                                                 type="password"
                                                 name="confirmarSenha"
-                                                onChange={handleChange}
+                                                onChange={ (e) => {
+                                                    handleChange(e);
+                                                    setIsFormDirty(true);
+                                                }}
                                                 onBlur={handleBlur}
                                                 sx={customField}
                                             />

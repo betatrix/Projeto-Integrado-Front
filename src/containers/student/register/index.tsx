@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import 'yup-phone-lite';
 import { Formik, Form } from 'formik';
-import { Alert, Box, Button, Checkbox, FilledInput, FormControlLabel, IconButton, InputAdornment, InputLabel, Link, Modal, Snackbar, Typography } from '@mui/material';
+import { Alert, Box, Button, Checkbox, FilledInput, FormControlLabel, IconButton, InputAdornment, InputLabel, LinearProgress, Link, Modal, Snackbar, Typography } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import { ErrorMessage } from 'formik';
 import {
@@ -222,12 +222,33 @@ export const StudentRegister = () => {
     const [loading, setLoading] = React.useState(false);
     const [modalTermsOpen, setModalTermsOpen] = useState(false);
     const [modalPoliciesOpen, setModalPoliciesOpen] = useState(false);
+    const [password, setPassword] = useState('');
+
+    const calculatePasswordStrength = (password: string) => {
+        let score = 0;
+
+        if (password.length >= 5) score += 25;
+        if (/[A-Z]/.test(password)) score += 25;
+        if (/[0-9]/.test(password)) score += 25;
+        if (/[^A-Za-z0-9]/.test(password)) score += 25;
+
+        return score;
+    };
+
+    const strength = calculatePasswordStrength(password);
+
+    const getStrengthLabel = () => {
+        if (strength === 100) return 'Forte';
+        if (strength >= 75) return 'Boa';
+        if (strength >= 50) return 'Fraca';
+        return 'Muito fraca';
+    };
 
     const validationSchema = yup.object().shape({
         nome: yup.string().required(t('studentRegisterValidation1')),
         email: yup.string().email(t('studentRegisterValidation2')).required(t('studentRegisterValidation3')),
         senha: yup.string().required(t('studentRegisterValidation4'))
-            .min(5, t('studentRegisterValidation5')),
+            .min(6, t('studentRegisterValidation5')),
         confirmarSenha: yup.string().required(t('studentRegisterValidation6'))
             .oneOf([yup.ref('senha'), ''], t('studentRegisterValidation7')),
         dataNascimento: yup.date().required(t('studentRegisterValidation8'))
@@ -295,9 +316,7 @@ export const StudentRegister = () => {
         <>
             <Box sx={globalStyle} />
             <Box sx={container}>
-                <Box sx={sidePanel}>
-                    {/* <img src="" alt="Imagem ilustrativa" style={{ width: '100%' }} /> */}
-                </Box>
+                <Box sx={sidePanel} />
                 <Box sx={headerRegister}>
                     <Button sx={backButton} startIcon={<ArrowBackIcon />}>
                         <Typography component="a" href="/login" sx={customLink}>
@@ -420,7 +439,10 @@ export const StudentRegister = () => {
                                         type={showPassword ? 'text' : 'password'}
                                         name="senha"
                                         value={values.senha}
-                                        onChange={handleChange}
+                                        onChange={(e) => {
+                                            setPassword(e.target.value);
+                                            handleChange(e);
+                                        }}
                                         onBlur={handleBlur}
                                         error={touched.senha && Boolean(errors.senha)}
                                         endAdornment={
@@ -438,6 +460,26 @@ export const StudentRegister = () => {
                                         }
                                         sx={customField}
                                     />
+                                    <Box>
+                                        <LinearProgress
+                                            variant="determinate"
+                                            value={strength}
+                                            sx={{
+                                                height: 8,
+                                                borderRadius: 4,
+                                                backgroundColor: '#e0e0e0',
+                                                '& .MuiLinearProgress-bar': {
+                                                    backgroundColor:
+                                                    strength === 100 ? '#4caf50' :
+                                                        strength >= 75 ? '#ffeb3b' :
+                                                            strength >= 50 ? '#ff9800' : '#f44336',
+                                                },
+                                            }}
+                                        />
+                                        <Typography variant="caption" sx={{ mt: 1 }}>
+                                            Força da senha: {getStrengthLabel()}
+                                        </Typography>
+                                    </Box>
                                     <Box sx={{ color: 'red', fontSize: '16px' }}>
                                         <ErrorMessage name="senha" component="span" />
                                     </Box>

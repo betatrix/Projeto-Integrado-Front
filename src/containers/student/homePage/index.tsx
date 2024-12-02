@@ -14,19 +14,41 @@ import {
     CarouselTitle,
     BoxCarouselStyles,
     container,
+    arrowUpIconStyles,
 } from './styles';
 import initialImage from '../../../assets/img/imagem-principal.png';
 import InitialPageFooter from '../../../components/homeFooter';
 import LogoCarousel from './logoCarousel';
 import { useTranslation } from 'react-i18next';
+import { ArrowCircleUp } from '@mui/icons-material';
+import { useState, useEffect } from 'react';
 
 export const HomePage: React.FC = () => {
     const{ t } = useTranslation();
     const navigate = useNavigate();
     const isMobile = useMediaQuery('(max-width:600px)');
+    const [isVisible, setIsVisible] = useState(false);
 
-    const handleLogin = () => {
-        navigate('/login');
+    useEffect(() => {
+        const handleScroll = () => {
+            const homeSection = document.getElementById('home');
+            if (homeSection) {
+                const homeBottom = homeSection.offsetTop + homeSection.offsetHeight;
+                const scrollPosition = window.scrollY;
+
+                setIsVisible(scrollPosition > homeBottom);
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
+    const handleRegister = () => {
+        navigate('/register');
     };
 
     return (
@@ -34,6 +56,29 @@ export const HomePage: React.FC = () => {
             <InitialPageHeader />
             <Box sx={homePageBoxStyles} id="home">
                 <Box sx={container}>
+                    <Box
+                        sx={{
+                            position: 'fixed',
+                            bottom: 16,
+                            right: 16,
+                            display: isVisible ? 'flex' : 'none',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            cursor:'pointer',
+                            '@keyframes float': {
+                                '0%': { transform: 'translateY(0)' },
+                                '50%': { transform: 'translateY(-10px)' },
+                                '100%': { transform: 'translateY(0)' },
+                            },
+                            animation: 'float 3s ease-in-out infinite',
+                        }}
+                    >
+                        <ArrowCircleUp
+                            sx={arrowUpIconStyles}
+                            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                        />
+                    </Box>
+
                     <Grid container spacing={1} alignItems="center" justifyContent="space-between" sx={gridIndexContainerStyles}>
                         <Grid item xs={12} md={6}>
                             <Typography sx={typographyTitleStyles}>
@@ -42,7 +87,7 @@ export const HomePage: React.FC = () => {
                             <Typography sx={typographySubtitleStyles}>
                                 {t('welcomeText2')}
                             </Typography>
-                            <Button type="button" id='loginHomePageButton' onClick={handleLogin} variant="outlined" sx={buttonStyles}>
+                            <Button type="button" id='loginHomePageButton' onClick={handleRegister} variant="outlined" sx={buttonStyles}>
                                 {t('registerButton')}
                             </Button>
                         </Grid>

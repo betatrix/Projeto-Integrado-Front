@@ -162,9 +162,7 @@ const Login: React.FC = () => {
                     </Typography>
                 </Box>
 
-                <Box sx={sidePanel}>
-                    {/* <img src="" alt="Imagem ilustrativa" style={{ width: '100%' }} /> */}
-                </Box>
+                <Box sx={sidePanel} />
             </Box>
 
         </>

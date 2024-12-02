@@ -126,7 +126,7 @@
       "studentRegisterValidation2": "E-mail inválido*",
       "studentRegisterValidation3": "E-mail é obrigatório*",
       "studentRegisterValidation4": "Senha é obrigatória*",
-      "studentRegisterValidation5": "A senha deve ter no mínimo 5 caracteres*",
+      "studentRegisterValidation5": "A senha deve ter no mínimo 6 caracteres*",
       "studentRegisterValidation6": "Confirmação de senha é obrigatória*",
       "studentRegisterValidation7": "As senhas precisam ser iguais*",
       "studentRegisterValidation8": "Data de nascimento é obrigatória*",

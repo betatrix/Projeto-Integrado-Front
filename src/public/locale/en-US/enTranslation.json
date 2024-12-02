@@ -121,7 +121,7 @@
       "studentRegisterValidation2": "Invalid email*",
       "studentRegisterValidation3": "Email is required*",
       "studentRegisterValidation4": "Password is required*",
-      "studentRegisterValidation5": "Password must be at least 5 characters long*",
+      "studentRegisterValidation5": "Password must be at least 6 characters long*",
       "studentRegisterValidation6": "Password confirmation is required*",
       "studentRegisterValidation7": "Passwords must be the same*",
       "studentRegisterValidation8": "Date of birth is required*",
