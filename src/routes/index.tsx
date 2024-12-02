@@ -11,7 +11,6 @@ import PerfilStudent from '../containers/student/studentDashboard/perfilStudent'
 import VocacionalTest from '../containers/student/vocacionalTest';
 import Login from '../containers/auth/login/index';
 import Register from '../containers/student/register/index';
-import SucessPassword from '../containers/auth/sucessPassword';
 import NovaSenha from '../containers/auth/newPassword';
 import RecuperarSenha from '../containers/auth/recoverPassword';
 import { BuscaPoliticas } from '../containers/administrator/institutionRegister/searchPolicies';
@@ -41,7 +40,6 @@ export const AppRoutes = () => {
                         <Route path="/register" element={<Register />} />
                         <Route path="/recuperar-senha" element={<RecuperarSenha />} />
                         <Route path="/nova-senha" element={<NovaSenha />} />
-                        <Route path="/success-change-password" element={<SucessPassword />} />
                         <Route path='/sobre' element={<About />} />
                         <Route path='/pagina-inicial' element={<HomePage />} />
 

@@ -103,9 +103,7 @@ const NovaSenha: React.FC = () => {
         <>
             <Box sx={globalStyles as SxProps<Theme>} />
             <Box sx={container}>
-                <Box sx={sidePanelStyles}>
-                    {/* <img src="" alt="Imagem ilustrativa" style={{ width: '100%' }} /> */}
-                </Box>
+                <Box sx={sidePanelStyles} />
                 <Box sx={headerNewPass}>
                     <Button sx={backButton} startIcon={<ArrowBackIcon />}>
                         <Typography component="a" href="/login" sx={customLinkStyles}>

@@ -1,5 +1,5 @@
 import { SxProps, Theme } from '@mui/material';
-import backgorundImage2 from '../../../assets/img/background.png';
+import backgroundImage2 from '../../../assets/img/background.png';
 
 const globalBoxStyles: SxProps<Theme> = (theme) => ({
     minHeight: '100vh',
@@ -127,10 +127,18 @@ export const buttonStyles: SxProps<Theme> = (theme) => ({
     },
 });
 
+export const arrowUpIconStyles: SxProps<Theme> = (theme) => ({
+    color: '#185D8E',
+    fontSize: '4rem',
+    [theme.breakpoints.down('sm')]: {
+        fontSize: '1rem',
+    },
+});
+
 // Style About-----------------------------------------------------
 export const aboutBoxStyles: SxProps<Theme> = (theme) => ({
     ...globalBoxStyles(theme),
-    backgroundImage: `url(${backgorundImage2})`,
+    backgroundImage: `url(${backgroundImage2})`,
 });
 
 export const containerAbout: SxProps<Theme> = () => ({
@@ -193,7 +201,7 @@ export const typographyBodyStyles: SxProps<Theme> = (theme) => ({
 // Style FAQ-------------------------------------------------------
 export const faqBoxStyles: SxProps<Theme> = (theme) => ({
     ...globalBoxStyles(theme),
-    backgroundImage: `url(${backgorundImage2})`,
+    backgroundImage: `url(${backgroundImage2})`,
     paddingTop: '3rem',
     paddingBottom: '5rem',
 });
