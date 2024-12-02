@@ -206,7 +206,7 @@ const QuestionRegister: React.FC = () => {
                 <DialogTitle id="modal-title" variant="h6" gutterBottom sx={{ textAlign: 'center', fontWeight: 'bold' }}>Confirmação</DialogTitle>
                 <DialogContent >
                     <DialogContentText id="modal-description" variant="h6" gutterBottom sx={{ textAlign: 'center', fontWeight: 'bold', fontFamily: 'Roboto, monospace', }}>
-                        Curso Cadastrado!
+                        Teste Cadastrado!
                         {message}
                     </DialogContentText>
                 </DialogContent>

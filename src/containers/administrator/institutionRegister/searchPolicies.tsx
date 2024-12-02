@@ -105,9 +105,9 @@ export const BuscaPoliticas: React.FC = () => {
                 cadastrarPoliticasInstituicao(institutionId, Number(policyId))));
 
             if (responses?.length > 0) {
-                alert('Políticas cadastradas com sucesso na Instituição');
+                // alert('Políticas cadastradas com sucesso na Instituição');
                 setFinalModalOpen(true); // Exibe o modal final
-                navigate('/gerenciamento-instituicao');
+                // navigate('/gerenciamento-instituicao');
             } else {
                 alert('Erro ao cadastrar políticas!');
             }

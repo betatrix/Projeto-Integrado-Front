@@ -190,7 +190,7 @@ const AdminManagement: React.FC = () => {
         if (selectedAdmin) {
             try {
                 // Atualiza o status do administrador no backend
-                await editarAdministrador({ ...selectedAdmin, ativo: false });
+                await excluirAdministrador(selectedAdmin.id);
 
                 // Atualiza o estado local para refletir a mudança
                 const updatedAdmins = admins.map((admin) =>

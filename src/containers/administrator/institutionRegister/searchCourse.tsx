@@ -147,7 +147,7 @@ export const BuscaCurso: React.FC = () => {
                     )
                 );
                 navigate('/politicas', { state: { institutionId } });
-                alert('Cursos cadastrados com sucesso na Instituição');
+                // alert('Cursos cadastrados com sucesso na Instituição');
             } else {
                 alert('Selecione um curso para continuar!');
             }
