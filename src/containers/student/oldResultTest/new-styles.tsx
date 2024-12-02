@@ -43,6 +43,12 @@ export const CourseCard = styled(Box)`
   width: 100%;
   max-width: 400px;
   border: solid #185D8E; 
+
+  @media (max-width: 600px) {
+    padding: 10px;
+    max-width: 100%;
+    font-size: 14px;
+  }
 `;
 
 // TITLES ****************************************************************************************************
@@ -67,11 +73,21 @@ export const CourseTitle = styled(Typography)`
   font-weight: bold;
   color: rgba(0, 0, 0, 0.5);
   font-size: 18px;
+
+  @media (max-width: 600px) {
+    font-size: 16px;
+    margin-bottom: 15px;
+  }
 `;
 
 export const DetailsResult = styled(Typography)`
   margin-bottom: 7px;
   color: rgba(0, 0, 0, 0.7);
+
+  @media (max-width: 600px) {
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
 `;
 
 export const CareerListItem = styled(ListItem)`
@@ -84,13 +100,11 @@ export const BackButton = styled(Button)`
     position: absolute;
     left: 5%;
     color: #185D8E;
-    padding: 5px;
-    padding-left: 10px;
-    padding-right: 15px;
+    padding: 5px 15px;
     font-weight: 600;
     width: 150px;
     font-size: 18px;
-    
+
     &:hover {
       color: #0B2A40;
       background-color: #D9EEFF !important;
@@ -103,20 +117,20 @@ export const MobileBackButton = styled(Button)`
     position: absolute;
     left: 5%;
     color: #185D8E;
-    padding: 10px;
-    padding-left: 25px;
-    padding-right: 25px;
+    padding: 10px 25px;
     font-weight: bold;
-    
+
     &:hover {
-      background-color: rgba(89,87,230,0.1) !important;
+      background-color: rgba(89, 87, 230, 0.1) !important;
     }
   }
 `;
 
 export const CustomLink = styled(Link)`
   text-decoration: none;
-  color: #185D8E;
+  color: inherit;
+  display: flex;
+  align-items: center;
 `;
 
 // SCROLLBAR

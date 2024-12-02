@@ -461,6 +461,14 @@ const StudentDashboard: React.FC = () => {
                                             <Typography sx={contentResultStyle}>
                                                 {t('dashboardCard3Text')}
                                             </Typography>
+
+                                        )}
+
+                                        {testHistory.length > 0 && (
+                                            // eslint-disable-next-line max-len
+                                            <Typography sx={{ textAlign: 'center', marginTop: isSmallScreen ? '0' : '10px', fontSize: isSmallScreen ? '9px' : '16px', color: '#185D8E', fontWeight: 'bold', opacity: 0.8, marginBottom: isSmallScreen ? '2px' : '0' }}>
+                                                {t('dashboardCheckOldResults')}
+                                            </Typography>
                                         )}
                                     </Paper>
 
