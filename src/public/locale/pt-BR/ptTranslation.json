@@ -158,7 +158,7 @@
 
       "testIntroTitle": "Antes de começar ...",
       "testIntro1": "Nosso teste vocacional é inspirado na teoria RIASEC, do psicólogo John L. Holland, que divide personalidades e ambientes de trabalho em seis tipos: Realista, Investigativo, Artístico, Social, Empreendedor e Convencional.",
-      "testIntro2": "Com suas respostas, identificamos o seu perfil e sugerimos carreiras, áreas de estudo, cursos e universidades que têm tudo a ver com você. Bora descobrir seu caminho? 🚀",
+      "testIntro2": "Com suas respostas, identificamos os seus perfis, primário e secundário, e sugerimos carreiras, áreas de estudo, cursos e universidades que têm tudo a ver com você. Bora descobrir seu caminho? 🚀",
       "testIntroButton": "Iniciar Teste",
       "testInstruction": "Responda às afirmações abaixo com o quanto você se identifica com cada uma delas.",
       "testWarningTitle": "Tem certeza de que deseja sair?",
@@ -170,6 +170,16 @@
       "testGraduationButton": "Superior",
       "testTechnicalButton": "Técnico",
       "testSwipeHint": "Deslize para o lado e vá para a próxima pergunta!",
+      "testModalConfirmation": "Confirmação",
+      "testModalConfirmationMessage": "Tem certeza de que deseja sair? Suas respostas não serão salvas.",
+      "testModalConfirmationBCancell": "Cancelar",
+      "testModalConfirmationBConfirm": "Confirmar",
+
+      "answerOptionsEmoji1": "Não me identifico com isso de forma alguma",
+      "answerOptionsEmoji2": "Isso não reflete muito quem eu sou",
+      "answerOptionsEmoji3": "Não tenho uma opinião definida sobre isso",
+      "answerOptionsEmoji4": "Tenho uma conexão razoável com isso",
+      "answerOptionsEmoji5": "Isso reflete muito quem eu sou!",
 
       "resultTestTitle": "Resultado do teste",
       "resultTestGoodLuckPhrase": "Abaixo listamos alguns cursos que podem te interessar, boa sorte!",
