@@ -33,7 +33,7 @@ const AnswerOptions: React.FC<AnswerOptionsProps> = ({ value, onChange, disabled
             gap: isSmallScreen ? 0.5 : 7,
             flexWrap: isSmallScreen ? 'wrap' : 'nowrap',
             marginTop: isSmallScreen ? '0' : '25px',
-            marginBottom: isSmallScreen ? '0' : '18px',
+            marginBottom: isSmallScreen ? '0' : '10px',
             overflow: 'visible',
         }}
         >

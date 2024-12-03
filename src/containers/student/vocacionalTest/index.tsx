@@ -242,7 +242,14 @@ const VocacionalTest: React.FC = () => {
                     <CustomLink to={'/estudante'}> {t('backButton')} </CustomLink>
                 </BackButton> */}
 
-                <BackButton startIcon={<ArrowBackIcon />} onClick={handleBackButtonClick}>
+                <BackButton startIcon={<ArrowBackIcon />} onClick={handleBackButtonClick}
+                    sx={{
+                        position: 'absolute',
+                        top: isMobile ? '10px' : '20px',
+                        left: isMobile ? '10px' : '20px',
+                        zIndex: 15,
+                    }}
+                >
                     {t('backButton')}
                 </BackButton>
 
