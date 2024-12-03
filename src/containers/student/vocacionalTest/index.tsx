@@ -10,7 +10,8 @@ import { CenteredDiv, ButtonGroup, Global, StyledTypography,
     CustomButton, ModalText, BackButton, CourseCustomButton,
     StyledLinearProgress,
     componentTheme,
-    CountDisplay} from './styles';
+    CountDisplay,
+    AINotice} from './styles';
 import axios from 'axios';
 import AnswerOptions from './answerOptions';
 import { AuthContext } from '../../../contexts/auth';
@@ -399,6 +400,10 @@ const VocacionalTest: React.FC = () => {
                         </Box>
 
                     )}
+
+                    <AINotice>
+                        {t('testIANotice')}
+                    </AINotice>
 
                 </CenteredDiv>
             </Box>

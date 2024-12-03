@@ -344,3 +344,17 @@ export const CustomLink = styled(Link)`
   display: flex;
   align-items: center;
 `;
+
+export const AINotice = styled.div`
+  position: absolute;
+  bottom: 10px;
+  right: 15px;
+  font-size: 12px;
+  color: gray;
+  text-align: right;
+  opacity: 0.8;
+
+  @media (max-width: 630px) {
+    font-size: 10;
+  }
+`;
