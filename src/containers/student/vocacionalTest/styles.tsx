@@ -309,11 +309,11 @@ export const BackButton = styled(Button)`
   &.MuiButton-root {
     position: absolute;
     left: 2%;
-    top: 90px;
+    top: 80px;
     color: #185D8E;
     padding: 5px 15px;
     font-weight: 600;
-    width: 150px;
+    width: 140px;
     font-size: 16px;
     cursor: pointer;
 
