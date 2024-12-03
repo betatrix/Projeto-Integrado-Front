@@ -751,9 +751,16 @@ const CourseManagement: React.FC = () => {
                                     <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}><b>ID:</b> {selectedCourse.id}</Typography>
                                     <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}><b>Status:</b> {selectedCourse.ativo ? 'Ativo' : 'Inativo'}</Typography>
                                     <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}><b>Nome:</b> {selectedCourse.descricao}</Typography>
-                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}><b>Empregabilidade:</b> {selectedCourse.empregabilidade}</Typography>
-                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}><b>Área:</b> {selectedCourse.area?.descricao || 'Não especificada'}</Typography>
-                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}><b>Tipo:</b> {selectedCourse.tipo}</Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>
+                                        <b>Empregabilidade:</b> {niveisEmpregabilidade.find((nivel) => nivel.value === selectedCourse.empregabilidade)?.label || 'Não especificada'}
+                                    </Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}> <b>Área:</b> {selectedCourse.area?.descricao || 'Não especificada'}</Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>
+                                        <b>Tipo de Ensino:</b> {tiposInstituicao.find((tipo) => tipo.value === selectedCourse.tipo)?.label || 'Não especificado'}
+                                    </Typography>
+                                    <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>
+                                        <b>Possíveis Carreiras:</b> {selectedCourse.possiveisCarreiras?.join(', ') || 'Não especificadas'}
+                                    </Typography>
                                 </Paper>
                             </Grid>
                         </Grid>

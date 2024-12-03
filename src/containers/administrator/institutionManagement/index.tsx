@@ -841,7 +841,9 @@ const InstitutionManagement: React.FC = () => {
                                         <b>Forma de Ingresso:</b> {selectedDetailInstitutionWithAddress.formaIngresso || 'Não disponível'}
                                     </Typography>
                                     <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}>
-                                        <b>Tipo de Ensino:</b> {selectedDetailInstitutionWithAddress.tipo || 'Não disponível'}
+                                        {/* <b>Tipo de Ensino:</b> {selectedDetailInstitutionWithAddress.tipo || 'Não disponível'} */}
+                                        <b>Tipo de Ensino:</b> {tiposInstituicao.find((tipo) => tipo.value === selectedDetailInstitutionWithAddress.tipo)?.label
+                                        || 'Não especificado'}
                                     </Typography>
 
                                 </Paper>
