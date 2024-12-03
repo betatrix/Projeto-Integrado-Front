@@ -744,7 +744,7 @@ const CourseManagement: React.FC = () => {
                                 </Typography>
                             </Grid>
                             <Grid item xs={12}>
-                                <Paper sx={{ padding: '20px', border: '3px solid #185D8E', boxShadow: 'none' }}>
+                                <Paper sx={{ padding: '20px', height: '290px', border: '3px solid #185D8E', boxShadow: 'none' }}>
                                     <Typography variant="h6" gutterBottom sx={{ textAlign: 'center', fontWeight: 'bold', fontFamily: 'Roboto, monospace', color: '#757575' }}>
                                         Dados do Curso
                                     </Typography>

@@ -756,7 +756,7 @@ const InstitutionManagement: React.FC = () => {
                         </Table>
                     )}
 
-                    <Box sx={{ display: 'flex', justifyContent: 'center', marginBottom: 7, marginTop: 10 }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: 7, marginTop: 10 }}>
                         <Button
                             onClick={handleFirstPage}
                             disabled={currentPage === 0}
@@ -795,7 +795,7 @@ const InstitutionManagement: React.FC = () => {
             >
                 <Box sx={{
                     position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
-                    bgcolor: 'background.paper', boxShadow: 24, p: 4, width: '80%', maxWidth: 800, borderRadius: '5px'
+                    bgcolor: 'background.paper', boxShadow: 24, p: 4, width: '80%', maxWidth: 900, borderRadius: '5px'
                 }}>
                     {selectedDetailInstitutionWithAddress && (
 
@@ -820,7 +820,7 @@ const InstitutionManagement: React.FC = () => {
                             <Grid item xs={6}>
                                 <Paper sx={{ padding: '20px', height: '320px', border: '3px solid #185D8E', boxShadow: 'none' }}>
                                     <Typography variant="h6" gutterBottom sx={{ textAlign: 'center', fontWeight: 'bold', fontFamily: 'Roboto, monospace', color: '#757575' }}>
-                                        Dados Gerais
+                                        Dados da Instituição
                                     </Typography>
 
                                     <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}><b>ID:</b> {selectedDetailInstitutionWithAddress.id}</Typography>

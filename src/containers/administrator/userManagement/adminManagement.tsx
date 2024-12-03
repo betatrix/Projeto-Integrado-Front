@@ -264,7 +264,7 @@ const AdminManagement: React.FC = () => {
                         label="Pesquisar Administradores"
                         variant="outlined"
                         onChange={handleSearchChange}
-                        sx={{ width: '55%', fontFamily: 'Roboto, monospace' }}
+                        sx={{ width: '55%', fontFamily: 'Roboto, monospace'}}
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end">
@@ -310,7 +310,7 @@ const AdminManagement: React.FC = () => {
                                                 variant="contained"
                                                 color="secondary"
                                                 onClick={handleDeleteMultipleModalOpen}
-                                                disabled={selectedAdmins.length === 0}
+                                                disabled={selectedAdmins.length <= 1}
                                                 sx={{
                                                     color: 'white',
                                                     backgroundColor: '#185D8E',
@@ -371,7 +371,7 @@ const AdminManagement: React.FC = () => {
                         </TableContainer>
                     )}
                 </Box>
-                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 7, marginBottom: 7 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: 7 }}>
                     <Button
                         onClick={goToFirstPage}
                         disabled={page === 0}
@@ -739,7 +739,7 @@ const AdminManagement: React.FC = () => {
             >
                 <Box sx={{
                     position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
-                    bgcolor: 'background.paper', boxShadow: 24, p: 4, width: '80%', maxWidth: 700, borderRadius: '5px'
+                    bgcolor: 'background.paper', boxShadow: 24, p: 4, width: '80%', maxWidth: 900, borderRadius: '5px'
                 }}>
                     {selectedAdmin && (
                         <Grid container spacing={3}>
@@ -763,7 +763,7 @@ const AdminManagement: React.FC = () => {
                             <Grid item xs={6}>
                                 <Paper sx={{ padding: '20px', height: '320px', border: '3px solid #185D8E', boxShadow: 'none' }}>
                                     <Typography variant="h6" gutterBottom sx={{ textAlign: 'center', fontWeight: 'bold', fontFamily: 'Roboto, monospace', color: '#757575' }}>
-                                        Dados Gerais
+                                        Dados do Administrador
                                     </Typography>
                                     <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}><b>ID:</b> {selectedAdmin.id}</Typography>
                                     <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}><b>Ativo:</b> {selectedAdmin.ativo ? 'Sim' : 'Não'}</Typography>

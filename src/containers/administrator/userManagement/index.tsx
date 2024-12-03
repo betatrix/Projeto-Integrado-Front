@@ -222,7 +222,7 @@ const UserManagement: React.FC = () => {
                     <TextField
                         label="Pesquisar Usuários"
                         variant="outlined"
-                        sx={{ width: '55%', fontFamily: 'Roboto, monospace', }}
+                        sx={{ width: '55%', fontFamily: 'Roboto, monospace'}}
                         value={searchTerm}
                         onChange={handleSearchChange}
                         InputProps={{
@@ -271,7 +271,7 @@ const UserManagement: React.FC = () => {
                                                 variant="contained"
                                                 color="secondary"
                                                 onClick={handleDeleteMultipleModalOpen}
-                                                disabled={selectedUsers.length === 0}
+                                                disabled={selectedUsers.length <= 1}
                                                 sx={{
                                                     color: 'white',
                                                     backgroundColor: '#185D8E',
@@ -589,7 +589,7 @@ const UserManagement: React.FC = () => {
                             </Grid>
                             <Grid item xs={12}>
                                 <Paper sx={{ padding: '20px', border: '3px solid #185D8E', boxShadow: 'none' }}>
-                                    <Typography variant="h6" gutterBottom sx={{ textAlign: 'center', fontWeight: 'bold', color: '#757575' }}>
+                                    <Typography variant="h6" gutterBottom sx={{ textAlign: 'center', fontWeight: 'bold', fontFamily: 'Roboto, monospace', color: '#757575' }}>
                                         Dados do Usuário
                                     </Typography>
                                     <Typography sx={{ fontFamily: 'Poppins, sans-serif', }}><b>ID:</b> {selectedUser.id}</Typography>

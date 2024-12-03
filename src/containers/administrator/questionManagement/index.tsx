@@ -17,6 +17,7 @@ import {
     Autocomplete,
     FormControl,
     Paper,
+    Checkbox,
     TablePagination,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
@@ -55,6 +56,8 @@ function TestManagement() {
     const [selectedQuestion, setSelectedQuestion] = useState<TestForm | null>(null);
     const [detailModalOpen, setDetailModalOpen] = useState(false);
     const [selectedDetailQuestion, setSelectedDetailQuestion] = useState<FormValues | null>(null);
+    const [selectedQuestions, setSelectedQuestions] = useState<number[]>([]);
+    const [deleteMultipleModalOpen, setDeleteMultipleModalOpen] = useState(false);
 
     const fetchQuestionDetails = async (questionId: number) => {
         try {
@@ -122,11 +125,24 @@ function TestManagement() {
     };
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchTerm(event.target.value);
-        const filtered = questions.filter((question) =>
-            question?.texto?.toLowerCase().includes(event.target.value.toLowerCase())
-        );
+        const searchTerm = event.target.value.toLowerCase();
+        setSearchTerm(searchTerm);
+
+        if (searchTerm.trim() === '') {
+            setFilteredQuestions(questions);
+            setPage(0);
+            return;
+        }
+
+        const filtered = questions.filter((question) => {
+            if (!isNaN(Number(searchTerm))) {
+                return question.id === Number(searchTerm);
+            }
+            return question.texto.toLowerCase().includes(searchTerm);
+        });
+
         setFilteredQuestions(filtered);
+        setPage(0);
     };
 
     const handleEditModalOpen = (question: TestForm) => {
@@ -165,6 +181,48 @@ function TestManagement() {
                 throw error;
             }
         }
+    };
+
+    const handleDeleteMultipleModalClose = () => {
+        setDeleteMultipleModalOpen(false);
+    };
+
+    const handleDeleteMultipleModalOpen = () => {
+        setDeleteMultipleModalOpen(true);
+    };
+
+    const handleDeleteSelectedQuestions = async () => {
+        try {
+            await Promise.all(
+                selectedQuestions.map(async (questionId) => {
+                    await excluirPergunta(questionId);
+                })
+            );
+
+            setQuestions((prevQuestions) =>
+                prevQuestions.map((question) =>
+                    selectedQuestions.includes(question.id) ? { ...question, ativo: false } : question
+                )
+            );
+
+            setFilteredQuestions((prevFilteredQuestions) =>
+                prevFilteredQuestions.map((question) =>
+                    selectedQuestions.includes(question.id) ? { ...question, ativo: false } : question
+                )
+            );
+
+            setSelectedQuestions([]);
+        } catch (error) {
+            console.error('Erro ao excluir perguntas selecionadas:', error);
+        }
+    };
+
+    const toggleSelectQuestion = (questionId: number) => {
+        setSelectedQuestions((prevSelected) =>
+            prevSelected.includes(questionId)
+                ? prevSelected.filter((id) => id !== questionId)
+                : [...prevSelected, questionId]
+        );
     };
 
     const [page, setPage] = useState(0);
@@ -247,15 +305,35 @@ function TestManagement() {
                         <TableContainer>
                             <Table>
                                 <TableRow>
-                                    <TableCell sx={{ borderRight: '1px solid #ddd', textAlign: 'center', fontWeight: 'bold', color: '#757575' }}>AÇÕES</TableCell>
-                                    <TableCell sx={{ borderRight: '1px solid #ddd', textAlign: 'center', fontWeight: 'bold', color: '#757575' }}>ID</TableCell>
+                                    <TableCell sx={{ borderRight: '1px solid #ddd', textAlign: 'center', fontWeight: 'bold', color: '#757575', width: '10rem' }}>
+                                        <Button
+                                            variant="contained"
+                                            color="secondary"
+                                            onClick={handleDeleteMultipleModalOpen}
+                                            disabled={selectedQuestions.length <= 1}
+                                            sx={{
+                                                color: 'white',
+                                                backgroundColor: '#185D8E',
+                                                fontWeight: 'bold',
+                                                fontFamily: 'Roboto, monospace',
+                                            }}
+                                        >
+                                            Excluir
+                                        </Button>
+                                    </TableCell>
+                                    <TableCell sx={{ borderRight: '1px solid #ddd', textAlign: 'center', fontWeight: 'bold', color: '#757575', width: '5rem' }}>ID</TableCell>
                                     <TableCell sx={{ borderRight: '1px solid #ddd', fontWeight: 'bold', color: '#757575' }}>PERGUNTAS</TableCell>
-                                    <TableCell sx={{ textAlign: 'center', fontWeight: 'bold', color: '#757575' }}>STATUS</TableCell>
+                                    <TableCell sx={{ textAlign: 'center', fontWeight: 'bold', color: '#757575', width: '5rem' }}>STATUS</TableCell>
                                 </TableRow>
                                 <TableBody>
                                     {paginatedQuestions.map((question) => (
                                         <TableRow key={question.id}>
                                             <TableCell align="center" sx={{ borderRight: '1px solid #ddd' }}>
+                                                <Checkbox
+                                                    checked={selectedQuestions.includes(question.id)}
+                                                    onChange={() => toggleSelectQuestion(question.id)}
+                                                    sx={{ '& .MuiSvgIcon-root': { fontSize: 18 } }}
+                                                />
                                                 <IconButton onClick={() => handleEditModalOpen(question)}>
                                                     <EditIcon sx={{ fontSize: 18 }} />
                                                 </IconButton>
@@ -290,7 +368,7 @@ function TestManagement() {
                         disabled={page === 0}
                         sx={{ marginRight: 2, fontFamily: 'Roboto, monospace', fontWeight: 'bold' }}
                     >
-        Primeira Página
+                        Primeira Página
                     </Button>
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 25]}
@@ -306,7 +384,7 @@ function TestManagement() {
                         disabled={page === totalPages - 1}
                         sx={{ marginLeft: 2, fontFamily: 'Roboto, monospace', fontWeight: 'bold' }}
                     >
-        Última Página
+                        Última Página
                     </Button>
                 </Box>
 
@@ -328,7 +406,7 @@ function TestManagement() {
 
                         <Grid container>
                             <Grid item xs={12}>
-                                <Paper sx={{ padding: '20px', height: '320px', border: '3px solid #185D8E', boxShadow: 'none' }}>
+                                <Paper sx={{ padding: '20px', height: '290px', border: '3px solid #185D8E', boxShadow: 'none' }}>
                                     <Typography variant="h6" gutterBottom sx={{ textAlign: 'center', fontWeight: 'bold', fontFamily: 'Roboto, monospace', color: '#757575' }}>
                                         Dados da pergunta
                                     </Typography>
@@ -477,7 +555,7 @@ function TestManagement() {
                                         </Grid>
 
                                         <Grid item xs={12}>
-                                            <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, marginTop: 3}}>
+                                            <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, marginTop: 3 }}>
                                                 <Button variant="contained" onClick={handleEditModalClose} sx={{
                                                     height: '50px',
                                                     width: '100px',
@@ -547,7 +625,7 @@ function TestManagement() {
                         textAlign: 'justify',
                         mb: '5px'
                     }}>
-                            Confirmar exclusão
+                        Confirmar exclusão
                     </Typography>
                     <Typography id="modal-modal-description" sx={{
                         mt: 2,
@@ -555,7 +633,7 @@ function TestManagement() {
                         textAlign: 'justify',
                         mb: '10px'
                     }}>
-                            Tem certeza que deseja excluir a pergunta?
+                        Tem certeza que deseja excluir a pergunta?
                     </Typography>
                     <Grid
                         container
@@ -579,7 +657,7 @@ function TestManagement() {
                                     }
                                 }}
                             >
-                                    Sim
+                                Sim
                             </Button>
                         </Grid>
                         <Grid item>
@@ -598,12 +676,107 @@ function TestManagement() {
                                     }
                                 }}
                             >
-                                    Não
+                                Não
                             </Button>
                         </Grid>
                     </Grid>
                 </Box>
             </Modal>
+            <Modal
+                open={deleteMultipleModalOpen}
+                onClose={handleDeleteMultipleModalClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box
+                    sx={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        bgcolor: 'background.paper',
+                        boxShadow: 24,
+                        p: 4,
+                        maxWidth: 400,
+                        width: '90%',
+                        borderRadius: '5px',
+                    }}
+                >
+                    <Typography
+                        id="modal-modal-title"
+                        variant="h6"
+                        component="h2"
+                        sx={{
+                            color: '#185D8E',
+                            fontFamily: 'Roboto, monospace',
+                            marginTop: 1,
+                            fontWeight: 'bold',
+                            textAlign: 'center',
+                            mb: '5px',
+                        }}
+                    >
+                        Confirmar Exclusão
+                    </Typography>
+                    <Typography
+                        id="modal-modal-description"
+                        sx={{
+                            mt: 2,
+                            fontFamily: 'Poppins, sans-serif',
+                            textAlign: 'justify',
+                            mb: '10px',
+                        }}
+                    >
+                        Tem certeza que deseja excluir as perguntas selecionadas?
+                    </Typography>
+                    <Grid container justifyContent="space-between" spacing={2} sx={{ mt: 1 }}>
+                        <Grid item>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={async () => {
+                                    await handleDeleteSelectedQuestions();
+                                    handleDeleteMultipleModalClose();
+                                }}
+                                sx={{
+                                    height: '35px',
+                                    fontSize: '17px',
+                                    fontFamily: 'Roboto, monospace',
+                                    color: 'white',
+                                    backgroundColor: '#185D8E',
+                                    fontWeight: 'bold',
+                                    '&:hover': {
+                                        backgroundColor: '#104A6F',
+                                        color: 'white',
+                                    },
+                                }}
+                            >
+                                Sim
+                            </Button>
+                        </Grid>
+                        <Grid item>
+                            <Button
+                                variant="outlined"
+                                onClick={handleDeleteMultipleModalClose}
+                                sx={{
+                                    height: '35px',
+                                    fontSize: '17px',
+                                    fontFamily: 'Roboto, monospace',
+                                    color: 'white',
+                                    backgroundColor: '#185D8E',
+                                    fontWeight: 'bold',
+                                    '&:hover': {
+                                        backgroundColor: '#104A6F',
+                                        color: 'white',
+                                    },
+                                }}
+                            >
+                                Não
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </Box>
+            </Modal>
+
         </>
     );
 }
