@@ -7,7 +7,7 @@ export const globalStyles: SxProps<Theme> = {
         margin: 0,
         padding: 0,
         boxSizing: 'border-box',
-        fontFamily: 'Roboto, sans-serif',
+        fontFamily: 'Poppins, sans-serif',
         display: 'flex',
         justifyContent: 'flex-start',
         alignItems: 'center',
@@ -49,7 +49,7 @@ export const loginContainer: SxProps<Theme> = (theme) => ({
     flexDirection: 'column',
     justifyContent: 'center',
     marginLeft: '7vi',
-    marginRight: '15vi',
+    marginRight: '10vi',
     maxWidth: '70vh',
     zIndex: 1,
     [theme.breakpoints.down('sm')]: {
@@ -202,7 +202,7 @@ export const recoverButton: SxProps<Theme> = (theme) => ({
 });
 
 export const sidePanelStyles: SxProps<Theme> = (theme) => ({
-    width: '50%',
+    width: '90%',
     height: '100%',
     backgroundImage: `url(${backgroundImage2})`,
     backgroundSize: 'cover',
