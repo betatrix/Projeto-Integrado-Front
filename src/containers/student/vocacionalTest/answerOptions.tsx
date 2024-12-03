@@ -5,6 +5,7 @@ import EmojiVoquinhoTriste from '../../../assets/img/emoji-voquinho-triste.png';
 import EmojiVoquinhoNeutro from '../../../assets/img/emoji-voquinho-neutro.png';
 import EmojiVoquinhoFeliz from '../../../assets/img/emoji-voquinho-feliz.png';
 import EmojiVoquinhoApaixonado from '../../../assets/img/emoji-voquinho-apaixonado.png';
+import { useTranslation } from 'react-i18next';
 
 interface AnswerOptionsProps {
     value: number;
@@ -13,14 +14,16 @@ interface AnswerOptionsProps {
 }
 
 const AnswerOptions: React.FC<AnswerOptionsProps> = ({ value, onChange, disabled }) => {
+    const { t } = useTranslation();
     const isMobile = useMediaQuery('(max-width:600px)');
     const isSmallScreen = useMediaQuery('(max-width:540px)');
+
     const icons = [
-        { id: 'emoji1', value: 1, src: EmojiVoquinhoChorando, label: 'Não me identifico com isso de forma alguma' },
-        { id: 'emoji2', value: 2, src: EmojiVoquinhoTriste, label: 'Isso não reflete muito quem eu sou' },
-        { id: 'emoji3', value: 3, src: EmojiVoquinhoNeutro, label: 'Não tenho uma opinião definida sobre isso' },
-        { id: 'emoji4', value: 4, src: EmojiVoquinhoFeliz, label: 'Tenho uma conexão razoável com isso' },
-        { id: 'emoji5', value: 5, src: EmojiVoquinhoApaixonado, label: 'Isso reflete muito quem eu sou!' },
+        { id: 'emoji1', value: 1, src: EmojiVoquinhoChorando, label: t('answerOptionsEmoji1') },
+        { id: 'emoji2', value: 2, src: EmojiVoquinhoTriste, label: t('answerOptionsEmoji2') },
+        { id: 'emoji3', value: 3, src: EmojiVoquinhoNeutro, label: t('answerOptionsEmoji3') },
+        { id: 'emoji4', value: 4, src: EmojiVoquinhoFeliz, label: t('answerOptionsEmoji4') },
+        { id: 'emoji5', value: 5, src: EmojiVoquinhoApaixonado, label: t('answerOptionsEmoji5') },
     ];
 
     return (

@@ -153,7 +153,7 @@
 
       "testIntroTitle": "Before we starting...",
       "testIntro1": "Our vocational test is inspired by psychologist John L. Holland's theory, known as RIASEC - Realistic, Investigative, Artistic, Social, Enterprising and Conventional.",
-      "testIntro2": "Based on your answers, we identify your profile and suggest careers, fields of study, courses, and universities that are a perfect match for you. Ready to discover your path? 🚀",
+      "testIntro2": "Based on your answers, we’ve identified your primary and secondary profiles and suggested careers, study fields, courses, and universities that match you perfectly. Ready to find your path? 🚀",
       "testIntroButton": "Start Test",
       "testInstruction": "Respond to the statements below with how much you identify with each of them.",
       "testWarningTitle": "Are you sure you want to leave?",
@@ -165,6 +165,16 @@
       "testGraduationButton": "Graduation",
       "testTechnicalButton": "Technical",
       "testSwipeHint": "Swipe to the side to go to the next question!",
+      "testModalConfirmation": "Confirmation",
+      "testModalConfirmationMessage": "Are you sure you want to leave? Your answers won’t be saved.",
+      "testModalConfirmationBCancell": "Cancell",
+      "testModalConfirmationBConfirm": "Confirm",
+
+      "answerOptionsEmoji1": "I don't identify with this at all",
+      "answerOptionsEmoji2": "This doesn't really reflect who I am",
+      "answerOptionsEmoji3": "I have no strong opinion about this",
+      "answerOptionsEmoji4": "I have a reasonable connection with this",
+      "answerOptionsEmoji5": "This reflects who I am a lot!",
 
       "resultTestTitle": "Test Result",
       "resultTestGoodLuckPhrase": "Below we have listed some courses that might interest you. Good luck!",

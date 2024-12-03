@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../../components/vocacionalTestHeader';
@@ -6,7 +7,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import { CenteredDiv, ButtonGroup, Global, StyledTypography,
-    CustomButton, ModalText, BackButton, CustomLink, CourseCustomButton,
+    CustomButton, ModalText, BackButton, CourseCustomButton,
     StyledLinearProgress,
     componentTheme,
     CountDisplay} from './styles';
@@ -50,6 +51,15 @@ const VocacionalTest: React.FC = () => {
     const [modalStep, setModalStep] = useState(1);
     const [isButtonSelected, setIsButtonSelected] = useState(false);
     // const [showSwipeHint, setShowSwipeHint] = useState(isMobile);
+    const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+
+    const shuffleArray = (array: any[]) => {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    };
 
     useEffect(() => {
         const fetchQuestions = async () => {
@@ -57,7 +67,12 @@ const VocacionalTest: React.FC = () => {
                 const response = await axios.get(`${apiUrl}/pergunta/teste/1`, {
                     params: { language: i18n.language }
                 });
-                setQuestions(response.data);
+
+                const questionsWithImages = response.data.map((question: any, index: any) => ({
+                    ...question,
+                    imagem: images[index],
+                }));
+                setQuestions(shuffleArray(questionsWithImages));
             } catch (error) {
                 console.error('Erro ao buscar perguntas');
                 throw error;
@@ -83,12 +98,12 @@ const VocacionalTest: React.FC = () => {
         fetchInitialData();
     }, [apiUrl, i18n, teste?.id, usuario?.id]);
 
-    useEffect(() => {
-        const savedAnswers = localStorage.getItem('vocationalTestAnswers');
-        if (savedAnswers) {
-            setAnswers(JSON.parse(savedAnswers));
-        }
-    }, []);
+    // useEffect(() => {
+    //     const savedAnswers = localStorage.getItem('vocationalTestAnswers');
+    //     if (savedAnswers) {
+    //         setAnswers(JSON.parse(savedAnswers));
+    //     }
+    // }, []);
 
     const handleStartTest = () => {
         setShowModal(false);
@@ -115,7 +130,7 @@ const VocacionalTest: React.FC = () => {
         updatedAnswers[currentQuestion] = value;
         setAnswers(updatedAnswers);
 
-        localStorage.setItem('vocationalTestAnswers', JSON.stringify(updatedAnswers));
+        // localStorage.setItem('vocationalTestAnswers', JSON.stringify(updatedAnswers));
     };
 
     // configura o swiping
@@ -126,7 +141,7 @@ const VocacionalTest: React.FC = () => {
             }
         },
         onSwipedRight: handlePrev,
-        trackMouse: true,
+        // trackMouse: true,
     });
     const authcontext = useContext(AuthContext);
 
@@ -155,7 +170,7 @@ const VocacionalTest: React.FC = () => {
         try {
             const response = await axios.post(`${apiUrl}/resposta`, payload);
             console.log(response);
-            localStorage.removeItem('vocationalTestAnswers');
+            // localStorage.removeItem('vocationalTestAnswers');
 
             navigate('/resultado', { state: { resultado: response.data } });
         } catch (error) {
@@ -185,7 +200,29 @@ const VocacionalTest: React.FC = () => {
         setIsButtonSelected(true);
     };
 
+    const handleBackButtonClick = () => {
+        setShowConfirmationModal(true);
+    };
+
+    const handleConfirmExit = () => {
+        setShowConfirmationModal(false);
+        navigate('/estudante');
+    };
+
+    const handleCancelExit = () => {
+        setShowConfirmationModal(false);
+    };
+
+    const handleSimpleBack = () => {
+        navigate('/estudante');
+    };
+
     const allQuestionsAnswered = answers.every((answer) => answer !== 0);
+
+    // const handleBack = () => {
+    //     console.log('Navegando para /estudante');
+    //     navigate('/estudante');
+    // };
 
     return (
         <>
@@ -201,8 +238,12 @@ const VocacionalTest: React.FC = () => {
                     zIndex: 10,
                 }}
             >
-                <BackButton startIcon={<ArrowBackIcon />}>
+                {/* <BackButton startIcon={<ArrowBackIcon />}>
                     <CustomLink to={'/estudante'}> {t('backButton')} </CustomLink>
+                </BackButton> */}
+
+                <BackButton startIcon={<ArrowBackIcon />} onClick={handleBackButtonClick}>
+                    {t('backButton')}
                 </BackButton>
 
             </Box>
@@ -306,7 +347,7 @@ const VocacionalTest: React.FC = () => {
 
                         {/* imagem do array fixo */}
                         <img
-                            src={images[currentQuestion]}
+                            src={questions[currentQuestion]?.imagem}
                             alt={`Imagem para a pergunta ${currentQuestion + 1}`}
                             style={{
                                 maxWidth: isMobile ? '350px' : '550px',
@@ -373,6 +414,17 @@ const VocacionalTest: React.FC = () => {
                     },
                 }}
             >
+                <IconButton
+                    onClick={handleSimpleBack}
+                    style={{
+                        position: 'absolute',
+                        left: '15px',
+                        top: '15px',
+                        color: '#185D8E',
+                    }}
+                >
+                    <ArrowBackIcon />
+                </IconButton>
                 <ThemeProvider theme={componentTheme}>
                     <DialogTitle
                         style={{
@@ -384,6 +436,7 @@ const VocacionalTest: React.FC = () => {
                             color: '#185D8E',
                         }}
                     >
+
                         {t('testIntroTitle')}
                     </DialogTitle>
                 </ThemeProvider>
@@ -476,6 +529,36 @@ const VocacionalTest: React.FC = () => {
                         </>
                     )}
                 </DialogActions>
+            </Dialog>
+
+            <Dialog
+                open={showConfirmationModal}
+                onClose={handleCancelExit}
+                PaperProps={{
+                    style: {
+                        width: isMobile ? '90%' : '400px',
+                        maxWidth: '400px',
+                        borderRadius: '10px',
+                        padding: '20px',
+                        justifyItems: 'center'
+                    },
+                }}
+            >
+                <ThemeProvider theme={componentTheme}>
+                    <DialogTitle style={{textAlign: 'center'}}>{t('testModalConfirmation')}</DialogTitle>
+
+                    <DialogContent>
+                        <ModalText>
+                            {t('testModalConfirmationMessage')}
+                        </ModalText>
+                    </DialogContent>
+                    <DialogActions>
+                        <CustomButton onClick={handleCancelExit}>{t('testModalConfirmationBCancell')}</CustomButton>
+                        <CustomButton onClick={handleConfirmExit} color="error">
+                            {t('testModalConfirmationBConfirm')}
+                        </CustomButton>
+                    </DialogActions>
+                </ThemeProvider>
             </Dialog>
         </>
     );

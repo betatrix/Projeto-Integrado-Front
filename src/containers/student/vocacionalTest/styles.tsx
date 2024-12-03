@@ -253,35 +253,94 @@ export const homePageBoxStyles: SxProps<Theme> = (theme) => ({
     ...globalBoxStyles(theme),
 });
 
+// export const BackButton = styled(Button)`
+//   &.MuiButton-root {
+//     position: absolute;
+//     top: 80px;
+//     left: 2%;
+//     color: #185D8E;
+//     padding: 5px;
+//     padding-left: 10px;
+//     padding-right: 15px;
+//     font-weight: 600;
+//     width: 125px;
+//     font-size: 18px;
+//     cursor: pointer;
+
+//     &:hover {
+//       color: #0B2A40;
+//       background-color: #D9EEFF !important;
+//     }
+
+//     @media (max-width: 768px) {
+//       top: 60px;
+//       left: 3%;
+//       width: 120px;
+//       font-size: 16px;
+//       padding: 5px 10px;
+//     }
+//   }
+// `;
+
+// export const BackButton = styled(Button)`
+//   &.MuiButton-root {
+//     position: absolute;
+//     left: 2%;
+//     top: 80px;
+//     color: #185D8E;
+//     padding: 5px 15px;
+//     font-weight: 600;
+//     width: 150px;
+//     font-size: 18px;
+
+//     &:hover {
+//       color: #0B2A40;
+//       background-color: #D9EEFF !important;
+//     }
+//   }
+// `;
+
+// export const CustomLink = styled(Link)`
+//   text-decoration: none;
+//   color: #185D8E;
+// `;
+
 export const BackButton = styled(Button)`
   &.MuiButton-root {
     position: absolute;
-    top: 80px;
     left: 2%;
+    top: 90px;
     color: #185D8E;
-    padding: 5px;
-    padding-left: 10px;
-    padding-right: 15px;
+    padding: 5px 15px;
     font-weight: 600;
-    width: 125px;
-    font-size: 18px;
-    
+    width: 150px;
+    font-size: 16px;
+    cursor: pointer;
+
     &:hover {
       color: #0B2A40;
       background-color: #D9EEFF !important;
     }
+  }
+`;
 
-    @media (max-width: 768px) {
-      top: 60px;
-      left: 3%;
-      width: 120px;
-      font-size: 16px;
-      padding: 5px 10px;
+export const MobileBackButton = styled(Button)`
+  &.MuiButton-root {
+    position: absolute;
+    left: 2%;
+    color: #185D8E;
+    padding: 10px 25px;
+    font-weight: bold;
+
+    &:hover {
+      background-color: rgba(89, 87, 230, 0.1) !important;
     }
   }
 `;
 
 export const CustomLink = styled(Link)`
   text-decoration: none;
-  color: #185D8E;
+  color: inherit;
+  display: flex;
+  align-items: center;
 `;
