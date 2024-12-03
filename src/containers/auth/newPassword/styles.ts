@@ -48,7 +48,7 @@ export const loginContainer: SxProps<Theme> = (theme) => ({
     flexDirection: 'column',
     justifyContent: 'center',
     marginLeft: '7vi',
-    marginRight: '15vi',
+    marginRight: '10vi',
     maxWidth: '70vh',
     zIndex: 1,
     [theme.breakpoints.down('sm')]: {
@@ -207,7 +207,7 @@ export const image: SxProps<Theme> = {
 };
 
 export const sidePanelStyles: SxProps<Theme> = (theme) => ({
-    width: '50%',
+    width: '100%',
     height: '100%',
     backgroundImage: `url(${backgroundImage2})`,
     backgroundSize: 'cover',

@@ -20,18 +20,19 @@ import {
     loginContainer,
     globalStyles,
 } from './styles';
-import { Alert, Box, Button, Snackbar, Typography, SxProps, Theme, InputLabel, FilledInput } from '@mui/material';
+import { Alert, Box, Button, Snackbar, Typography, SxProps, Theme, InputLabel, FilledInput, LinearProgress, IconButton, InputAdornment } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import LanguageMenu from '../../../components/translationButton';
 import { useTranslation } from 'react-i18next';
+import { VisibilityOff, Visibility } from '@mui/icons-material';
 
 const validationSchema = Yup.object({
     password: Yup.string()
-        .min(6, 'A senha deve ter mais de 5 caracteres.')
-        .required('Senha é obrigatória.'),
+        .min(6, 'A senha deve ter mais de 6 caracteres*')
+        .required('Senha é obrigatória*'),
     confirmPassword: Yup.string()
-        .oneOf([Yup.ref('password')], 'As senhas não coincidem.')
-        .required('Confirmação de senha é obrigatória.'),
+        .oneOf([Yup.ref('password')], 'As senhas não coincidem*')
+        .required('Confirmação de senha é obrigatória*'),
 });
 
 const NovaSenha: React.FC = () => {
@@ -40,9 +41,36 @@ const NovaSenha: React.FC = () => {
     const [loading, setLoading] = useState(false);
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     const [showErrorMessage, setShowErrorMessage] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [password, setPassword] = useState('');
     const [, setErrorMessage] = useState('');
     const location = useLocation();
     const navigate = useNavigate();
+
+    const handleClickShowPassword = () => setShowPassword(prev => !prev);
+    const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+    };
+
+    const calculatePasswordStrength = (password: string) => {
+        let score = 0;
+
+        if (password.length >= 5) score += 25;
+        if (/[A-Z]/.test(password)) score += 25;
+        if (/[0-9]/.test(password)) score += 25;
+        if (/[^A-Za-z0-9]/.test(password)) score += 25;
+
+        return score;
+    };
+
+    const strength = calculatePasswordStrength(password);
+
+    const getStrengthLabel = () => {
+        if (strength === 100) return 'Forte';
+        if (strength >= 75) return 'Boa';
+        if (strength >= 50) return 'Fraca';
+        return 'Muito fraca';
+    };
 
     const getTokenFromUrl = (): string => {
         const params = new URLSearchParams(location.search);
@@ -74,7 +102,6 @@ const NovaSenha: React.FC = () => {
                 if (response === 200) {
                     setShowSuccessMessage(true);
 
-                    // Redirecionar após 3 segundos
                     setTimeout(() => {
                         navigate('/login');
                     }, 3000);
@@ -129,13 +156,52 @@ const NovaSenha: React.FC = () => {
                             <FilledInput
                                 sx={customField}
                                 id="password"
-                                type="password"
+                                type={showPassword ? 'text' : 'password'}
                                 value={formik.values.password}
-                                onChange={formik.handleChange}
+                                onChange={(e) => {
+                                    setPassword(e.target.value);
+                                    formik.handleChange(e);
+                                }}
                                 onBlur={formik.handleBlur}
+                                endAdornment={
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={handleClickShowPassword}
+                                            onMouseDown={handleMouseDownPassword}
+                                            edge="end"
+                                            sx={{color: '#185D8E'}}
+                                        >
+                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                }
                             />
+                            <Box>
+                                <LinearProgress
+                                    variant="determinate"
+                                    value={strength}
+                                    sx={{
+                                        height: 8,
+                                        borderRadius: 4,
+                                        backgroundColor: '#e0e0e0',
+                                        '& .MuiLinearProgress-bar': {
+                                            backgroundColor:
+                                                    strength === 100 ? '#4caf50' :
+                                                        strength >= 75 ? '#ffeb3b' :
+                                                            strength >= 50 ? '#ff9800' : '#f44336',
+                                        },
+                                    }}
+                                />
+                                <Typography variant="caption" sx={{ mt: 1 }}>
+                                    Força da senha: {getStrengthLabel()}
+                                </Typography>
+                            </Box>
                             {formik.touched.password && formik.errors.password ? (
-                                <div>{formik.errors.password}</div>
+                                <Box sx={{ color: 'red', fontSize: '16px' }}>
+                                    <div>{formik.errors.password}</div>
+                                </Box>
+
                             ) : null}
                         </FormControl>
 
@@ -152,7 +218,9 @@ const NovaSenha: React.FC = () => {
                                 onBlur={formik.handleBlur}
                             />
                             {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
-                                <div>{formik.errors.confirmPassword}</div>
+                                <Box sx={{ color: 'red', fontSize: '16px' }}>
+                                    <div>{formik.errors.confirmPassword}</div>
+                                </Box>
                             ) : null}
                         </FormControl>
 
