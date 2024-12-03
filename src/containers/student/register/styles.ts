@@ -1,5 +1,5 @@
 import { SxProps, Theme } from '@mui/material';
-import backgorundImage from '../../../assets/img/background.png';
+import backgroundImage from '../../../assets/img/background.png';
 import backgroundImage2 from '../../../assets/img/background2.png';
 
 export const globalStyle: SxProps<Theme> = () => ({
@@ -24,7 +24,7 @@ export const container: SxProps<Theme> = (theme) => ({
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
-        backgroundImage: `url(${backgorundImage})`,
+        backgroundImage: `url(${backgroundImage})`,
     },
 });
 
@@ -270,7 +270,7 @@ export const registerButton: SxProps<Theme> = (theme) => ({
 });
 
 export const sidePanel: SxProps<Theme> = (theme) => ({
-    width: '50%',
+    width: '40%',
     height: '100%',
     backgroundImage: `url(${backgroundImage2})`,
     backgroundSize: 'cover',
