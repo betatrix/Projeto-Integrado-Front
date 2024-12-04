@@ -21,31 +21,11 @@ import InitialPageFooter from '../../../components/homeFooter';
 import LogoCarousel from './logoCarousel';
 import { useTranslation } from 'react-i18next';
 import { ArrowCircleUp } from '@mui/icons-material';
-import { useState, useEffect } from 'react';
 
 export const HomePage: React.FC = () => {
     const{ t } = useTranslation();
     const navigate = useNavigate();
     const isMobile = useMediaQuery('(max-width:600px)');
-    const [isVisible, setIsVisible] = useState(false);
-
-    useEffect(() => {
-        const handleScroll = () => {
-            const homeSection = document.getElementById('home');
-            if (homeSection) {
-                const homeBottom = homeSection.offsetTop + homeSection.offsetHeight;
-                const scrollPosition = window.scrollY;
-
-                setIsVisible(scrollPosition > homeBottom);
-            }
-        };
-
-        window.addEventListener('scroll', handleScroll);
-
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, []);
 
     const handleRegister = () => {
         navigate('/register');
@@ -61,7 +41,7 @@ export const HomePage: React.FC = () => {
                             position: 'fixed',
                             bottom: 16,
                             right: 16,
-                            display: isVisible ? 'flex' : 'none',
+                            display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
                             cursor:'pointer',

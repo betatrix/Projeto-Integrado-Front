@@ -19,6 +19,7 @@ import {
     Grid,
     Modal,
     InputAdornment,
+    TablePagination,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 
@@ -37,8 +38,7 @@ const notaMecSchema = yup
     .nullable()
     .typeError('A nota deve ser um número')
     .min(1, 'Nota mínima 1')
-    .max(10, 'Nota máxima 10')
-    .required('A nota é obrigatória');
+    .max(10, 'Nota máxima 10');
 
 export const BuscaCurso: React.FC = () => {
     const { institutionId } = useInstitution();
@@ -117,7 +117,7 @@ export const BuscaCurso: React.FC = () => {
         if (hasSelectedCourse) {
             setConfirmModalOpen(true);
         } else {
-            alert('Selecione um curso para continuar!');
+            alert('Selecione um curso para adicionar!');
         }
     };
 
@@ -155,6 +155,32 @@ export const BuscaCurso: React.FC = () => {
             alert('Erro na validação das notas MEC.');
         }
         setConfirmModalOpen(false);
+    };
+
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+
+    const handleChangePage = (_event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0);
+    };
+
+    const paginatedCourses = filteredCourses
+        .sort((a, b) => b.id - a.id)
+        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+
+    const totalPages = Math.ceil(filteredCourses.length / rowsPerPage);
+
+    const goToFirstPage = () => {
+        setPage(0);
+    };
+
+    const goToLastPage = () => {
+        setPage(totalPages - 1);
     };
 
     return (
@@ -213,6 +239,23 @@ export const BuscaCurso: React.FC = () => {
                             }} onClick={handleOpenConfirmModal}>
                                 Adicionar
                             </Button>
+                            <Button variant="contained" sx={{
+                                height: '50px',
+                                fontSize: '17px',
+                                fontFamily: 'Roboto, monospace',
+                                color: 'white',
+                                backgroundColor: '#185D8E',
+                                fontWeight: 'bold',
+                                '&:hover': {
+                                    backgroundColor: '#104A6F',
+                                },
+                            }} onClick={
+                                () => {
+                                    navigate('/politicas', { state: { institutionId } });
+                                }
+                            }>
+                                Continuar
+                            </Button>
                         </Box>
                         {loading ? (
                             <Box
@@ -227,7 +270,7 @@ export const BuscaCurso: React.FC = () => {
                             </Box>
                         ) : (
                             <List>
-                                {filteredCourses.map((course) => (
+                                {paginatedCourses.map((course) => (
                                     <ListItem key={course.id} divider>
                                         <Checkbox
                                             checked={selectedCourses[course.id]?.isSelected || false}
@@ -270,6 +313,31 @@ export const BuscaCurso: React.FC = () => {
                             </List>
                         )}
                     </Box>
+                </Box>
+                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: 7 }}>
+                    <Button
+                        onClick={goToFirstPage}
+                        disabled={page === 0}
+                        sx={{ marginRight: 2, fontFamily: 'Roboto, monospace', fontWeight: 'bold' }}
+                    >
+                        Primeira Página
+                    </Button>
+                    <TablePagination
+                        rowsPerPageOptions={[5, 10, 25]}
+                        component="div"
+                        count={filteredCourses.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                    />
+                    <Button
+                        onClick={goToLastPage}
+                        disabled={page === totalPages - 1}
+                        sx={{ marginLeft: 2, fontFamily: 'Roboto, monospace', fontWeight: 'bold' }}
+                    >
+                        Última Página
+                    </Button>
                 </Box>
             </Box>
 
@@ -353,7 +421,6 @@ export const BuscaCurso: React.FC = () => {
                     </Grid>
                 </Box>
             </Modal>
-
             <Footer />
         </>
     );

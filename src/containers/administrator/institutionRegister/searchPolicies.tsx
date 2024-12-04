@@ -19,7 +19,8 @@ import {
     DialogTitle,
     DialogContent,
     DialogContentText,
-    DialogActions
+    DialogActions,
+    TablePagination
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { useInstitution } from '../../../context/institutionContext';
@@ -84,7 +85,7 @@ export const BuscaPoliticas: React.FC = () => {
         if (hasSelectedPolicy) {
             setConfirmModalOpen(true);
         } else {
-            alert('Selecione uma política para continuar!');
+            alert('Selecione uma política para adicionar!');
         }
     };
 
@@ -122,6 +123,32 @@ export const BuscaPoliticas: React.FC = () => {
     const handleCloseFinalModal = () => {
         setFinalModalOpen(false);
         navigate('/gerenciamento-instituicao');
+    };
+
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+
+    const handleChangePage = (_event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0);
+    };
+
+    const paginatedPolicies = filteredPolicies
+        .sort((a, b) => b.id - a.id)
+        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+
+    const totalPages = Math.ceil(filteredPolicies.length / rowsPerPage);
+
+    const goToFirstPage = () => {
+        setPage(0);
+    };
+
+    const goToLastPage = () => {
+        setPage(totalPages - 1);
     };
 
     return (
@@ -179,6 +206,23 @@ export const BuscaPoliticas: React.FC = () => {
                             }} onClick={handleOpenConfirmModal}>
                                 Adicionar
                             </Button>
+                            <Button variant="contained" sx={{
+                                height: '50px',
+                                fontSize: '17px',
+                                fontFamily: 'Roboto, monospace',
+                                color: 'white',
+                                backgroundColor: '#185D8E',
+                                fontWeight: 'bold',
+                                '&:hover': {
+                                    backgroundColor: '#104A6F',
+                                },
+                            }} onClick={
+                                () => {
+                                    setFinalModalOpen(true);
+                                }
+                            }>
+                                Finalizar
+                            </Button>
                         </Box>
 
                         {loading ? (
@@ -194,7 +238,7 @@ export const BuscaPoliticas: React.FC = () => {
                             </Box>
                         ) : (
                             <List>
-                                {filteredPolicies.map((policy) => (
+                                {paginatedPolicies.map((policy) => (
                                     <ListItem key={policy.id} divider>
                                         <Checkbox
                                             checked={!!selectedPolicies[policy.id]}
@@ -209,6 +253,31 @@ export const BuscaPoliticas: React.FC = () => {
                             </List>
                         )}
                     </Box>
+                </Box>
+                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: 7 }}>
+                    <Button
+                        onClick={goToFirstPage}
+                        disabled={page === 0}
+                        sx={{ marginRight: 2, fontFamily: 'Roboto, monospace', fontWeight: 'bold' }}
+                    >
+                        Primeira Página
+                    </Button>
+                    <TablePagination
+                        rowsPerPageOptions={[5, 10, 25]}
+                        component="div"
+                        count={filteredPolicies.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                    />
+                    <Button
+                        onClick={goToLastPage}
+                        disabled={page === totalPages - 1}
+                        sx={{ marginLeft: 2, fontFamily: 'Roboto, monospace', fontWeight: 'bold' }}
+                    >
+                        Última Página
+                    </Button>
                 </Box>
             </Box>
 
